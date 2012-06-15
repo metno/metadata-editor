@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:metaedit="http://java.sun.com/jsf/composite/component">
+
+<h:head>
+	<base
+		href="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.requestContextPath}/" />
+	<title>Metadata editor</title>
+</h:head>
+
+<body>
+
+	<h2>Editor</h2>
+
+	<ui:repeat var="widget"
+		value="#{editorBean.editorConfiguration.widgets}">
+
+		<metaedit:text-input widget="#{widget}"
+			rendered="#{widget.type == 'text-input'}" />
+
+	</ui:repeat>
+
+</body>
+
+</html>

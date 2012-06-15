@@ -1,0 +1,18 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:metaedit="http://java.sun.com/jsf/composite/component">
+
+    <composite:interface>
+        <composite:valueHolder name="widget" type="no.met.metaedit.TextInputWidget" />
+    </composite:interface>
+
+    <composite:implementation>
+
+        <input type="text" value="#{cc.attrs.widget.value}" name="#{cc.attrs.widget.widgetId}::value" id="#{cc.attrs.widget.widgetId}_value" />
+
+    </composite:implementation>
+</html>
