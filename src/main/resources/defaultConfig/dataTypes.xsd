@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://www.met.no/schema/metadataeditor/editorDataTypes"
+        xmlns="http://www.met.no/schema/metadataeditor/editorDataTypes"
+        elementFormDefault="qualified">
+
+<xsd:annotation>
+<xsd:documentation>
+Schema for editor data types, don't try to valid against a template
+since too many elements won't allow the datatypes.
+</xsd:documentation>
+</xsd:annotation>
+
+<xsd:element name="editorDataTypes">
+  <xsd:complexType>
+    <xsd:sequence>
+      <xsd:choice minOccurs="0" maxOccurs="unbounded">
+        <xsd:element name="dataType" type="DataType"/>
+        <xsd:element name="other" type="Other"/>
+      </xsd:choice>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:element>
+
+<xsd:complexType name="Other">
+  <xsd:sequence>
+  <xsd:any />
+  </xsd:sequence>
+</xsd:complexType>
+
+<xsd:simpleType name="allNNI">
+<xsd:annotation>
+<xsd:documentation>for maxOccurs</xsd:documentation>
+</xsd:annotation>
+<xsd:union memberTypes="xsd:nonNegativeInteger">
+<xsd:simpleType>
+  <xsd:restriction base="xsd:NMTOKEN">
+    <xsd:enumeration value="unbounded"/>
+  </xsd:restriction>
+</xsd:simpleType>
+</xsd:union>
+</xsd:simpleType>
+
+<xsd:complexType name="DataType">
+<xsd:annotation>
+<xsd:documentation>
+The basic datatype for all datatypes, important to include varName, minOccurs, maxOccurs
+might include any other content
+</xsd:documentation>
+</xsd:annotation>
+  <xsd:sequence>
+    <xsd:choice minOccurs="0" maxOccurs="unbounded">
+      <xsd:element name="dataType"/>
+      <xsd:element name="other" type="Other"/>
+    </xsd:choice>
+  </xsd:sequence>
+  <xsd:attribute name="varName" type="xsd:string" use="required" />
+  <xsd:attribute name="minOccurs" type="xsd:nonNegativeInteger" default="1" />
+  <xsd:attribute name="maxOccurs" type="allNNI" default="1" />
+</xsd:complexType>
+
+<xsd:complexType name="ResourceDataType">
+<xsd:annotation>
+<xsd:documentation>
+A datatype requiring an external resource for configuration, e.g. list of keywords
+</xsd:documentation>
+</xsd:annotation>
+<xsd:complexContent>
+<xsd:extension base="DataType">
+  <xsd:attribute name="resource" type="xsd:anyURI" use="required" />
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+
+<xsd:element name="container" type="DataType">
+<xsd:annotation>
+<xsd:documentation>
+general datatype, defines no variables, but might be used to define
+existence of an embedded datatype
+</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+
+<xsd:element name="lonLatBoundingBox" type="DataType">
+<xsd:annotation>
+<xsd:documentation>
+datatype for bounding-boxes, defines variables $north,$south,$east,$west
+</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+
+<xsd:element name="string" type="DataType">
+<xsd:annotation>
+<xsd:documentation>
+datatype for general strings, sets $string
+</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+
+<xsd:element name="uri" type="DataType">
+<xsd:annotation>
+<xsd:documentation>
+datatype for URI's, sets $uri
+</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+
+<xsd:element name="list" type="ResourceDataType">
+<xsd:annotation>
+<xsd:documentation>
+datatype for list, defines $listElement
+</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+
+
+
+</xsd:schema>
