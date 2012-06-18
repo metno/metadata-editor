@@ -9,6 +9,22 @@
 	<base
 		href="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.requestContextPath}/" />
 	<title>Metadata editor</title>
+    <h:outputScript name="jquery.js" library="javascript" />	
+    <h:outputScript name="class.js" library="javascript" />
+    <h:outputScript name="widget.js" library="javascript" />
+    <h:outputScript name="text-input.js" library="javascript" />
+    <h:outputScript name="text-input-multi.js" library="javascript" />
+	<h:outputScript name="metadataeditor.js" library="javascript" />
+	
+	<script type="text/javascript">
+	
+	jQuery(document).ready(function(){
+		
+		editor.init();
+		
+	});
+	
+	</script>
 </h:head>
 
 <body>
@@ -18,8 +34,7 @@
 	<ui:repeat var="widget"
 		value="#{editorBean.editorConfiguration.widgets}">
 
-		<metaedit:text-input widget="#{widget}"
-			rendered="#{widget.type == 'text-input'}" />
+        <div class="widgetContainer" id="#{widget.variableName}" data-widgettype="#{widget.widgetType}"></div>
 
 	</ui:repeat>
 

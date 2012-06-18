@@ -2,7 +2,7 @@ package no.met.metadataeditor;
 
 import java.io.File;
 
-import no.met.metadataeditor.widget.TextInputWidget;
+import no.met.metadataeditor.widget.EditorWidget;
 
 /**
  * Factory used to create new EditorConfiguration objects. 
@@ -23,9 +23,14 @@ public class EditorConfigurationFactory {
         
         EditorConfiguration ec = new EditorConfiguration();
         
-        TextInputWidget tiw = new TextInputWidget("widget1");
-        tiw.setValue("MM2 hurra1");
-        ec.addWidget(tiw);
+        EditorWidget ew1 = new EditorWidget("PIName", "TextInput");
+        ec.addWidget(ew1);
+
+        EditorWidget ew2 = new EditorWidget("contact", "TextInput");
+        ec.addWidget(ew2);
+        
+        EditorWidget ew3 = new EditorWidget("variableList", "TextInputMulti");
+        ec.addWidget(ew3);
         
         return ec;
     }
