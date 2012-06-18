@@ -1,5 +1,6 @@
 package no.met.metadataeditor.service;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,45 +8,26 @@ import java.util.Map;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- * Class used for serialization of the metadata to a JSON format. This class
- * represent a single possibly multivalued editor variable.
- */
 @XmlRootElement
 public class EditorVariable {
-
-    private EditorData attrs;
-
-    private Map<String, List<EditorVariable>> children;
+    private Map<String, URI> resources = new HashMap<String, URI>();
+    private List<EditorVariableContent> content = new ArrayList<EditorVariableContent>();
 
     public EditorVariable() {
-        setChildren(new HashMap<String, List<EditorVariable>>());
     }
 
-    public EditorData getAttrs() {
-        return attrs;
+    public Map<String, URI> getResources() {
+        return resources;
+    }
+    public void addResource(String name, URI uri) {
+        resources.put(name, uri);
     }
 
-    public void setAttrs(EditorData attrs) {
-        this.attrs = attrs;
+    public void addContent(EditorVariableContent content) {
+        this.content.add(content);
     }
-
-    public void addSingleChild(String varName, EditorVariable var) {
-        List<EditorVariable> vars = new ArrayList<EditorVariable>();
-        vars.add(var);
-        children.put(varName, vars);
-    }
-
-    public void addChild(String varName, List<EditorVariable> vars) {
-        children.put(varName, vars);
-    }
-
-    public Map<String, List<EditorVariable>> getChildren() {
-        return children;
-    }
-
-    public void setChildren(Map<String, List<EditorVariable>> children) {
-        this.children = children;
+    public List<EditorVariableContent> getContent() {
+        return content;
     }
 
 }

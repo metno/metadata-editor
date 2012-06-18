@@ -19,47 +19,47 @@ public class RestController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{identifier}")
-    public Map<String, List<EditorVariable>> retrieve(@PathParam("identifier") String identifier) {
-       
-        HashMap<String,List<EditorVariable>> varMap = new HashMap<String,List<EditorVariable>>();
+    public Map<String, EditorVariable> retrieve(@PathParam("identifier") String identifier) {
 
-        ArrayList<EditorVariable> vars1 = new ArrayList<EditorVariable>();        
+        HashMap<String,EditorVariable> varMap = new HashMap<String,EditorVariable>();
+
         EditorVariable var1 = new EditorVariable();
-        var1.setAttrs(new SingleValueData("Hans Klaus"));        
-        vars1.add(var1);
-        varMap.put("contact", vars1);
-        
-        ArrayList<EditorVariable> vars2 = new ArrayList<EditorVariable>();        
-        EditorVariable var2 = new EditorVariable();
-        var2.setAttrs(new SingleValueData("Metadata editor"));        
-        vars2.add(var2);              
-        varMap.put("PIName", vars2);
+        EditorVariableContent cont1 = new EditorVariableContent();
+        var1.addContent(cont1);
+        cont1.setAttrs(new SingleValueData("Hans Klaus"));
+        varMap.put("contact", var1);
 
-        ArrayList<EditorVariable> vars3 = new ArrayList<EditorVariable>();        
-        EditorVariable var3_1 = new EditorVariable();
-        var3_1.setAttrs(new SingleValueData("precipitation"));        
-        vars3.add(var3_1);
-        EditorVariable var3_2 = new EditorVariable();
-        var3_2.setAttrs(new SingleValueData("millimeter"));        
-        vars3.add(var3_2);                      
-        varMap.put("variableList", vars3);
-        
-        
+        EditorVariableContent cont2 = new EditorVariableContent();
+        EditorVariable var2 = new EditorVariable();
+        cont2.setAttrs(new SingleValueData("Metadata editor"));
+        var2.addContent(cont2);
+        varMap.put("PIName", var2);
+
+        EditorVariable var3 = new EditorVariable();
+        EditorVariableContent cont3_1 = new EditorVariableContent();
+        cont3_1.setAttrs(new SingleValueData("precipitation"));
+        var3.addContent(cont3_1);
+        EditorVariableContent cont3_2 = new EditorVariableContent();
+        cont3_2.setAttrs(new SingleValueData("millimeter"));
+        var3.addContent(cont3_2);
+        varMap.put("variableList", var3);
+
+
         return varMap;
     }
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("{identifier}")    
+    @Path("{identifier}")
     public Map<String, List<EditorVariable>> store(@PathParam("identifier") String identifier) {
-        
+
         HashMap<String,List<EditorVariable>> varMap = new HashMap<String,List<EditorVariable>>();
         ArrayList<EditorVariable> vars = new ArrayList<EditorVariable>();
         varMap.put("dummy", vars);
-        
-        
+
+
         return varMap;
     }
-    
-    
+
+
 }
