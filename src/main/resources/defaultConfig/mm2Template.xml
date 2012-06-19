@@ -5,11 +5,20 @@
 
 <mmc:mmCombined xmlns:mmc="http://www.met.no/schema/metamod/mmCombined">
 <dataset xmlns="http://www.met.no/schema/metamod/dataset" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.met.no/schema/metamod/dataset https://wiki.met.no/_media/metamod/dataset.xsd">
-  <info name="ADC/proffdefault4km" status="active" creationDate="2012-04-18T12:51:22Z" datestamp="2012-04-19T12:59:34Z" ownertag="ADC" metadataFormat="MM2"/><wmsInfo><w:ncWmsSetup xmlns:w="http://www.met.no/schema/metamod/ncWmsSetup" url="%THREDDS_DATAREF%" xsi:schemaLocation="http://www.met.no/schema/metamod/ncWmsSetup ncWmsSetup.xsd ">
+  <info name="ADC/proffdefault4km" status="active" creationDate="2012-04-18T12:51:22Z" datestamp="2012-04-19T12:59:34Z" ownertag="ADC" metadataFormat="MM2"/>
+  <wmsInfo>
+    <edt:container varName="wmsSetup" minOccurs="0" maxOccurs="1">
+    <w:ncWmsSetup xmlns:w="http://www.met.no/schema/metamod/ncWmsSetup" url="%THREDDS_DATAREF%" xsi:schemaLocation="http://www.met.no/schema/metamod/ncWmsSetup ncWmsSetup.xsd ">
           <w:displayArea crs="EPSG:32661" left="-1000000" right="5000000" bottom="-3000000" top="2000000"/>
-          <w:layer name="air_temperature" style="BOXFILL/rainbow"/>
-          <w:layer name="air_pressure"/>
-</w:ncWmsSetup></wmsInfo>
+          <edt:stringAndListElement varName="firstDisplayLayer" resource="wmsStyles.txt" minOccurs="1" maxOccurs="1">
+          <w:layer name="$str" style="$listElement"/>
+          </edt:stringAndListElement>
+          <edt:string varName="otherLayers" minOccurs="0" maxOccurs="1">
+          <w:layer name="$str"/>
+          </edt:string>
+    </w:ncWmsSetup>
+    </edt:container>
+  </wmsInfo>
 <datasetRegion xmlns="http://www.met.no/schema/metamod/datasetRegion" isValid="true" xsi:schemaLocation="http://www.met.no/schema/metamod/datasetRegion https://wiki.met.no/_media/metamod/datasetRegion.xsd">
 <edt:lonLatBoundingBox varName="globalBB" minOccurs="1" maxOccurs="1">
   <boundingBox north="$north" south="$south" east="$east" west="$west"/>

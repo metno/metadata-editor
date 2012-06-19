@@ -72,6 +72,7 @@ A datatype requiring an external resource for configuration, e.g. list of keywor
 </xsd:complexContent>
 </xsd:complexType>
 
+
 <xsd:element name="container" type="DataType">
 <xsd:annotation>
 <xsd:documentation>
@@ -113,6 +114,13 @@ datatype for list, defines $listElement
 </xsd:annotation>
 </xsd:element>
 
-
+<xsd:element name="stringAndList" type="ResourceDataType">
+<xsd:annotation>
+<xsd:documentation>
+datatype for a string and an element from a list,
+defines $str and $listElement
+</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
 
 </xsd:schema>
