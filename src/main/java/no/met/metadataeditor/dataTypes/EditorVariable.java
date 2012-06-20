@@ -14,8 +14,8 @@ public class EditorVariable {
     private Map<String, URI> resources = new HashMap<String, URI>();
     private DataAttributes dataAttributesType;
     private Map<String, EditorVariable> children = new HashMap<String, EditorVariable>();
-    private int minOccur = 1;
-    private int maxOccur = 1;
+    private int minOccurs = 1;
+    private int maxOccurs = 1;
     private List<EditorVariableContent> content = new ArrayList<EditorVariableContent>();
 
     /**
@@ -43,36 +43,36 @@ public class EditorVariable {
      *
      * @return minimum allowed occurences of content
      */
-    public int getMinOccur() {
-        return minOccur;
+    public int getMinOccurs() {
+        return minOccurs;
     }
 
     /**
-     * Set the minimum allowed occurences of the content. If minOccur > 0, this
+     * Set the minimum allowed occurences of the content. If minOccurs > 0, this
      * is a required field.
      *
-     * @param minOccur
+     * @param minOccurs
      */
-    public void setMinOccur(int minOccur) {
-        this.minOccur = minOccur;
+    public void setMinOccurs(int minOccurs) {
+        this.minOccurs = minOccurs;
     }
 
     /**
      *
      * @return the maximum allowed occurance of the content
      */
-    public int getMaxOccur() {
-        return maxOccur;
+    public int getMaxOccurs() {
+        return maxOccurs;
     }
 
     /**
      * Set the maximum allowed number of occurances of the content, default 1.
      * Use Integer.MAX_VALUE for unbound
      *
-     * @param maxOccur
+     * @param maxOccurs
      */
-    public void setMaxOccur(int maxOccur) {
-        this.maxOccur = maxOccur;
+    public void setMaxOccurs(int maxOccurs) {
+        this.maxOccurs = maxOccurs;
     }
 
     /**
