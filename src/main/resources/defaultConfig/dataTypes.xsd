@@ -6,8 +6,7 @@
 
 <xsd:annotation>
 <xsd:documentation>
-Schema for editor data types, don't try to valid against a template
-since too many elements won't allow the datatypes.
+Schema for editor data types
 </xsd:documentation>
 </xsd:annotation>
 
