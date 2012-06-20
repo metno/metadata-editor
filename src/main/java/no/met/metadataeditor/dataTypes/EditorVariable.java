@@ -93,8 +93,8 @@ public class EditorVariable {
         return children;
     }
 
-    public void setChildren(Map<String, EditorVariable> children) {
-        this.children = children;
+    public void addChild(String varName, EditorVariable child) {
+        children.put(varName, child);
     }
 
     /**

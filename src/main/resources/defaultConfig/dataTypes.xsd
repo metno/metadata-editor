@@ -6,7 +6,10 @@
 
 <xsd:annotation>
 <xsd:documentation>
-Schema for editor data types
+Schema for editor data types. When validating a template 'dataTypes' document,
+make sure to only validate against this dataTypes.xsd. The iso19139 or mm2
+elements won't validate, since they don't know about embedded editorDataTypes
+elements, which will disappear after filling in with data.
 </xsd:documentation>
 </xsd:annotation>
 
@@ -96,7 +99,7 @@ datatype for URI's, sets $uri
 <xsd:element name="list" type="ResourceDataType">
 <xsd:annotation>
 <xsd:documentation>
-datatype for list, defines $listElement
+datatype for list, defines $listElement for each listElement
 </xsd:documentation>
 </xsd:annotation>
 </xsd:element>
@@ -109,5 +112,14 @@ defines $str and $listElement
 </xsd:documentation>
 </xsd:annotation>
 </xsd:element>
+
+<xsd:element name="startAndStopTime" type="DataType">
+<xsd:annotation>
+<xsd:documentation>
+datatype for a $start and a $stop time
+</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+
 
 </xsd:schema>

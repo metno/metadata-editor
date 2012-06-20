@@ -1,5 +1,7 @@
 package no.met.metadataeditor.service;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,10 +14,14 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
 import no.met.metadataeditor.dataTypes.EditorVariable;
 import no.met.metadataeditor.dataTypes.EditorVariableContent;
 import no.met.metadataeditor.dataTypes.LatLonBBAttributes;
 import no.met.metadataeditor.dataTypes.StringAttributes;
+import no.met.metadataeditor.dataTypes.TemplateHandler;
 
 
 @Path("/")
@@ -26,9 +32,18 @@ public class RestController {
     @Path("{identifier}")
     public Map<String, EditorVariable> retrieve(@PathParam("identifier") String identifier) {
 
-        HashMap<String,EditorVariable> varMap = new HashMap<String,EditorVariable>();
+        Map<String,EditorVariable> varMap = new HashMap<String,EditorVariable>();
 
-        if ("12345".equals(identifier)) {
+        if ("4444".equals(identifier)) {
+            URL url = getClass().getResource("/defaultConfig/mm2Template.xml");
+            try {
+                varMap = TemplateHandler.parseTemplate(new InputSource(url.openStream()));
+            } catch (SAXException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else if ("12345".equals(identifier)) {
             EditorVariable var1 = new EditorVariable(new StringAttributes());
             EditorVariableContent cont1 = new EditorVariableContent();
             cont1.setAttrs(new StringAttributes("Hans Klaus"));
