@@ -25,7 +25,9 @@ public class TemplateHandlerTest {
             e.printStackTrace();
         }
 
-        assertNotNull(mse.get("wmsSetup"));
+        EditorVariable wmsSetup = mse.get("wmsSetup");
+        assertNotNull(wmsSetup);
+        assertNotNull(wmsSetup.getChildren().get("firstDisplayLayer"));
     }
 
 }
