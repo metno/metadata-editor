@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <edt:editorDataTypes xmlns:edt="http://www.met.no/schema/metadataeditor/editorDataTypes">
-
+<edt:other>
 
 <mmc:mmCombined xmlns:mmc="http://www.met.no/schema/metamod/mmCombined">
 <dataset xmlns="http://www.met.no/schema/metamod/dataset" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.met.no/schema/metamod/dataset https://wiki.met.no/_media/metamod/dataset.xsd">
@@ -57,11 +57,12 @@
 <metadata name="datacollection_period_from">$start</metadata>
 <metadata name="datacollection_period_to">$end</metadata>
 </edt:timeExtend>
-<edt:uri varName="dataRef" minOccur="1" maxOccurs="unbounded">
+<edt:uri varName="dataRef" minOccurs="1" maxOccurs="unbounded">
 <metadata name="dataref">$uri</metadata>
 </edt:uri>
 </MM2>
 
 </mmc:metadata>
 </mmc:mmCombined>
+</edt:other>
 </edt:editorDataTypes>

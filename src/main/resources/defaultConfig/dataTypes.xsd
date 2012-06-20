@@ -14,19 +14,10 @@ since too many elements won't allow the datatypes.
 <xsd:element name="editorDataTypes">
   <xsd:complexType>
     <xsd:sequence>
-      <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:element name="dataType" type="DataType"/>
-        <xsd:element name="other" type="Other"/>
-      </xsd:choice>
+      <xsd:any processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
     </xsd:sequence>
   </xsd:complexType>
 </xsd:element>
-
-<xsd:complexType name="Other">
-  <xsd:sequence>
-  <xsd:any />
-  </xsd:sequence>
-</xsd:complexType>
 
 <xsd:simpleType name="allNNI">
 <xsd:annotation>
@@ -49,10 +40,7 @@ might include any other content
 </xsd:documentation>
 </xsd:annotation>
   <xsd:sequence>
-    <xsd:choice minOccurs="0" maxOccurs="unbounded">
-      <xsd:element name="dataType"/>
-      <xsd:element name="other" type="Other"/>
-    </xsd:choice>
+    <xsd:any processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
   </xsd:sequence>
   <xsd:attribute name="varName" type="xsd:string" use="required" />
   <xsd:attribute name="minOccurs" type="xsd:nonNegativeInteger" default="1" />
