@@ -17,11 +17,11 @@ import javax.ws.rs.core.MediaType;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import no.met.metadataeditor.dataTypes.EditorTemplate;
 import no.met.metadataeditor.dataTypes.EditorVariable;
 import no.met.metadataeditor.dataTypes.EditorVariableContent;
 import no.met.metadataeditor.dataTypes.LatLonBBAttributes;
 import no.met.metadataeditor.dataTypes.StringAttributes;
-import no.met.metadataeditor.dataTypes.TemplateHandler;
 
 
 @Path("/")
@@ -37,7 +37,7 @@ public class RestController {
         if ("4444".equals(identifier)) {
             URL url = getClass().getResource("/defaultConfig/mm2Template.xml");
             try {
-                varMap = TemplateHandler.parseTemplate(new InputSource(url.openStream()));
+                varMap = (new EditorTemplate(new InputSource(url.openStream()))).getTemplate();
             } catch (SAXException e) {
                 e.printStackTrace();
             } catch (IOException e) {

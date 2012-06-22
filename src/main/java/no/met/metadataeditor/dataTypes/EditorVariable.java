@@ -12,6 +12,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 public class EditorVariable {
     private Map<String, URI> resources = new HashMap<String, URI>();
+    private Map<String, String> attrsXPath = new HashMap<String, String>();
     private DataAttributes dataAttributesType;
     private Map<String, EditorVariable> children = new HashMap<String, EditorVariable>();
     private int minOccurs = 1;
@@ -112,6 +113,23 @@ public class EditorVariable {
 
     public List<EditorVariableContent> getContent() {
         return content;
+    }
+
+    /**
+     * Get the attributes xpath directive, e.g. where to find
+     * content in a existing document
+     * @return
+     */
+    public Map<String, String> getAttrsXPath() {
+        return attrsXPath;
+    }
+
+    void setAttrsXPath(String attribute, String xPath) {
+        if (getAttrsType().containsKey(attribute)) {
+            attrsXPath.put(attribute, xPath);
+        } else {
+            throw new AttributesMismatchException("cannot set xpath for attribute: "+attribute);
+        }
     }
 
 }
