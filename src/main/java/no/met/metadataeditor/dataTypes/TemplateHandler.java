@@ -34,6 +34,7 @@ class TemplateHandler extends DefaultHandler {
     @Override
     public void startDocument() throws SAXException {
         edtElements  = new ArrayDeque<EditorVariable>();
+
         fullPathElements = new ArrayDeque<String>();
         finalPathElements = new ArrayDeque<String>();
         resultConfig = null;
@@ -71,9 +72,12 @@ class TemplateHandler extends DefaultHandler {
         return atts.getValue("varName");
     }
 
-    private void addStandardEDT(DataAttributes da, Attributes atts) throws SAXException {
+    private void addStandardEDT(DataAttributes da, String nsUri, String lName, Attributes atts) throws SAXException {
         EditorVariable ev = new EditorVariable(da);
         String varName = variableAddAttributes(ev, atts);
+        fullPathElements.addLast(getTemplateQName(nsUri, String.format("%s[@varName='%s']",lName, varName)));
+
+        ev.setTemplateXPath(StringUtils.join(fullPathElements.iterator(), "/"));
         edtElements.getLast().addChild(varName, ev);
         edtElements.addLast(ev);
 
@@ -144,7 +148,7 @@ class TemplateHandler extends DefaultHandler {
                     atts.getURI(i).equals(nsUri)) {
                 // don't use local attributes containing EditorAttributes wildcards
                 if (!atts.getValue(i).matches("\\s*\\$.*")) {
-                    attrs.add(String.format("@%s=%s", atts.getQName(i), atts.getValue(i)));
+                    attrs.add(String.format("@%s='%s'", atts.getQName(i), atts.getValue(i)));
                 }
             }
         }
@@ -156,33 +160,40 @@ class TemplateHandler extends DefaultHandler {
 
     @Override
     public void startElement(String nsUri, String lName, String qName, Attributes atts) throws SAXException {
-        fullPathElements.addLast(getTemplateQName(nsUri, lName));
         if (EDT.equals(nsUri)) {
             if ("editorDataTypes".equals(lName)) {
                 //  start element, empty container
                 assert(edtElements.size() == 0);
                 EditorVariable ev = new EditorVariable(new NullAttributes());
                 edtElements.addLast(ev);
+                fullPathElements.addLast(getTemplateQName(nsUri, lName));
             } else if ("container".equals(lName)) {
-                addStandardEDT(new NullAttributes(), atts);
+                addStandardEDT(new NullAttributes(), nsUri, lName, atts);
             } else if ("lonLatBoundingBox".equals(lName)) {
-                addStandardEDT(new LatLonBBAttributes(), atts);
+                addStandardEDT(new LatLonBBAttributes(), nsUri, lName, atts);
             } else if ("string".equals(lName)) {
-                addStandardEDT(new StringAttributes(), atts);
+                addStandardEDT(new StringAttributes(), nsUri, lName, atts);
             } else if ("uri".equals(lName)) {
-                addStandardEDT(new UriAttributes(), atts);
+                addStandardEDT(new UriAttributes(), nsUri, lName, atts);
             } else if ("list".equals(lName)) {
-                addStandardEDT(new ListElementAttributes(), atts);
+                addStandardEDT(new ListElementAttributes(), nsUri, lName, atts);
             } else if ("stringAndList".equals(lName)) {
-                addStandardEDT(new StringAndListElementAttributes(), atts);
+                addStandardEDT(new StringAndListElementAttributes(), nsUri, lName, atts);
             } else if ("startAndStopTime".equals(lName)) {
-                addStandardEDT(new StartAndStopTimeAttributes(), atts);
+                addStandardEDT(new StartAndStopTimeAttributes(), nsUri, lName, atts);
             } else {
                 throw new UndefinedEditorVariableException(lName);
             }
         } else {
+            fullPathElements.addLast(getTemplateQName(nsUri, lName));
             finalPathElements.addLast(generateXPathIdentifier(nsUri, lName, qName, atts));
             searchEditorAttributes(atts);
+            String documentXPath = StringUtils.join(finalPathElements.iterator(), "/");
+            for (EditorVariable ev : edtElements) {
+                if (ev.getDocumentXPath() == null) {
+                    ev.setDocumentXPath(documentXPath);
+                }
+            }
         }
 
     }
@@ -202,7 +213,7 @@ class TemplateHandler extends DefaultHandler {
                 assert(edtElements.size() == 1);
                 resultConfig = edtElements.getFirst().getChildren();
             }
-            edtElements.removeLast();
+            EditorVariable ev  = edtElements.removeLast();
         } else {
             finalPathElements.removeLast();
         }

@@ -20,6 +20,22 @@ public class StringAndListElementAttributes implements DataAttributes {
         fields.put("listElement", DataType.STRING);
         return fields;
     }
+
+    public DataAttributes newInstance() {
+        return new StringAndListElementAttributes();
+    }
+
+    public void addAttribute(String attr, String value) throws AttributesMismatchException {
+        if ("listElement".equals(attr)) {
+            listElement = value;
+        } else if ("str".equals(attr)) {
+            str = value;
+        } else {
+            throw new AttributesMismatchException(String.format("Attr %s not one of (str|listElement)", attr));
+        }
+    }
+
+
     public String getStr() {
         return str;
     }

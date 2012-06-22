@@ -11,17 +11,19 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class EditorVariable {
     private Map<String, URI> resources = new HashMap<String, URI>();
     private Map<String, String> attrsXPath = new HashMap<String, String>();
+    private String documentXPath = null;
+    private String templateXPath;
     private DataAttributes dataAttributesType;
     private Map<String, EditorVariable> children = new HashMap<String, EditorVariable>();
     private int minOccurs = 1;
     private int maxOccurs = 1;
-            
+
     private List<EditorVariableContent> content = new ArrayList<EditorVariableContent>();
 
     public EditorVariable() {
-        
+
     }
-    
+
     /**
      * initialize a new EditorVariable of the type defined by the DataAttributes
      *
@@ -33,6 +35,18 @@ public class EditorVariable {
 
     public String getType() {
         return getClass().getSimpleName() + "::" + dataAttributesType.getClass().getSimpleName();
+    }
+
+    /**
+     * Get a new instance of the attributes-class belonging to this
+     * EditorVariable. Use this method to fill the EditorVariableContent
+     * with Attributes
+     * @return new instance of the dataAttributes
+     * @see DataAttributes.addAttribute(String attr, String value)
+     */
+    @JsonIgnore
+    public DataAttributes getNewDataAttributes() {
+        return dataAttributesType.newInstance();
     }
 
     public Map<String, URI> getResources() {
@@ -116,8 +130,8 @@ public class EditorVariable {
 
     public List<EditorVariableContent> getContent() {
         return content;
-    }    
-    
+    }
+
     /**
      * Get the attributes xpath directive, e.g. where to find
      * content in a existing document
@@ -133,6 +147,22 @@ public class EditorVariable {
         } else {
             throw new AttributesMismatchException("cannot set xpath for attribute: "+attribute);
         }
+    }
+
+    public String getDocumentXPath() {
+        return documentXPath;
+    }
+
+    public void setDocumentXPath(String documentXPath) {
+        this.documentXPath = documentXPath;
+    }
+
+    public String getTemplateXPath() {
+        return templateXPath;
+    }
+
+    public void setTemplateXPath(String templateXPath) {
+        this.templateXPath = templateXPath;
     }
 
 }

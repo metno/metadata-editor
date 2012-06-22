@@ -1,7 +1,6 @@
 package no.met.metadataeditor.dataTypes;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -15,15 +14,19 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import com.sun.istack.logging.Logger;
 
 public class EditorTemplate {
     private Map<String, EditorVariable> template;
@@ -72,6 +75,47 @@ public class EditorTemplate {
         };
     }
 
+    /**
+     * recursively read the information in the xml-file, starting at the top-node
+     *
+     * @param xpath xpath with correct namespace-context
+     * @param nodeXpath the elements will be searched for below the current element
+     * @param node the node below the Editorvariables should be searched
+     * @param vars a map of editorVariables
+     */
+    private void readEditorVariables(XPath xpath, String nodePath, Node node, Map<String, EditorVariable> vars) {
+        for (String varName : vars.keySet()) {
+            EditorVariable ev = vars.get(varName);
+            String evPath = ev.getDocumentXPath().substring(nodePath.length());
+            try {
+                Logger.getLogger(EditorTemplate.class).fine(String.format("EditorVariable %s with path %s and local path %s", varName, ev.getDocumentXPath(), evPath));
+                XPathExpression expr =  xpath.compile(evPath);
+                NodeList evSubnodes = (NodeList) expr.evaluate(node, XPathConstants.NODESET);
+                for (int i = 0; i < evSubnodes.getLength(); ++i) {
+                    DataAttributes da = ev.getDataAttributes();
+                    Node subNode = evSubnodes.item(i);
+                    // set the attributes
+                    Map<String, String> attXpath = ev.getAttrsXPath();
+                    for (String att : attXpath.keySet()) {
+                        String relAttPath = attXpath.get(att).substring(ev.getDocumentXPath().length());
+                        XPathExpression attExpr = xpath.compile(relAttPath);
+                        String attVal = attExpr.evaluate(subNode);
+                        da.addAttribute(att, attVal);
+                    }
+                    EditorVariableContent evc = new EditorVariableContent();
+                    evc.setAttrs(da);
+                    evc.setChildren(ev.getChildren());
+                    ev.addContent(evc);
+                    // and fill the children
+                    readEditorVariables(xpath, evPath, subNode, ev.getChildren());
+                }
+            } catch (XPathExpressionException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+    }
+
     public void addData(InputSource xmlData) throws ParserConfigurationException, SAXException, IOException {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setNamespaceAware(true);
@@ -81,8 +125,8 @@ public class EditorTemplate {
         XPath xpath = xpathFact.newXPath();
         xpath.setNamespaceContext(getTemplateContext());
 
-        // TODO: retrieve the information for the EditorVariables
-
+        // retrieve the information for the EditorVariables
+        readEditorVariables(xpath, "", doc, getTemplate());
     }
 
     public Map<String, EditorVariable> getTemplate() {

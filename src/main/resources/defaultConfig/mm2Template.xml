@@ -10,8 +10,8 @@
   <info name="ADC/proffdefault4km" status="active" creationDate="2012-04-18T12:51:22Z" datestamp="2012-04-19T12:59:34Z" ownertag="ADC" metadataFormat="MM2"/>
   <quadtree_nodes />
   <wmsInfo>
-    <edt:container varName="wmsSetup" minOccurs="0" maxOccurs="1">
-    <w:ncWmsSetup xmlns:w="http://www.met.no/schema/metamod/ncWmsSetup" url="%THREDDS_DATAREF%" xsi:schemaLocation="http://www.met.no/schema/metamod/ncWmsSetup ncWmsSetup.xsd ">
+    <edt:string varName="wmsSetup" minOccurs="0" maxOccurs="1">
+    <w:ncWmsSetup xmlns:w="http://www.met.no/schema/metamod/ncWmsSetup" url="$str" xsi:schemaLocation="http://www.met.no/schema/metamod/ncWmsSetup ncWmsSetup.xsd ">
           <w:displayArea crs="EPSG:32661" left="-1000000" right="5000000" bottom="-3000000" top="2000000"/>
           <edt:stringAndList varName="firstDisplayLayer" resource="wmsStyles.txt" minOccurs="1" maxOccurs="1">
           <w:layer name="$str" style="$listElement"/>
@@ -20,7 +20,7 @@
           <w:layer name="$str"/>
           </edt:string>
     </w:ncWmsSetup>
-    </edt:container>
+    </edt:string>
   </wmsInfo>
   <datasetRegion xmlns="http://www.met.no/schema/metamod/datasetRegion" isValid="true" xsi:schemaLocation="http://www.met.no/schema/metamod/datasetRegion https://wiki.met.no/_media/metamod/datasetRegion.xsd">
   <edt:lonLatBoundingBox varName="globalBB" minOccurs="1" maxOccurs="1">
@@ -50,10 +50,10 @@
 <metadata name="operational_status">$listElement</metadata>
 </edt:list>
 <edt:string varName="contact" minOccurs="0" maxOccurs="1">
-<metadata name="contact">$string</metadata>
+<metadata name="contact">$str</metadata>
 </edt:string>
 <edt:string varName="PIname" minOccurs="0" maxOccurs="1">
-<metadata name="PI_name">$string</metadata>
+<metadata name="PI_name">$str</metadata>
 </edt:string>
 <edt:startAndStopTime varName="timeExtend" minOccurs="1" maxOccurs="1">
 <!-- TODO: how to define start without end -->

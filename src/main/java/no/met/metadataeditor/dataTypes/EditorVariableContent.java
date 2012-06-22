@@ -1,8 +1,6 @@
 package no.met.metadataeditor.dataTypes;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -15,11 +13,11 @@ public class EditorVariableContent {
 
     private DataAttributes attrs;
 
-    private Map<String, List<EditorVariable>> children;
+    private Map<String, EditorVariable> children;
 
 
     public EditorVariableContent() {
-        children = new HashMap<String, List<EditorVariable>>();
+        children = new HashMap<String, EditorVariable>();
     }
 
     public DataAttributes getAttrs() {
@@ -30,11 +28,11 @@ public class EditorVariableContent {
         this.attrs = attrs;
     }
 
-    public void addChildren(String varName, EditorVariable... vars) {
-        children.put(varName, Arrays.asList(vars));
+    public void setChildren(Map<String, EditorVariable> children) {
+        this.children = children;
     }
 
-    public Map<String, List<EditorVariable>> getChildren() {
+    public Map<String, EditorVariable> getChildren() {
         return children;
     }
 }
