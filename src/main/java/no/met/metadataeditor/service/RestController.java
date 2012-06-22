@@ -1,23 +1,35 @@
 package no.met.metadataeditor.service;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import no.met.metadataeditor.dataTypes.EditorTemplate;
+
 import no.met.metadataeditor.dataTypes.EditorVariable;
 import no.met.metadataeditor.dataTypes.EditorVariableContent;
 import no.met.metadataeditor.dataTypes.LatLonBBAttributes;
@@ -30,7 +42,7 @@ public class RestController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{identifier}")
-    public Map<String, EditorVariable> retrieve(@PathParam("identifier") String identifier) {
+    public Response retrieve(@PathParam("identifier") String identifier) {
 
         Map<String,EditorVariable> varMap = new HashMap<String,EditorVariable>();
 
@@ -78,20 +90,49 @@ public class RestController {
 
         }
 
-        return varMap;
-    }
 
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonContent = mapper.writerWithType(new TypeReference<Map<String,EditorVariable>>() { }).writeValueAsString(varMap);
+            return Response.ok(jsonContent, MediaType.APPLICATION_JSON).build();
+        } catch (JsonGenerationException e) {
+            e.printStackTrace();
+            return Response.status(500).build();
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+            return Response.status(500).build();            
+        } catch (IOException e) {
+            e.printStackTrace();
+            return Response.status(500).build();            
+        }        
+
+    }
+   
+    
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{identifier}")
-    public Map<String, List<EditorVariable>> store(@PathParam("identifier") String identifier) {
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response store(@PathParam("identifier") String identifier, String jsonContent) {
 
-        HashMap<String,List<EditorVariable>> varMap = new HashMap<String,List<EditorVariable>>();
-        ArrayList<EditorVariable> vars = new ArrayList<EditorVariable>();
-        varMap.put("dummy", vars);
+        
+        HashMap<String, EditorVariable> varMap;
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            varMap = mapper.readValue(jsonContent, new TypeReference<HashMap<String,EditorVariable>>() {});
+        } catch (JsonParseException e) {
+            e.printStackTrace();
+            return Response.status(500).build();  
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+            return Response.status(500).build();  
+        } catch (IOException e) {
+            e.printStackTrace();
+            return Response.status(500).build();  
+        }
 
 
-        return varMap;
+        return Response.ok().build();
     }
 
 

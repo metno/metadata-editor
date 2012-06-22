@@ -6,10 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@XmlRootElement
 public class EditorVariable {
     private Map<String, URI> resources = new HashMap<String, URI>();
     private Map<String, String> attrsXPath = new HashMap<String, String>();
@@ -17,8 +15,13 @@ public class EditorVariable {
     private Map<String, EditorVariable> children = new HashMap<String, EditorVariable>();
     private int minOccurs = 1;
     private int maxOccurs = 1;
+            
     private List<EditorVariableContent> content = new ArrayList<EditorVariableContent>();
 
+    public EditorVariable() {
+        
+    }
+    
     /**
      * initialize a new EditorVariable of the type defined by the DataAttributes
      *
@@ -81,7 +84,7 @@ public class EditorVariable {
      * @return returns a new DataAttributes object of the type belonging to this
      *         EditorVariable
      */
-    @XmlTransient
+    @JsonIgnore
     public DataAttributes getDataAttributes() {
         return dataAttributesType;
     }
@@ -113,8 +116,8 @@ public class EditorVariable {
 
     public List<EditorVariableContent> getContent() {
         return content;
-    }
-
+    }    
+    
     /**
      * Get the attributes xpath directive, e.g. where to find
      * content in a existing document
