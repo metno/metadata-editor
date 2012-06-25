@@ -1,5 +1,9 @@
 var TextInput = Widget.extend({
 	
+    attrName : "str",
+    
+    attrClass : "",   
+    
 	buildUI : function () {
 	    
 	    var container = this.getContainer();	    
@@ -11,25 +15,47 @@ var TextInput = Widget.extend({
 	
 	populateValues : function (varMaps) {
 	    
-	    if( varMaps.length > 1 ){
+	    this._super(varMaps);
+	    
+	    var content = varMaps["content"];
+	    
+	    if( content.length > 1 ){
 	        console.log("TextInput does not support a list of values");
 	        return;
 	    }
 	    
-	    var varMap = varMaps[0];
-	    var attrs = varMap["attrs"];
+	    content = content[0];
+	    var attrs = content["attrs"];
 	    
-	    if( !("value" in attrs)){
+	    this.attrClass = attrs["@class"];
+	    
+	    if( !(this.attrName in attrs)){
 	        console.log("TextInput expects a single attribute called 'value'");
 	    }
 	    
 	    var element = jQuery('#' + this.generateHtmlId());
-	    element.val(attrs["value"]);
+	    element.val(attrs[this.attrName]);
+	    
+	},
+	
+	getContent : function () {
+	    
+	    var content = [];
+	    
+	    var htmlId = this.generateHtmlId();
+	    var element = jQuery('#' + htmlId);
+        var currentValue = element.val();
+	    
+        var attrs = { "@class" : this.attrClass };
+        attrs[this.attrName] = currentValue;
+        content.push( { "attrs" : attrs, "children" : {} });
+        
+        return { content : content }; 
 	    
 	},
 	
 	generateHtmlId : function () {
-	    return this.widgetId + '__value';
+	    return this.widgetId + '__' + this.attrName;
 	}
 	
 });

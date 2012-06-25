@@ -2,6 +2,10 @@ var TextInputMulti = Widget.extend({
 	
     numValues : 0,
     
+    attrName : "str",
+    
+    attrClass : "",
+    
     buildUI : function () {
         
         var container = this.getContainer();        
@@ -13,7 +17,11 @@ var TextInputMulti = Widget.extend({
     
     populateValues : function (varMaps) {
         
-        for( var i = 0; i < varMaps.length; i++ ){
+        this._super(varMaps);
+        
+        var content = varMaps["content"];
+        
+        for( var i = 0; i < content.length; i++ ){
             
             var inputElement = jQuery('#' + this.generateHtmlId(i));
             
@@ -22,15 +30,18 @@ var TextInputMulti = Widget.extend({
                 inputElement = jQuery('#' + this.generateHtmlId(i));
             }
             
-            var varMap = varMaps[i];
+            var varMap = content[i];
             var attrs = varMap['attrs'];
             
-            if(!( "value" in attrs)){
+            this.attrClass = attrs["@class"];
+            
+            if(!( this.attrName in attrs)){
                 console.log("TextInputMulti expects a single attribute called 'value'");
                 continue;
             }
             
-            inputElement.val(attrs["value"]);
+            inputElement.val(attrs[this.attrName]);
+
         }
         
         
@@ -43,11 +54,31 @@ var TextInputMulti = Widget.extend({
         
         var html = '<input type="text" name="' + htmlId + '" id="' + htmlId + '" />';
         container.append(html);
+        
+        this.numValues++;
                 
     },
     
+    getContent : function () {
+        
+        var content = [];
+        for( var i = 0; i < this.numValues; i++ ){
+            
+            var htmlId = this.generateHtmlId(i);
+            var element = jQuery('#' + htmlId);
+            
+            var attrs = { "@class" : this.attrClass };
+            attrs[this.attrName] = element.val();
+            content.push({ "attrs" : attrs, "children" : {} });
+                        
+        }
+        
+        return { "content" : content };
+        
+    },
+    
     generateHtmlId : function (index) {
-        return this.widgetId + "__" + index + "__value";       
+        return this.widgetId + "__" + index + "__" + this.attrName;       
     }
     
 });

@@ -1,6 +1,6 @@
 var editor = {
 
-    recordIdentifier : "test",
+    recordIdentifier : "12345",
 
     postPath : "rest/",
 
@@ -97,6 +97,47 @@ var editor = {
 
         });
 
+    },
+    
+    save : function () {
+        
+        var content = this.getEditorContent();
+        this.postEditorContent(content);
+        
+        console.log(content);
+        
+    },
+    
+    getEditorContent : function () {
+
+        var varMap = {};
+        for( varName in this.widgets ){
+            
+            var widget = this.widgets[varName];
+            varMap[varName] = widget.getContent();                        
+        }
+        
+        return varMap;
+    },
+    
+    postEditorContent : function(content) {
+        
+        jQuery.ajax(this.postPath + this.recordIdentifier, {
+
+            dataType : 'json',
+            contentType : "application/json",
+            data : JSON.stringify(content),
+            type : 'POST',
+            context : this,
+
+            success : function(data, textStatus) {
+                console.log("Data posted:" + data);
+            },
+
+            error : this.reportError
+
+        });        
+        
     },
 
     reportError : function() {

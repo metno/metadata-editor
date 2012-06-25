@@ -2,6 +2,18 @@ var Widget = Class.extend({
 
 	widgetId : "",
 	
+	type : "",
+	
+	maxOccurs : null,
+	
+	minOccurs: null,
+	
+	resources : {},
+	
+	attrsType : {},
+	
+	serverClass : null,
+	
 	init : function(widgetId) {
 		this.widgetId = widgetId;
 		this.buildUI();
@@ -12,7 +24,21 @@ var Widget = Class.extend({
 	},
 	
 	populateValues : function (varMap) {
-		console.log("Override in sub class");
+	    this.populateAttributes(varMap);
+	},
+	
+	populateAttributes : function (varMap){
+	    
+	    this.resources = varMap["resources"];
+	    this.type = varMap["type"];
+	    this.maxOccurs = varMap["maxOccurs"];
+	    this.minOccurs = varMap["minOccurs"];
+	    this.attrsType = varMap["attrsType"];
+	    
+	},
+	
+	getContent : function () {
+	    console.log("Override in sub class");
 	},
 	
 	getContainer : function () {
