@@ -2,7 +2,6 @@ package no.met.metadataeditor;
 
 import java.io.File;
 
-import no.met.metadataeditor.widget.EditorWidget;
 
 /**
  * Factory used to create new EditorConfiguration objects. 

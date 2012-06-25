@@ -1,4 +1,4 @@
-package no.met.metadataeditor.widget;
+package no.met.metadataeditor;
 
 /**
  * Class for representing widgets. This is a pure data class and should never
