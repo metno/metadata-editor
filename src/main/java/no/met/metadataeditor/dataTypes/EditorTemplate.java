@@ -98,8 +98,14 @@ public class EditorTemplate {
                     Map<String, String> attXpath = ev.getAttrsXPath();
                     for (String att : attXpath.keySet()) {
                         String relAttPath = attXpath.get(att).substring(ev.getDocumentXPath().length());
+                        Logger.getLogger(EditorTemplate.class).fine(String.format("searching attr %s in %s", att, relAttPath));
+                        if (relAttPath.startsWith("/")) {
+                            // remove leading / in e.g. /text()
+                            relAttPath = relAttPath.substring(1);
+                        }
                         XPathExpression attExpr = xpath.compile(relAttPath);
                         String attVal = attExpr.evaluate(subNode);
+                        Logger.getLogger(EditorTemplate.class).fine(String.format("%s + value = %s", relAttPath, attVal));
                         da.addAttribute(att, attVal);
                     }
                     EditorVariableContent evc = new EditorVariableContent();
@@ -107,7 +113,7 @@ public class EditorTemplate {
                     evc.setChildren(ev.getChildren());
                     ev.addContent(evc);
                     // and fill the children
-                    readEditorVariables(xpath, evPath, subNode, ev.getChildren());
+                    readEditorVariables(xpath, ev.getDocumentXPath(), subNode, ev.getChildren());
                 }
             } catch (XPathExpressionException e) {
                 // TODO Auto-generated catch block

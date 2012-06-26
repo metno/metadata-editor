@@ -48,9 +48,22 @@ public class RestController {
 
         Map<String,EditorVariable> varMap = new HashMap<String,EditorVariable>();
 
-        if ("4444".equals(identifier)) {
+        if ("4443".equals(identifier)) {
             URL url = getClass().getResource("/defaultConfig/mm2Template.xml");
-            URL xmlUrl = getClass().getResource("/defaultConfig/mm2TemplateTest.xml");
+            try {
+                EditorTemplate et = new EditorTemplate(new InputSource(url.openStream()));
+                //et.addData(new InputSource(xmlUrl.openStream()));
+                varMap = et.getTemplate();
+            } catch (SAXException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        } else if ("4444".equals(identifier)) {
+            URL url = getClass().getResource("/defaultConfig/mm2Template.xml");
+            URL xmlUrl = getClass().getResource("/defaultConfig/exampleMM2.xml");
             try {
                 EditorTemplate et = new EditorTemplate(new InputSource(url.openStream()));
                 et.addData(new InputSource(xmlUrl.openStream()));
@@ -107,35 +120,35 @@ public class RestController {
             return Response.status(500).build();
         } catch (JsonMappingException e) {
             e.printStackTrace();
-            return Response.status(500).build();            
+            return Response.status(500).build();
         } catch (IOException e) {
             e.printStackTrace();
-            return Response.status(500).build();            
-        }        
+            return Response.status(500).build();
+        }
 
     }
-   
-    
+
+
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{identifier}")
     @Consumes({MediaType.APPLICATION_JSON})
     public Response store(@PathParam("identifier") String identifier, String jsonContent) {
 
-        
+
         HashMap<String, EditorVariable> varMap;
         try {
             ObjectMapper mapper = new ObjectMapper();
             varMap = mapper.readValue(jsonContent, new TypeReference<HashMap<String,EditorVariable>>() {});
         } catch (JsonParseException e) {
             e.printStackTrace();
-            return Response.status(500).build();  
+            return Response.status(500).build();
         } catch (JsonMappingException e) {
             e.printStackTrace();
-            return Response.status(500).build();  
+            return Response.status(500).build();
         } catch (IOException e) {
             e.printStackTrace();
-            return Response.status(500).build();  
+            return Response.status(500).build();
         }
 
 

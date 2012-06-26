@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mmc:mmCombined xmlns:mmc="http://www.met.no/schema/metamod/mmCombined">
+  <dataset xmlns="http://www.met.no/schema/metamod/dataset" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.met.no/schema/metamod/dataset https://wiki.met.no/_media/metamod/dataset.xsd">
+    <info name="ADC/proffdefault4km" status="active" creationDate="2012-04-18T12:51:22Z" datestamp="2012-04-19T12:59:34Z" ownertag="ADC" metadataFormat="MM2"/>
+    <wmsInfo>
+      <w:ncWmsSetup xmlns:w="http://www.met.no/schema/metamod/ncWmsSetup" url="%THREDDS_DATAREF%" xsi:schemaLocation="http://www.met.no/schema/metamod/ncWmsSetup ncWmsSetup.xsd ">
+        <w:displayArea crs="EPSG:32661" left="-1000000" right="5000000" bottom="-3000000" top="2000000"/>
+        <w:layer name="air_temperature" style="BOXFILL/rainbow"/>
+        <w:layer name="air_pressure"/>
+      </w:ncWmsSetup>
+    </wmsInfo>
+    <datasetRegion xmlns="http://www.met.no/schema/metamod/datasetRegion" isValid="true" xsi:schemaLocation="http://www.met.no/schema/metamod/datasetRegion https://wiki.met.no/_media/metamod/datasetRegion.xsd">
+      <boundingBox north="90.00" south="44.00" east="70.00" west="-150.00"/>
+      <lonLatPoints/>
+      <lonLatPolygon/>
+    </datasetRegion>
+  </dataset>
+  <mmc:metadata>
+    <MM2 xmlns="http://www.met.no/schema/metamod/MM2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.met.no/schema/metamod/MM2 https://wiki.met.no/_media/metamod/mm2.xsd">
+      <!--<metadata name="datacollection_period_to">2012-12-31</metadata>-->
+      <metadata name="variable">air_pressure_at_sea_level</metadata>
+      <metadata name="variable">air_temperature</metadata>
+      <metadata name="variable">altitude</metadata>
+      <metadata name="variable">cloud_area_fraction</metadata>
+      <metadata name="variable">cloud_area_fraction_in_atmosphere_layer</metadata>
+      <metadata name="variable">land_area_fraction</metadata>
+      <metadata name="variable">lwe_precipitation_rate</metadata>
+      <metadata name="variable">lwe_thickness_of_precipitation_amount</metadata>
+      <metadata name="variable">relative_humidity</metadata>
+      <metadata name="variable">sea_floor_depth_below_geoid</metadata>
+      <metadata name="variable">sea_surface_wave_significant_height</metadata>
+      <metadata name="variable">visibility_in_air</metadata>
+      <metadata name="variable">x_wind</metadata>
+      <metadata name="variable">y_wind</metadata>
+      <metadata name="area">Iceland Sea</metadata>
+      <metadata name="area">Denmark Strait Sea</metadata>
+      <metadata name="area">Fram Strait</metadata>
+      <metadata name="area">Barents Sea</metadata>
+      <metadata name="area">Greenland Sea</metadata>
+      <metadata name="area">Laptev Sea</metadata>
+      <metadata name="area">Arctic Ocean</metadata>
+      <metadata name="area">Chukchi Sea</metadata>
+      <metadata name="area">Beufort Sea</metadata>
+      <metadata name="area">East Siberian Sea</metadata>
+      <metadata name="area">White Sea</metadata>
+      <metadata name="area">Kara Sea</metadata>
+      <metadata name="area">Nordic Seas</metadata>
+      <metadata name="contact">proff@met.no</metadata>
+      <metadata name="topiccategory">ClimatologyMeteorologyAtmosphere</metadata>
+      <metadata name="operational_status">Operational</metadata>
+      <metadata name="PI_name">Kristen Gislefoss</metadata>
+      <metadata name="keywords">Model Forecast Temperature Wind Humidity Clouds</metadata>
+      <metadata name="datacollection_period_from">2012-03-28 00:00:00</metadata>
+      <metadata name="activity_type">Model run</metadata>
+      <metadata name="project_name">Proff</metadata>
+      <metadata name="Conventions">CF-1.0</metadata>
+      <metadata name="history">2012-04-18 creation by heikok</metadata>
+      <metadata name="metadata_standard"/>
+      <metadata name="distribution_statement">CC BY 3.0 http://creativecommons.org/licenses/by/3.0/no/</metadata>
+      <metadata name="abstract">The proff-default 4km meteorological data is a best-guess selection of meteorological models run at met.no and joined/interpolated into a common dataset. The temperature data given here are usually combined with a high resolution (500m) topography. Those derived temperature fields are available in the proff-default-t2m_500m dataset.</metadata>
+      <metadata name="title">proff-default 4km meteorological data</metadata>
+      <metadata name="bounding_box">70,44,-150,90</metadata>
+      <metadata name="format_description"/>
+      <metadata name="file_format">netCDF/CF</metadata>
+      <metadata name="product_name">PROFF_DEFAULT4km</metadata>
+      <metadata name="dataref">http://thredds.met.no/thredds/catalog/metno/proff4km/default/</metadata>
+      <metadata name="institution">Norwegian Meteorological Institute</metadata>
+    </MM2>
+  </mmc:metadata>
+</mmc:mmCombined>
