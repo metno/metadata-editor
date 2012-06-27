@@ -1,10 +1,11 @@
 package no.met.metadataeditor.dataTypes;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class StringAndListElementAttributes implements DataAttributes {
+public class StringAndListElementAttributes extends DataAttributes {
+    
+    @IsAttribute(DataType.STRING)
     private String str;
+    
+    @IsAttribute(DataType.STRING)
     private String listElement;
 
     public StringAndListElementAttributes() {
@@ -12,13 +13,6 @@ public class StringAndListElementAttributes implements DataAttributes {
     public StringAndListElementAttributes(String str, String listElement) {
         this.setStr(str);
         this.setListElement(listElement);
-    }
-
-    public Map<String, DataType> getFields() {
-        Map<String, DataType> fields = new HashMap<String, DataType>();
-        fields.put("str", DataType.STRING);
-        fields.put("listElement", DataType.STRING);
-        return fields;
     }
 
     public DataAttributes newInstance() {

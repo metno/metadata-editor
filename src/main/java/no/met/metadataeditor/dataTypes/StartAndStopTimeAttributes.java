@@ -4,19 +4,14 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
-public class StartAndStopTimeAttributes implements DataAttributes {
+public class StartAndStopTimeAttributes extends DataAttributes {
+    
+    @IsAttribute(DataType.DATE)
     private Date start;
+    
+    @IsAttribute(DataType.DATE)
     private Date stop;
-
-    public Map<String, DataType> getFields() {
-        Map<String, DataType> fields = new HashMap<String, DataType>();
-        fields.put("start", DataType.DATE);
-        fields.put("stop", DataType.DATE);
-        return fields;
-    }
 
     public DataAttributes newInstance() {
         return new StartAndStopTimeAttributes();

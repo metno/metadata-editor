@@ -1,22 +1,20 @@
 package no.met.metadataeditor.dataTypes;
 
-import java.util.HashMap;
-import java.util.Map;
 
-public class LatLonBBAttributes implements DataAttributes {
+public class LatLonBBAttributes extends DataAttributes {
+    
+    @IsAttribute(DataType.NUMBER)
     private double south;
+
+    @IsAttribute(DataType.NUMBER)
     private double north;
+    
+    @IsAttribute(DataType.NUMBER)
     private double east;
+    
+    @IsAttribute(DataType.NUMBER)
     private double west;
 
-    public Map<String, DataType> getFields() {
-        Map<String, DataType> fields = new HashMap<String, DataType>();
-        fields.put("south", DataType.NUMBER);
-        fields.put("north", DataType.NUMBER);
-        fields.put("east", DataType.NUMBER);
-        fields.put("west", DataType.NUMBER);
-        return fields;
-    }
 
     public DataAttributes newInstance() {
         return new LatLonBBAttributes();

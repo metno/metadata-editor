@@ -1,5 +1,9 @@
 package no.met.metadataeditor.dataTypes;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -10,16 +14,42 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
  * EditorVariable class.
  */
 @JsonTypeInfo(use=JsonTypeInfo.Id.CLASS, include=JsonTypeInfo.As.PROPERTY, property="@class")  
-public interface DataAttributes {
+public abstract class DataAttributes {
 
     @JsonIgnore
-    public Map<String, DataType> getFields();
+    public Map<String, DataType> getFields(){
+        return getFields(getClass());
+    }
+    
+    private Map<String, DataType> getFields(Class<? extends Object> inClass){
+        
+        Map<String, DataType> fields = new HashMap<String,DataType>();
+        for (Field f : inClass.getDeclaredFields()) {
+
+            if (f.isAnnotationPresent(IsAttribute.class)) {
+                
+                IsAttribute ia = f.getAnnotation(IsAttribute.class);
+                DataType type = ia.value();
+                fields.put(f.getName(), type);
+            }
+        }
+
+        // attribute might be declared in super class so call this function recursively on the super
+        // class
+        if( inClass.getSuperclass() != null ){
+            Map<String,DataType> superFields = getFields(inClass.getSuperclass());
+            fields.putAll(superFields);
+        }
+        
+        return fields;             
+        
+    }
 
     /**
      *
      * @return a new Instance of the subtype
      */
-    public DataAttributes newInstance();
+    public abstract DataAttributes newInstance();
 
     /**
      * add a attributes value by a string
@@ -28,5 +58,60 @@ public interface DataAttributes {
      * @throws AttributesMismatchException if attr does not exists or value
      *         does not deserialize to the DataType
      */
-    public void addAttribute(String attr, String value) throws AttributesMismatchException;
+    public abstract void addAttribute(String attr, String value) throws AttributesMismatchException;
+    
+    
+    public String getAttribute(String attr) {        
+        return getAttribute(attr,getClass());                
+    }
+    
+    private String getAttribute(String attribute, Class<? extends Object> inClass) {
+        
+        String value = null;
+        boolean isFetched = false;
+        try {
+            String fieldname, methodName;
+            for (Field f : inClass.getDeclaredFields()) {
+
+                if (!f.getName().equals(attribute)) {
+                    continue;
+                }
+
+                if (f.isAnnotationPresent(IsAttribute.class)) {
+
+                    // make first letter uppercase
+                    fieldname = f.getName().substring(0, 1).toUpperCase() + f.getName().substring(1);
+                    methodName = "get" + fieldname;
+
+                    Method getter = this.getClass().getMethod(methodName);
+                    value = "" + getter.invoke(this);
+                    if (value.trim().equalsIgnoreCase("null"))
+                        value = "";
+
+                    isFetched = true;
+                }
+
+            }
+
+            // attribute might be declared in super class so call this function recursively on the super
+            // class
+            if( !isFetched && inClass.getSuperclass() != null ){
+                value = getAttribute(attribute, inClass.getSuperclass());
+            }
+
+        } catch (IllegalAccessException e) {
+            System.out.println("Illegal to access the get method of the property: " + e.getMessage());
+
+        } catch (SecurityException e) {
+            System.out.println("Security problem to access the get method of the property: " + e.getMessage());
+
+        } catch (NoSuchMethodException e) {
+            System.out.println("No such get method is defined for the property: " + e.getMessage());
+
+        } catch (InvocationTargetException e) {
+            System.out.println("Invocation targe problem when call get method for the property: " + e.getMessage());
+        }
+        return value;        
+        
+    }
 }
