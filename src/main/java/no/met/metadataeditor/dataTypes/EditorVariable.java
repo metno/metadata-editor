@@ -68,6 +68,7 @@ public class EditorVariable implements Serializable {
      * @param name The given to the name of the resource when it was added. 
      * @return A list of values from the resource.
      */
+    @JsonIgnore
     public List<String> getResourceValues(String name){
     
         if(!(resources.containsKey(name))){
@@ -88,6 +89,7 @@ public class EditorVariable implements Serializable {
      * Fetch the resource values for the default resource.
      * @return A list of values from the default resource.
      */
+    @JsonIgnore
     public List<String> getDefaultResourceValues(){
         return getResourceValues(DEFAULT_RESOURCE);
     }
