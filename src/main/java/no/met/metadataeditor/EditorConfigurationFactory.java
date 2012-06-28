@@ -6,6 +6,7 @@ import no.met.metadataeditor.widget.LatLonBoundingBoxWidget;
 import no.met.metadataeditor.widget.StartAndStopTimeWidget;
 import no.met.metadataeditor.widget.StringWidget;
 import no.met.metadataeditor.widget.ListWidget;
+import no.met.metadataeditor.widget.UriWidget;
 
 
 /**
@@ -41,6 +42,10 @@ public class EditorConfigurationFactory {
 
         EditorWidget ew5 = new StartAndStopTimeWidget("Time extent", "timeExtend");
         ec.addWidget(ew5);        
+
+        EditorWidget ew6 = new UriWidget("Data ref", "dataRef");
+        ec.addWidget(ew6);        
+                
         
         return ec;
     }
