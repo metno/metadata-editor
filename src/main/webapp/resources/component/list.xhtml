@@ -24,7 +24,7 @@
             </h:column>
             <h:column rendred="#{cc.attrs.widget.minOccurs lt cc.attrs.widget.values.size()}">
 	            <h:commandButton value="Remove" action="#{editorBean.removeValue(cc.attrs.widget.variableName, value)}">
-	                <f:ajax execute="@form" render="@form" />
+	                <f:ajax execute="@this" render="@form" />
 	            </h:commandButton>       
             </h:column>
         </h:dataTable>

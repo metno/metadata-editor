@@ -47,7 +47,7 @@
 
             <h:column>
                 <h:commandButton value="Remove" action="#{editorBean.removeValue(cc.attrs.widget.variableName, value)}" rendred="#{cc.attrs.widget.minOccurs lt cc.attrs.widget.values.size()}">
-                    <f:ajax execute="@form" render="@form" />
+                    <f:ajax execute="@this" render="@form" />
                 </h:commandButton>                                            
             </h:column>
             

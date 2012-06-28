@@ -7,22 +7,22 @@
       xmlns:metaedit="http://java.sun.com/jsf/composite/component">
 
     <composite:interface>
-        <composite:valueHolder name="widget" type="no.met.metaedit.TextInput" />
+        <composite:valueHolder name="widget" type="no.met.metaeditor.widget.StringWidget" />
     </composite:interface>
 
     <composite:implementation>
 
-       <h:panelGroup id="string-container" layout="block">
-        <h:outputLabel value="#{cc.attrs.widget.label}" />
+        <h:panelGroup id="string-container" layout="block">
+        <h:outputLabel value="#{cc.attrs.widget.label}" id="test" />
 
         <h:dataTable value="#{cc.attrs.widget.values}" var="value" id="string">
         
 	        <h:column>
-	            <h:inputText value="value['str']" />
+	            <h:inputText value="#{value['str']}" />
 	        </h:column>        
 	        <h:column>
 	            <h:commandButton value="Remove" action="#{editorBean.removeValue(cc.attrs.widget.variableName, value)}" rendred="#{cc.attrs.widget.minOccurs lt cc.attrs.widget.values.size()}">
-	                <f:ajax execute="@form" render="@form" />
+	                <f:ajax execute="@this" render="@form" />
 	            </h:commandButton>     
 	        </h:column>
         
