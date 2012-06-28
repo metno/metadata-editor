@@ -9,6 +9,9 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class EditorVariable {
+    
+    public final static String DEFAULT_RESOURCE = "default";
+    
     private Map<String, URI> resources = new HashMap<String, URI>();
     private Map<String, String> attrsXPath = new HashMap<String, String>();
     private String documentXPath = null;
@@ -55,6 +58,35 @@ public class EditorVariable {
 
     public void addResource(String name, URI uri) {
         resources.put(name, uri);
+    }
+    
+    /**
+     * Fetch a list of values from an associated resource.
+     * @param name The given to the name of the resource when it was added. 
+     * @return A list of values from the resource.
+     */
+    public List<String> getResourceValues(String name){
+    
+        if(!(resources.containsKey(name))){
+            throw new IllegalArgumentException(name + " is not a valid resource name");
+        }
+        
+        List<String> values = new ArrayList<String>();
+        values.add("Africa");
+        values.add("Europa");
+        values.add("North America");
+        values.add("y_wind");
+        
+        return values;
+        
+    }
+    
+    /**
+     * Fetch the resource values for the default resource.
+     * @return A list of values from the default resource.
+     */
+    public List<String> getDefaultResourceValues(){
+        return getResourceValues(DEFAULT_RESOURCE);
     }
 
     /**

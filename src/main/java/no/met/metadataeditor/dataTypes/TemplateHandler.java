@@ -66,7 +66,7 @@ class TemplateHandler extends DefaultHandler {
             } catch (URISyntaxException e) {
                 throw new SAXNotRecognizedException(e.toString());
             }
-            ev.addResource("default", uri);
+            ev.addResource(EditorVariable.DEFAULT_RESOURCE, uri);
         }
 
         return atts.getValue("varName");
