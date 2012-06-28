@@ -28,7 +28,7 @@ public class EditorConfigurationFactory {
         
         EditorConfiguration ec = new EditorConfiguration();
         
-        EditorWidget ew1 = new StringWidget("PIName", "PIName");
+        EditorWidget ew1 = new StringWidget("PIName", "PIname");
         ec.addWidget(ew1);
 
         EditorWidget ew2 = new StringWidget("Contact", "contact");
@@ -36,7 +36,7 @@ public class EditorConfigurationFactory {
         
         EditorWidget ew3 = new ListWidget("Keywords", "variableList");
         ec.addWidget(ew3);
-        
+      
         EditorWidget ew4 = new LatLonBoundingBoxWidget("Bounding box", "localBB");
         ec.addWidget(ew4);
 
@@ -45,7 +45,10 @@ public class EditorConfigurationFactory {
 
         EditorWidget ew6 = new UriWidget("Data ref", "dataRef");
         ec.addWidget(ew6);        
-                
+
+        EditorWidget ew7 = new ListWidget("Topic category", "topicCategory");
+        ec.addWidget(ew7);                
+        
         
         return ec;
     }
