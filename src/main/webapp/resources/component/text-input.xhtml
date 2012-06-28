@@ -7,12 +7,17 @@
       xmlns:metaedit="http://java.sun.com/jsf/composite/component">
 
     <composite:interface>
-        <composite:valueHolder name="widget" type="no.met.metaedit.TextInputWidget" />
+        <composite:valueHolder name="widget" type="no.met.metaedit.TextInput" />
     </composite:interface>
 
     <composite:implementation>
 
-        <input type="text" name="#{cc.attrs.widget.widgetId}__0__value" id="#{cc.attrs.widget.widgetId}__0__value" />
+        <label for="#{cc.attrs.widget.variableName}__0__value">#{cc.attrs.widget.label}</label>
+        <input type="text" name="#{cc.attrs.widget.variableName}__0__value" 
+                id="#{cc.attrs.widget.variableName}__0__value" 
+                value="#{cc.attrs.widget.values[0]['str']}"
+                />
+        <br />
 
     </composite:implementation>
 </html>

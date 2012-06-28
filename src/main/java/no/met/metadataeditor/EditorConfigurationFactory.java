@@ -2,6 +2,10 @@ package no.met.metadataeditor;
 
 import java.io.File;
 
+import no.met.metadataeditor.widget.LatLonBoundingBox;
+import no.met.metadataeditor.widget.TextInput;
+import no.met.metadataeditor.widget.TextInputMulti;
+
 
 /**
  * Factory used to create new EditorConfiguration objects. 
@@ -22,14 +26,17 @@ public class EditorConfigurationFactory {
         
         EditorConfiguration ec = new EditorConfiguration();
         
-        EditorWidget ew1 = new EditorWidget("PIName", "TextInput");
+        EditorWidget ew1 = new TextInput("PIName", "PIName");
         ec.addWidget(ew1);
 
-        EditorWidget ew2 = new EditorWidget("contact", "TextInput");
+        EditorWidget ew2 = new TextInput("Contact", "contact");
         ec.addWidget(ew2);
         
-        EditorWidget ew3 = new EditorWidget("variableList", "TextInputMulti");
+        EditorWidget ew3 = new TextInputMulti("Keywords", "variableList");
         ec.addWidget(ew3);
+        
+        EditorWidget ew4 = new LatLonBoundingBox("Bounding box", "localBB");
+        ec.addWidget(ew4);
         
         return ec;
     }

@@ -1,45 +1,40 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:metaedit="http://java.sun.com/jsf/composite/component">
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:metaedit="http://java.sun.com/jsf/composite/component">
 
 <h:head>
-	<base
-		href="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.requestContextPath}/" />
-	<title>Metadata editor</title>
-    <h:outputScript name="jquery.js" library="javascript" />	
-    <h:outputScript name="class.js" library="javascript" />
-    <h:outputScript name="widget.js" library="javascript" />
-    <h:outputScript name="text-input.js" library="javascript" />
-    <h:outputScript name="text-input-multi.js" library="javascript" />
-	<h:outputScript name="metadataeditor.js" library="javascript" />
-	
-	<script type="text/javascript">
-	
-	jQuery(document).ready(function(){
-		
-		editor.init();
-		
-	});
-	
-	</script>
+    <base
+        href="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.requestContextPath}/" />
+    <title>Metadata editor</title>
 </h:head>
 
 <body>
 
-	<h2>Editor</h2>
+    <f:metadata>
+        <f:viewParam name="record" value="#{editorBean.recordIdentifier}" />
+        <f:event type="preRenderView" listener="#{editorBean.populate}" />
+     </f:metadata>
 
-	<ui:repeat var="widget"
-		value="#{editorBean.editorConfiguration.widgets}">
+    <h2>Editor</h2>
 
-        <div class="widgetContainer" id="#{widget.variableName}" data-widgettype="#{widget.widgetType}"></div>
+    <h:form name="metadataeditor">
+    <ui:repeat var="widget"
+        value="#{editorBean.editorConfiguration.widgets}">
 
-	</ui:repeat>
+        <metaedit:text-input widget="#{widget}" rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.TextInput'}" />
+        <metaedit:text-input-multi widget="#{widget}" rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.TextInputMulti'}" />
+        <metaedit:lat-lon-bounding-box widget="#{widget}" rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.LatLonBoundingBox'}" />
+
+    </ui:repeat>
 
     <button type="button" onclick="editor.save()">Save</button>
-
+    <button type="button" onclick="editor.reset()">Reset</button>
+    </h:form>
+    
+    
 </body>
 
 </html>
