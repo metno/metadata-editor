@@ -5,11 +5,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import no.met.metadataeditor.dataTypes.EditorTemplate;
 import no.met.metadataeditor.dataTypes.EditorTemplateFactory;
 import no.met.metadataeditor.dataTypes.EditorVariable;
-import no.met.metadataeditor.service.DataAccess;
+
 
 
 /**
@@ -22,6 +23,9 @@ public class EditorConfiguration implements Serializable {
      */
     private static final long serialVersionUID = -6228315858621721527L;
 
+    private static final Logger logger = Logger.getLogger(EditorConfiguration.class.getName());
+    
+    // list of widgets. Used to keep the order of the widgets as in the configuration
     private List<EditorWidget> widgets;
     
     private Map<String,EditorWidget> widgetMap;
@@ -63,7 +67,21 @@ public class EditorConfiguration implements Serializable {
             }
         }
         
-        return false;
+        return allPopulated();
+    }
+    
+    private boolean allPopulated(){
+        
+        List<String> notPopulated = new ArrayList<String>();
+        for(Map.Entry<String,EditorWidget> entry : widgetMap.entrySet() ){
+            
+            if(!entry.getValue().isPopulated()){
+                logger.warning("EditorWidget '" + entry.getKey() + "' has not been populated" );
+                notPopulated.add(entry.getKey());
+            }
+        }
+        
+        return notPopulated.isEmpty() ? true : false; 
     }
 
     public void save(String identifier) {
