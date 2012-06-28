@@ -22,28 +22,14 @@ public class LatLonBoundingBox extends EditorWidget {
     }
 
     @Override
-    public void populate(EditorVariable variable) {
-
-        EditorVariableContent content = variable.getContent().get(0);
-        DataAttributes attrs = content.getAttrs();
-        
-        Map<String,String> value = new HashMap<String,String>();
-        value.put("south", attrs.getAttribute("south"));
-        value.put("north", attrs.getAttribute("south"));
-        value.put("west", attrs.getAttribute("south"));
-        value.put("east", attrs.getAttribute("south"));
-        addValue(value);
-    }
-    
-    public void addNewValue(){
+    public Map<String,String> getDefaultValue() {
         
         Map<String,String> value = new HashMap<String,String>();
         value.put("south", "0.0");
         value.put("north", "0.0");
         value.put("west", "0.0");
         value.put("east", "0.0");
-        addValue(value);          
-        
+        return value;
     }
-
+        
 }

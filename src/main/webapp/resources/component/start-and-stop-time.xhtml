@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:metaedit="http://java.sun.com/jsf/composite/component">
+
+    <composite:interface>
+        <composite:valueHolder name="widget" type="no.met.metaedit.TextInput" />
+    </composite:interface>
+
+    <composite:implementation>
+
+        <h:panelGroup id="startandstoptime-container" layout="block">
+        <h:outputLabel value="#{cc.attrs.widget.label}" />
+
+        <h:dataTable value="#{cc.attrs.widget.values}" var="value" id="startandstoptime">
+        
+        <h:column>
+            <h:outputLabel value="Start time" />
+        </h:column>
+        <h:column>
+            <h:inputText name="start" id="start" value="#{value['start']}" />
+        </h:column>
+
+        <h:column>
+            <h:outputLabel value="Stop time" />
+        </h:column>
+        <h:column>
+            <h:inputText name="stop" id="stop" value="#{value['stop']}" />
+        </h:column>
+        
+        <h:column>
+            <h:commandButton value="Remove" action="#{editorBean.removeValue(cc.attrs.widget.variableName, value)}">
+                <f:ajax execute="@form" render="@form" />
+            </h:commandButton>     
+        </h:column>
+        
+        </h:dataTable>
+        
+        <h:commandButton value="Add" action="#{editorBean.addValue(cc.attrs.widget.variableName)}">
+            <f:ajax execute="@this" render="startandstoptime-container" />
+        </h:commandButton>
+                
+        </h:panelGroup>
+
+    </composite:implementation>
+</html>

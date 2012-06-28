@@ -22,23 +22,10 @@ public class TextInputMulti extends EditorWidget {
     }
 
     @Override
-    public void populate(EditorVariable variable) {
-
-        for(EditorVariableContent content : variable.getContent()){
-            DataAttributes attrs = content.getAttrs(); 
-            
-            Map<String,String> value = new HashMap<String,String>();
-            value.put("listElement", attrs.getAttribute("listElement"));            
-            addValue(value);                    
-        }
-        
-    }
-    
-    public void addNewValue(){
-        
-        Map<String,String> value = new HashMap<String,String>();
-        value.put("listElement", "");            
-        addValue(value);                    
+    public Map<String, String> getDefaultValue() {
+        Map<String,String> defaultValue = new HashMap<String,String>();
+        defaultValue.put("listElement", "");    
+        return defaultValue;
     }
     
 }

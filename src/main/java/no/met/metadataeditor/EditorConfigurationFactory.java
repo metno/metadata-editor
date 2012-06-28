@@ -3,6 +3,7 @@ package no.met.metadataeditor;
 import java.io.File;
 
 import no.met.metadataeditor.widget.LatLonBoundingBox;
+import no.met.metadataeditor.widget.StartAndStopTime;
 import no.met.metadataeditor.widget.TextInput;
 import no.met.metadataeditor.widget.TextInputMulti;
 
@@ -37,6 +38,9 @@ public class EditorConfigurationFactory {
         
         EditorWidget ew4 = new LatLonBoundingBox("Bounding box", "localBB");
         ec.addWidget(ew4);
+
+        EditorWidget ew5 = new StartAndStopTime("Time extent", "timeExtend");
+        ec.addWidget(ew5);        
         
         return ec;
     }

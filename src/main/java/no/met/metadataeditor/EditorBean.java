@@ -72,7 +72,7 @@ public class EditorBean implements Serializable {
     }
     
     public void removeValue(String variableName, Map<String,String> value) {
-        
+        System.out.println("Called");
         EditorWidget ew = editorConfiguration.getWidget(variableName);
         ew.removeValue(value);
         

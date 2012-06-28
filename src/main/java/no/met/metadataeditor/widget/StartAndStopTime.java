@@ -4,25 +4,25 @@ import java.util.HashMap;
 import java.util.Map;
 
 import no.met.metadataeditor.EditorWidget;
-import no.met.metadataeditor.dataTypes.DataAttributes;
 import no.met.metadataeditor.dataTypes.EditorVariable;
-import no.met.metadataeditor.dataTypes.EditorVariableContent;
 
-public class TextInput extends EditorWidget {
+public class StartAndStopTime extends EditorWidget {
 
     /**
      * 
      */
-    private static final long serialVersionUID = -7542890498259559947L;
+    private static final long serialVersionUID = -6576841665492037629L;
 
-    public TextInput(String label, String variableName) {
+    public StartAndStopTime(String label, String variableName) {
         super(label, variableName);
     }
 
     @Override
     public Map<String, String> getDefaultValue() {
+
         Map<String,String> defaultValue = new HashMap<String,String>();
-        defaultValue.put("str", "");
+        defaultValue.put("start", "");
+        defaultValue.put("stop", "");
         return defaultValue;
     }
 
