@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.context.FacesContext;
-
 import no.met.metadataeditor.dataTypes.DataAttributes;
 import no.met.metadataeditor.dataTypes.EditorVariable;
 import no.met.metadataeditor.dataTypes.EditorVariableContent;
@@ -30,6 +28,8 @@ public abstract class EditorWidget implements Serializable {
     public final String label;
     
     private List<Map<String,String>> values;
+    
+    private EditorVariable editorVariable;
     
     public EditorWidget(String label, String variableName) {
         this.label = label;
@@ -60,6 +60,7 @@ public abstract class EditorWidget implements Serializable {
 
     public void populate(EditorVariable variable) {
         
+        editorVariable = variable;
         for(EditorVariableContent content : variable.getContent()){
             DataAttributes attrs = content.getAttrs(); 
             
@@ -94,6 +95,22 @@ public abstract class EditorWidget implements Serializable {
         return getClass().getName();
     }
 
+    public List<String> getResourceValues(){
+        return editorVariable.getDefaultResourceValues();
+    }
+    
+    public int getMaxOccurs(){
+        return editorVariable.getMaxOccurs();
+    }
+
+    public int getMinOccurs(){
+        return editorVariable.getMinOccurs();
+    }
+    
+    public boolean isPopulated(){
+        return editorVariable != null ? true : false; 
+    }
+    
     public abstract Map<String, String> getDefaultValue();
       
 }

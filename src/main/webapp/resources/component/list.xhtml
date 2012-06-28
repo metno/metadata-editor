@@ -15,19 +15,21 @@
         <h:panelGroup id="text-input-multi" layout="block">
         <h:outputLabel value="#{cc.attrs.widget.label}" />
 
-        <ui:repeat var="value" value="#{cc.attrs.widget.values}" varStatus="status">
-            <h:panelGroup id="text-input-multi-inner" layout="block">
-            <input type="text" name="#{cc.attrs.widget.variableName}__#{status.index}__value" 
-                   id="#{cc.attrs.widget.variableName}__#{status.index}__value" 
-                   value="#{value['listElement']}"
-                   />        
-            <h:commandButton value="Remove" action="#{editorBean.removeValue(cc.attrs.widget.variableName, value)}">
-                <f:ajax execute="@form" render="@form" />
-            </h:commandButton>       
-            </h:panelGroup>
-        </ui:repeat>
+        <h:dataTable value="#{cc.attrs.widget.values}" var="value" id="list">
+
+            <h:column>
+                <h:selectOneMenu value="#{value['listElement']}">
+                    <f:selectItems value="#{cc.attrs.widget.resourceValues}" />
+                </h:selectOneMenu>            
+            </h:column>
+            <h:column rendred="#{cc.attrs.widget.minOccurs lt cc.attrs.widget.values.size()}">
+	            <h:commandButton value="Remove" action="#{editorBean.removeValue(cc.attrs.widget.variableName, value)}">
+	                <f:ajax execute="@form" render="@form" />
+	            </h:commandButton>       
+            </h:column>
+        </h:dataTable>
         
-        <h:commandButton value="Add" action="#{editorBean.addValue(cc.attrs.widget.variableName)}">
+        <h:commandButton value="Add" action="#{editorBean.addValue(cc.attrs.widget.variableName)}" rendered="#{cc.attrs.widget.maxOccurs gt cc.attrs.widget.values.size()}">
             <f:ajax execute="@this" render="text-input-multi" />
         </h:commandButton>                            
         </h:panelGroup>

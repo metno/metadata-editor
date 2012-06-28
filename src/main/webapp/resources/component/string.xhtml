@@ -17,18 +17,18 @@
 
         <h:dataTable value="#{cc.attrs.widget.values}" var="value" id="string">
         
-        <h:column>
-            <h:inputText value="value['str']" />
-        </h:column>        
-        <h:column>
-            <h:commandButton value="Remove" action="#{editorBean.removeValue(cc.attrs.widget.variableName, value)}">
-                <f:ajax execute="@form" render="@form" />
-            </h:commandButton>     
-        </h:column>
+	        <h:column>
+	            <h:inputText value="value['str']" />
+	        </h:column>        
+	        <h:column>
+	            <h:commandButton value="Remove" action="#{editorBean.removeValue(cc.attrs.widget.variableName, value)}" rendred="#{cc.attrs.widget.minOccurs lt cc.attrs.widget.values.size()}">
+	                <f:ajax execute="@form" render="@form" />
+	            </h:commandButton>     
+	        </h:column>
         
         </h:dataTable>
         
-        <h:commandButton value="Add" action="#{editorBean.addValue(cc.attrs.widget.variableName)}">
+        <h:commandButton value="Add" action="#{editorBean.addValue(cc.attrs.widget.variableName)}" rendered="#{cc.attrs.widget.maxOccurs gt cc.attrs.widget.values.size()}">
             <f:ajax execute="@this" render="string-container" />
         </h:commandButton>
                 
