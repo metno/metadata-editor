@@ -1,5 +1,6 @@
 package no.met.metadataeditor.dataTypes;
 
+import java.io.Serializable;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,8 +9,10 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public class EditorVariable {
+public class EditorVariable implements Serializable {
     
+    private static final long serialVersionUID = -43000469274325594L;
+
     public final static String DEFAULT_RESOURCE = "default";
     
     private Map<String, URI> resources = new HashMap<String, URI>();
