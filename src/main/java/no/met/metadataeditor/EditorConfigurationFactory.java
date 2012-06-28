@@ -2,10 +2,10 @@ package no.met.metadataeditor;
 
 import java.io.File;
 
-import no.met.metadataeditor.widget.LatLonBoundingBox;
-import no.met.metadataeditor.widget.StartAndStopTime;
-import no.met.metadataeditor.widget.TextInput;
-import no.met.metadataeditor.widget.TextInputMulti;
+import no.met.metadataeditor.widget.LatLonBoundingBoxWidget;
+import no.met.metadataeditor.widget.StartAndStopTimeWidget;
+import no.met.metadataeditor.widget.StringWidget;
+import no.met.metadataeditor.widget.ListWidget;
 
 
 /**
@@ -27,19 +27,19 @@ public class EditorConfigurationFactory {
         
         EditorConfiguration ec = new EditorConfiguration();
         
-        EditorWidget ew1 = new TextInput("PIName", "PIName");
+        EditorWidget ew1 = new StringWidget("PIName", "PIName");
         ec.addWidget(ew1);
 
-        EditorWidget ew2 = new TextInput("Contact", "contact");
+        EditorWidget ew2 = new StringWidget("Contact", "contact");
         ec.addWidget(ew2);
         
-        EditorWidget ew3 = new TextInputMulti("Keywords", "variableList");
+        EditorWidget ew3 = new ListWidget("Keywords", "variableList");
         ec.addWidget(ew3);
         
-        EditorWidget ew4 = new LatLonBoundingBox("Bounding box", "localBB");
+        EditorWidget ew4 = new LatLonBoundingBoxWidget("Bounding box", "localBB");
         ec.addWidget(ew4);
 
-        EditorWidget ew5 = new StartAndStopTime("Time extent", "timeExtend");
+        EditorWidget ew5 = new StartAndStopTimeWidget("Time extent", "timeExtend");
         ec.addWidget(ew5);        
         
         return ec;

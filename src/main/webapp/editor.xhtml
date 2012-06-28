@@ -24,9 +24,10 @@
     <ui:repeat var="widget"
         value="#{editorBean.editorConfiguration.widgets}">
 
-        <metaedit:text-input widget="#{widget}" rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.TextInput'}" />
-        <metaedit:text-input-multi widget="#{widget}" rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.TextInputMulti'}" />
-        <metaedit:lat-lon-bounding-box widget="#{widget}" rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.LatLonBoundingBox'}" />
+        <metaedit:string widget="#{widget}" rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.StringWidget'}" />
+        <metaedit:list widget="#{widget}" rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.ListWidget'}" />
+        <metaedit:lat-lon-bounding-box widget="#{widget}" rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.LatLonBoundingBoxWidget'}" />
+        <metaedit:start-and-stop-time widget="#{widget}" rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.StartAndStopTimeWidget'}" />        
 
     </ui:repeat>
 

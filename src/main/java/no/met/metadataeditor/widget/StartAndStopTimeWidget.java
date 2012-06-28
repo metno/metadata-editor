@@ -6,14 +6,14 @@ import java.util.Map;
 import no.met.metadataeditor.EditorWidget;
 import no.met.metadataeditor.dataTypes.EditorVariable;
 
-public class StartAndStopTime extends EditorWidget {
+public class StartAndStopTimeWidget extends EditorWidget {
 
     /**
      * 
      */
     private static final long serialVersionUID = -6576841665492037629L;
 
-    public StartAndStopTime(String label, String variableName) {
+    public StartAndStopTimeWidget(String label, String variableName) {
         super(label, variableName);
     }
 

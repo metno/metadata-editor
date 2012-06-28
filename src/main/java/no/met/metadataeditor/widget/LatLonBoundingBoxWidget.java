@@ -9,7 +9,7 @@ import no.met.metadataeditor.dataTypes.EditorVariable;
 import no.met.metadataeditor.dataTypes.EditorVariableContent;
 
 
-public class LatLonBoundingBox extends EditorWidget {
+public class LatLonBoundingBoxWidget extends EditorWidget {
 
     
     /**
@@ -17,7 +17,7 @@ public class LatLonBoundingBox extends EditorWidget {
      */
     private static final long serialVersionUID = 8770219744361367595L;
 
-    public LatLonBoundingBox(String label, String variableName) {
+    public LatLonBoundingBoxWidget(String label, String variableName) {
         super(label, variableName);
     }
 
