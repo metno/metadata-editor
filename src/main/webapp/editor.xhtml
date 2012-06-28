@@ -5,21 +5,22 @@
     xmlns:f="http://java.sun.com/jsf/core"
     xmlns:metaedit="http://java.sun.com/jsf/composite/component">
 
+<f:metadata>
+    <f:viewParam name="record" value="#{editorBean.recordIdentifier}" />
+    <f:event type="preRenderView" listener="#{editorBean.populate}" />
+ </f:metadata>
+
+
 <h:head>
     <base
         href="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.requestContextPath}/" />
     <title>Metadata editor</title>
 </h:head>
 
-<body>
-
-    <f:metadata>
-        <f:viewParam name="record" value="#{editorBean.recordIdentifier}" />
-        <f:event type="preRenderView" listener="#{editorBean.populate}" />
-     </f:metadata>
+<h:body>
 
     <h2>Editor</h2>
-
+    
     <h:form name="metadataeditor">
     <ui:repeat var="widget"
         value="#{editorBean.editorConfiguration.widgets}">
@@ -36,7 +37,6 @@
     <button type="button" onclick="editor.reset()">Reset</button>
     </h:form>
     
-    
-</body>
+</h:body>
 
 </html>
