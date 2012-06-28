@@ -7,6 +7,7 @@
   <version>1.0-SNAPSHOT</version>
   <name>metadataeditor Maven Webapp</name>
   <url>http://maven.apache.org</url>
+  
   <dependencies>
 	<dependency>
 	   <groupId>javax.servlet</groupId>
@@ -18,18 +19,8 @@
 	   <groupId>org.apache.commons</groupId>
 	   <artifactId>commons-lang3</artifactId>
 	   <version>3.1</version>
-	</dependency>
-    <dependency>
-        <groupId>com.sun.faces</groupId>
-        <artifactId>jsf-impl</artifactId>
-        <version>2.1.6</version>
-        <scope>runtime</scope>
-    </dependency>   
-    <dependency>
-        <groupId>com.sun.faces</groupId>
-        <artifactId>jsf-api</artifactId>
-        <version>2.1.6</version>
-    </dependency>    
+	</dependency>   
+
 	<dependency>
 	    <groupId>javax.servlet</groupId>
 	    <artifactId>jstl</artifactId>
@@ -76,8 +67,32 @@
       <version>4.10</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+    	<groupId>org.apache.myfaces.core</groupId>
+    	<artifactId>myfaces-impl</artifactId>
+    	<version>2.1.5</version>
+        <scope>compile</scope>    	
+    </dependency>
+    <dependency>
+        <groupId>org.apache.myfaces.core</groupId>
+        <artifactId>myfaces-api</artifactId>
+        <version>2.1.5</version>
+        <scope>compile</scope>
+    </dependency>    
   </dependencies>
   <build>
     <finalName>metadataeditor</finalName>
-  </build>
+    <plugins>
+        <plugin>
+            <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+    </plugins>
+  </build>  
+    
+  
 </project>
