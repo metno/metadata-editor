@@ -2,8 +2,6 @@ package no.met.metadataeditor.dataTypes;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,11 +56,7 @@ public abstract class DataAttributes implements Serializable {
      * add a attributes value by a string
      * @param string
      * @param value
-     * @throws AttributesMismatchException if attr does not exists or value
-     *         does not deserialize to the DataType
      */
-    //public abstract void addAttribute(String attr, String value) throws AttributesMismatchException;
-
     public void addAttribute(String attr, String value){
         addAttribute(attr, value, getClass());
     }
@@ -108,7 +102,6 @@ public abstract class DataAttributes implements Serializable {
         String value = null;
         boolean isFetched = false;
         try {
-            String fieldname, methodName;
             for (Field f : inClass.getDeclaredFields()) {
 
                 if (!f.getName().equals(attribute)) {
@@ -116,13 +109,6 @@ public abstract class DataAttributes implements Serializable {
                 }
 
                 if (f.isAnnotationPresent(IsAttribute.class)) {
-
-//                    // make first letter uppercase
-//                    fieldname = f.getName().substring(0, 1).toUpperCase() + f.getName().substring(1);
-//                    methodName = "get" + fieldname;
-//
-//                    Method getter = this.getClass().getMethod(methodName);
-//                    value = "" + getter.invoke(this);
                     value = "" + f.get(this);
                     if (value.trim().equalsIgnoreCase("null"))
                         value = "";
