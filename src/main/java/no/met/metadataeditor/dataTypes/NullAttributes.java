@@ -6,7 +6,4 @@ public class NullAttributes extends DataAttributes {
         return new NullAttributes();
     }
 
-    public void addAttribute(String attr, String value) throws AttributesMismatchException {
-        throw new AttributesMismatchException("no attributes allowed");
-    }
 }

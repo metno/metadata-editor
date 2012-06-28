@@ -15,15 +15,4 @@ public class StringAttributes extends DataAttributes {
         return new StringAttributes();
     }
 
-    public void addAttribute(String attr, String value) throws AttributesMismatchException {
-        if ("str".equals(attr)) {
-            str = value;
-        } else {
-            throw new AttributesMismatchException(String.format("Attr %s != str", attr));
-        }
-    }
-
-    public String getStr() {
-        return str;
-    }
 }

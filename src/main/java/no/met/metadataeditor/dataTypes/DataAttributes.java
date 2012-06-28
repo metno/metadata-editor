@@ -58,8 +58,43 @@ public abstract class DataAttributes {
      * @throws AttributesMismatchException if attr does not exists or value
      *         does not deserialize to the DataType
      */
-    public abstract void addAttribute(String attr, String value) throws AttributesMismatchException;
+    //public abstract void addAttribute(String attr, String value) throws AttributesMismatchException;
+
+    public void addAttribute(String attr, String value){
+        addAttribute(attr, value, getClass());
+    }
     
+    private void addAttribute(String attr, String value, Class<? extends Object> inClass){
+
+        boolean isSet = false;
+        try {
+            for (Field f : inClass.getDeclaredFields()) {
+
+                if (!f.getName().equals(attr)) {
+                    continue;
+                }
+
+                if (f.isAnnotationPresent(IsAttribute.class)) {
+                    f.set(this, value);
+                    isSet = true;
+                }
+            }
+
+            // attribute might be declared in super class so call this function recursively on the super
+            // class
+            if( !isSet && inClass.getSuperclass() != null ){
+                addAttribute(attr, value, inClass.getSuperclass());
+            }
+
+        } catch (IllegalAccessException e) {
+            System.out.println("Illegal to access the get method of the property: " + e.getMessage());
+
+        } catch (SecurityException e) {
+            System.out.println("Security problem to access the get method of the property: " + e.getMessage());
+
+        }         
+        
+    }
     
     public String getAttribute(String attr) {        
         return getAttribute(attr,getClass());                
@@ -79,12 +114,13 @@ public abstract class DataAttributes {
 
                 if (f.isAnnotationPresent(IsAttribute.class)) {
 
-                    // make first letter uppercase
-                    fieldname = f.getName().substring(0, 1).toUpperCase() + f.getName().substring(1);
-                    methodName = "get" + fieldname;
-
-                    Method getter = this.getClass().getMethod(methodName);
-                    value = "" + getter.invoke(this);
+//                    // make first letter uppercase
+//                    fieldname = f.getName().substring(0, 1).toUpperCase() + f.getName().substring(1);
+//                    methodName = "get" + fieldname;
+//
+//                    Method getter = this.getClass().getMethod(methodName);
+//                    value = "" + getter.invoke(this);
+                    value = "" + f.get(this);
                     if (value.trim().equalsIgnoreCase("null"))
                         value = "";
 
@@ -105,11 +141,6 @@ public abstract class DataAttributes {
         } catch (SecurityException e) {
             System.out.println("Security problem to access the get method of the property: " + e.getMessage());
 
-        } catch (NoSuchMethodException e) {
-            System.out.println("No such get method is defined for the property: " + e.getMessage());
-
-        } catch (InvocationTargetException e) {
-            System.out.println("Invocation targe problem when call get method for the property: " + e.getMessage());
         }
         return value;        
         
