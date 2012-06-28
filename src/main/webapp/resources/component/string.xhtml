@@ -12,12 +12,27 @@
 
     <composite:implementation>
 
-        <label for="#{cc.attrs.widget.variableName}__0__value">#{cc.attrs.widget.label}</label>
-        <input type="text" name="#{cc.attrs.widget.variableName}__0__value" 
-                id="#{cc.attrs.widget.variableName}__0__value" 
-                value="#{cc.attrs.widget.values[0]['str']}"
-                />
-        <br />
+       <h:panelGroup id="string-container" layout="block">
+        <h:outputLabel value="#{cc.attrs.widget.label}" />
+
+        <h:dataTable value="#{cc.attrs.widget.values}" var="value" id="string">
+        
+        <h:column>
+            <h:inputText value="value['str']" />
+        </h:column>        
+        <h:column>
+            <h:commandButton value="Remove" action="#{editorBean.removeValue(cc.attrs.widget.variableName, value)}">
+                <f:ajax execute="@form" render="@form" />
+            </h:commandButton>     
+        </h:column>
+        
+        </h:dataTable>
+        
+        <h:commandButton value="Add" action="#{editorBean.addValue(cc.attrs.widget.variableName)}">
+            <f:ajax execute="@this" render="string-container" />
+        </h:commandButton>
+                
+        </h:panelGroup>
 
     </composite:implementation>
 </html>
