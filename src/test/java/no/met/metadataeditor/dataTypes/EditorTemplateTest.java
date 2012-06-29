@@ -19,22 +19,9 @@ import org.xml.sax.SAXException;
 public class EditorTemplateTest {
 
     @Test
-    public void testTemplateParsing() {
+    public void testVariableNames() {
 
-        URL url = getClass().getResource("/mm2TemplateTest.xml");
-        Map<String, EditorVariable> mse = null;
-        EditorTemplate et = null;
-        try {
-            et = new EditorTemplate(new InputSource(url.openStream()));
-            mse = et.getTemplate();
-            assertNotNull(mse);
-        } catch (SAXException e) {
-            e.printStackTrace();
-            fail();
-        } catch (IOException e) {
-            e.printStackTrace();
-            fail();
-        }
+        Map<String, EditorVariable> mse = getVariables("/mm2TemplateTest.xml");
 
         List<String> expectedVarNames = Arrays.asList(new String[] { "wmsSetup", "globalBB", "localBB", "variableList",
                 "PIname", "timeExtend", "dataRef" });
@@ -44,31 +31,26 @@ public class EditorTemplateTest {
         for (String varName : expectedVarNames) {
             assertEquals("Variable call '" + varName + "' found", true, mse.containsKey(varName));
         }
-        
-        EditorVariable wmsSetup = mse.get("wmsSetup");
-        
-        assertEquals("Explicit min occurs", 0, wmsSetup.getMinOccurs());
-        assertEquals("Explicit max occurs", 1, wmsSetup.getMaxOccurs());
-        
-        Map<String,EditorVariable> wmsSetupChildren = wmsSetup.getChildren();
-        assertEquals("Correct number of children for wmsSetup", 2, wmsSetupChildren.size());
                 
-        assertEquals("wmsSetup has firstDisplayLayer as child", true, wmsSetupChildren.containsKey("firstDisplayLayer"));
+    }
+    
+    @Test
+    public void testChildren() {
         
-        EditorVariable firstDisplayLayer = wmsSetupChildren.get("firstDisplayLayer");
-        assertEquals("Explicit min occurs in child", 1, firstDisplayLayer.getMinOccurs());
-        assertEquals("Explicit max occurs in child", 1, firstDisplayLayer.getMaxOccurs());
+        Map<String, EditorVariable> mse = getVariables("/testChildren/basic.xml");        
+
+        EditorVariable parent = mse.get("parent");
+        Map<String,EditorVariable> children = parent.getChildren();
         
-        EditorVariable localBB = mse.get("localBB");
-        assertEquals("unbounded gives expected value", Integer.MAX_VALUE, localBB.getMaxOccurs());
-        
-        EditorVariable variableList = mse.get("variableList");
-        try {
-            assertEquals("resource added correctly", variableList.getResources().get(EditorVariable.DEFAULT_RESOURCE), new URI("keywords.txt"));
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-            fail();
-        }
+        assertEquals("Correct number of children", 2, children.size());
+        assertEquals("Name of first child", true, children.containsKey("child1"));
+        assertEquals("Name of second child", true, children.containsKey("child2"));
+
+        EditorVariable child2 = children.get("child2");
+        Map<String,EditorVariable> grandChildren = child2.getChildren();        
+
+        assertEquals("Correct number of children", 1, grandChildren.size());
+        assertEquals("Name of grandchild", true, grandChildren.containsKey("grandchild"));
         
     }
     
