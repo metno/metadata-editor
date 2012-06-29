@@ -18,11 +18,11 @@ public abstract class DataAttributes implements Serializable {
     private static final long serialVersionUID = -4182840533404059153L;
 
     @JsonIgnore
-    public Map<String, DataType> getFields(){
-        return getFields(getClass());
+    public Map<String, DataType> getAttributesSetup(){
+        return getAttributesSetup(getClass());
     }
     
-    private Map<String, DataType> getFields(Class<? extends Object> inClass){
+    private Map<String, DataType> getAttributesSetup(Class<? extends Object> inClass){
         
         Map<String, DataType> fields = new HashMap<String,DataType>();
         for (Field f : inClass.getDeclaredFields()) {
@@ -38,7 +38,7 @@ public abstract class DataAttributes implements Serializable {
         // attribute might be declared in super class so call this function recursively on the super
         // class
         if( inClass.getSuperclass() != null ){
-            Map<String,DataType> superFields = getFields(inClass.getSuperclass());
+            Map<String,DataType> superFields = getAttributesSetup(inClass.getSuperclass());
             fields.putAll(superFields);
         }
         
@@ -58,6 +58,12 @@ public abstract class DataAttributes implements Serializable {
      * @param value
      */
     public void addAttribute(String attr, String value){
+        
+        Map<String,DataType> attributes = getAttributesSetup();        
+        if(!(attributes.containsKey(attr))){
+            throw new AttributesMismatchException(attr + " is not a valid attribute for " + getClass().getName());
+        }        
+        
         addAttribute(attr, value, getClass());
     }
     
@@ -94,6 +100,13 @@ public abstract class DataAttributes implements Serializable {
     }
     
     public String getAttribute(String attr) {        
+        
+        Map<String,DataType> attributes = getAttributesSetup();
+        
+        if(!(attributes.containsKey(attr))){
+            throw new AttributesMismatchException(attr + " is not a valid attribute for " + getClass().getName());
+        }
+        
         return getAttribute(attr,getClass());                
     }
     
@@ -131,6 +144,7 @@ public abstract class DataAttributes implements Serializable {
             System.out.println("Security problem to access the get method of the property: " + e.getMessage());
 
         }
+        
         return value;        
         
     }

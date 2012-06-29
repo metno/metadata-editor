@@ -141,7 +141,7 @@ public class EditorVariable implements Serializable {
     }
 
     public Map<String, DataType> getAttrsType() {
-        return getDataAttributes().getFields();
+        return getDataAttributes().getAttributesSetup();
     }
 
     public Map<String, EditorVariable> getChildren() {
