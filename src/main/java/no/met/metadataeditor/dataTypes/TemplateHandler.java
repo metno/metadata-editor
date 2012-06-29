@@ -44,20 +44,9 @@ class TemplateHandler extends DefaultHandler {
     }
 
     private static String variableAddAttributes(EditorVariable ev, Attributes atts) throws SAXException {
-        String maxOccurs = atts.getValue("maxOccurs");
-        if (maxOccurs == null) {
-            ev.setMaxOccurs(1);
-        }else if ("unbounded".equals(maxOccurs)) {
-            ev.setMaxOccurs(Integer.MAX_VALUE);
-        } else {
-            ev.setMaxOccurs(Integer.parseInt(maxOccurs));
-        }
-        String minOccurs = atts.getValue("minOccurs");
-        if (minOccurs == null) {
-            ev.setMinOccurs(1);
-        } else {
-            ev.setMinOccurs(Integer.parseInt(minOccurs));
-        }
+        ev.setMaxOccurs(getMaxOccurs(atts));
+        ev.setMinOccurs(getMinOccurs(atts));
+
         String res = atts.getValue("resource");
         if (res != null) {
             URI uri;
@@ -70,6 +59,56 @@ class TemplateHandler extends DefaultHandler {
         }
 
         return atts.getValue("varName");
+    }
+    
+    private static int getMinOccurs(Attributes atts){
+        
+        String minOccurs = atts.getValue("minOccurs");
+        
+        if(null == minOccurs){
+            return 1;
+        }
+        
+        if(0 == minOccurs.length()){
+            throw new InvalidTemplateException("minOccurs was an empty string by needs to be a number.");
+        }
+        
+        int minValue;
+        try {
+            minValue = Integer.parseInt(minOccurs);
+        } catch(NumberFormatException e){
+            throw new InvalidTemplateException(e.getMessage());
+        }
+        
+        if( minValue < 0 ){
+            throw new InvalidTemplateException("minOccurs needs to 0 or larger");
+        }
+        
+        return minValue;
+    }
+    
+    private static int getMaxOccurs(Attributes atts){
+
+        String maxOccurs = atts.getValue("maxOccurs");
+        if (maxOccurs == null) {
+            return 1;
+        }else if ("unbounded".equals(maxOccurs)) {
+            return Integer.MAX_VALUE;
+        } else {
+            
+            int maxValue;
+            try {
+                maxValue = Integer.parseInt(maxOccurs);
+            } catch(NumberFormatException e){
+                throw new InvalidTemplateException(e.getMessage());
+            }
+            
+            if( maxValue < 1 ){
+                throw new InvalidTemplateException("maxOccurs needs to be larger than 0");
+            }
+            
+            return maxValue;
+        }                
     }
 
     private void addStandardEDT(DataAttributes da, String nsUri, String lName, Attributes atts) throws SAXException {
