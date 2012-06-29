@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<edt:editorDataTypes xmlns:edt="http://www.met.no/schema/metadataeditor/editorDataTypes"
+                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:schemaLocation="http://www.met.no/schema/metadataeditor/editorDataTypes dataTypes.xsd">
+<mmc:mmCombined xmlns:mmc="http://www.met.no/schema/metamod/mmCombined">
+<dataset xmlns="http://www.met.no/schema/metamod/dataset"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://www.met.no/schema/metamod/dataset https://wiki.met.no/_media/metamod/dataset.xsd">
+  <info name="ADC/proffdefault4km" status="active" creationDate="2012-04-18T12:51:22Z" datestamp="2012-04-19T12:59:34Z" ownertag="ADC" metadataFormat="MM2"/>
+</dataset>
+
+<mmc:metadata>
+
+<MM2 xmlns="http://www.met.no/schema/metamod/MM2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.met.no/schema/metamod/MM2 https://wiki.met.no/_media/metamod/mm2.xsd">
+
+<edt:lonLatBoundingBox varName="minOccurs" minOccurs="unbounded">
+<metadata name="bounding_box">$east,$south,$west,$north</metadata>
+</edt:lonLatBoundingBox>
+</MM2>
+
+</mmc:metadata>
+</mmc:mmCombined>
+</edt:editorDataTypes>
