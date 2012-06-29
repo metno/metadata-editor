@@ -1,14 +1,10 @@
 package no.met.metadataeditor.dataTypes;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
