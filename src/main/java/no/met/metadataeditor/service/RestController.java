@@ -66,13 +66,10 @@ public class RestController {
             URL xmlUrl = getClass().getResource("/defaultConfig/exampleMM2.xml");
             try {
                 EditorTemplate et = new EditorTemplate(new InputSource(url.openStream()));
-                et.addData(new InputSource(xmlUrl.openStream()));
                 varMap = et.getTemplate();
             } catch (SAXException e) {
                 e.printStackTrace();
             } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ParserConfigurationException e) {
                 e.printStackTrace();
             }
         } 

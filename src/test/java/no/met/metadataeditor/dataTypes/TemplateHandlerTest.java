@@ -35,7 +35,7 @@ public class TemplateHandlerTest {
 
         URL xmlUrl = getClass().getResource("/exampleMM2.xml");
         try {
-            et.addData(new InputSource(xmlUrl.openStream()));
+            et.getContent(new InputSource(xmlUrl.openStream()));
         } catch (ParserConfigurationException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
