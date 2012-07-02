@@ -39,18 +39,6 @@
 <edt:list varName="variableList" minOccurs="0" maxOccurs="unbounded" resource="keywords.txt">
 <metadata name="variable">$listElement</metadata>
 </edt:list>
-<edt:list varName="areaList" minOccurs="0" maxOccurs="unbounded" resource="area.txt">
-<metadata name="area">$listElement</metadata>
-</edt:list>
-<edt:list varName="topicCategory" minOccurs="1" maxOccurs="1" resource="topics.txt">
-<metadata name="topiccategory">$listElement</metadata>
-</edt:list>
-<edt:list varName="operationalStatus" minOccurs="1" maxOccurs="1" resource="opStatus.txt">
-<metadata name="operational_status">$listElement</metadata>
-</edt:list>
-<edt:string varName="contact" minOccurs="0" maxOccurs="1">
-<metadata name="contact">$string</metadata>
-</edt:string>
 <edt:string varName="PIname" minOccurs="0" maxOccurs="1">
 <metadata name="PI_name">$string</metadata>
 </edt:string>
