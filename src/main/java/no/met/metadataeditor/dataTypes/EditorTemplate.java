@@ -134,6 +134,74 @@ public class EditorTemplate {
         // retrieve the information for the EditorVariables
         readEditorVariables(xpath, "", doc, getTemplate());
     }
+    
+    public Map<String,List<EditorVariableContent>> getContent(InputSource xmlData) throws ParserConfigurationException, SAXException, IOException {
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        dbf.setNamespaceAware(true);
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        Document doc = db.parse(xmlData);
+        XPathFactory xpathFact = XPathFactory.newInstance();
+        XPath xpath = xpathFact.newXPath();
+        xpath.setNamespaceContext(getTemplateContext());
+
+        // retrieve the information for the EditorVariables
+        return readEditorContent(xpath, "", doc, getTemplate());
+    }   
+    
+    /**
+     * recursively read the information in the xml-file, starting at the top-node
+     *
+     * @param xpath xpath with correct namespace-context
+     * @param nodeXpath the elements will be searched for below the current element
+     * @param node the node below the Editorvariables should be searched
+     * @param vars a map of editorVariables
+     */
+    private Map<String, List<EditorVariableContent>> readEditorContent(XPath xpath, String nodePath, Node node, Map<String, EditorVariable> vars) {
+        
+        Map<String,List<EditorVariableContent>> content = new HashMap<String,List<EditorVariableContent>>();
+        for (String varName : vars.keySet()) {
+            List<EditorVariableContent> contentList = new ArrayList<EditorVariableContent>();
+            content.put(varName, contentList);
+            
+            EditorVariable ev = vars.get(varName);
+            String evPath = ev.getDocumentXPath().substring(nodePath.length());
+            try {
+                Logger.getLogger(EditorTemplate.class).fine(String.format("EditorVariable %s with path %s and local path %s", varName, ev.getDocumentXPath(), evPath));
+                XPathExpression expr =  xpath.compile(evPath);
+                NodeList evSubnodes = (NodeList) expr.evaluate(node, XPathConstants.NODESET);
+                for (int i = 0; i < evSubnodes.getLength(); ++i) {
+                    DataAttributes da = ev.getDataAttributes().newInstance();
+                    Node subNode = evSubnodes.item(i);
+                    // set the attributes
+                    Map<String, String> attXpath = ev.getAttrsXPath();
+                    for (String att : attXpath.keySet()) {
+                        String relAttPath = attXpath.get(att).substring(ev.getDocumentXPath().length());
+                        Logger.getLogger(EditorTemplate.class).fine(String.format("searching attr %s in %s", att, relAttPath));
+                        if (relAttPath.startsWith("/")) {
+                            // remove leading / in e.g. /text()
+                            relAttPath = relAttPath.substring(1);
+                        }
+                        XPathExpression attExpr = xpath.compile(relAttPath);
+                        String attVal = attExpr.evaluate(subNode);
+                        Logger.getLogger(EditorTemplate.class).fine(String.format("%s + value = %s", relAttPath, attVal));
+                        da.addAttribute(att, attVal);
+                    }
+                    EditorVariableContent evc = new EditorVariableContent();
+                    evc.setAttrs(da);
+                    //evc.setChildren(ev.getChildren());
+                    //ev.addContent(evc);
+                    contentList.add(evc);
+                    // and fill the children
+                    readEditorContent(xpath, ev.getDocumentXPath(), subNode, ev.getChildren());
+                }
+            } catch (XPathExpressionException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        return content;
+    }    
+    
 
     public Map<String, EditorVariable> getTemplate() {
         return template;

@@ -8,12 +8,42 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.junit.Test;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 public class EditorTemplateTest {
 
+    @Test 
+    public void testSingleValueContent() {
+        
+        Map<String,List<EditorVariableContent>> content = getContent("/testContent/singleVarTemplate.xml", "/testContent/singleValueContent.xml");
+        
+        assertEquals("Content for variable found", true, content.containsKey("keyword"));
+        
+        List<EditorVariableContent> evc = content.get("keyword");
+        
+        assertEquals("Only a single value for attribute", 1, evc.size());        
+        assertEquals("Value for content ok", "arctic", evc.get(0).getAttrs().getAttribute("str"));
+    }
+
+    @Test 
+    public void testMultiValueContent() {
+        
+        Map<String,List<EditorVariableContent>> content = getContent("/testContent/singleVarTemplate.xml", "/testContent/multiValueContent.xml");
+        
+        assertEquals("Content for variable found", true, content.containsKey("keyword"));
+        
+        List<EditorVariableContent> evc = content.get("keyword");
+        
+        assertEquals("Two values for attribute", 2, evc.size());        
+        assertEquals("Value for content ok", "arctic", evc.get(0).getAttrs().getAttribute("str"));
+        assertEquals("Value for content ok", "sea ice", evc.get(1).getAttrs().getAttribute("str"));        
+    }
+    
+    
     @Test
     public void testVariableNames() {
 
@@ -126,7 +156,7 @@ public class EditorTemplateTest {
     public void testEmptyMaxOccurs() {
        getVariables("/testMaxOccurs/empty.xml");
     }         
-    
+       
     private Map<String, EditorVariable> getVariables(String templateResource ){
         
         URL url = getClass().getResource(templateResource);
@@ -146,4 +176,27 @@ public class EditorTemplateTest {
         return mse;
     }
 
+    private Map<String, List<EditorVariableContent>> getContent(String templateResource, String metadataResource ){
+        
+        URL templateUrl = getClass().getResource(templateResource);
+        URL metadataUrl = getClass().getResource(metadataResource);
+        EditorTemplate et = null;
+        Map<String, List<EditorVariableContent>> content = null;
+        try {
+            et = new EditorTemplate(new InputSource(templateUrl.openStream()));
+            content = et.getContent(new InputSource(metadataUrl.openStream()));
+            
+        } catch (SAXException e) {
+            e.printStackTrace();
+            fail();
+        } catch (IOException e) {
+            e.printStackTrace();
+            fail();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+            fail();
+        }
+        return content;        
+    }    
+    
 }
