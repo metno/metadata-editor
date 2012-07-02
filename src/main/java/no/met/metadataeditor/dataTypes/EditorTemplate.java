@@ -110,7 +110,7 @@ public class EditorTemplate {
                     }
                     EditorVariableContent evc = new EditorVariableContent();
                     evc.setAttrs(da);
-                    evc.setChildren(ev.getChildren());
+                    //evc.setChildren(ev.getChildren());
                     ev.addContent(evc);
                     // and fill the children
                     readEditorVariables(xpath, ev.getDocumentXPath(), subNode, ev.getChildren());
@@ -165,34 +165,25 @@ public class EditorTemplate {
             
             EditorVariable ev = vars.get(varName);
             String evPath = ev.getDocumentXPath().substring(nodePath.length());
+            if (evPath.startsWith("/")) {
+                evPath = evPath.substring(1);
+            }
+            
             try {
                 Logger.getLogger(EditorTemplate.class).fine(String.format("EditorVariable %s with path %s and local path %s", varName, ev.getDocumentXPath(), evPath));
                 XPathExpression expr =  xpath.compile(evPath);
                 NodeList evSubnodes = (NodeList) expr.evaluate(node, XPathConstants.NODESET);
                 for (int i = 0; i < evSubnodes.getLength(); ++i) {
-                    DataAttributes da = ev.getDataAttributes().newInstance();
+
                     Node subNode = evSubnodes.item(i);
-                    // set the attributes
-                    Map<String, String> attXpath = ev.getAttrsXPath();
-                    for (String att : attXpath.keySet()) {
-                        String relAttPath = attXpath.get(att).substring(ev.getDocumentXPath().length());
-                        Logger.getLogger(EditorTemplate.class).fine(String.format("searching attr %s in %s", att, relAttPath));
-                        if (relAttPath.startsWith("/")) {
-                            // remove leading / in e.g. /text()
-                            relAttPath = relAttPath.substring(1);
-                        }
-                        XPathExpression attExpr = xpath.compile(relAttPath);
-                        String attVal = attExpr.evaluate(subNode);
-                        Logger.getLogger(EditorTemplate.class).fine(String.format("%s + value = %s", relAttPath, attVal));
-                        da.addAttribute(att, attVal);
-                    }
+                    DataAttributes da = readAttributes(ev, subNode, xpath);                    
                     EditorVariableContent evc = new EditorVariableContent();
                     evc.setAttrs(da);
-                    //evc.setChildren(ev.getChildren());
-                    //ev.addContent(evc);
+
+                    Map<String, List<EditorVariableContent>> children = readEditorContent(xpath, ev.getDocumentXPath(), subNode, ev.getChildren());
+                    evc.setChildren(children);
                     contentList.add(evc);
-                    // and fill the children
-                    readEditorContent(xpath, ev.getDocumentXPath(), subNode, ev.getChildren());
+
                 }
             } catch (XPathExpressionException e) {
                 // TODO Auto-generated catch block
@@ -201,6 +192,28 @@ public class EditorTemplate {
         }
         return content;
     }    
+    
+    private DataAttributes readAttributes(EditorVariable variable, Node node, XPath xpath) throws XPathExpressionException {
+
+        DataAttributes da = variable.getDataAttributes().newInstance();
+        // set the attributes
+        Map<String, String> attXpath = variable.getAttrsXPath();
+        for (String att : attXpath.keySet()) {
+            String relAttPath = attXpath.get(att).substring(variable.getDocumentXPath().length());
+            Logger.getLogger(EditorTemplate.class).fine(String.format("searching attr %s in %s", att, relAttPath));
+            if (relAttPath.startsWith("/")) {
+                // remove leading / in e.g. /text()
+                relAttPath = relAttPath.substring(1);
+            }
+            XPathExpression attExpr = xpath.compile(relAttPath);
+            String attVal = attExpr.evaluate(node);
+            Logger.getLogger(EditorTemplate.class).fine(String.format("%s + value = %s", relAttPath, attVal));
+            da.addAttribute(att, attVal);
+        }
+        
+        return da;
+        
+    }
     
 
     public Map<String, EditorVariable> getTemplate() {

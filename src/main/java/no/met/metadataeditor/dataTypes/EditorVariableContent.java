@@ -2,6 +2,7 @@ package no.met.metadataeditor.dataTypes;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -16,11 +17,11 @@ public class EditorVariableContent implements Serializable {
 
     private DataAttributes attrs;
 
-    private Map<String, EditorVariable> children;
+    private Map<String, List<EditorVariableContent>> children;
 
 
     public EditorVariableContent() {
-        children = new HashMap<String, EditorVariable>();
+        children = new HashMap<String, List<EditorVariableContent>>();
     }
 
     public DataAttributes getAttrs() {
@@ -31,11 +32,11 @@ public class EditorVariableContent implements Serializable {
         this.attrs = attrs;
     }
 
-    public void setChildren(Map<String, EditorVariable> children) {
+    public void setChildren(Map<String, List<EditorVariableContent>> children) {
         this.children = children;
     }
 
-    public Map<String, EditorVariable> getChildren() {
+    public Map<String, List<EditorVariableContent>> getChildren() {
         return children;
     }
 }

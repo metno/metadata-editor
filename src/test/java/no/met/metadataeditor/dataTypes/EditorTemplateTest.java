@@ -43,6 +43,29 @@ public class EditorTemplateTest {
         assertEquals("Value for content ok", "sea ice", evc.get(1).getAttrs().getAttribute("str"));        
     }
     
+    @Test
+    public void testChildContent() {
+
+        Map<String,List<EditorVariableContent>> content = getContent("/testContent/childTemplate.xml", "/testContent/childContent.xml");
+        
+        assertEquals("Content for parent found", true, content.containsKey("wmsSetup"));
+        
+        List<EditorVariableContent> evc = content.get("wmsSetup");
+        
+        assertEquals("Only one content variable", 1, evc.size());
+        
+        Map<String, List<EditorVariableContent>> children = evc.get(0).getChildren();
+        
+        assertEquals("Child found as expected", true, children.containsKey("displayLayer"));
+        assertEquals("Child has expected number of values", 3, children.get("displayLayer").size());
+
+        List<EditorVariableContent> childValues = children.get("displayLayer");
+        assertEquals("Value for child ok", "air_temperature", childValues.get(0).getAttrs().getAttribute("str"));
+        assertEquals("Value for child ok", "BOXFILL/rainbow", childValues.get(0).getAttrs().getAttribute("listElement"));
+        assertEquals("Value for child ok", "percipitation", childValues.get(2).getAttrs().getAttribute("str"));
+        assertEquals("Value for child ok", "BOXFILL/rainbow", childValues.get(2).getAttrs().getAttribute("listElement"));
+        
+    }
     
     @Test
     public void testVariableNames() {

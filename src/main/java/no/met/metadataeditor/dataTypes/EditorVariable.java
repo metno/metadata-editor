@@ -24,7 +24,7 @@ public class EditorVariable implements Serializable {
     private int minOccurs = 1;
     private int maxOccurs = 1;
 
-    private List<EditorVariableContent> content = new ArrayList<EditorVariableContent>();
+    //private List<EditorVariableContent> content = new ArrayList<EditorVariableContent>();
 
     public EditorVariable() {
 
@@ -159,16 +159,12 @@ public class EditorVariable implements Serializable {
      */
     public void addContent(EditorVariableContent content) {
         if (content.getAttrs().getClass().isInstance(getDataAttributes())) {
-            this.content.add(content);
+            //this.content.add(content);
         } else {
             throw new AttributesMismatchException(content.getAttrs().getClass().getSimpleName() + " != " + getDataAttributes().getClass().getSimpleName());
         }
     }
-
-    public List<EditorVariableContent> getContent() {
-        return content;
-    }
-
+  
     /**
      * Get the attributes xpath directive, e.g. where to find
      * content in a existing document
@@ -200,6 +196,11 @@ public class EditorVariable implements Serializable {
 
     public void setTemplateXPath(String templateXPath) {
         this.templateXPath = templateXPath;
+    }
+    
+
+    public boolean hasDefaultResource() {
+        return resources.containsKey(DEFAULT_RESOURCE);
     }
 
 }
