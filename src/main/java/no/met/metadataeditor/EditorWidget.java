@@ -29,7 +29,16 @@ public abstract class EditorWidget implements Serializable {
     
     private List<Map<String,String>> values;
     
-    private EditorVariable editorVariable;
+    private boolean isPopulated = false;
+    
+    private int maxOccurs = 1;
+    
+    private int minOccurs = 1;
+    
+    private List<String> resourceValues;
+    
+    // the type of data attributes. Used to construct new objects of the same type.
+    private DataAttributes attributesType;
     
     public EditorWidget(String label, String variableName) {
         this.label = label;
@@ -58,10 +67,19 @@ public abstract class EditorWidget implements Serializable {
         values.remove(value);        
     }
 
-    public void populate(EditorVariable variable) {
+    public void configure(EditorVariable variable){
+        maxOccurs = variable.getMaxOccurs();
+        minOccurs = variable.getMinOccurs();
         
-        editorVariable = variable;
-        for(EditorVariableContent content : variable.getContent()){
+        if( variable.hasDefaultResource() ){
+            resourceValues = variable.getDefaultResourceValues();
+        }
+        attributesType = variable.getNewDataAttributes();
+    }
+    
+    public void populate(List<EditorVariableContent> contents) {
+        
+        for(EditorVariableContent content : contents){
             DataAttributes attrs = content.getAttrs(); 
             
             Map<String,String> value = new HashMap<String,String>();
@@ -71,7 +89,30 @@ public abstract class EditorWidget implements Serializable {
             }
                         
             addValue(value);                    
-        }        
+        }
+        
+        isPopulated = true;
+        
+    }
+    
+    /**
+     * Take the information stored in the widget and send it back to the EditorVariable
+     */
+    public List<EditorVariableContent> getContent(){
+        
+        List<EditorVariableContent> contentList = new ArrayList<EditorVariableContent>();
+        for( Map<String,String> value : values ){
+
+            EditorVariableContent content = new EditorVariableContent();
+            DataAttributes da = attributesType.newInstance();
+            content.setAttrs(da);            
+            for( Map.Entry<String, String> entry : value.entrySet() ){
+                da.addAttribute(entry.getKey(), entry.getValue());
+            }
+            contentList.add(content);            
+        }
+        
+        return contentList;
         
     }
     
@@ -96,19 +137,19 @@ public abstract class EditorWidget implements Serializable {
     }
 
     public List<String> getResourceValues(){
-        return editorVariable.getDefaultResourceValues();
+        return resourceValues;
     }
     
     public int getMaxOccurs(){
-        return editorVariable.getMaxOccurs();
+        return maxOccurs;
     }
 
     public int getMinOccurs(){
-        return editorVariable.getMinOccurs();
+        return minOccurs;
     }
     
     public boolean isPopulated(){
-        return editorVariable != null ? true : false; 
+        return isPopulated; 
     }
     
     public abstract Map<String, String> getDefaultValue();

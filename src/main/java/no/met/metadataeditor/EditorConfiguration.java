@@ -1,15 +1,24 @@
 package no.met.metadataeditor;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Logger;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import no.met.metadataeditor.dataTypes.EditorTemplate;
 import no.met.metadataeditor.dataTypes.EditorTemplateFactory;
 import no.met.metadataeditor.dataTypes.EditorVariable;
+import no.met.metadataeditor.dataTypes.EditorVariableContent;
 
 
 
@@ -59,11 +68,28 @@ public class EditorConfiguration implements Serializable {
         EditorTemplate et = EditorTemplateFactory.getInstance(identifier);
         Map<String,EditorVariable> varMap = et.getTemplate();
         
+        URL xmlUrl = EditorTemplateFactory.class.getResource("/defaultConfig/exampleMM2.xml");
+        Map<String,List<EditorVariableContent>> varContent = null;
+        try {
+            varContent = et.getContent(new InputSource(xmlUrl.openStream()));
+        } catch (ParserConfigurationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (SAXException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
         for(Map.Entry<String, EditorVariable> entry : varMap.entrySet()){
             
             if(widgetMap.containsKey(entry.getKey())){
-                EditorWidget widget = widgetMap.get(entry.getKey());                        
-                widget.populate(entry.getValue());
+                EditorWidget widget = widgetMap.get(entry.getKey()); 
+                widget.configure(entry.getValue());
+                List<EditorVariableContent> content = varContent.get(entry.getKey());
+                widget.populate(content);
             }
         }
         
@@ -86,7 +112,10 @@ public class EditorConfiguration implements Serializable {
 
     public void save(String identifier) {
 
-        
+        Map<String, List<EditorVariableContent>> content = new HashMap<String, List<EditorVariableContent>>();
+        for(Entry<String, EditorWidget> entry : widgetMap.entrySet()){            
+            content.put(entry.getKey(), entry.getValue().getContent());
+        }
         
     }
     
