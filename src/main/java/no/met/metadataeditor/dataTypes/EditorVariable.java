@@ -151,6 +151,10 @@ public class EditorVariable implements Serializable {
     public void addChild(String varName, EditorVariable child) {
         children.put(varName, child);
     }
+    
+    public void setChildren(Map<String, EditorVariable> children){
+        this.children = children;
+    }
 
     /**
      * Add content-data to the variable. Make sure the content-attributes

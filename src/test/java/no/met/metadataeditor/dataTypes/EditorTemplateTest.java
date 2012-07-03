@@ -3,19 +3,115 @@ package no.met.metadataeditor.dataTypes;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
 import org.junit.Test;
+import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 public class EditorTemplateTest {
 
+    @Test 
+    public void testSingleValueWrite() throws ParserConfigurationException, SAXException, IOException {
+        
+        EditorTemplate et = getTemplate("/testWrite/singleVarTemplate.xml");
+        
+        Map<String, List<EditorVariableContent>> content = new HashMap<String,List<EditorVariableContent>>();
+        List<EditorVariableContent> keywordContent = new ArrayList<EditorVariableContent>();
+        keywordContent.add(EditorVariableContentFactory.childlessStringAttribute("arctic"));
+        content.put("keyword", keywordContent);
+        
+        URL metadataUrl = getClass().getResource("/testWrite/singleVarTemplate.xml");               
+        org.jdom2.Document result = et.writeContent(new InputSource(metadataUrl.openStream()), content);
+        
+        org.jdom2.Document expected = openDocument("/testWrite/singleValueResult.xml");
+        
+        assertEquals(documentToString(expected), documentToString(result));
+    }
+
+    @Test 
+    public void testMultiValueWrite() throws ParserConfigurationException, SAXException, IOException {
+        
+        EditorTemplate et = getTemplate("/testWrite/singleVarTemplate.xml");
+        
+        Map<String, List<EditorVariableContent>> content = new HashMap<String,List<EditorVariableContent>>();
+        List<EditorVariableContent> keywordContent = new ArrayList<EditorVariableContent>();
+        keywordContent.add(EditorVariableContentFactory.childlessStringAttribute("arctic"));
+        keywordContent.add(EditorVariableContentFactory.childlessStringAttribute("ice"));
+        keywordContent.add(EditorVariableContentFactory.childlessStringAttribute("snow"));
+        content.put("keyword", keywordContent);
+        
+        URL metadataUrl = getClass().getResource("/testWrite/singleVarTemplate.xml");               
+        org.jdom2.Document result = et.writeContent(new InputSource(metadataUrl.openStream()), content);
+        
+        org.jdom2.Document expected = openDocument("/testWrite/multiValueResult.xml");
+        
+        assertEquals(documentToString(expected), documentToString(result));
+    }    
+
+    @Test 
+    public void testSiblingWrite() throws ParserConfigurationException, SAXException, IOException {
+        
+        String templateName = "/testWrite/siblingTemplate.xml";
+        EditorTemplate et = getTemplate(templateName);
+
+        Map<String, List<EditorVariableContent>> content = new HashMap<String,List<EditorVariableContent>>();
+        List<EditorVariableContent> keywordContent = new ArrayList<EditorVariableContent>();
+        keywordContent.add(EditorVariableContentFactory.childlessStringAttribute("arctic"));
+        keywordContent.add(EditorVariableContentFactory.childlessStringAttribute("ice"));
+        keywordContent.add(EditorVariableContentFactory.childlessStringAttribute("snow"));        
+        content.put("keyword", keywordContent);
+
+        URL templateUrl = getClass().getResource(templateName);               
+        org.jdom2.Document result = et.writeContent(new InputSource(templateUrl.openStream()), content);
+        
+        org.jdom2.Document expected = openDocument("/testWrite/siblingResult.xml");
+        
+        assertEquals(documentToString(expected), documentToString(result));
+    }    
+    
+    @Test 
+    public void testSubTreeInXMLWrite() throws ParserConfigurationException, SAXException, IOException {
+        
+        String templateName = "/testWrite/subTreeInVarTemplate.xml";
+        EditorTemplate et = getTemplate(templateName);
+
+        Map<String, List<EditorVariableContent>> content = new HashMap<String,List<EditorVariableContent>>();
+        List<EditorVariableContent> keywordContent = new ArrayList<EditorVariableContent>();
+        keywordContent.add(EditorVariableContentFactory.childlessStringAttribute("arctic"));
+        keywordContent.add(EditorVariableContentFactory.childlessStringAttribute("snow"));        
+        content.put("keyword", keywordContent);
+
+        URL templateUrl = getClass().getResource(templateName);               
+        org.jdom2.Document result = et.writeContent(new InputSource(templateUrl.openStream()), content);
+        
+        org.jdom2.Document expected = openDocument("/testWrite/subTreeInVarResult.xml");
+        
+        assertEquals(documentToString(expected), documentToString(result));
+    }        
+    
     @Test 
     public void testSingleValueContent() {
         
@@ -221,5 +317,54 @@ public class EditorTemplateTest {
         }
         return content;        
     }    
+
+    private EditorTemplate getTemplate(String templateResource ){
+        
+        URL templateUrl = getClass().getResource(templateResource);
+        EditorTemplate et = null;
+        try {
+            et = new EditorTemplate(new InputSource(templateUrl.openStream()));
+            
+        } catch (SAXException e) {
+            e.printStackTrace();
+            fail();
+        } catch (IOException e) {
+            e.printStackTrace();
+            fail();
+        }
+        return et;        
+    }
+    
+    private String documentToString(org.jdom2.Document doc){
+        
+        XMLOutputter xout = new XMLOutputter(Format.getPrettyFormat());
+        StringWriter writer = new StringWriter();
+        try {
+            xout.output(doc, writer);
+        } catch (IOException e) {
+            fail();
+        }
+        
+        System.out.println(writer.toString());
+        return writer.toString();
+    }
+    
+    private org.jdom2.Document openDocument(String filename){
+
+        URL fileUrl = getClass().getResource(filename);
+        SAXBuilder builder = new SAXBuilder();
+        org.jdom2.Document doc = null;
+        try {
+            doc = builder.build(new InputSource(fileUrl.openStream()));
+
+        } catch (JDOMException e) {
+            fail(e.getMessage());
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+        return doc;        
+        
+    }
+
     
 }

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mmc:mmCombined xmlns:mmc="http://www.met.no/schema/metamod/mmCombined">
+	<mmc:metadata>
+		<MM2 xmlns="http://www.met.no/schema/metamod/MM2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:schemaLocation="http://www.met.no/schema/metamod/MM2 https://wiki.met.no/_media/metamod/mm2.xsd">
+            <metadata name="keyword">arctic</metadata>
+            <metadata name="keyword">ice</metadata>
+            <metadata name="keyword">snow</metadata>            
+		</MM2>
+	</mmc:metadata>
+</mmc:mmCombined>
