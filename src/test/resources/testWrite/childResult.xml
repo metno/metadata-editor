@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mmc:mmCombined xmlns:mmc="http://www.met.no/schema/metamod/mmCombined">
+<dataset xmlns="http://www.met.no/schema/metamod/dataset"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://www.met.no/schema/metamod/dataset https://wiki.met.no/_media/metamod/dataset.xsd">
+  <info name="ADC/proffdefault4km" status="active" creationDate="2012-04-18T12:51:22Z" datestamp="2012-04-19T12:59:34Z" ownertag="ADC" metadataFormat="MM2"/>
+  <quadtree_nodes />
+  <wmsInfo>
+    <w:ncWmsSetup xmlns:w="http://www.met.no/schema/metamod/ncWmsSetup" url="url1" xsi:schemaLocation="http://www.met.no/schema/metamod/ncWmsSetup ncWmsSetup.xsd ">
+          <w:displayArea crs="EPSG:32661" left="-1000000" right="5000000" bottom="-3000000" top="2000000"/>
+              <w:layer name="Display"/>
+              <w:layer name="children">
+              Inner most1
+              
+                Inner most2
+              </w:layer>	
+              <w:layer name="no children"/>
+    </w:ncWmsSetup>
+  </wmsInfo>  
+</dataset>
+</mmc:mmCombined>

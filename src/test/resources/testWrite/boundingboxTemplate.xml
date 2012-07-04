@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<edt:editorDataTypes xmlns:edt="http://www.met.no/schema/metadataeditor/editorDataTypes"
+                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:schemaLocation="http://www.met.no/schema/metadataeditor/editorDataTypes dataTypes.xsd">
+<mmc:mmCombined xmlns:mmc="http://www.met.no/schema/metamod/mmCombined">
+	<edt:lonLatBoundingBox varName="globalBB" minOccurs="1" maxOccurs="1">
+		<boundingBox north="$north" south="$south" east="$east" west="$west"/>
+	</edt:lonLatBoundingBox>
+	<edt:lonLatBoundingBox varName="localBB" minOccurs="0" maxOccurs="unbounded">
+		<metadata name="bounding_box">$east,$south,$west,$north</metadata>
+	</edt:lonLatBoundingBox>
+</mmc:mmCombined>
+</edt:editorDataTypes>

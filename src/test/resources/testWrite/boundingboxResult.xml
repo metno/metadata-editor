@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mmc:mmCombined xmlns:mmc="http://www.met.no/schema/metamod/mmCombined">
+	<boundingBox north="0" south="85" east="-10" west="54"/>
+	<metadata name="bounding_box">-10,0,54,85</metadata>
+</mmc:mmCombined>
+

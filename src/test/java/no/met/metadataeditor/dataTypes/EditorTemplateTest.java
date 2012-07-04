@@ -70,6 +70,24 @@ public class EditorTemplateTest {
         
         assertEquals(documentToString(expected), documentToString(result));
     }    
+    
+    @Test 
+    public void testNoContentWrite() throws ParserConfigurationException, SAXException, IOException {
+        
+        String templateName = "/testWrite/noContentTemplate.xml";
+        EditorTemplate et = getTemplate(templateName);
+
+        Map<String, List<EditorVariableContent>> content = new HashMap<String,List<EditorVariableContent>>();
+        List<EditorVariableContent> keywordContent = new ArrayList<EditorVariableContent>();
+        content.put("keyword", keywordContent);
+
+        URL templateUrl = getClass().getResource(templateName);               
+        org.jdom2.Document result = et.writeContent(new InputSource(templateUrl.openStream()), content);
+        
+        org.jdom2.Document expected = openDocument("/testWrite/noContentResult.xml");
+        
+        assertEquals(documentToString(expected), documentToString(result));
+    }       
 
     @Test 
     public void testSiblingWrite() throws ParserConfigurationException, SAXException, IOException {
@@ -93,7 +111,7 @@ public class EditorTemplateTest {
     }    
     
     @Test 
-    public void testSubTreeInXMLWrite() throws ParserConfigurationException, SAXException, IOException {
+    public void testSubTreeInVarWrite() throws ParserConfigurationException, SAXException, IOException {
         
         String templateName = "/testWrite/subTreeInVarTemplate.xml";
         EditorTemplate et = getTemplate(templateName);
@@ -110,7 +128,108 @@ public class EditorTemplateTest {
         org.jdom2.Document expected = openDocument("/testWrite/subTreeInVarResult.xml");
         
         assertEquals(documentToString(expected), documentToString(result));
+    }      
+    
+    @Test 
+    public void testSubTreeInVarWrite2() throws ParserConfigurationException, SAXException, IOException {
+        
+        String templateName = "/testWrite/subTreeInVarTemplate2.xml";
+        EditorTemplate et = getTemplate(templateName);
+
+        Map<String, List<EditorVariableContent>> content = new HashMap<String,List<EditorVariableContent>>();
+        List<EditorVariableContent> keywordContent = new ArrayList<EditorVariableContent>();
+        keywordContent.add(EditorVariableContentFactory.childlessStringAttribute("arctic"));
+        keywordContent.add(EditorVariableContentFactory.childlessStringAttribute("snow"));        
+        content.put("keyword", keywordContent);
+
+        URL templateUrl = getClass().getResource(templateName);               
+        org.jdom2.Document result = et.writeContent(new InputSource(templateUrl.openStream()), content);
+        
+        org.jdom2.Document expected = openDocument("/testWrite/subTreeInVarResult2.xml");
+        
+        assertEquals(documentToString(expected), documentToString(result));
+    }     
+    
+    @Test 
+    public void testVarInAttributeWrite() throws ParserConfigurationException, SAXException, IOException {
+        
+        String templateName = "/testWrite/varInAttributeTemplate.xml";
+        EditorTemplate et = getTemplate(templateName);
+
+        Map<String, List<EditorVariableContent>> content = new HashMap<String,List<EditorVariableContent>>();
+        List<EditorVariableContent> keywordContent = new ArrayList<EditorVariableContent>();
+        keywordContent.add(EditorVariableContentFactory.childlessStringAttribute("snow"));        
+        content.put("keyword", keywordContent);
+
+        URL templateUrl = getClass().getResource(templateName);               
+        org.jdom2.Document result = et.writeContent(new InputSource(templateUrl.openStream()), content);
+        
+        org.jdom2.Document expected = openDocument("/testWrite/varInAttributeResult.xml");
+        
+        assertEquals(documentToString(expected), documentToString(result));
     }        
+    
+    
+    @Test 
+    public void testBoundingboxWrite() throws ParserConfigurationException, SAXException, IOException {
+        
+        String templateName = "/testWrite/boundingboxTemplate.xml";
+        EditorTemplate et = getTemplate(templateName);
+
+        Map<String, List<EditorVariableContent>> content = new HashMap<String,List<EditorVariableContent>>();
+        List<EditorVariableContent> localBBContent = new ArrayList<EditorVariableContent>();
+        localBBContent.add(EditorVariableContentFactory.childlessBoundingboxAttribute("85", "0", "-10", "54"));        
+        content.put("localBB", localBBContent);
+        List<EditorVariableContent> globalBBContent = new ArrayList<EditorVariableContent>();
+        globalBBContent.add(EditorVariableContentFactory.childlessBoundingboxAttribute("0", "85", "-10", "54"));        
+        content.put("globalBB", globalBBContent);
+        
+
+        URL templateUrl = getClass().getResource(templateName);               
+        org.jdom2.Document result = et.writeContent(new InputSource(templateUrl.openStream()), content);
+        
+        org.jdom2.Document expected = openDocument("/testWrite/boundingboxResult.xml");
+        
+        assertEquals(documentToString(expected), documentToString(result));
+    }         
+    
+    @Test 
+    public void testChildWrite() throws ParserConfigurationException, SAXException, IOException {
+        
+        String templateName = "/testWrite/childTemplate.xml";
+        EditorTemplate et = getTemplate(templateName);
+
+        List<EditorVariableContent> innerContent = new ArrayList<EditorVariableContent>();
+        innerContent.add(EditorVariableContentFactory.childlessStringAttribute("Inner most1"));
+        innerContent.add(EditorVariableContentFactory.childlessStringAttribute("Inner most2"));
+        Map<String,List<EditorVariableContent>> otherLayersChildren = new HashMap<String,List<EditorVariableContent>>();
+        otherLayersChildren.put("inner", innerContent);
+        
+        List<EditorVariableContent> otherLayersContent = new ArrayList<EditorVariableContent>();
+        otherLayersContent.add(EditorVariableContentFactory.stringAttributeWithChildren("children", otherLayersChildren));
+        otherLayersContent.add(EditorVariableContentFactory.childlessStringAttribute("no children"));
+        
+        List<EditorVariableContent> firstDisplayLayerContent = new ArrayList<EditorVariableContent>();
+        firstDisplayLayerContent.add(EditorVariableContentFactory.childlessStringAttribute("Display"));
+        
+        Map<String, List<EditorVariableContent>> wmsSetupChildren = new HashMap<String,List<EditorVariableContent>>();
+        wmsSetupChildren.put("otherLayers", otherLayersContent);
+        wmsSetupChildren.put("firstDisplayLayer", firstDisplayLayerContent);
+
+        List<EditorVariableContent> wmsSetupContent = new ArrayList<EditorVariableContent>();
+        wmsSetupContent.add(EditorVariableContentFactory.stringAttributeWithChildren("url1", wmsSetupChildren));
+        
+        Map<String, List<EditorVariableContent>> varMap = new HashMap<String,List<EditorVariableContent>>();
+        varMap.put("wmsSetup", wmsSetupContent);
+        
+        URL templateUrl = getClass().getResource(templateName);               
+        org.jdom2.Document result = et.writeContent(new InputSource(templateUrl.openStream()), varMap);
+        
+        org.jdom2.Document expected = openDocument("/testWrite/childResult.xml");
+        
+        assertEquals(documentToString(expected), documentToString(result));
+    }     
+    
     
     @Test 
     public void testSingleValueContent() {

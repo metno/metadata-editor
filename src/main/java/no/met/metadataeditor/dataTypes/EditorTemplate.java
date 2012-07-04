@@ -207,7 +207,8 @@ public class EditorTemplate {
         }
 
         org.jdom2.Document doc = replaceVars(root);
-        pruneTree(doc);
+        pruneTree(doc);        
+
         
         return doc;
 
@@ -267,15 +268,21 @@ public class EditorTemplate {
     }
     
     private List<Content> pruneTreeRecursive(Element element, Element parent, org.jdom2.Document doc){
-        
+       
+        List<Content> children = new ArrayList<Content>();
+        for( Content child : element.getContent()){
+            children.add(child);
+        }        
        
         if( templateTags.containsKey(element.getName())){
             
             element.detach();
-            for( Element child : element.getChildren() ){
+            for( Content child : children ){
 
-                
-                pruneTreeRecursive(child, parent, doc);
+                if( child instanceof Element ){
+                    Element e = (Element) child;
+                    pruneTreeRecursive(e, parent, doc);                    
+                }
 
                 child.detach();
                 if( parent != null ){
@@ -286,13 +293,14 @@ public class EditorTemplate {
             }
         } else {
             
-            List<Element> children = new ArrayList<Element>();
-            for( Element child : element.getChildren()){
-                children.add(child);
-            }
+
             
-            for( Element child : children ){
-                pruneTreeRecursive(child, element, doc);
+            for( Content child : children ){
+                
+                if( child instanceof Element ){
+                    Element e = (Element) child;
+                    pruneTreeRecursive(e, element, doc);
+                }
             }
         }
         return null;
@@ -323,11 +331,16 @@ public class EditorTemplate {
                                                     
                     String varName = child.getAttributeValue("varName");
                     List<EditorVariableContent> contentList = contentMap.get(varName);
+                    
+                    // there is not content to fill in for this variable, so we should skip it.
+                    if( contentList == null ){
+                        continue; 
+                    }
+                                           
                     for( EditorVariableContent evc : contentList ){
     
                         TemplateVarNode tvn = new TemplateVarNode();
-                        tvn.content = evc;
-                        
+                        tvn.content = evc;                        
                         tvn.children = genTemplateTreeRecursive2(child, evc.getChildren());
                         tvn.xmlNode = child;
                         

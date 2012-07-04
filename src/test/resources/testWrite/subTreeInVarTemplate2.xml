@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<edt:editorDataTypes
+    xmlns:edt="http://www.met.no/schema/metadataeditor/editorDataTypes"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.met.no/schema/metadataeditor/editorDataTypes dataTypes.xsd">
+    <mmc:mmCombined xmlns:mmc="http://www.met.no/schema/metamod/mmCombined">
+        <mmc:metadata>
+            <MM2 xmlns="http://www.met.no/schema/metamod/MM2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://www.met.no/schema/metamod/MM2 https://wiki.met.no/_media/metamod/mm2.xsd">
+                <edt:string varName="keyword" minOccurs="0" maxOccurs="unbounded">
+                    <metadata name="keyword">$str</metadata>
+                        <type>
+                            <double>
+                            </double>
+                            <double>
+                            </double>
+                        </type>                        
+                    <metadata name="keyword">
+                    </metadata>
+                </edt:string>
+            </MM2>
+        </mmc:metadata>
+    </mmc:mmCombined>
+</edt:editorDataTypes>
