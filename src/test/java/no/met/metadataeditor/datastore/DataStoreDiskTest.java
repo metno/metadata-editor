@@ -25,7 +25,7 @@ public class DataStoreDiskTest {
         String dirName = getClass().getResource("/datastore/diskdatastore/").getFile();
         DataStore store = new DiskDataStore(dirName);
         String template = store.readTemplate("testProject", "metadata1");
-        String expectedTemplate = fileAsString("/datastore/diskdatastore/config/MM2Template.xml");
+        String expectedTemplate = fileAsString("/datastore/diskdatastore/testProject/config/MM2Template.xml");
         assertEquals(expectedTemplate, template);        
         
     }

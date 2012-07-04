@@ -26,7 +26,7 @@ public class DiskDataStore implements DataStore {
     @Override
     public String readMetadata(String project, String recordIdentifier) {
         
-        File metadataFile = metadataPath(recordIdentifier);
+        File metadataFile = metadataPath(project, recordIdentifier);
         return readFile(metadataFile);
     }
     
@@ -37,7 +37,7 @@ public class DiskDataStore implements DataStore {
         String metadata = readMetadata(project, recordIdentifier);
         
         SupportedFormat format = DataStoreUtils.getFormat(metadata);
-        File templatePath = templatePath(format);
+        File templatePath = templatePath(project, format);
         
         if( !templatePath.exists() ){
             throw new EditorException("File does not exist: " + templatePath.getAbsolutePath() );
@@ -57,16 +57,16 @@ public class DiskDataStore implements DataStore {
     }
     
     
-    private File metadataPath(String recordIdentifier){
+    private File metadataPath(String project, String recordIdentifier){
         
-        File dir = new File(basePath, "XML");
+        File dir = new File( new File(basePath, project), "XML");
         File path = new File(dir, recordIdentifier + ".xml");
         return path;
         
     }
     
-    private File templatePath(SupportedFormat format){
-        File dir = new File(basePath, "config");
+    private File templatePath(String project, SupportedFormat format){
+        File dir = new File( new File(basePath, project), "config");
         File path = new File(dir, format.templateName());
         return path;        
     }
