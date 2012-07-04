@@ -209,6 +209,8 @@ class TemplateHandler extends DefaultHandler {
                 addStandardEDT(new NullAttributes(), nsUri, lName, atts);
             } else if ("lonLatBoundingBox".equals(lName)) {
                 addStandardEDT(new LatLonBBAttributes(), nsUri, lName, atts);
+            } else if ("lonLatBoundingBoxSingle".equals(lName)) {
+                addStandardEDT(new LatLonBBSingleAttribute(), nsUri, lName, atts);
             } else if ("string".equals(lName)) {
                 addStandardEDT(new StringAttributes(), nsUri, lName, atts);
             } else if ("uri".equals(lName)) {
@@ -250,6 +252,7 @@ class TemplateHandler extends DefaultHandler {
             if ("editorDataTypes".equals(lName)) {
                 assert(edtElements.size() == 1);
                 resultConfig = edtElements.getFirst().getChildren();
+                validateConfig(resultConfig, "");
             }
             edtElements.removeLast();
         } else {
@@ -263,6 +266,20 @@ class TemplateHandler extends DefaultHandler {
 
     public Map<String, String> getNamespacePrefixes() {
         return namespacePrefixes;
+    }
+    
+    public void validateConfig(Map<String, EditorVariable> config, String namespace){
+        
+        for( Map.Entry<String, EditorVariable> entry : config.entrySet()){
+            
+            EditorVariable ev = entry.getValue();
+            if( !ev.attrsXPathValid() ){
+                throw new InvalidTemplateException("One or more variables are missing for variable: " + namespace + entry.getKey());
+            }
+            
+            validateConfig(ev.getChildren(), entry.getKey() + "::");            
+        }
+        
     }
 
 }

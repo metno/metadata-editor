@@ -185,6 +185,16 @@ public class EditorVariable implements Serializable {
             throw new AttributesMismatchException("cannot set xpath for attribute: "+attribute);
         }
     }
+    
+    public boolean attrsXPathValid(){
+        
+        for( String replaceVar : dataAttributesType.getAttributesSetup().keySet() ){
+            if( !attrsXPath.containsKey(replaceVar)){
+                return false;
+            }
+        }
+        return true;        
+    }
 
     public String getDocumentXPath() {
         return documentXPath;
