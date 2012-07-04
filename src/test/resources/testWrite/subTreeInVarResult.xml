@@ -4,6 +4,8 @@
 		<MM2 xmlns="http://www.met.no/schema/metamod/MM2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 			xsi:schemaLocation="http://www.met.no/schema/metamod/MM2 https://wiki.met.no/_media/metamod/mm2.xsd">
 
+            <int>
+            </int>
 			<metadata name="keyword">arctic</metadata>
 			<metadata name="keyword">
                         <type>
@@ -12,9 +14,9 @@
                             <double>
                             </double>
                         </type>
-                        <int>
-                        </int>
                     </metadata>
+            <int>
+            </int>
 			<metadata name="keyword">snow</metadata>
 			<metadata name="keyword">
                         <type>
@@ -23,8 +25,6 @@
                             <double>
                             </double>
                         </type>
-                        <int>
-                        </int>
                     </metadata>
 		</MM2>
 	</mmc:metadata>

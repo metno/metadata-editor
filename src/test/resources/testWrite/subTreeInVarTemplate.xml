@@ -8,6 +8,8 @@
             <MM2 xmlns="http://www.met.no/schema/metamod/MM2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:schemaLocation="http://www.met.no/schema/metamod/MM2 https://wiki.met.no/_media/metamod/mm2.xsd">
                 <edt:string varName="keyword" minOccurs="0" maxOccurs="unbounded">
+                    <int>
+                    </int>
                     <metadata name="keyword">$str</metadata>
                     <metadata name="keyword">
                         <type>
@@ -15,9 +17,7 @@
                             </double>
                             <double>
                             </double>
-                        </type>
-                        <int>
-                        </int>
+                        </type>                        
                     </metadata>
                 </edt:string>
             </MM2>
