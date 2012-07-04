@@ -8,6 +8,8 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import no.met.metadataeditor.widget.EditorWidget;
+
 /**
  * Simple stateless bean that is just used in the generation of the editor HTML.
  */

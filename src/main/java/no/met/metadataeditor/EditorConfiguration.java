@@ -27,6 +27,7 @@ import no.met.metadataeditor.dataTypes.EditorVariable;
 import no.met.metadataeditor.dataTypes.EditorVariableContent;
 import no.met.metadataeditor.datastore.DataStore;
 import no.met.metadataeditor.datastore.DataStoreFactory;
+import no.met.metadataeditor.widget.EditorWidget;
 
 
 
