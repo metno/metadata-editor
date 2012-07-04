@@ -34,7 +34,7 @@ import org.xml.sax.SAXException;
 public class EditorTemplateTest {
 
     @Test 
-    public void testSingleValueWrite() throws ParserConfigurationException, SAXException, IOException {
+    public void testSingleValueWrite() throws IOException, JDOMException {
         
         EditorTemplate et = getTemplate("/testWrite/singleVarTemplate.xml");
         
@@ -52,7 +52,7 @@ public class EditorTemplateTest {
     }
 
     @Test 
-    public void testMultiValueWrite() throws ParserConfigurationException, SAXException, IOException {
+    public void testMultiValueWrite() throws IOException, JDOMException {
         
         EditorTemplate et = getTemplate("/testWrite/singleVarTemplate.xml");
         
@@ -72,7 +72,7 @@ public class EditorTemplateTest {
     }    
     
     @Test 
-    public void testNoContentWrite() throws ParserConfigurationException, SAXException, IOException {
+    public void testNoContentWrite() throws IOException, JDOMException {
         
         String templateName = "/testWrite/noContentTemplate.xml";
         EditorTemplate et = getTemplate(templateName);
@@ -90,7 +90,7 @@ public class EditorTemplateTest {
     }       
 
     @Test 
-    public void testSiblingWrite() throws ParserConfigurationException, SAXException, IOException {
+    public void testSiblingWrite() throws IOException, JDOMException {
         
         String templateName = "/testWrite/siblingTemplate.xml";
         EditorTemplate et = getTemplate(templateName);
@@ -111,7 +111,7 @@ public class EditorTemplateTest {
     }    
     
     @Test 
-    public void testSubTreeInVarWrite() throws ParserConfigurationException, SAXException, IOException {
+    public void testSubTreeInVarWrite() throws IOException, JDOMException {
         
         String templateName = "/testWrite/subTreeInVarTemplate.xml";
         EditorTemplate et = getTemplate(templateName);
@@ -131,7 +131,7 @@ public class EditorTemplateTest {
     }      
     
     @Test 
-    public void testSubTreeInVarWrite2() throws ParserConfigurationException, SAXException, IOException {
+    public void testSubTreeInVarWrite2() throws IOException, JDOMException {
         
         String templateName = "/testWrite/subTreeInVarTemplate2.xml";
         EditorTemplate et = getTemplate(templateName);
@@ -151,7 +151,7 @@ public class EditorTemplateTest {
     }     
     
     @Test 
-    public void testVarInAttributeWrite() throws ParserConfigurationException, SAXException, IOException {
+    public void testVarInAttributeWrite() throws IOException, JDOMException {
         
         String templateName = "/testWrite/varInAttributeTemplate.xml";
         EditorTemplate et = getTemplate(templateName);
@@ -171,7 +171,7 @@ public class EditorTemplateTest {
     
     
     @Test 
-    public void testBoundingboxWrite() throws ParserConfigurationException, SAXException, IOException {
+    public void testBoundingboxWrite() throws IOException, JDOMException {
         
         String templateName = "/testWrite/boundingboxTemplate.xml";
         EditorTemplate et = getTemplate(templateName);
@@ -194,7 +194,7 @@ public class EditorTemplateTest {
     }         
     
     @Test 
-    public void testChildWrite() throws ParserConfigurationException, SAXException, IOException {
+    public void testChildWrite() throws IOException, JDOMException {
         
         String templateName = "/testWrite/childTemplate.xml";
         EditorTemplate et = getTemplate(templateName);
@@ -461,10 +461,8 @@ public class EditorTemplateTest {
         try {
             xout.output(doc, writer);
         } catch (IOException e) {
-            fail();
-        }
-        
-        System.out.println(writer.toString());
+            fail(e.getMessage());
+        }        
         return writer.toString();
     }
     

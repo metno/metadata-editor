@@ -26,6 +26,7 @@ import org.jdom2.Attribute;
 import org.jdom2.Content;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
+import org.jdom2.Text;
 import org.jdom2.input.SAXBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -173,33 +174,44 @@ public class EditorTemplate {
         
     }
 
-    public org.jdom2.Document writeContent(InputSource templateXML, Map<String, List<EditorVariableContent>> content) throws ParserConfigurationException, SAXException, IOException {
+    /**
+     * Write the the content of editor variables to the template to produce a new XML file.
+     * @param templateXML The template
+     * @param content A map of content for the variables in the template.
+     * @return
+     * @throws JDOMException
+     * @throws IOException
+     */
+    public org.jdom2.Document writeContent(InputSource templateXML, Map<String, List<EditorVariableContent>> content) throws JDOMException, IOException  {
 
         SAXBuilder builder = new SAXBuilder();
-        TemplateRootNode root = null;
-        try {
-            org.jdom2.Document d = builder.build(templateXML);
-            root = genTemplateTree(d, content);
-        } catch (JDOMException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
 
-        org.jdom2.Document doc = replaceVars(root);
+        org.jdom2.Document templateDoc = builder.build(templateXML);
+        TemplateRootNode rootNode = genTemplateTree(templateDoc, content);
+
+        org.jdom2.Document doc = replaceVars(rootNode);
         pruneTree(doc);        
 
-        
         return doc;
         
     }       
     
+    /**
+     * Remove the editor variables nodes from the tree.
+     * @param doc
+     */
     private void pruneTree(org.jdom2.Document doc){
-        
         pruneTreeRecursive(doc.getRootElement(), null, doc);
-        
     }
     
-    private List<Content> pruneTreeRecursive(Element element, Element parent, org.jdom2.Document doc){
+    /**
+     * Prune the tree recursively by making all children of editor variable nodes point to their grandparent
+     * or if there is no grandparent attach them to the document directly, even though this leads to an invalid XML document.
+     * @param element The element to process
+     * @param parent The parent of the processed element
+     * @param doc The document 
+     */
+    private void pruneTreeRecursive(Element element, Element parent, org.jdom2.Document doc){
        
         List<Content> children = new ArrayList<Content>();
         for( Content child : element.getContent()){
@@ -224,9 +236,6 @@ public class EditorTemplate {
                 }                
             }
         } else {
-            
-
-            
             for( Content child : children ){
                 
                 if( child instanceof Element ){
@@ -235,9 +244,15 @@ public class EditorTemplate {
                 }
             }
         }
-        return null;
     }
     
+    /**
+     * Generate a tree that combines the information from the template document and the variable content. The generated 
+     * tree will be expanded with nodes depending on the information on the variables.
+     * @param templateDoc
+     * @param content
+     * @return
+     */
     private TemplateRootNode genTemplateTree(org.jdom2.Document templateDoc, Map<String, List<EditorVariableContent>> content) {
 
         // skip the top node since it is part of the editor template and not the XML we want
@@ -329,34 +344,33 @@ public class EditorTemplate {
     
     private void replace(Content c, EditorVariableContent evc ){
         
-        DataAttributes da = evc.getAttrs();
-        
-        if( c instanceof org.jdom2.Text ){
-            org.jdom2.Text text = (org.jdom2.Text) c;
+        if( c instanceof Text ){
+            Text text = (Text) c;
             String currValue = text.getText();
-            
-            for( String attrKey : da.getAttributesSetup().keySet() ){
-                String newValue = da.getAttribute(attrKey);
-                currValue = currValue.replace("$" + attrKey, newValue);
-            }
-            text.setText(currValue);
+            text.setText(getReplaceValue(currValue, evc));
         } else if ( c instanceof Element ){
             Element e = (Element) c;
             
             for( Attribute a : e.getAttributes()){
 
                 String currValue = a.getValue();
-                for( String attrKey : da.getAttributesSetup().keySet() ){
-                    String newValue = da.getAttribute(attrKey);
-                    currValue = currValue.replace("$" + attrKey, newValue);
-                }
-                a.setValue(currValue);
+                a.setValue(getReplaceValue(currValue, evc));
             }
             
             for( Content childContent : e.getContent()){
                 replace(childContent, evc);
             }
+        }        
+    }
+    
+    private String getReplaceValue(String value, EditorVariableContent evc){
+        
+        DataAttributes da = evc.getAttrs();
+        for( String attrKey : da.getAttributesSetup().keySet() ){
+            String newValue = da.getAttribute(attrKey);
+            value = value.replace("$" + attrKey, newValue);
         }
+        return value;        
         
     }
     
