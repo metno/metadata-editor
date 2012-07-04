@@ -11,7 +11,7 @@ public class DataStoreFactory {
         
         Properties prop = new Properties();
         try {
-            prop.load(DataStore.class.getResourceAsStream("metadataeditor.properties"));
+            prop.load(DataStore.class.getResourceAsStream("/metadataeditor.properties"));
         } catch (IOException e) {            
             throw new RuntimeException("Cannot open property file: " + e.getMessage());
         }
