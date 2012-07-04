@@ -3,7 +3,6 @@ package no.met.metadataeditor.widget;
 import java.util.HashMap;
 import java.util.Map;
 
-import no.met.metadataeditor.EditorWidget;
 import no.met.metadataeditor.dataTypes.DataAttributes;
 import no.met.metadataeditor.dataTypes.EditorVariable;
 import no.met.metadataeditor.dataTypes.EditorVariableContent;

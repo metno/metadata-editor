@@ -3,7 +3,6 @@ package no.met.metadataeditor.widget;
 import java.util.HashMap;
 import java.util.Map;
 
-import no.met.metadataeditor.EditorWidget;
 
 public class UriWidget extends EditorWidget {
 
