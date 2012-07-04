@@ -23,6 +23,8 @@ public class EditorBean implements Serializable {
     private EditorConfiguration editorConfiguration;
     
     private String recordIdentifier;
+    
+    private String project;
 
     public EditorBean() {
 
@@ -33,7 +35,7 @@ public class EditorBean implements Serializable {
         
         if(editorConfiguration == null){
             editorConfiguration = EditorConfigurationFactory.getPredefinedInstance();        
-            editorConfiguration.populate(recordIdentifier);
+            editorConfiguration.populate(project, recordIdentifier);
             
             // need to get the session before the view is rendered to avoid getting exception.
             // see http://stackoverflow.com/questions/7433575/cannot-create-a-session-after-the-response-has-been-committed
@@ -43,7 +45,7 @@ public class EditorBean implements Serializable {
     
     public String save() {
         
-        editorConfiguration.save(recordIdentifier);
+        editorConfiguration.save(project, recordIdentifier);
         
         return "";
     }
@@ -64,6 +66,14 @@ public class EditorBean implements Serializable {
 
     public void setRecordIdentifier(String recordIdentifier) {
         this.recordIdentifier = recordIdentifier;
+    }
+
+    public String getProject() {
+        return project;
+    }
+
+    public void setProject(String project) {
+        this.project = project;
     }
 
     public void addValue(String variableName){

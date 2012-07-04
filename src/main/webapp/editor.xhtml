@@ -7,6 +7,7 @@
 
 <f:metadata>
     <f:viewParam name="record" value="#{editorBean.recordIdentifier}" />
+    <f:viewParam name="project" value="#{editorBean.project}" />
     <f:event type="preRenderView" listener="#{editorBean.populate}" />
  </f:metadata>
 
@@ -33,8 +34,9 @@
 
     </ui:repeat>
 
-    <button type="button" onclick="editor.save()">Save</button>
-    <button type="button" onclick="editor.reset()">Reset</button>
+    <h:commandButton value="Save" action="#{editorBean.save}">
+        <f:ajax execute="@form" render="@form" />
+    </h:commandButton>
     </h:form>
     
 </h:body>
