@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MM2 xmlns="http://www.met.no/schema/metamod/MM2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.met.no/schema/metamod/MM2 https://wiki.met.no/_media/metamod/mm2.xsd">
+	<!--<metadata name="datacollection_period_to">2012-12-31</metadata> -->
+	<metadata name="variable">air_pressure_at_sea_level</metadata>
+	<metadata name="variable">air_temperature</metadata>
+	<metadata name="variable">altitude</metadata>
+	<metadata name="variable">cloud_area_fraction</metadata>
+	<metadata name="variable">cloud_area_fraction_in_atmosphere_layer</metadata>
+	<metadata name="variable">land_area_fraction</metadata>
+	<metadata name="variable">lwe_precipitation_rate</metadata>
+	<metadata name="variable">lwe_thickness_of_precipitation_amount</metadata>
+	<metadata name="variable">relative_humidity</metadata>
+	<metadata name="variable">sea_floor_depth_below_geoid</metadata>
+	<metadata name="variable">sea_surface_wave_significant_height</metadata>
+	<metadata name="variable">visibility_in_air</metadata>
+</MM2>
