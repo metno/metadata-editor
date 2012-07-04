@@ -1,6 +1,5 @@
 package no.met.metadataeditor.dataTypes;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayDeque;
@@ -252,7 +251,7 @@ class TemplateHandler extends DefaultHandler {
                 assert(edtElements.size() == 1);
                 resultConfig = edtElements.getFirst().getChildren();
             }
-            EditorVariable ev  = edtElements.removeLast();
+            edtElements.removeLast();
         } else {
             finalPathElements.removeLast();
         }
