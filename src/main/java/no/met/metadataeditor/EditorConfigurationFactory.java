@@ -2,6 +2,7 @@ package no.met.metadataeditor;
 
 import java.io.File;
 
+import no.met.metadataeditor.widget.EditorWidget;
 import no.met.metadataeditor.widget.LatLonBoundingBoxWidget;
 import no.met.metadataeditor.widget.StartAndStopTimeWidget;
 import no.met.metadataeditor.widget.StringWidget;
@@ -37,7 +38,7 @@ public class EditorConfigurationFactory {
         EditorWidget ew3 = new ListWidget("Keywords", "variableList");
         ec.addWidget(ew3);
       
-        EditorWidget ew4 = new LatLonBoundingBoxWidget("Bounding box", "localBB");
+        EditorWidget ew4 = new LatLonBoundingBoxWidget("Bounding box", "globalBB");
         ec.addWidget(ew4);
 
         EditorWidget ew5 = new StartAndStopTimeWidget("Time extent", "timeExtend");
