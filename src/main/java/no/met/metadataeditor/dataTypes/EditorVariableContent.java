@@ -1,19 +1,15 @@
 package no.met.metadataeditor.dataTypes;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 
 
 /**
  * Class used for serialization of the metadata to a JSON format. This class
  * represent a single possibly multivalued editor variable.
  */
-public class EditorVariableContent implements Serializable {
-
-    private static final long serialVersionUID = -5518951323575863694L;
+public class EditorVariableContent {
 
     private DataAttributes attrs;
 

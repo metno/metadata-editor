@@ -1,6 +1,5 @@
 package no.met.metadataeditor.dataTypes;
 
-import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
  * EditorVariable class.
  */
 @JsonTypeInfo(use=JsonTypeInfo.Id.CLASS, include=JsonTypeInfo.As.PROPERTY, property="@class")  
-public abstract class DataAttributes implements Serializable {
-
-    private static final long serialVersionUID = -4182840533404059153L;
+public abstract class DataAttributes {
 
     @JsonIgnore
     public Map<String, DataType> getAttributesSetup(){
