@@ -22,7 +22,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import no.met.metadataeditor.dataTypes.EditorTemplate;
-import no.met.metadataeditor.dataTypes.EditorTemplateFactory;
 import no.met.metadataeditor.dataTypes.EditorVariable;
 import no.met.metadataeditor.dataTypes.EditorVariableContent;
 import no.met.metadataeditor.datastore.DataStore;
@@ -75,6 +74,7 @@ public class EditorConfiguration implements Serializable {
     
     public boolean populate(String project, String identifier) {
 
+        DataStore dataStore = DataStoreFactory.getInstance();
         EditorTemplate et = getTemplate(project, identifier);    
         Map<String,List<EditorVariableContent>> varContent = getContent(project, identifier, et);
         Map<String,EditorVariable> varMap = et.getTemplate();        
@@ -82,7 +82,7 @@ public class EditorConfiguration implements Serializable {
             
             if(widgetMap.containsKey(entry.getKey())){
                 EditorWidget widget = widgetMap.get(entry.getKey()); 
-                widget.configure(entry.getValue());
+                widget.configure(project, dataStore, entry.getValue());
                 List<EditorVariableContent> content = varContent.get(entry.getKey());
                 widget.populate(content);
             }
@@ -141,16 +141,19 @@ public class EditorConfiguration implements Serializable {
 
     public void save(String project, String identifier) {
 
-        Map<String, List<EditorVariableContent>> content = new HashMap<String, List<EditorVariableContent>>();
-        for(Entry<String, EditorWidget> entry : widgetMap.entrySet()){            
-            content.put(entry.getKey(), entry.getValue().getContent());
-        }
-        
         DataStore dataStore = DataStoreFactory.getInstance();
         String templateString = dataStore.readTemplate(project, identifier);
         InputSource templateSource = new InputSource(new StringReader(templateString));
-        
         EditorTemplate et = getTemplate(project, identifier);        
+        Map<String, EditorVariable> variables = et.getTemplate();
+        
+        Map<String, List<EditorVariableContent>> content = new HashMap<String, List<EditorVariableContent>>();
+        for(Entry<String, EditorWidget> entry : widgetMap.entrySet()){  
+            EditorVariable ev = variables.get(entry.getKey());
+            
+            content.put(entry.getKey(), entry.getValue().getContent(ev));
+        }
+        
         try {
             Document resultDoc = et.writeContent(templateSource, content);
             String resultString = docToString(resultDoc);
