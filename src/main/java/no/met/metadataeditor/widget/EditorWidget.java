@@ -1,7 +1,9 @@
 package no.met.metadataeditor.widget;
 
 import java.io.Serializable;
+import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +11,7 @@ import java.util.Map;
 import no.met.metadataeditor.dataTypes.DataAttributes;
 import no.met.metadataeditor.dataTypes.EditorVariable;
 import no.met.metadataeditor.dataTypes.EditorVariableContent;
+import no.met.metadataeditor.datastore.DataStore;
 
 /**
  * Class for representing widgets. This is a pure data class and should never
@@ -35,11 +38,8 @@ public abstract class EditorWidget implements Serializable {
     
     private int minOccurs = 1;
     
-    private List<String> resourceValues;
-    
-    // the type of data attributes. Used to construct new objects of the same type.
-    private DataAttributes attributesType;
-    
+    private List<String> resourceValues = new ArrayList<String>();
+        
     public EditorWidget(String label, String variableName) {
         this.label = label;
         this.variableName = variableName;
@@ -67,14 +67,13 @@ public abstract class EditorWidget implements Serializable {
         values.remove(value);        
     }
 
-    public void configure(EditorVariable variable){
+    public void configure(String project, DataStore dataStore, EditorVariable variable){
         maxOccurs = variable.getMaxOccurs();
         minOccurs = variable.getMinOccurs();
         
-        if( variable.hasDefaultResource() ){
-            resourceValues = variable.getDefaultResourceValues();
+        if( null != variable.getDefaultResourceURI()){
+            resourceValues = fetchResourceValues(variable.getDefaultResourceURI(), project, dataStore);
         }
-        attributesType = variable.getNewDataAttributes();
     }
     
     public void populate(List<EditorVariableContent> contents) {
@@ -98,13 +97,13 @@ public abstract class EditorWidget implements Serializable {
     /**
      * Take the information stored in the widget and send it back to the EditorVariable
      */
-    public List<EditorVariableContent> getContent(){
+    public List<EditorVariableContent> getContent(EditorVariable ev){
         
         List<EditorVariableContent> contentList = new ArrayList<EditorVariableContent>();
         for( Map<String,String> value : values ){
 
             EditorVariableContent content = new EditorVariableContent();
-            DataAttributes da = attributesType.newInstance();
+            DataAttributes da = ev.getNewDataAttributes();
             content.setAttrs(da);            
             for( Map.Entry<String, String> entry : value.entrySet() ){
                 da.addAttribute(entry.getKey(), entry.getValue());
@@ -136,8 +135,12 @@ public abstract class EditorWidget implements Serializable {
         return getClass().getName();
     }
 
-    public List<String> getResourceValues(){
-        return resourceValues;
+    private List<String> fetchResourceValues(URI resourceURI, String project, DataStore dataStore){
+        
+        String resourceString = dataStore.readResource(project, resourceURI.toString());
+        
+        String[] resourceValues = resourceString.split("\n");
+        return Arrays.asList(resourceValues);
     }
     
     public int getMaxOccurs(){
@@ -153,5 +156,9 @@ public abstract class EditorWidget implements Serializable {
     }
     
     public abstract Map<String, String> getDefaultValue();
+
+    public List<String> getResourceValues() {
+        return resourceValues;
+    }
       
 }
