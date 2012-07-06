@@ -6,6 +6,8 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
+import no.met.metadataeditor.datastore.DataStore;
+import no.met.metadataeditor.datastore.DataStoreFactory;
 import no.met.metadataeditor.widget.EditorWidget;
 import no.met.metadataeditor.widget.LatLonBoundingBoxWidget;
 import no.met.metadataeditor.widget.StartAndStopTimeWidget;
@@ -19,12 +21,21 @@ import no.met.metadataeditor.widget.UriWidget;
  */
 public class EditorConfigurationFactory {
 
+    public static EditorConfiguration getInstance(String project, String recordIdentifier){
+        
+        DataStore dataStore = DataStoreFactory.getInstance();
+        String configString = dataStore.readEditorConfiguration(project, recordIdentifier);
+        
+        return unmarshallConfiguration(configString);
+        
+    }
+    
     /**
      * Create a new editor configuration from a XML configuration file.
      * @param configString The string containing the XML editor configuration
      * @return A EditorConfiguration object.
      */
-    public static EditorConfiguration getInstance(String configString){
+     protected static EditorConfiguration unmarshallConfiguration(String configString){
 
         EditorConfiguration config = null;
         try {

@@ -18,7 +18,7 @@ public class EditorConfigurationFactoryTest {
     public void testUnmarshalling() {
         
         String configString = fileAsString("/editorconfiguration/config1.xml");
-        EditorConfiguration config = EditorConfigurationFactory.getInstance(configString);
+        EditorConfiguration config = EditorConfigurationFactory.unmarshallConfiguration(configString);
         
         assertEquals("Number of pages as expected", 1, config.getPages().size());
         
