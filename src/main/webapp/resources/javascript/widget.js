@@ -2,6 +2,8 @@ var Widget = Class.extend({
 
 	widgetId : "",
 	
+	label : "",
+	
 	type : "",
 	
 	maxOccurs : null,
@@ -14,8 +16,9 @@ var Widget = Class.extend({
 	
 	serverClass : null,
 	
-	init : function(widgetId) {
+	init : function(widgetId, label) {
 		this.widgetId = widgetId;
+		this.label = label;
 		this.buildUI();
 	},
 	

@@ -8,6 +8,7 @@
 
     <composite:interface>
         <composite:valueHolder name="widget" type="no.met.metaeditor.widget.StringWidget" />
+        <composite:valueHolder name="page" type="no.met.metaeditor.EditorPage" />
     </composite:interface>
 
     <composite:implementation>
@@ -21,14 +22,14 @@
 	            <h:inputText value="#{value['str']}" />
 	        </h:column>        
 	        <h:column>
-	            <h:commandButton value="Remove" action="#{editorBean.removeValue(cc.attrs.widget.variableName, value)}" rendred="#{cc.attrs.widget.minOccurs lt cc.attrs.widget.values.size()}">
+	            <h:commandButton value="Remove" action="#{editorBean.removeValue(cc.attrs.page.id, cc.attrs.widget.variableName, value)}" rendred="#{cc.attrs.widget.minOccurs lt cc.attrs.widget.values.size()}">
 	                <f:ajax execute="@this" render="@form" />
 	            </h:commandButton>     
 	        </h:column>
         
         </h:dataTable>
         
-        <h:commandButton value="Add" action="#{editorBean.addValue(cc.attrs.widget.variableName)}" rendered="#{cc.attrs.widget.maxOccurs gt cc.attrs.widget.values.size()}">
+        <h:commandButton value="Add" action="#{editorBean.addValue(cc.attrs.page.id, cc.attrs.widget.variableName)}" rendered="#{cc.attrs.widget.maxOccurs gt cc.attrs.widget.values.size()}">
             <f:ajax execute="@this" render="string-container" />
         </h:commandButton>
                 

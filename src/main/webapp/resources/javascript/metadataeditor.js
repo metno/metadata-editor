@@ -1,6 +1,6 @@
 var editor = {
 
-    recordIdentifier : "12345",
+    recordIdentifier : null,
 
     postPath : "rest/",
 
@@ -8,7 +8,14 @@ var editor = {
 
     widgets : {},
 
-    init : function() {
+    init : function(recordIdentifier) {
+        this.recordIdentifier = recordIdentifier;
+        
+        this.buildUI();
+        this.retrieveData();
+    },
+    
+    reset : function () {
         this.buildUI();
         this.retrieveData();
     },
@@ -20,18 +27,18 @@ var editor = {
         var outerThis = this;
         widgetContainers.each(function(index, domElement) {
             var element = jQuery(domElement);
-            outerThis.addWidget(element.attr('id'), element.data('widgettype'));
+            outerThis.addWidget(element.attr('id'), element.data('widgettype'), element.data('label'));
         });
 
     },
 
-    addWidget : function(widgetId, widgetType) {
+    addWidget : function(widgetId, widgetType, label) {
 
         var widget;
         if(widgetType == 'TextInput'){
-            widget = new TextInput(widgetId);
+            widget = new TextInput(widgetId, label);
         } else if ( widgetType = 'TextInputMulti'){
-            widget = new TextInputMulti(widgetId);
+            widget = new TextInputMulti(widgetId, label);
         } else {
             console.log("Unknow widget type: " + widgetType );
             return;
@@ -52,32 +59,7 @@ var editor = {
             var widget = this.widgets[varName];
             widget.populateValues(varMap[varName]);
             
-//            var values = varMap[varName];
-//            for ( var i = 0; i < values.length; i++) {
-//                this.populateVariable(namespace, varName, i, values[0]);
-//            }
         }
-
-    },
-
-    populateVariable : function(namespace, varName, index, varData) {
-
-        var attrs = varData['attrs'];
-
-        for ( var attrName in attrs) {
-            var htmlId = '#' + namespace + varName + '__' + index + '__value';
-            var value = attrs[attrName];
-            var element = jQuery(htmlId);
-
-            if (element.size() == 1) {
-                element.val(value);
-            } else {
-                console.log("Failed to find element '" + htmlId + "'");
-            }
-
-        }
-
-        this.populate(namespace + varName + "__", varData['children']);
 
     },
 
@@ -121,7 +103,7 @@ var editor = {
     },
     
     postEditorContent : function(content) {
-        
+                
         jQuery.ajax(this.postPath + this.recordIdentifier, {
 
             dataType : 'json',
@@ -134,7 +116,14 @@ var editor = {
                 console.log("Data posted:" + data);
             },
 
-            error : this.reportError
+            error : function (jqXHR, textStatus, errorThrown) {
+                
+                if(jqXHR.status == 404){
+                    this.recordDoesNotExist();
+                } else {
+                    this.reportError();    
+                }
+            }
 
         });        
         
@@ -144,5 +133,11 @@ var editor = {
 
         console.log("Error");
 
+    },
+    
+    recordDoesNotExist : function () {
+        
+        jQuery('#recordDoesNoExist').dialog({ modal : true } );
+        
     }
 };

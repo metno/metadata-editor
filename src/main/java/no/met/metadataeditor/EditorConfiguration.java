@@ -4,12 +4,10 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -28,9 +26,6 @@ import no.met.metadataeditor.dataTypes.EditorVariable;
 import no.met.metadataeditor.dataTypes.EditorVariableContent;
 import no.met.metadataeditor.datastore.DataStore;
 import no.met.metadataeditor.datastore.DataStoreFactory;
-import no.met.metadataeditor.widget.EditorWidget;
-
-
 
 /**
  * Class used accessing editor configuration that are used to generate the editor UI.
@@ -43,39 +38,18 @@ public class EditorConfiguration implements Serializable {
      */
     private static final long serialVersionUID = -6228315858621721527L;
 
-    private static final Logger logger = Logger.getLogger(EditorConfiguration.class.getName());
-    
-    // list of widgets. Used to keep the order of the widgets as in the configuration
-    private List<EditorWidget> widgets;
-    
-    private Map<String,EditorWidget> widgetMap;
-    
     private List<EditorPage> pages;
     
+    private Map<String, EditorPage> pageMap;
+    
     public EditorConfiguration(){
-        widgets = new ArrayList<EditorWidget>();
-        widgetMap = new HashMap<String,EditorWidget>();
-        
-    }
 
-    public void addWidget(EditorWidget widget){        
-        widgets.add(widget);
-        widgetMap.put(widget.getVariableName(), widget);
+        pages = new ArrayList<EditorPage>();
+        pageMap = new HashMap<String, EditorPage>();
+        
     }
     
-    public List<EditorWidget> getWidgets(){
-        return widgets;
-    }
-    
-    public EditorWidget getWidget(String variableName){
-        
-        if(widgetMap.containsKey(variableName)){
-            return widgetMap.get(variableName);
-        }
-        
-        return null;
-        
-    }
+
     
     public boolean populate(String project, String identifier) {
 
@@ -83,17 +57,16 @@ public class EditorConfiguration implements Serializable {
         EditorTemplate et = getTemplate(project, identifier);    
         Map<String,List<EditorVariableContent>> varContent = getContent(project, identifier, et);
         Map<String,EditorVariable> varMap = et.getTemplate();        
-        for(Map.Entry<String, EditorVariable> entry : varMap.entrySet()){
-            
-            if(widgetMap.containsKey(entry.getKey())){
-                EditorWidget widget = widgetMap.get(entry.getKey()); 
-                widget.configure(project, dataStore, entry.getValue());
-                List<EditorVariableContent> content = varContent.get(entry.getKey());
-                widget.populate(content);
+        
+        boolean allPopulated = true;
+        for( EditorPage page : pages ) {
+            boolean pagePopulated = page.populate(project, dataStore, varMap, varContent);
+            if( !pagePopulated ){
+                allPopulated = false;
             }
         }
         
-        return allPopulated();
+        return allPopulated;
     }
     
     private EditorTemplate getTemplate(String project, String identifier){
@@ -130,19 +103,6 @@ public class EditorConfiguration implements Serializable {
     }
     
     
-    private boolean allPopulated(){
-        
-        List<String> notPopulated = new ArrayList<String>();
-        for(Map.Entry<String,EditorWidget> entry : widgetMap.entrySet() ){
-            
-            if(!entry.getValue().isPopulated()){
-                logger.warning("EditorWidget '" + entry.getKey() + "' has not been populated" );
-                notPopulated.add(entry.getKey());
-            }
-        }
-        
-        return notPopulated.isEmpty() ? true : false; 
-    }
 
     public void save(String project, String identifier) {
 
@@ -153,10 +113,8 @@ public class EditorConfiguration implements Serializable {
         Map<String, EditorVariable> variables = et.getTemplate();
         
         Map<String, List<EditorVariableContent>> content = new HashMap<String, List<EditorVariableContent>>();
-        for(Entry<String, EditorWidget> entry : widgetMap.entrySet()){  
-            EditorVariable ev = variables.get(entry.getKey());
-            
-            content.put(entry.getKey(), entry.getValue().getContent(ev));
+        for( EditorPage page : pages ){
+            content.putAll(page.getContent(variables));
         }
         
         try {
@@ -187,7 +145,22 @@ public class EditorConfiguration implements Serializable {
 
     public void setPages(List<EditorPage> pages) {
         this.pages = pages;
+        updatePageMap(this.pages);
     }
+    
+    private void updatePageMap(List<EditorPage> pages){
+        
+        pageMap.clear();
+        for( EditorPage page : pages ){
+            pageMap.put(page.getId(), page);
+        }
+        
+    }
+    
+    public EditorPage getPage(String id){
+        return pageMap.get(id);
+    }
+    
     
     
     

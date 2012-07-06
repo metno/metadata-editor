@@ -23,7 +23,7 @@ public class EditorConfigurationFactoryTest {
         assertEquals("Number of pages as expected", 1, config.getPages().size());
         
         EditorPage firstPage = config.getPages().get(0);
-        assertEquals("Page name set as expected", "MM2", firstPage.getName());
+        assertEquals("Page name set as expected", "MM2", firstPage.getLabel());
         
         assertEquals("First page has the correct number of widgets", 2, firstPage.getWidgets().size());
         

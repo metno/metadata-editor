@@ -36,7 +36,7 @@ public class EditorBean implements Serializable {
     public void populate() {
         
         if(editorConfiguration == null){
-            editorConfiguration = EditorConfigurationFactory.getPredefinedInstance();        
+            editorConfiguration = EditorConfigurationFactory.getInstance(project, recordIdentifier);        
             editorConfiguration.populate(project, recordIdentifier);
             
             // need to get the session before the view is rendered to avoid getting exception.
@@ -78,13 +78,13 @@ public class EditorBean implements Serializable {
         this.project = project;
     }
 
-    public void addValue(String variableName){
-        EditorWidget ew = editorConfiguration.getWidget(variableName);
+    public void addValue(String pageId, String variableName){
+        EditorWidget ew = editorConfiguration.getPage(pageId).getWidget(variableName);
         ew.addNewValue();        
     }
     
-    public void removeValue(String variableName, Map<String,String> value) {
-        EditorWidget ew = editorConfiguration.getWidget(variableName);
+    public void removeValue(String pageId, String variableName, Map<String,String> value) {
+        EditorWidget ew = editorConfiguration.getPage(pageId).getWidget(variableName);
         ew.removeValue(value);
         
     }

@@ -2,6 +2,8 @@ var TextInputMulti = Widget.extend({
 	
     numValues : 0,
     
+    nextIdNum : 0,
+    
     attrName : "str",
     
     attrClass : "",
@@ -9,8 +11,20 @@ var TextInputMulti = Widget.extend({
     buildUI : function () {
         
         var container = this.getContainer();        
-        var html = '<button>Add</button>';      
+        var fieldContainerId = this.generateFieldContainerId();
+        var addButtonId = this.widgetId + '__add';
+        
+        var outerThis = this;
+        var addFunc = function () {
+            outerThis.addField(outerThis.nextIdNum);
+        };
+        
+        var html = '<label>' + this.label + '</label>';
+        html += '<div id="' + fieldContainerId + '"></div>';        
+        html += '<button type="button" id="' + addButtonId + '">Add</button>';      
         container.html(html);
+        
+        jQuery('#' + addButtonId).bind("click", addFunc);
         
     },
     
@@ -26,7 +40,7 @@ var TextInputMulti = Widget.extend({
             var inputElement = jQuery('#' + this.generateHtmlId(i));
             
             if( inputElement.size() == 0){
-                this.addField(i);
+                this.addField(this.nextIdNum);
                 inputElement = jQuery('#' + this.generateHtmlId(i));
             }
             
@@ -44,19 +58,40 @@ var TextInputMulti = Widget.extend({
 
         }
         
-        
     },
     
     addField : function (index) {
         
-        var container = this.getContainer();
+        var container = jQuery('#' + this.generateFieldContainerId());
         var htmlId = this.generateHtmlId(index);
+        var buttonId = this.widgetId + "__remove__" + index;
+        var fieldClass = this.widgetId + "__field";
         
-        var html = '<input type="text" name="' + htmlId + '" id="' + htmlId + '" />';
+        var html = '<div id="' + htmlId + '__container">';
+        html += '<input class="' + fieldClass  + '" type="text" name="' + htmlId + '" id="' + htmlId + '" />';
+        html += '<button type="button" id="' + buttonId + '">Remove</button>';
+        html += '</div>';
         container.append(html);
         
+        var outerThis = this;
+        var removeFunc = function () {
+            outerThis.removeField(index);
+        };
+        
+        jQuery("#" + buttonId).bind("click", removeFunc );
+        
         this.numValues++;
+        this.nextIdNum++;
                 
+    },
+    
+    removeField : function(index){
+        
+        var htmlId = this.generateHtmlId(index);
+        jQuery('#' + htmlId + '__container' ).detach();
+        
+        this.numValues--;
+        
     },
     
     getContent : function () {
@@ -79,6 +114,10 @@ var TextInputMulti = Widget.extend({
     
     generateHtmlId : function (index) {
         return this.widgetId + "__" + index + "__" + this.attrName;       
+    },
+    
+    generateFieldContainerId : function () {
+        return this.widgetId + "__fieldcontainer";
     }
     
 });

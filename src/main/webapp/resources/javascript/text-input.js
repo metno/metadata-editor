@@ -8,7 +8,8 @@ var TextInput = Widget.extend({
 	    
 	    var container = this.getContainer();	    
 	    var htmlId = this.generateHtmlId();
-	    var html = '<input type="text" value="" name="' + htmlId + '" id="' + htmlId + '" />';	    
+	    var html = '<label for="' + htmlId + '">' + this.label + '</label>';
+	    html += '<input type="text" value="" name="' + htmlId + '" id="' + htmlId + '" />';	    
 	    container.html(html);
 	    
 	},
