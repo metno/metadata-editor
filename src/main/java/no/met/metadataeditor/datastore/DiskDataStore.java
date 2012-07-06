@@ -6,13 +6,12 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Serializable;
 
 import java.util.logging.*;
 
 import no.met.metadataeditor.EditorException;
 
-public class DiskDataStore implements DataStore, Serializable {
+public class DiskDataStore implements DataStore {
 
     private String basePath;
 
@@ -76,9 +75,23 @@ public class DiskDataStore implements DataStore, Serializable {
 
     @Override
     public String readResource(String project, String resourceIdentifier) {
-        return null;
+        
+        File resourcePath = resourcePath(project, resourceIdentifier);
+        if( !resourcePath.exists()){
+            throw new EditorException("Resource file does not exist: " + resourcePath.getAbsolutePath());
+        }
+        
+        return readFile(resourcePath);
     }
 
+    
+    private File resourcePath(String project, String resourceIdentifier){
+        
+        File dir = new File(basePath, project);
+        File path = new File(dir, resourceIdentifier);
+        return path;
+    }
+    
     private File metadataPath(String project, String recordIdentifier) {
 
         File dir = new File(new File(basePath, project), "XML");
