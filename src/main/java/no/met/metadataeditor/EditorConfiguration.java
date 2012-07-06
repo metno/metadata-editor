@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.jdom2.Document;
@@ -33,6 +35,7 @@ import no.met.metadataeditor.widget.EditorWidget;
 /**
  * Class used accessing editor configuration that are used to generate the editor UI.
  */
+@XmlRootElement(name="editor", namespace="http://www.met.no/schema/metadataeditor/editorConfiguration")
 public class EditorConfiguration implements Serializable {
     
     /**
@@ -47,6 +50,8 @@ public class EditorConfiguration implements Serializable {
     
     private Map<String,EditorWidget> widgetMap;
     
+    private List<EditorPage> pages;
+    
     public EditorConfiguration(){
         widgets = new ArrayList<EditorWidget>();
         widgetMap = new HashMap<String,EditorWidget>();
@@ -55,7 +60,7 @@ public class EditorConfiguration implements Serializable {
 
     public void addWidget(EditorWidget widget){        
         widgets.add(widget);
-        widgetMap.put(widget.variableName, widget);
+        widgetMap.put(widget.getVariableName(), widget);
     }
     
     public List<EditorWidget> getWidgets(){
@@ -172,6 +177,16 @@ public class EditorConfiguration implements Serializable {
         StringWriter writer = new StringWriter();
         xout.output(doc, writer);
         return writer.toString();
+    }
+
+
+    @XmlElement(name="page", namespace="http://www.met.no/schema/metadataeditor/editorConfiguration")
+    public List<EditorPage> getPages() {
+        return pages;
+    }
+
+    public void setPages(List<EditorPage> pages) {
+        this.pages = pages;
     }
     
     

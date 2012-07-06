@@ -70,7 +70,17 @@ public class DiskDataStore implements DataStore {
 
     @Override
     public String readEditorConfiguration(String project, String recordIdentifier) {
-        return null;
+        
+        String metadata = readMetadata(project, recordIdentifier);
+
+        SupportedFormat format = DataStoreUtils.getFormat(metadata);
+        
+        File configPath = configurationPath(project, format);
+        if(!configPath.exists()){
+            throw new EditorException("No configuration exists for the format: " + format );
+        }
+        
+        return readFile(configPath);
     }
 
     @Override
@@ -84,6 +94,12 @@ public class DiskDataStore implements DataStore {
         return readFile(resourcePath);
     }
 
+    
+    private File configurationPath(String project, SupportedFormat format){
+        File dir = new File(new File(basePath, project), "config");
+        File path = new File(dir, format.editorConfigName());
+        return path;
+    }
     
     private File resourcePath(String project, String resourceIdentifier){
         
