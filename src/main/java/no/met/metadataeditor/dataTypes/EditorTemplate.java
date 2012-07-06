@@ -81,6 +81,7 @@ public class EditorTemplate {
                 return namespacePrefixes.get(namespaceURI);
             }
 
+            @SuppressWarnings("rawtypes")
             public Iterator getPrefixes(String namespaceURI) {
                 // only one prefix by construction
                 List<String> prefixes = new ArrayList<String>();
