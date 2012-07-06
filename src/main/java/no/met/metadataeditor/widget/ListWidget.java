@@ -3,17 +3,8 @@ package no.met.metadataeditor.widget;
 import java.util.HashMap;
 import java.util.Map;
 
-import no.met.metadataeditor.dataTypes.DataAttributes;
-import no.met.metadataeditor.dataTypes.EditorVariable;
-import no.met.metadataeditor.dataTypes.EditorVariableContent;
-import no.met.metadataeditor.dataTypes.ListElementAttributes;
-import no.met.metadataeditor.dataTypes.StringAttributes;
-
 public class ListWidget extends EditorWidget {
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = 5670896760766742704L;
 
     public ListWidget(String label, String variableName) {
