@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.net.URI;
 import java.net.URL;
@@ -48,7 +49,7 @@ public class TestHelpers {
         StringBuilder sb = new StringBuilder();  
         BufferedReader br = null;
         try {
-            br = new BufferedReader(new FileReader(fileUrl.getFile()));            
+            br = new BufferedReader(new InputStreamReader(fileUrl.openStream()));            
             String line = br.readLine();
 
             while (line != null) {
