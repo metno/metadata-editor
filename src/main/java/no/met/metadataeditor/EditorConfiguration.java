@@ -53,7 +53,7 @@ public class EditorConfiguration implements Serializable {
         DataStore dataStore = DataStoreFactory.getInstance();
         EditorTemplate et = getTemplate(project, identifier);    
         Map<String,List<EditorVariableContent>> varContent = getContent(project, identifier, et);
-        Map<String,EditorVariable> varMap = et.getTemplate();        
+        Map<String,EditorVariable> varMap = et.getVarMap();        
         
         boolean allPopulated = true;
         for( EditorPage page : pages ) {
@@ -107,7 +107,7 @@ public class EditorConfiguration implements Serializable {
         String templateString = dataStore.readTemplate(project, identifier);
         InputSource templateSource = new InputSource(new StringReader(templateString));
         EditorTemplate et = getTemplate(project, identifier);        
-        Map<String, EditorVariable> variables = et.getTemplate();
+        Map<String, EditorVariable> variables = et.getVarMap();
         
         Map<String, List<EditorVariableContent>> content = new HashMap<String, List<EditorVariableContent>>();
         for( EditorPage page : pages ){
@@ -157,6 +157,29 @@ public class EditorConfiguration implements Serializable {
     public EditorPage getPage(String id){
         Map<String,EditorPage> pageMap = getPageMap();
         return pageMap.get(id);
+    }
+    
+    public void addMissingOccurs(){
+        
+        for( EditorPage page : pages){
+            page.addMissingOccurs();
+        }
+        
+        
+    }
+
+
+
+    public void validateVarNames(EditorTemplate editorTemplate) {
+
+        Map<String,EditorVariable> varMap = editorTemplate.getVarMap();
+        
+        for( EditorPage page : pages ){
+            page.validateVarNames(varMap);
+        }
+        
+        
+        
     }
     
     

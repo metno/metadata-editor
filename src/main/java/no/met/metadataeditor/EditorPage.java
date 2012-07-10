@@ -13,6 +13,7 @@ import javax.xml.bind.annotation.XmlElement;
 
 import no.met.metadataeditor.dataTypes.EditorVariable;
 import no.met.metadataeditor.dataTypes.EditorVariableContent;
+import no.met.metadataeditor.dataTypes.InvalidTemplateException;
 import no.met.metadataeditor.datastore.DataStore;
 import no.met.metadataeditor.widget.EditorWidget;
 
@@ -123,5 +124,24 @@ public class EditorPage implements Serializable {
         }
         
         return content;
+    }
+
+    public void addMissingOccurs() {
+
+        for( EditorWidget widget : widgets ){
+            widget.addMissingOccurs();
+        }
+        
+        
+    }
+
+    public void validateVarNames(Map<String, EditorVariable> varMap) {
+
+        for( EditorWidget widget : widgets ){
+            if(! varMap.containsKey(widget.getVariableName())){
+                throw new InvalidEditorConfigurationException("The variable '" + widget.getVariableName() + "' was not found in the template");
+            }
+        }
+        
     }
 }

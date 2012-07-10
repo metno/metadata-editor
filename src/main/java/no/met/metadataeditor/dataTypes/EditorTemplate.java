@@ -34,7 +34,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public class EditorTemplate {
-    private Map<String, EditorVariable> template;
+    private Map<String, EditorVariable> varMap;
     private Map<String, String> prefixeNamspace;
     private Map<String, String> namespacePrefixes;
 
@@ -63,7 +63,7 @@ public class EditorTemplate {
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         }
-        template = th.getResultConfig();
+        varMap = th.getResultConfig();
         namespacePrefixes = th.getNamespacePrefixes();
         prefixeNamspace = new HashMap<String, String>();
         for (String key : namespacePrefixes.keySet()) {
@@ -105,7 +105,7 @@ public class EditorTemplate {
         xpath.setNamespaceContext(getTemplateContext());
 
         // retrieve the information for the EditorVariables
-        return readEditorContent(xpath, "", doc, getTemplate());
+        return readEditorContent(xpath, "", doc, getVarMap());
     }   
     
     /**
@@ -376,8 +376,8 @@ public class EditorTemplate {
     }
     
         
-    public Map<String, EditorVariable> getTemplate() {
-        return template;
+    public Map<String, EditorVariable> getVarMap() {
+        return varMap;
     }
 
 

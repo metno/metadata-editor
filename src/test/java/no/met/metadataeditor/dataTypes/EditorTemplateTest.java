@@ -402,7 +402,7 @@ public class EditorTemplateTest {
         EditorTemplate et = null;
         try {
             et = new EditorTemplate(new InputSource(url.openStream()));
-            mse = et.getTemplate();
+            mse = et.getVarMap();
             assertNotNull(mse);
         } catch (SAXException e) {
             e.printStackTrace();

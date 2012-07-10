@@ -1,13 +1,22 @@
 package no.met.metadataeditor;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.io.StringReader;
 import java.util.Map;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ComponentSystemEvent;
 
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
+import no.met.metadataeditor.dataTypes.EditorTemplate;
+import no.met.metadataeditor.datastore.DataStore;
+import no.met.metadataeditor.datastore.DataStoreFactory;
 import no.met.metadataeditor.widget.EditorWidget;
 
 /**
@@ -27,22 +36,64 @@ public class EditorBean implements Serializable {
     private String recordIdentifier;
     
     private String project;
+    
+    boolean initPerformed = false;
 
     public EditorBean() {
 
         
     }
     
-    public void populate() {
+    public void init(ComponentSystemEvent event) {
         
-        if(editorConfiguration == null){
-            editorConfiguration = EditorConfigurationFactory.getInstance(project, recordIdentifier);        
+        if(!initPerformed){
+
+            EditorTemplate editorTemplate = getTemplate(project,recordIdentifier);            
+            editorConfiguration = EditorConfigurationFactory.getInstance(project, recordIdentifier);
+            
+            editorConfiguration.validateVarNames(editorTemplate);
+            
             editorConfiguration.populate(project, recordIdentifier);
+            editorConfiguration.addMissingOccurs();
             
             // need to get the session before the view is rendered to avoid getting exception.
             // see http://stackoverflow.com/questions/7433575/cannot-create-a-session-after-the-response-has-been-committed
-            FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+            FacesContext.getCurrentInstance().getExternalContext().getSession(true);           
+            
+            initPerformed = true;
         }
+        
+    }
+    
+    public EditorTemplate getTemplate(String project, String recordIdentifier){
+        
+        DataStore dataStore = DataStoreFactory.getInstance();
+        String templateString = dataStore.readTemplate(project, recordIdentifier);
+        InputSource templateSource = new InputSource(new StringReader(templateString));
+        
+        EditorTemplate et = null;
+        try {
+            et = new EditorTemplate(templateSource);
+        } catch (SAXException e) {
+            throw new EditorException(e.getMessage());
+        } catch (IOException e) {
+            throw new EditorException(e.getMessage());
+        } 
+        return et;        
+        
+    }
+    
+    public void populate() {
+        
+//        if(editorConfiguration == null){
+//            editorConfiguration = EditorConfigurationFactory.getInstance(project, recordIdentifier);        
+//            editorConfiguration.populate(project, recordIdentifier);
+//            editorConfiguration.addMissingOccurs();
+//            
+//            // need to get the session before the view is rendered to avoid getting exception.
+//            // see http://stackoverflow.com/questions/7433575/cannot-create-a-session-after-the-response-has-been-committed
+//            FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+//        }
     }
     
     public String save() {
