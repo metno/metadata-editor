@@ -25,7 +25,6 @@ public class DataStoreDiskTest {
         testDir = new File(tmpDir, baseDir);
         testDir.mkdirs();
         
-        System.err.println(DataStoreDiskTest.class.getResource("/datastore/diskdatastore/"));
         File startDir = new File(DataStoreDiskTest.class.getResource("/datastore/diskdatastore/").getFile());
         
         FileUtils.copyDirectory(startDir, testDir);
