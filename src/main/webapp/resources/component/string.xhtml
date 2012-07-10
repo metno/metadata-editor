@@ -19,7 +19,7 @@
         <h:dataTable value="#{cc.attrs.widget.values}" var="value" id="string">
         
 	        <h:column>
-	            <h:inputText value="#{value['str']}" />
+	            <h:inputText value="#{value['str']}" size="${cc.attrs.widget.size}" maxlength="${cc.attrs.widget.maxlength}" />
 	        </h:column>        
 	        <h:column>
 	            <h:commandButton value="Remove" action="#{editorBean.removeValue(cc.attrs.page.id, cc.attrs.widget.variableName, value)}" rendred="#{cc.attrs.widget.minOccurs lt cc.attrs.widget.values.size()}">
