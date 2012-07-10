@@ -6,13 +6,21 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
+import java.net.JarURLConnection;
 import java.net.URI;
 import java.net.URL;
+import java.net.URLConnection;
+import java.util.Enumeration;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jdom2.Document;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
@@ -70,6 +78,47 @@ public class TestHelpers {
         }
         return sb.toString();        
         
+    }
+    
+    
+    
+    public static void copyResourcesRecursively(URL originUrl, File destination) throws IOException {
+        URLConnection urlConnection = originUrl.openConnection();
+        if (urlConnection instanceof JarURLConnection) {
+            copyJarResourcesRecursively(destination, (JarURLConnection) urlConnection);
+        } else {
+
+            // we assume that we are either dealing with files in a Jar or that they are found on the disk
+            File originAsFile = new File(originUrl.getFile());
+            FileUtils.copyDirectory(originAsFile, destination);            
+        }
+    }
+
+    public static void copyJarResourcesRecursively(File destination, JarURLConnection jarConnection ) throws IOException {
+        JarFile jarFile = jarConnection.getJarFile();
+
+        Enumeration<JarEntry> entries = jarFile.entries();
+        while( entries.hasMoreElements() ){
+            JarEntry entry = entries.nextElement();
+
+            if (entry.getName().startsWith(jarConnection.getEntryName())) {
+                String fileName = StringUtils.removeStart(entry.getName(), jarConnection.getEntryName());
+                if (!entry.isDirectory()) {
+                    InputStream entryInputStream = null;
+                    try {
+                        entryInputStream = jarFile.getInputStream(entry);
+                        FileUtils.copyInputStreamToFile(entryInputStream, new File(destination, fileName));
+                    } finally {
+                        entryInputStream.close();
+                    }
+                } else {
+                    File dir = new File(destination, fileName);
+                    if( !dir.exists() ){
+                        dir.mkdirs();
+                    }
+                }
+            }
+        }
     }
     
 }

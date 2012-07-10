@@ -25,9 +25,7 @@ public class DataStoreDiskTest {
         testDir = new File(tmpDir, baseDir);
         testDir.mkdirs();
         
-        File startDir = new File(DataStoreDiskTest.class.getResource("/datastore/diskdatastore/").getFile());        
-        
-        FileUtils.copyDirectory(startDir, testDir);
+        copyResourcesRecursively(DataStoreDiskTest.class.getResource("/datastore/diskdatastore/"), testDir);
     }
     
     @AfterClass
