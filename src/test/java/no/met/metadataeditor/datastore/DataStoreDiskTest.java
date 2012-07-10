@@ -25,13 +25,14 @@ public class DataStoreDiskTest {
         testDir = new File(tmpDir, baseDir);
         testDir.mkdirs();
         
-        copyResourcesRecursively(DataStoreDiskTest.class.getResource("/datastore/diskdatastore/"), testDir);
+        copyStreamResourcesRecursively(DataStoreDiskTest.class, "/datastore/diskdatastore/", testDir);
+
     }
     
     @AfterClass
     public static void teardown() throws IOException{
         
-        FileUtils.deleteDirectory(testDir);
+        //FileUtils.deleteDirectory(testDir);
         
     }
     
