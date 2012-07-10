@@ -33,19 +33,19 @@
 <mmc:metadata>
 
 <MM2 xmlns="http://www.met.no/schema/metamod/MM2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.met.no/schema/metamod/MM2 https://wiki.met.no/_media/metamod/mm2.xsd">
-<edt:lonLatBoundingBox varName="localBB" minOccurs="0" maxOccurs="unbounded">
-<metadata name="bounding_box">$east,$south,$west,$north</metadata>
-</edt:lonLatBoundingBox>
+<edt:lonLatBoundingBoxSingle varName="localBB" minOccurs="0" maxOccurs="unbounded">
+<metadata name="bounding_box">$latLonStr</metadata>
+</edt:lonLatBoundingBoxSingle>
 <edt:list varName="variableList" minOccurs="0" maxOccurs="unbounded" resource="keywords.txt">
 <metadata name="variable">$listElement</metadata>
 </edt:list>
 <edt:string varName="PIname" minOccurs="0" maxOccurs="1">
-<metadata name="PI_name">$string</metadata>
+<metadata name="PI_name">$str</metadata>
 </edt:string>
 <edt:startAndStopTime varName="timeExtend" minOccurs="1" maxOccurs="1">
 <!-- TODO: how to define start without end -->
 <metadata name="datacollection_period_from">$start</metadata>
-<metadata name="datacollection_period_to">$end</metadata>
+<metadata name="datacollection_period_to">$stop</metadata>
 </edt:startAndStopTime>
 <edt:uri varName="dataRef" minOccurs="1" maxOccurs="unbounded">
 <metadata name="dataref">$uri</metadata>

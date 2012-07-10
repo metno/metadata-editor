@@ -6,8 +6,8 @@
 	<edt:lonLatBoundingBox varName="globalBB" minOccurs="1" maxOccurs="1">
 		<boundingBox north="$north" south="$south" east="$east" west="$west"/>
 	</edt:lonLatBoundingBox>
-	<edt:lonLatBoundingBox varName="localBB" minOccurs="0" maxOccurs="unbounded">
-		<metadata name="bounding_box">$east,$south,$west,$north</metadata>
-	</edt:lonLatBoundingBox>
+	<edt:lonLatBoundingBoxSingle varName="localBB" minOccurs="0" maxOccurs="unbounded">
+		<metadata name="bounding_box">$latLonStr</metadata>
+	</edt:lonLatBoundingBoxSingle>
 </mmc:mmCombined>
 </edt:editorDataTypes>

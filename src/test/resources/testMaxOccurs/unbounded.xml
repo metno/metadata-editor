@@ -13,9 +13,9 @@
 
 <MM2 xmlns="http://www.met.no/schema/metamod/MM2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.met.no/schema/metamod/MM2 https://wiki.met.no/_media/metamod/mm2.xsd">
 
-<edt:lonLatBoundingBox varName="maxOccurs" maxOccurs="unbounded">
-<metadata name="bounding_box">$east,$south,$west,$north</metadata>
-</edt:lonLatBoundingBox>
+<edt:lonLatBoundingBoxSingle varName="maxOccurs" maxOccurs="unbounded">
+<metadata name="bounding_box">$latLonStr</metadata>
+</edt:lonLatBoundingBoxSingle>
 </MM2>
 
 </mmc:metadata>

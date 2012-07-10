@@ -178,7 +178,7 @@ public class EditorTemplateTest {
 
         Map<String, List<EditorVariableContent>> content = new HashMap<String,List<EditorVariableContent>>();
         List<EditorVariableContent> localBBContent = new ArrayList<EditorVariableContent>();
-        localBBContent.add(EditorVariableContentFactory.childlessBoundingboxAttribute("85", "0", "-10", "54"));        
+        localBBContent.add(EditorVariableContentFactory.childlessSingleBBAttribute("0,85,-10,54"));        
         content.put("localBB", localBBContent);
         List<EditorVariableContent> globalBBContent = new ArrayList<EditorVariableContent>();
         globalBBContent.add(EditorVariableContentFactory.childlessBoundingboxAttribute("0", "85", "-10", "54"));        

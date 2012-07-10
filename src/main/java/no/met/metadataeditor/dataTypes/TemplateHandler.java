@@ -274,7 +274,7 @@ class TemplateHandler extends DefaultHandler {
             
             EditorVariable ev = entry.getValue();
             if( !ev.attrsXPathValid() ){
-                throw new InvalidTemplateException("One or more variables are missing for variable: " + namespace + entry.getKey());
+                throw new InvalidTemplateException("One or $<varname> attributes are missing for variable: " + namespace + entry.getKey());
             }
             
             validateConfig(ev.getChildren(), entry.getKey() + "::");            

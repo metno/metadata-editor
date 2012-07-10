@@ -37,6 +37,17 @@ public class EditorVariableContentFactory {
         return evc;
     }
     
+    public static EditorVariableContent childlessSingleBBAttribute(String latLonStr){
+        
+        EditorVariableContent evc = new EditorVariableContent();
+        DataAttributes da = new LatLonBBSingleAttribute();
+        da.addAttribute("latLonStr", latLonStr);
+        evc.setAttrs(da);
+        
+        return evc;
+        
+    }
+    
     public static EditorVariableContent stringAttributeWithChildren(String value, Map<String,List<EditorVariableContent>> children){
         
         EditorVariableContent evc = new EditorVariableContent();

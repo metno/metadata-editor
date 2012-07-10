@@ -19,6 +19,7 @@
           <w:layer name="$str"/>
           
             <edt:string varName="grandchild">
+                $str
                 <w:layer />
             </edt:string>
           
