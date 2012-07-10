@@ -39,13 +39,10 @@ public class EditorConfiguration implements Serializable {
     private static final long serialVersionUID = -6228315858621721527L;
 
     private List<EditorPage> pages;
-    
-    private Map<String, EditorPage> pageMap;
-    
+       
     public EditorConfiguration(){
 
         pages = new ArrayList<EditorPage>();
-        pageMap = new HashMap<String, EditorPage>();
         
     }
     
@@ -145,19 +142,20 @@ public class EditorConfiguration implements Serializable {
 
     public void setPages(List<EditorPage> pages) {
         this.pages = pages;
-        updatePageMap(this.pages);
     }
     
-    private void updatePageMap(List<EditorPage> pages){
+    private Map<String, EditorPage> getPageMap(){
         
-        pageMap.clear();
+        Map<String, EditorPage> pageMap = new HashMap<String,EditorPage>();
         for( EditorPage page : pages ){
             pageMap.put(page.getId(), page);
         }
+        return pageMap;
         
     }
     
     public EditorPage getPage(String id){
+        Map<String,EditorPage> pageMap = getPageMap();
         return pageMap.get(id);
     }
     
