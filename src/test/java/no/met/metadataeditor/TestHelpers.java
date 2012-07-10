@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.net.URI;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,11 +44,11 @@ public class TestHelpers {
     
     public static String fileAsString(String filename){
         
-        String fileUrl = TestHelpers.class.getResource(filename).getFile();
+        URL fileUrl = TestHelpers.class.getResource(filename);
         StringBuilder sb = new StringBuilder();  
         BufferedReader br = null;
         try {
-            br = new BufferedReader(new FileReader(new File(fileUrl)));            
+            br = new BufferedReader(new FileReader(fileUrl.getFile()));            
             String line = br.readLine();
 
             while (line != null) {
