@@ -24,10 +24,8 @@ public class EditorPage implements Serializable {
     
     private String id;
 
-    private List<EditorWidget> widgets;
+    private List<EditorWidget> widgets = new ArrayList<EditorWidget>();
     
-    private Map<String, EditorWidget> widgetMap = new HashMap<String,EditorWidget>();
-
     public EditorPage() {
 
     }
@@ -57,20 +55,22 @@ public class EditorPage implements Serializable {
 
     public void setWidgets(List<EditorWidget> widgets) {
         this.widgets = widgets;
-        updateWidgetMap(this.widgets);
+        //updateWidgetMap(this.widgets);
     }
     
-    private void updateWidgetMap(List<EditorWidget> widgets){
+    private Map<String, EditorWidget> getWidgetMap(){
         
-        widgetMap.clear();
+        Map<String,EditorWidget> widgetMap = new HashMap<String,EditorWidget>();
         for( EditorWidget widget : widgets ){
             widgetMap.put(widget.getVariableName(), widget);
         }
+        return widgetMap;
         
     }
     
     public EditorWidget getWidget(String variableName){
         
+        Map<String,EditorWidget> widgetMap = getWidgetMap();
         if(widgetMap.containsKey(variableName)){
             return widgetMap.get(variableName);
         }
@@ -81,6 +81,7 @@ public class EditorPage implements Serializable {
     
     public boolean populate(String project, DataStore dataStore, Map<String, EditorVariable> varMap, Map<String, List<EditorVariableContent>> contentMap){
         
+        Map<String,EditorWidget> widgetMap = getWidgetMap();
         for(Map.Entry<String, EditorVariable> entry : varMap.entrySet()){
             
             if(widgetMap.containsKey(entry.getKey())){
@@ -98,6 +99,7 @@ public class EditorPage implements Serializable {
     
     private boolean allPopulated(){
         
+        Map<String,EditorWidget> widgetMap = getWidgetMap();
         List<String> notPopulated = new ArrayList<String>();
         for(Map.Entry<String,EditorWidget> entry : widgetMap.entrySet() ){
             
@@ -112,6 +114,7 @@ public class EditorPage implements Serializable {
     
     public Map<String, List<EditorVariableContent>> getContent(Map<String, EditorVariable> variables){
         
+        Map<String,EditorWidget> widgetMap = getWidgetMap();
         Map<String, List<EditorVariableContent>> content = new HashMap<String, List<EditorVariableContent>>();
         for(Entry<String, EditorWidget> entry : widgetMap.entrySet()){  
             EditorVariable ev = variables.get(entry.getKey());
