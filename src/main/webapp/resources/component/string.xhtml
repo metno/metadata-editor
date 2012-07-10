@@ -14,7 +14,7 @@
     <composite:implementation>
 
         <h:panelGroup id="string-container" layout="block">
-        <h:outputLabel value="#{cc.attrs.widget.label}" id="test" />
+        <h:outputLabel value="#{cc.attrs.widget.label}" />
 
         <h:dataTable value="#{cc.attrs.widget.values}" var="value" id="string">
         
@@ -22,7 +22,7 @@
 	            <h:inputText value="#{value['str']}" size="${cc.attrs.widget.size}" maxlength="${cc.attrs.widget.maxlength}" />
 	        </h:column>        
 	        <h:column>
-	            <h:commandButton value="Remove" action="#{editorBean.removeValue(cc.attrs.page.id, cc.attrs.widget.variableName, value)}" rendred="#{cc.attrs.widget.minOccurs lt cc.attrs.widget.values.size()}">
+	            <h:commandButton value="Remove" action="#{editorBean.removeValue(cc.attrs.page.id, cc.attrs.widget.variableName, value)}" rendered="#{cc.attrs.widget.minOccurs lt cc.attrs.widget.values.size()}">
 	                <f:ajax execute="@this" render="@form" />
 	            </h:commandButton>     
 	        </h:column>

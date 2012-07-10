@@ -23,7 +23,7 @@
                     <f:selectItems value="#{cc.attrs.widget.resourceValues}" />
                 </h:selectOneMenu>            
             </h:column>
-            <h:column rendred="#{cc.attrs.widget.minOccurs lt cc.attrs.widget.values.size()}">
+            <h:column rendered="#{cc.attrs.widget.minOccurs lt cc.attrs.widget.values.size()}">
 	            <h:commandButton value="Remove" action="#{editorBean.removeValue(cc.attrs.page.id, cc.attrs.widget.variableName, value)}">
 	                <f:ajax execute="@this" render="@form" />
 	            </h:commandButton>       
