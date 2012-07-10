@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.Map;
 
 import javax.xml.namespace.NamespaceContext;
@@ -31,8 +32,6 @@ import org.jdom2.input.SAXBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import com.sun.istack.logging.Logger;
 
 public class EditorTemplate {
     private Map<String, EditorVariable> template;
@@ -130,7 +129,7 @@ public class EditorTemplate {
             }
             
             try {
-                Logger.getLogger(EditorTemplate.class).fine(String.format("EditorVariable %s with path %s and local path %s", varName, ev.getDocumentXPath(), evPath));
+                Logger.getLogger(getClass().getName()).fine(String.format("EditorVariable %s with path %s and local path %s", varName, ev.getDocumentXPath(), evPath));
                 XPathExpression expr =  xpath.compile(evPath);
                 NodeList evSubnodes = (NodeList) expr.evaluate(node, XPathConstants.NODESET);
                 for (int i = 0; i < evSubnodes.getLength(); ++i) {
@@ -160,14 +159,14 @@ public class EditorTemplate {
         Map<String, String> attXpath = variable.getAttrsXPath();
         for (String att : attXpath.keySet()) {
             String relAttPath = attXpath.get(att).substring(variable.getDocumentXPath().length());
-            Logger.getLogger(EditorTemplate.class).fine(String.format("searching attr %s in %s", att, relAttPath));
+            Logger.getLogger(getClass().getName()).fine(String.format("searching attr %s in %s", att, relAttPath));
             if (relAttPath.startsWith("/")) {
                 // remove leading / in e.g. /text()
                 relAttPath = relAttPath.substring(1);
             }
             XPathExpression attExpr = xpath.compile(relAttPath);
             String attVal = attExpr.evaluate(node);
-            Logger.getLogger(EditorTemplate.class).fine(String.format("%s + value = %s", relAttPath, attVal));
+            Logger.getLogger(getClass().getName()).fine(String.format("%s + value = %s", relAttPath, attVal));
             da.addAttribute(att, attVal);
         }
         
