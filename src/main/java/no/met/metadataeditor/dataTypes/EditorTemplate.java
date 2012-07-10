@@ -43,6 +43,7 @@ public class EditorTemplate {
     static {
         templateTags.put("container", "container");
         templateTags.put("lonLatBoundingBox", "lonLatBoundingBox");
+        templateTags.put("lonLatBoundingBoxSingle", "lonLatBoundingBoxSingle");        
         templateTags.put("string", "string" );
         templateTags.put("uri", "uri");
         templateTags.put("list", "list");
