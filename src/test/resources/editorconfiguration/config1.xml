@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ec:editor xmlns:ec="http://www.met.no/schema/metadataeditor/editorConfiguration" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<ec:page name="MM2">
+	<ec:page label="MM2">
 		<ec:widget xsi:type="stringWidget" variableName="PIName" label="PI Name" />
 		<ec:widget xsi:type="listWidget" variableName="Keywords" label="Keywords" />
 	</ec:page>
