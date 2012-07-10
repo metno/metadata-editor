@@ -3,9 +3,11 @@ package no.met.metadataeditor.datastore;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 import java.util.logging.*;
 
@@ -125,9 +127,10 @@ public class DiskDataStore implements DataStore {
     private String readFile(File file) {
 
         StringBuilder sb = new StringBuilder();
+        
         BufferedReader br = null;
         try {
-            br = new BufferedReader(new FileReader(file));
+            br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
             String line = br.readLine();
 
             while (line != null) {
