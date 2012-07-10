@@ -4,17 +4,13 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-
 /**
  * Interface class that is only used as a type placeholder in the
  * EditorVariable class.
  */
-@JsonTypeInfo(use=JsonTypeInfo.Id.CLASS, include=JsonTypeInfo.As.PROPERTY, property="@class")  
+ 
 public abstract class DataAttributes {
 
-    @JsonIgnore
     public Map<String, DataType> getAttributesSetup(){
         return getAttributesSetup(getClass());
     }

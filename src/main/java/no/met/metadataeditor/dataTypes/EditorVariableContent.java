@@ -4,17 +4,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 /**
- * Class used for serialization of the metadata to a JSON format. This class
- * represent a single possibly multivalued editor variable.
+ * Class representing a single content value in an editor variable. The class is
+ * recursive so it can contain a mapping of child values as well.
  */
 public class EditorVariableContent {
 
     private DataAttributes attrs;
 
     private Map<String, List<EditorVariableContent>> children;
-
 
     public EditorVariableContent() {
         children = new HashMap<String, List<EditorVariableContent>>();

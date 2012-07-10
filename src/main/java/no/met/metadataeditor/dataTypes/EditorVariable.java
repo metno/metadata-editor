@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 public class EditorVariable {
 
     public final static String DEFAULT_RESOURCE = "default";
@@ -47,7 +45,6 @@ public class EditorVariable {
      * @return new instance of the dataAttributes
      * @see DataAttributes.addAttribute(String attr, String value)
      */
-    @JsonIgnore
     public DataAttributes getNewDataAttributes() {
         return dataAttributesType.newInstance();
     }
@@ -65,7 +62,6 @@ public class EditorVariable {
      * @param name The given to the name of the resource when it was added. 
      * @return A list of values from the resource.
      */
-    @JsonIgnore
     public List<String> getResourceValues(String name){
     
         if(!(resources.containsKey(name))){
@@ -86,7 +82,6 @@ public class EditorVariable {
      * Fetch the resource values for the default resource.
      * @return A list of values from the default resource.
      */
-    @JsonIgnore
     public List<String> getDefaultResourceValues(){
         return getResourceValues(DEFAULT_RESOURCE);
     }
@@ -140,7 +135,6 @@ public class EditorVariable {
      * @return returns a new DataAttributes object of the type belonging to this
      *         EditorVariable
      */
-    @JsonIgnore
     public DataAttributes getDataAttributes() {
         return dataAttributesType;
     }
