@@ -10,6 +10,7 @@ import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAnyAttribute;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
@@ -25,7 +26,7 @@ import no.met.metadataeditor.datastore.DataStore;
  */
 @XmlRootElement
 @XmlSeeAlso({ LatLonBoundingBoxWidget.class, ListWidget.class, StartAndStopTimeWidget.class, StringWidget.class,
-        UriWidget.class })
+        UriWidget.class, TextAreaWidget.class })
 public abstract class EditorWidget implements Serializable {
 
     /**
@@ -48,6 +49,8 @@ public abstract class EditorWidget implements Serializable {
     private int minOccurs = 1;
 
     private List<String> resourceValues = new ArrayList<String>();
+    
+    private List<EditorWidget> children = new ArrayList<EditorWidget>();
 
     public EditorWidget() {
         values = new ArrayList<Map<String, String>>();
@@ -183,6 +186,23 @@ public abstract class EditorWidget implements Serializable {
 
     public List<String> getResourceValues() {
         return resourceValues;
+    }
+
+    public void addMissingOccurs() {
+        
+        while( values.size() < minOccurs ){
+            addNewValue();
+        }
+        
+    }
+
+    @XmlElement
+    public List<EditorWidget> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<EditorWidget> children) {
+        this.children = children;
     }
 
 }
