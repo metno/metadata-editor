@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:metaedit="http://java.sun.com/jsf/composite/component">
+
+    <composite:interface>
+        <composite:valueHolder name="widget" type="no.met.metaeditor.widget.TextAreaWidget" />
+        <composite:valueHolder name="page" type="no.met.metaeditor.EditorPage" />
+    </composite:interface>
+
+    <composite:implementation>
+
+        <h:panelGroup id="string-container" layout="block">
+        <h:outputLabel value="#{cc.attrs.widget.label}" />
+
+        <h:dataTable value="#{cc.attrs.widget.values}" var="value" id="string">
+        
+            <h:column>
+                <h:inputTextarea value="#{value['str']}" rows="${cc.attrs.widget.rows}" cols="${cc.attrs.widget.cols}" />
+            </h:column>        
+            <h:column>
+                <h:commandButton value="Remove" action="#{editorBean.removeValue(cc.attrs.page.id, cc.attrs.widget.variableName, value)}" rendered="#{cc.attrs.widget.minOccurs lt cc.attrs.widget.values.size()}">
+                    <f:ajax execute="@this" render="@form" />
+                </h:commandButton>     
+            </h:column>
+        
+        </h:dataTable>
+        
+        <h:commandButton value="Add" action="#{editorBean.addValue(cc.attrs.page.id, cc.attrs.widget.variableName)}" rendered="#{cc.attrs.widget.maxOccurs gt cc.attrs.widget.values.size()}">
+            <f:ajax execute="@this" render="string-container" />
+        </h:commandButton>
+                
+        </h:panelGroup>
+
+    </composite:implementation>
+</html>
