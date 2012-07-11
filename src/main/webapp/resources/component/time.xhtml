@@ -3,6 +3,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
       xmlns:composite="http://java.sun.com/jsf/composite"
       xmlns:metaedit="http://java.sun.com/jsf/composite/component">
 
@@ -19,7 +20,7 @@
         <h:dataTable value="#{cc.attrs.widget.values}" var="value" id="string">
         
             <h:column>
-                <h:inputText value="#{value['time']}" />
+                <p:calendar value="#{value['time']}" pattern="yyyy-MM-dd HH:mm" converter="no.met.metadataeditor.DateTimeConverter" />
             </h:column>
             <h:column>
                 <h:commandButton value="Remove" action="#{editorBean.removeValue(cc.attrs.page.id, cc.attrs.widget.variableName, value)}" rendered="#{cc.attrs.widget.minOccurs lt cc.attrs.widget.values.size()}">
