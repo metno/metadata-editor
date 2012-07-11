@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +27,7 @@ import no.met.metadataeditor.datastore.DataStore;
  */
 @XmlRootElement
 @XmlSeeAlso({ LatLonBoundingBoxWidget.class, ListWidget.class, StartAndStopTimeWidget.class, StringWidget.class,
-        UriWidget.class, TextAreaWidget.class })
+        UriWidget.class, TextAreaWidget.class, TimeWidget.class })
 public abstract class EditorWidget implements Serializable {
 
     /**
@@ -104,6 +105,7 @@ public abstract class EditorWidget implements Serializable {
 
     public void populate(List<EditorVariableContent> contents) {
 
+        Map<String, EditorWidget> childMap = getChildWidgetMap();
         for (EditorVariableContent content : contents) {
             DataAttributes attrs = content.getAttrs();
 
@@ -114,6 +116,21 @@ public abstract class EditorWidget implements Serializable {
             }
 
             addValue(value);
+            
+            // recursively populate all children
+            Map<String, List<EditorVariableContent>> childContentMap = content.getChildren();
+            for( Map.Entry<String, List<EditorVariableContent>> entry : childContentMap.entrySet() ){
+                
+                String varName = entry.getKey();
+                List<EditorVariableContent> childContent = entry.getValue();
+                
+                if( childMap.containsKey(varName) ){
+                    childMap.get(varName).populate(childContent);
+                }
+                
+                
+            }
+            
         }
 
         isPopulated = true;
@@ -126,6 +143,7 @@ public abstract class EditorWidget implements Serializable {
      */
     public List<EditorVariableContent> getContent(EditorVariable ev) {
 
+        Map<String, EditorWidget> childWidgetMap = getChildWidgetMap();
         List<EditorVariableContent> contentList = new ArrayList<EditorVariableContent>();
         for (Map<String, String> value : values) {
 
@@ -136,11 +154,37 @@ public abstract class EditorWidget implements Serializable {
                 da.addAttribute(entry.getKey(), entry.getValue());
             }
             contentList.add(content);
+            
+            // recursively get content from child widgets.
+            Map<String, EditorVariable> childVarMap = ev.getChildren();
+            Map<String, List<EditorVariableContent>> childContentMap = new HashMap<String,List<EditorVariableContent>>(); 
+            for( Map.Entry<String, EditorVariable> entry : childVarMap.entrySet()){
+                String varName = entry.getKey();
+                
+                if( childWidgetMap.containsKey(varName)){
+                    EditorWidget childWidget = childWidgetMap.get(varName);
+                    List<EditorVariableContent> childContent = childWidget.getContent(entry.getValue());
+                    childContentMap.put(varName, childContent);
+                }
+            }
+            content.setChildren(childContentMap);
+            
         }
-
+        
         return contentList;
 
     }
+    
+    private Map<String, EditorWidget> getChildWidgetMap(){
+        
+        Map<String, EditorWidget> widgetMap = new HashMap<String, EditorWidget>();
+        for( EditorWidget child : children ){
+            widgetMap.put(child.getVariableName(), child);
+        }
+        
+        return widgetMap;
+        
+    }    
 
     private List<String> getRelevantAttributes() {
 
@@ -196,13 +240,27 @@ public abstract class EditorWidget implements Serializable {
         
     }
 
-    @XmlElement
+    @XmlElement(name="widget", namespace="http://www.met.no/schema/metadataeditor/editorConfiguration")
     public List<EditorWidget> getChildren() {
         return children;
     }
 
     public void setChildren(List<EditorWidget> children) {
         this.children = children;
+    }
+
+    /**
+     * Convert the widget tree under this editor widget to a list.
+     * @return
+     */
+    public List<EditorWidget> getWidgetTreeAsList() {
+
+        List<EditorWidget> widgetTree = new ArrayList<EditorWidget>();
+        for( EditorWidget child : children ){
+            widgetTree.add(child);
+            widgetTree.addAll(child.getWidgetTreeAsList());
+        }
+        return widgetTree;
     }
 
 }

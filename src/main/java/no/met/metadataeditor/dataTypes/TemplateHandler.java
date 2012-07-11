@@ -221,7 +221,9 @@ class TemplateHandler extends DefaultHandler {
                 addStandardEDT(new StringAndListElementAttributes(), nsUri, lName, atts);
             } else if ("startAndStopTime".equals(lName)) {
                 addStandardEDT(new StartAndStopTimeAttributes(), nsUri, lName, atts);
-            } else {
+            } else if ("time".equals(lName)) {
+                addStandardEDT(new TimeAttributes(), nsUri, lName, atts);
+            }  else {
                 throw new UndefinedEditorVariableException(lName);
             }
         } else {

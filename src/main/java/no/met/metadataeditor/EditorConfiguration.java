@@ -33,9 +33,6 @@ import no.met.metadataeditor.datastore.DataStoreFactory;
 @XmlRootElement(name="editor", namespace="http://www.met.no/schema/metadataeditor/editorConfiguration")
 public class EditorConfiguration implements Serializable {
     
-    /**
-     * 
-     */
     private static final long serialVersionUID = -6228315858621721527L;
 
     private List<EditorPage> pages;

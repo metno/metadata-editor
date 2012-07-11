@@ -8,7 +8,7 @@
 <f:metadata>
     <f:viewParam name="record" value="#{editorBean.recordIdentifier}" />
     <f:viewParam name="project" value="#{editorBean.project}" />
-    <f:event type="preRenderView" listener="#{editorBean.populate}" />
+    <f:event type="preRenderView" listener="#{editorBean.init}" />
  </f:metadata>
 
 
@@ -27,9 +27,11 @@
     <ui:repeat var="page" value="#{editorBean.editorConfiguration.pages}">
         <h:outputText value="#{page.label}" />
 	    <ui:repeat var="widget"
-	        value="#{page.widgets}">
+	        value="#{page.widgetTreeAsList}">
 	
 	        <metaedit:string widget="#{widget}" page="#{page}" rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.StringWidget'}" />
+	        <metaedit:text-area widget="#{widget}" page="#{page}" rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.TextAreaWidget'}" />
+	        <metaedit:time widget="#{widget}" page="#{page}" rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.TimeWidget'}" />
 	        <metaedit:list widget="#{widget}" page="#{page}" rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.ListWidget'}" />
 	        <metaedit:lat-lon-bounding-box widget="#{widget}" page="#{page}" rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.LatLonBoundingBoxWidget'}" />
 	        <metaedit:start-and-stop-time widget="#{widget}" page="#{page}" rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.StartAndStopTimeWidget'}" />        
