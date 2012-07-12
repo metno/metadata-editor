@@ -13,6 +13,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
 
+import org.primefaces.component.tabview.TabView;
+import org.primefaces.event.TabChangeEvent;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -38,6 +40,10 @@ public class EditorBean implements Serializable {
     private String recordIdentifier;
     
     private String project;
+    
+    // used to track the current active tab. We need this as some times the entire form is re-rendered and we lose
+    // the current tab wihout this
+    private int activeTabId = 0;
     
     boolean initPerformed = false;
 
@@ -158,6 +164,24 @@ public class EditorBean implements Serializable {
         this.project = project;
     }
 
+
+    public int getActiveTabId() {
+        return activeTabId;
+    }
+
+    public void setActiveTabId(int activeTabId) {
+        this.activeTabId = activeTabId;
+    }
+    
+    /**
+     * Track that the currently selected tab has changed.
+     * @param event
+     */
+    public void tabChanged(TabChangeEvent event){  
+        TabView tv = (TabView)event.getTab().getParent();
+        System.out.println("tabChanged(): " + tv.getActiveIndex());
+        activeTabId = tv.getActiveIndex();
+    }    
 
     public void addValue(EditorWidget widget){
         widget.addNewValue();        

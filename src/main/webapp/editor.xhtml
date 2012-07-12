@@ -38,8 +38,11 @@
     
 
     
-    <p:tabView var="page" value="#{editorBean.editorConfiguration.pages}">
-        <p:tab title="#{page.label}">
+    <p:tabView activeIndex="#{editorBean.activeTabId}" var="page" value="#{editorBean.editorConfiguration.pages}">
+    
+        <p:ajax event="tabChange" listener="#{editorBean.tabChanged}" />
+    
+        <p:tab title="#{page.label}" id="tab">
 		    <ui:repeat var="widget"
 		        value="#{page.widgetTreeAsList}">
 		
