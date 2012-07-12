@@ -24,7 +24,7 @@
         <h:dataTable value="#{cc.attrs.widget.values}" var="value" id="uri">
         
         <h:column>
-            <p:inputText value="#{value['uri']}" />
+            <p:inputText value="#{value['uri']}" size="#{cc.attrs.widget.size}" maxlength="#{cc.attrs.widget.maxlength}" />
         </h:column>        
         <h:column>
             <h:commandButton value=" " action="#{editorBean.removeValue(cc.attrs.widget, value)}" rendered="#{cc.attrs.widget.minOccurs lt cc.attrs.widget.values.size()}" styleClass="remove-button">
