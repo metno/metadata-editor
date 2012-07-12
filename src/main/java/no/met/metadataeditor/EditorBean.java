@@ -9,6 +9,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
 
@@ -45,10 +46,15 @@ public class EditorBean implements Serializable {
         
     }
     
-    public void init(ComponentSystemEvent event) {
+    public void init(ComponentSystemEvent event) throws IOException {
+
+        
         
         if(!initPerformed){
 
+            validateProject(project);
+            validateRecordIdentifier(project, recordIdentifier);
+            
             EditorTemplate editorTemplate = getTemplate(project,recordIdentifier);            
             editorConfiguration = EditorConfigurationFactory.getInstance(project, recordIdentifier);
             
@@ -106,7 +112,7 @@ public class EditorBean implements Serializable {
         
     }
     
-    public void reset() {
+    public void reset() throws IOException {
         
         if( initPerformed ){
             initPerformed = false;
@@ -161,5 +167,37 @@ public class EditorBean implements Serializable {
         widget.removeValue(value);
     }
     
+    /**
+     * Validates that the project parameter refers to an acutal project.
+     * @param context
+     * @param component
+     * @param object
+     * @throws IOException 
+     */
+    public void validateProject(String project) throws IOException {
+
+        DataStore dataStore = DataStoreFactory.getInstance();
+        if( !dataStore.projectExists(project)){
+            String msg = "The project '" + project + "' does not exist. Please check that the project is correct.";
+            FacesContext.getCurrentInstance().getExternalContext().responseSendError(404, msg);
+        }
+    }
+
+    /**
+     * Validate that the record identifier exists 
+     * @param context
+     * @param component
+     * @param object
+     * @throws IOException
+     */
+    public void validateRecordIdentifier(String project, String recordIdentifier) throws IOException {
+
+        DataStore dataStore = DataStoreFactory.getInstance();
+        if( !dataStore.metadataExists(project, recordIdentifier)){
+            String msg = "The metadata record '" + recordIdentifier + "' does not exist for the project '" + project + "'. ";
+            msg += "Please check that both the record identifier and the project is correct";
+            FacesContext.getCurrentInstance().getExternalContext().responseSendError(404, msg);
+        }
+    }    
     
 }

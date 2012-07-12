@@ -3,9 +3,11 @@
     xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
     <application>
-        <locale-config>
-            <default-locale>en</default-locale>
-        </locale-config>
-        <message-bundle>no.met.metadataeditor.properties.messages</message-bundle>
+   
     </application>
+    <factory>
+        <exception-handler-factory>
+        org.omnifaces.exceptionhandler.FullAjaxExceptionHandlerFactory
+        </exception-handler-factory>
+    </factory>
 </faces-config>

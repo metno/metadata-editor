@@ -150,4 +150,20 @@ public class DiskDataStore implements DataStore {
         return sb.toString();
     }
 
+    @Override
+    public boolean projectExists(String project) {
+        
+        File projectDir = new File(basePath, project);
+
+        return projectDir.exists() ? true : false;
+    }
+
+    @Override
+    public boolean metadataExists(String project, String recordIdentifier) {
+        
+        File metadataFile = metadataPath(project, recordIdentifier);
+        
+        return metadataFile.exists() ? true : false;
+    }
+
 }

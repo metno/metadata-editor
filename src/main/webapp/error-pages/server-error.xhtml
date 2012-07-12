@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:metaedit="http://java.sun.com/jsf/composite/component">
+
+<h:head>
+    <base
+        href="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.requestContextPath}/" />
+    <title>Metadata editor - Error </title>
+    <h:outputStylesheet name="editor.css" library="css"/>
+</h:head>
+
+<h:body>
+
+    <h:panelGroup layout="block" styleClass="error-page">
+    
+    <h1>#{requestScope['javax.servlet.error.status_code']} - An error occured</h1>
+    
+    <p>
+        #{requestScope['javax.servlet.error.message']}    
+    </p>   
+    
+    </h:panelGroup>    
+    
+</h:body>
+
+</html>

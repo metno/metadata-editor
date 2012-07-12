@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:metaedit="http://java.sun.com/jsf/composite/component">
+
+<h:head>
+    <base
+        href="#{facesContext.externalContext.request.scheme}://#{facesContext.externalContext.request.serverName}:#{facesContext.externalContext.request.serverPort}#{facesContext.externalContext.requestContextPath}/" />
+    <title>Metadata editor - View expired </title>
+    <h:outputStylesheet name="editor.css" library="css"/>
+</h:head>
+
+<h:body>
+
+    <h:panelGroup layout="block" styleClass="error-page">
+    
+    <h1>Session expired!</h1>
+    
+    <p>
+        Your session with the server has expired and your action could not be completed.
+        This happened either because the server has been restarted or your session has timed out.
+    </p>
+    <p>
+        All your unsaved changes have been lost. 
+        <a href="javascript:location.reload(true)">Click here to get back to the editor</a> 
+    </p>
+    
+    
+    </h:panelGroup>    
+    
+</h:body>
+
+</html>

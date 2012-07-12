@@ -5,6 +5,9 @@ public interface DataStore {
     
     boolean writeMetadata(String project, String recordIdentifier, String xml);
     
+    boolean projectExists(String project);
+    
+    boolean metadataExists(String project, String recordIdentifier);
     
     String readMetadata(String project, String recordIdentifier);
 
