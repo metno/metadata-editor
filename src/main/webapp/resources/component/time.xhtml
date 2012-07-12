@@ -20,7 +20,7 @@
         <h:dataTable value="#{cc.attrs.widget.values}" var="value" id="string">
         
             <h:column>
-                <p:calendar value="#{value['time']}" pattern="yyyy-MM-dd HH:mm" converter="no.met.metadataeditor.DateTimeConverter" />
+                <p:calendar value="#{value['time']}" pattern="yyyy-MM-dd HH:mm" converter="no.met.metadataeditor.DateTimeConverter" maxlength="16" size="17" />
             </h:column>
             <h:column>
                 <h:commandButton value="Remove" action="#{editorBean.removeValue(cc.attrs.page.id, cc.attrs.widget.variableName, value)}" rendered="#{cc.attrs.widget.minOccurs lt cc.attrs.widget.values.size()}">
