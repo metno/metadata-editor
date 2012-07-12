@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.io.StringReader;
 import java.util.Map;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
@@ -96,11 +97,13 @@ public class EditorBean implements Serializable {
 //        }
     }
     
-    public String save() {
+    public void save() {
         
         editorConfiguration.save(project, recordIdentifier);
+
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Changes has been saved.", "Changes has been saved.");
+        FacesContext.getCurrentInstance().addMessage(null, msg);        
         
-        return "";
     }
     
     public void reset() {
@@ -108,7 +111,18 @@ public class EditorBean implements Serializable {
         if( initPerformed ){
             initPerformed = false;
             init(null);
+            
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "All changes have been reset.", "All changes have been reset.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);             
         }
+        
+    }
+    
+    public void validate(){
+
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Validation has not been implemented yet.", "Validation has not been implemented yet.");
+        FacesContext.getCurrentInstance().addMessage(null, msg);             
+        
         
     }
     
