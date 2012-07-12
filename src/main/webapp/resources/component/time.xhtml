@@ -14,8 +14,12 @@
 
     <composite:implementation>
 
-        <h:panelGroup id="time-container" layout="block">
-        <h:outputLabel value="#{cc.attrs.widget.label}" />
+        <h:panelGroup id="time-container" layout="block" styleClass="editor-widget-container">
+        <h:outputLabel value="#{cc.attrs.widget.label}" styleClass="main-label" />
+
+        <h:commandButton value=" " action="#{editorBean.addValue(cc.attrs.page.id, cc.attrs.widget.variableName)}" rendered="#{cc.attrs.widget.maxOccurs gt cc.attrs.widget.values.size()}" styleClass="add-button">
+            <f:ajax execute="@this" render="time-container" />
+        </h:commandButton>
 
         <h:dataTable value="#{cc.attrs.widget.values}" var="value" id="string">
         
@@ -23,17 +27,13 @@
                 <p:calendar value="#{value['time']}" pattern="yyyy-MM-dd HH:mm" converter="no.met.metadataeditor.DateTimeConverter" maxlength="16" size="17" />
             </h:column>
             <h:column>
-                <h:commandButton value="Remove" action="#{editorBean.removeValue(cc.attrs.page.id, cc.attrs.widget.variableName, value)}" rendered="#{cc.attrs.widget.minOccurs lt cc.attrs.widget.values.size()}">
+                <h:commandButton value=" " action="#{editorBean.removeValue(cc.attrs.page.id, cc.attrs.widget.variableName, value)}" rendered="#{cc.attrs.widget.minOccurs lt cc.attrs.widget.values.size()}" styleClass="remove-button">
                     <f:ajax execute="@this" render="@form" />
                 </h:commandButton>     
             </h:column>
         
         </h:dataTable>
-        
-        <h:commandButton value="Add" action="#{editorBean.addValue(cc.attrs.page.id, cc.attrs.widget.variableName)}" rendered="#{cc.attrs.widget.maxOccurs gt cc.attrs.widget.values.size()}">
-            <f:ajax execute="@this" render="time-container" />
-        </h:commandButton>
-                
+       
         </h:panelGroup>
 
     </composite:implementation>

@@ -14,15 +14,17 @@
 
     <composite:implementation>
 
-        <h:panelGroup id="text-input-multi" layout="block">
+        <h:panelGroup id="text-input-multi" layout="block" styleClass="editor-widget-container">
 
-        <h:outputLabel value="#{cc.attrs.widget.label}" />
+        <h:outputLabel for="selectone" value="#{cc.attrs.widget.label}" styleClass="main-label" />
+        
+        <br />
 
         <h:selectOneMenu id="selectone" value="#{cc.attrs.widget.currentValue}">
             <f:selectItems value="#{cc.attrs.widget.filteredResourceValues}" />
         </h:selectOneMenu>           
         
-        <h:commandButton value="Add" action="#{editorBean.addValue(cc.attrs.widget)}" rendered="#{cc.attrs.widget.maxOccurs gt cc.attrs.widget.values.size()}">
+        <h:commandButton value=" " action="#{editorBean.addValue(cc.attrs.widget)}" rendered="#{cc.attrs.widget.maxOccurs gt cc.attrs.widget.values.size()}" styleClass="add-button">
             <f:ajax execute="@this selectone" render="text-input-multi" />
         </h:commandButton>                            
 
@@ -33,7 +35,7 @@
                 <h:outputText value="#{value['listElement']}" />
             </h:column>
             <h:column rendered="#{cc.attrs.widget.minOccurs lt cc.attrs.widget.values.size()}">
-                <h:commandButton value="Remove" action="#{editorBean.removeValue(cc.attrs.page.id, cc.attrs.widget.variableName, value)}">
+                <h:commandButton value=" " action="#{editorBean.removeValue(cc.attrs.page.id, cc.attrs.widget.variableName, value)}" styleClass="remove-button">
                     <f:ajax execute="@this" render="@form" />
                 </h:commandButton>       
             </h:column>

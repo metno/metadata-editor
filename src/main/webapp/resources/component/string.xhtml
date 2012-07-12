@@ -3,6 +3,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
       xmlns:composite="http://java.sun.com/jsf/composite"
       xmlns:metaedit="http://java.sun.com/jsf/composite/component">
 
@@ -13,26 +14,26 @@
 
     <composite:implementation>
 
-        <h:panelGroup id="string-container" layout="block">
-        <h:outputLabel value="#{cc.attrs.widget.label}" />
+        <h:panelGroup id="string-container" layout="block" styleClass="editor-widget-container">
+        <h:outputLabel value="#{cc.attrs.widget.label}" styleClass="main-label"/>
+
+        <h:commandButton value=" " action="#{editorBean.addValue(cc.attrs.page.id, cc.attrs.widget.variableName)}" rendered="#{cc.attrs.widget.maxOccurs gt cc.attrs.widget.values.size()}" styleClass="add-button">
+            <f:ajax execute="@this" render="string-container" />
+        </h:commandButton>
 
         <h:dataTable value="#{cc.attrs.widget.values}" var="value" id="string">
         
 	        <h:column>
-	            <h:inputText value="#{value['str']}" size="${cc.attrs.widget.size}" maxlength="${cc.attrs.widget.maxlength}" />
+	            <p:inputText value="#{value['str']}" size="${cc.attrs.widget.size}" maxlength="${cc.attrs.widget.maxlength}" />
 	        </h:column>        
 	        <h:column>
-	            <h:commandButton value="Remove" action="#{editorBean.removeValue(cc.attrs.page.id, cc.attrs.widget.variableName, value)}" rendered="#{cc.attrs.widget.minOccurs lt cc.attrs.widget.values.size()}">
+	            <h:commandButton value=" " action="#{editorBean.removeValue(cc.attrs.page.id, cc.attrs.widget.variableName, value)}" rendered="#{cc.attrs.widget.minOccurs lt cc.attrs.widget.values.size()}" styleClass="remove-button">
 	                <f:ajax execute="@this" render="@form" />
 	            </h:commandButton>     
 	        </h:column>
         
         </h:dataTable>
         
-        <h:commandButton value="Add" action="#{editorBean.addValue(cc.attrs.page.id, cc.attrs.widget.variableName)}" rendered="#{cc.attrs.widget.maxOccurs gt cc.attrs.widget.values.size()}">
-            <f:ajax execute="@this" render="string-container" />
-        </h:commandButton>
-                
         </h:panelGroup>
 
     </composite:implementation>

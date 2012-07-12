@@ -1,0 +1,49 @@
+.add-button, .remove-button {
+	border: 0px;
+	cursor: pointer;
+}
+
+.add-button {
+	background: white url('../resources/images/add.png') no-repeat center;
+	border: 0px;
+}
+
+.remove-button {
+    background: white url('../resources/images/delete.png') no-repeat center;
+    border: 0px;
+}
+
+label.main-label {
+	font-size: 1.1em;
+	font-weight: bolder;
+	
+	margin: 10px 7px 5px 0px;
+}
+
+div.editor-widget-container {
+	margin: 10px 0px 5px 0px;
+}
+
+.lat-lon-header {
+	text-align: left;
+}
+
+.ui-widget-content input.ui-inputfield {
+	box-shadow: none;
+	-webkit-box-shadow: none;
+}
+
+.ui-widget-content input.ui-inputfield {
+    box-shadow: none;
+    -webkit-box-shadow: none;
+}
+
+.ui-widget-content input.ui-inputfield, .ui-widget-content input.ui-inputfield.ui-state-focus {
+    box-shadow: none;
+    -webkit-box-shadow: none;
+}
+
+.ui-widget-content textarea.ui-inputfield, .ui-widget-content textarea.ui-inputfield.ui-state-focus {
+    box-shadow: none;
+    -webkit-box-shadow: none;
+}

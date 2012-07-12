@@ -3,6 +3,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"      
       xmlns:composite="http://java.sun.com/jsf/composite"
       xmlns:metaedit="http://java.sun.com/jsf/composite/component">
 
@@ -13,52 +14,51 @@
 
     <composite:implementation>
 
-        <h:panelGroup id="boundingbox-container" layout="block">
-        <h:outputLabel value="#{cc.attrs.widget.label}" />
+        <h:panelGroup id="boundingbox-container" layout="block" styleClass="editor-widget-container">
+        <h:outputLabel value="#{cc.attrs.widget.label}" styleClass="main-label"/>
+
+        <h:commandButton value=" " action="#{editorBean.addValue(cc.attrs.page.id, cc.attrs.widget.variableName)}" rendered="#{cc.attrs.widget.maxOccurs gt cc.attrs.widget.values.size()}" styleClass="add-button">
+            <f:ajax execute="@this" render="boundingbox-container" />
+        </h:commandButton>  
 
         <h:dataTable value="#{cc.attrs.widget.values}" var="value" id="boundingbox">
 
-            <h:column>
-                <h:outputLabel value="North" />
+            <h:column headerClass="lat-lon-header">
+                <f:facet name="header">
+                    <h:outputText value="North" />
+                </f:facet>
+                <p:inputText value="#{value['north']}" size="10" />
             </h:column>
-            <h:column>
-                <h:inputText value="#{value['north']}" />
+
+            <h:column headerClass="lat-lon-header">
+                <f:facet name="header">
+                    <h:outputText value="South" />
+                </f:facet>            
+                <p:inputText value="#{value['south']}" size="10" />
+            </h:column>
+
+            <h:column headerClass="lat-lon-header">
+                <f:facet name="header">
+                    <h:outputText value="East" />
+                </f:facet>            
+                <p:inputText value="#{value['east']}" size="10" />
+            </h:column>
+
+            <h:column headerClass="lat-lon-header">
+                <f:facet name="header">
+                    <h:outputText value="West" />
+                </f:facet>            
+                <p:inputText value="#{value['west']}" size="10" />
             </h:column>
 
             <h:column>
-                <h:outputLabel value="South" />
-            </h:column>
-            <h:column>
-                <h:inputText value="#{value['south']}" />
-            </h:column>
-
-            <h:column>
-                <h:outputLabel value="East" />
-            </h:column>
-            <h:column>
-                <h:inputText value="#{value['east']}" />
-            </h:column>
-
-            <h:column>
-                <h:outputLabel value="West" />
-            </h:column>
-            <h:column>
-                <h:inputText value="#{value['west']}" />
-            </h:column>
-
-            <h:column>
-                <h:commandButton value="Remove" action="#{editorBean.removeValue(cc.attrs.page.id, cc.attrs.widget.variableName, value)}" rendered="#{cc.attrs.widget.minOccurs lt cc.attrs.widget.values.size()}">
+                <h:commandButton value=" " action="#{editorBean.removeValue(cc.attrs.page.id, cc.attrs.widget.variableName, value)}" rendered="#{cc.attrs.widget.minOccurs lt cc.attrs.widget.values.size()}" styleClass="remove-button">
                     <f:ajax execute="@this" render="@form" />
                 </h:commandButton>                                            
             </h:column>
             
         </h:dataTable>
 
-        <h:commandButton value="Add" action="#{editorBean.addValue(cc.attrs.page.id, cc.attrs.widget.variableName)}" rendered="#{cc.attrs.widget.maxOccurs gt cc.attrs.widget.values.size()}">
-            <f:ajax execute="@this" render="boundingbox-container" />
-        </h:commandButton>                            
-
-        
         </h:panelGroup>
                 
     </composite:implementation>
