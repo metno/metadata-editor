@@ -27,7 +27,7 @@ import no.met.metadataeditor.datastore.DataStore;
  */
 @XmlRootElement
 @XmlSeeAlso({ LatLonBoundingBoxWidget.class, ListWidget.class, StartAndStopTimeWidget.class, StringWidget.class,
-        UriWidget.class, TextAreaWidget.class, TimeWidget.class })
+        UriWidget.class, TextAreaWidget.class, TimeWidget.class, MultiSelectListWidget.class })
 public abstract class EditorWidget implements Serializable {
 
     /**
@@ -211,7 +211,11 @@ public abstract class EditorWidget implements Serializable {
         String resourceString = dataStore.readResource(project, resourceURI.toString());
 
         String[] resourceValues = resourceString.split("\n");
-        return Arrays.asList(resourceValues);
+        List<String> values = new ArrayList<String>();
+        for(String s : resourceValues ){
+            values.add(s);
+        }
+        return values;
     }
 
     public int getMaxOccurs() {
