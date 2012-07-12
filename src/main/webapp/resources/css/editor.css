@@ -47,3 +47,14 @@ div.editor-widget-container {
     box-shadow: none;
     -webkit-box-shadow: none;
 }
+
+div.error-page {
+	font-family: Arial, Verdana, sans-serif;
+	padding: 5px 5px 5px 5px;
+	margin: 20px auto 0px auto;
+	border: 1px solid silver;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+	width: 500px;
+}
