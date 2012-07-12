@@ -103,6 +103,15 @@ public class EditorBean implements Serializable {
         return "";
     }
     
+    public void reset() {
+        
+        if( initPerformed ){
+            initPerformed = false;
+            init(null);
+        }
+        
+    }
+    
     public EditorConfiguration getEditorConfiguration() {
         return editorConfiguration;
     }
