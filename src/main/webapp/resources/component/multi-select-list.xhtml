@@ -35,7 +35,7 @@
                 <h:outputText value="#{value['listElement']}" />
             </h:column>
             <h:column rendered="#{cc.attrs.widget.minOccurs lt cc.attrs.widget.values.size()}">
-                <h:commandButton value=" " action="#{editorBean.removeValue(cc.attrs.page.id, cc.attrs.widget.variableName, value)}" styleClass="remove-button">
+                <h:commandButton value=" " action="#{editorBean.removeValue(cc.attrs.widget, value)}" styleClass="remove-button">
                     <f:ajax execute="@this" render="@form" />
                 </h:commandButton>       
             </h:column>

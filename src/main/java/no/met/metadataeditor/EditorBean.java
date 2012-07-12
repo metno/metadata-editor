@@ -129,21 +129,11 @@ public class EditorBean implements Serializable {
         this.project = project;
     }
 
-    public void addValue(String pageId, String variableName){
-        EditorWidget ew = editorConfiguration.getPage(pageId).getWidget(variableName);
-        ew.addNewValue();        
-    }
 
     public void addValue(EditorWidget widget){
         widget.addNewValue();        
     }    
-    
-    public void removeValue(String pageId, String variableName, Map<String,String> value) {
-        EditorWidget ew = editorConfiguration.getPage(pageId).getWidget(variableName);
-        ew.removeValue(value);
-        
-    }
-    
+       
     public void removeValue(EditorWidget widget, Map<String,String> value){
         widget.removeValue(value);
     }

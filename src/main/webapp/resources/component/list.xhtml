@@ -17,7 +17,7 @@
         <h:panelGroup id="text-input-multi" layout="block" styleClass="editor-widget-container">
         <h:outputLabel value="#{cc.attrs.widget.label}" styleClass="main-label" />
 
-        <h:commandButton value=" " action="#{editorBean.addValue(cc.attrs.page.id, cc.attrs.widget.variableName)}" rendered="#{cc.attrs.widget.maxOccurs gt cc.attrs.widget.values.size()}" styleClass="add-button">
+        <h:commandButton value=" " action="#{editorBean.addValue(cc.attrs.widget)}" rendered="#{cc.attrs.widget.maxOccurs gt cc.attrs.widget.values.size()}" styleClass="add-button">
             <f:ajax execute="@this" render="text-input-multi" />
         </h:commandButton>  
 
@@ -29,7 +29,7 @@
                 </h:selectOneMenu>            
             </h:column>
             <h:column rendered="#{cc.attrs.widget.minOccurs lt cc.attrs.widget.values.size()}">
-	            <h:commandButton value=" " action="#{editorBean.removeValue(cc.attrs.page.id, cc.attrs.widget.variableName, value)}" styleClass="remove-button">
+	            <h:commandButton value=" " action="#{editorBean.removeValue(cc.attrs.widget, value)}" styleClass="remove-button">
 	                <f:ajax execute="@this" render="@form" />
 	            </h:commandButton>       
             </h:column>

@@ -17,7 +17,7 @@
         <h:panelGroup id="uri-container" layout="block" styleClass="editor-widget-container">
         <h:outputLabel value="#{cc.attrs.widget.label}" styleClass="main-label"/>
     
-        <h:commandButton value=" " action="#{editorBean.addValue(cc.attrs.page.id, cc.attrs.widget.variableName)}" rendered="#{cc.attrs.widget.maxOccurs gt cc.attrs.widget.values.size()}" styleClass="add-button">
+        <h:commandButton value=" " action="#{editorBean.addValue(cc.attrs.widget)}" rendered="#{cc.attrs.widget.maxOccurs gt cc.attrs.widget.values.size()}" styleClass="add-button">
             <f:ajax execute="@this" render="uri-container" />
         </h:commandButton>
 
@@ -27,7 +27,7 @@
             <p:inputText value="#{value['uri']}" />
         </h:column>        
         <h:column>
-            <h:commandButton value=" " action="#{editorBean.removeValue(cc.attrs.page.id, cc.attrs.widget.variableName, value)}" rendered="#{cc.attrs.widget.minOccurs lt cc.attrs.widget.values.size()}" styleClass="remove-button">
+            <h:commandButton value=" " action="#{editorBean.removeValue(cc.attrs.widget, value)}" rendered="#{cc.attrs.widget.minOccurs lt cc.attrs.widget.values.size()}" styleClass="remove-button">
                 <f:ajax execute="@this" render="@form" />
             </h:commandButton>     
         </h:column>
