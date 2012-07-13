@@ -47,14 +47,13 @@ public class EditorConfiguration implements Serializable {
     
     public boolean populate(String project, String identifier) {
 
-        DataStore dataStore = DataStoreFactory.getInstance();
         EditorTemplate et = getTemplate(project, identifier);    
         Map<String,List<EditorVariableContent>> varContent = getContent(project, identifier, et);
         Map<String,EditorVariable> varMap = et.getVarMap();        
         
         boolean allPopulated = true;
         for( EditorPage page : pages ) {
-            boolean pagePopulated = page.populate(project, dataStore, varMap, varContent);
+            boolean pagePopulated = page.populate(varMap, varContent);
             if( !pagePopulated ){
                 allPopulated = false;
             }

@@ -15,7 +15,6 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import no.met.metadataeditor.dataTypes.DataAttributes;
 import no.met.metadataeditor.dataTypes.EditorVariable;
 import no.met.metadataeditor.dataTypes.EditorVariableContent;
-import no.met.metadataeditor.datastore.DataStore;
 
 /**
  * Class for representing widgets. This is a pure data class and should never
@@ -87,7 +86,7 @@ public abstract class EditorWidget implements Serializable {
         values.remove(value);
     }
 
-    public void configure(String project, DataStore dataStore, EditorVariable variable) {
+    public void configure(EditorVariable variable) {
         maxOccurs = variable.getMaxOccurs();
         minOccurs = variable.getMinOccurs();
 

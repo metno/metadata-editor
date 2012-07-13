@@ -13,8 +13,6 @@ import javax.xml.bind.annotation.XmlElement;
 
 import no.met.metadataeditor.dataTypes.EditorVariable;
 import no.met.metadataeditor.dataTypes.EditorVariableContent;
-import no.met.metadataeditor.dataTypes.InvalidTemplateException;
-import no.met.metadataeditor.datastore.DataStore;
 import no.met.metadataeditor.widget.EditorWidget;
 
 public class EditorPage implements Serializable {
@@ -101,14 +99,14 @@ public class EditorPage implements Serializable {
     }
     
     
-    public boolean populate(String project, DataStore dataStore, Map<String, EditorVariable> varMap, Map<String, List<EditorVariableContent>> contentMap){
+    public boolean populate(Map<String, EditorVariable> varMap, Map<String, List<EditorVariableContent>> contentMap){
         
         Map<String,EditorWidget> widgetMap = getWidgetMap();
         for(Map.Entry<String, EditorVariable> entry : varMap.entrySet()){
             
             if(widgetMap.containsKey(entry.getKey())){
                 EditorWidget widget = widgetMap.get(entry.getKey()); 
-                widget.configure(project, dataStore, entry.getValue());
+                widget.configure(entry.getValue());
                 List<EditorVariableContent> content = contentMap.get(entry.getKey());
                 widget.populate(content);
             }
