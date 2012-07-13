@@ -288,7 +288,7 @@ public class EditorTemplateTest {
         Map<String, EditorVariable> mse = getVariables("/mm2TemplateTest.xml");
 
         List<String> expectedVarNames = Arrays.asList(new String[] { "wmsSetup", "globalBB", "localBB", "variableList",
-                "PIname", "timeExtend", "dataRef" });
+                "PIname", "timeExtendTo", "timeExtendFrom", "dataRef" });
 
         assertEquals("Number of variables in template as expected", expectedVarNames.size(), mse.size());
 

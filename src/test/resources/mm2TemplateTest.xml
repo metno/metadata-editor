@@ -42,11 +42,12 @@
 <edt:string varName="PIname" minOccurs="0" maxOccurs="1">
 <metadata name="PI_name">$str</metadata>
 </edt:string>
-<edt:startAndStopTime varName="timeExtend" minOccurs="1" maxOccurs="1">
-<!-- TODO: how to define start without end -->
-<metadata name="datacollection_period_from">$start</metadata>
-<metadata name="datacollection_period_to">$stop</metadata>
-</edt:startAndStopTime>
+<edt:time varName="timeExtendFrom" minOccurs="1" maxOccurs="1">
+<metadata name="datacollection_period_from">$time</metadata>
+</edt:time>
+<edt:time varName="timeExtendTo" minOccurs="1" maxOccurs="1">
+<metadata name="datacollection_period_to">$time</metadata>
+</edt:time>
 <edt:uri varName="dataRef" minOccurs="1" maxOccurs="unbounded">
 <metadata name="dataref">$uri</metadata>
 </edt:uri>
