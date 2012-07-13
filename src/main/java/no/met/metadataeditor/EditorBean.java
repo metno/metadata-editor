@@ -96,19 +96,6 @@ public class EditorBean implements Serializable {
         
     }
     
-    public void populate() {
-        
-//        if(editorConfiguration == null){
-//            editorConfiguration = EditorConfigurationFactory.getInstance(project, recordIdentifier);        
-//            editorConfiguration.populate(project, recordIdentifier);
-//            editorConfiguration.addMissingOccurs();
-//            
-//            // need to get the session before the view is rendered to avoid getting exception.
-//            // see http://stackoverflow.com/questions/7433575/cannot-create-a-session-after-the-response-has-been-committed
-//            FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-//        }
-    }
-    
     public void save() {
         
         editorConfiguration.save(project, recordIdentifier);
