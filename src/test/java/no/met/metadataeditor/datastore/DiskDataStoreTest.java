@@ -13,7 +13,7 @@ import org.junit.Test;
 import static no.met.metadataeditor.TestHelpers.*;
 import static org.junit.Assert.*;
 
-public class DataStoreDiskTest {
+public class DiskDataStoreTest {
 
     private static String baseDir = "DiskDataStoreTest";
     private static File testDir;
@@ -25,7 +25,7 @@ public class DataStoreDiskTest {
         testDir = new File(tmpDir, baseDir);
         testDir.mkdirs();
         
-        File startDir = new File(DataStoreDiskTest.class.getResource("/datastore/diskdatastore/").getFile());
+        File startDir = new File(DiskDataStoreTest.class.getResource("/datastore/diskdatastore/").getFile());
         
         FileUtils.copyDirectory(startDir, testDir);
     }
