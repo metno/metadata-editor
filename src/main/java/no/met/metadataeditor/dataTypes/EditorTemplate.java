@@ -189,7 +189,7 @@ public class EditorTemplate {
         SAXBuilder builder = new SAXBuilder();
 
         org.jdom2.Document templateDoc = builder.build(templateXML);
-        TemplateRootNode rootNode = genTemplateTree(templateDoc, content);
+        TemplateNode rootNode = genTemplateTree(templateDoc, content);
 
         org.jdom2.Document doc = replaceVars(rootNode);
         pruneTree(doc);        
@@ -255,13 +255,13 @@ public class EditorTemplate {
      * @param content
      * @return
      */
-    private TemplateRootNode genTemplateTree(org.jdom2.Document templateDoc, Map<String, List<EditorVariableContent>> content) {
+    private TemplateNode genTemplateTree(org.jdom2.Document templateDoc, Map<String, List<EditorVariableContent>> content) {
 
         // skip the top node since it is part of the editor template and not the XML we want
         // in the end.
         Element templateRoot = templateDoc.getRootElement().getChildren().get(0);        
         
-        TemplateRootNode trn = new TemplateRootNode();
+        TemplateNode trn = new TemplateNode();
         trn.children = genTemplateTreeRecursive(templateRoot, content);
         trn.xmlNode = templateRoot;
         
@@ -315,7 +315,7 @@ public class EditorTemplate {
         
     }    
     
-    private org.jdom2.Document replaceVars(TemplateRootNode root) {
+    private org.jdom2.Document replaceVars(TemplateNode root) {
         
         org.jdom2.Document doc = new org.jdom2.Document();
         Content c = replaceVarsRecursive(root);
