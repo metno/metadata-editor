@@ -1,0 +1,9 @@
+#!/bin/sh
+
+echo "Removing old halo app from webapps directory..."
+rm -rf /var/lib/tomcat7/webapps/metadataeditor
+
+echo "Restart tomcat7 ..."
+/etc/init.d/tomcat7 restart
+
+echo "Done"

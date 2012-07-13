@@ -1,0 +1,2 @@
+release date=00:00 13.07.2012,version=0.1,urgency=low,by=Øystein Torget <oysteint@met.no>,distribution=all
+ * initial release
