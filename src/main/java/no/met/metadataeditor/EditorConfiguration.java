@@ -27,13 +27,26 @@ public class EditorConfiguration implements Serializable {
     public EditorConfiguration(){
         pages = new ArrayList<EditorPage>();        
     }
-    
 
-    public boolean populate(Map<String,EditorVariable> varMap, Map<String,List<EditorVariableContent>> contentMap ){
+    /**
+     * Add additional configuration from the editor variables to the editor widgets.
+     * For instance maxOccurs and minOccurs.
+     * @param varMap
+     * @return
+     */
+    public boolean configure(Map<String,EditorVariable> varMap){
+
+        for( EditorPage page : pages ) {
+            page.configure(varMap);
+        }
+        return true;
+    }
+
+    public boolean populate(Map<String,List<EditorVariableContent>> contentMap ){
 
         boolean allPopulated = true;
         for( EditorPage page : pages ) {
-            boolean pagePopulated = page.populate(varMap, contentMap);
+            boolean pagePopulated = page.populate(contentMap);
             if( !pagePopulated ){
                 allPopulated = false;
             }

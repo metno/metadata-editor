@@ -60,7 +60,8 @@ public class Editor implements Serializable {
         Map<String,List<EditorVariableContent>> contentMap = getContent(project, recordIdentifier, et);
         Map<String,EditorVariable> varMap = et.getVarMap();           
         
-        editorConfiguration.populate(varMap, contentMap);
+        editorConfiguration.configure(varMap);
+        editorConfiguration.populate(contentMap);
         editorConfiguration.addMissingOccurs();
         
         return true;

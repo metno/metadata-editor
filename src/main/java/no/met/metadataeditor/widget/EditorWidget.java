@@ -12,6 +12,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
+import no.met.metadataeditor.InvalidEditorConfigurationException;
 import no.met.metadataeditor.dataTypes.DataAttributes;
 import no.met.metadataeditor.dataTypes.EditorVariable;
 import no.met.metadataeditor.dataTypes.EditorVariableContent;
@@ -86,11 +87,32 @@ public abstract class EditorWidget implements Serializable {
         values.remove(value);
     }
 
-    public void configure(EditorVariable variable) {
+    /**
+     * Add configuration from the editor variable to the widget and the widgets children.
+     * @param variable
+     * @throws InvalidEditorConfigurationException Thrown if a child widget refers to a variable not 
+     * found in the child variables.
+     * @return Always returns true
+     */
+    public boolean configure(EditorVariable variable) {
         maxOccurs = variable.getMaxOccurs();
         minOccurs = variable.getMinOccurs();
 
         setResourceUri(variable.getDefaultResourceURI());
+        
+        Map<String,EditorVariable> childVarMap = variable.getChildren();
+        for( EditorWidget child : children ){
+            
+            String varName = child.getVariableName();
+            if( !childVarMap.containsKey(varName)){
+                throw new InvalidEditorConfigurationException( varName + " is not found in the template." );
+            }
+            
+            EditorVariable ev = childVarMap.get(varName);
+            child.configure(ev);                        
+        }
+        
+        return true;
     }
 
     public void populate(List<EditorVariableContent> contents) {

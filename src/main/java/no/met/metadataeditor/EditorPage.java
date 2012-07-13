@@ -99,22 +99,21 @@ public class EditorPage implements Serializable {
     }
     
     
-    public boolean populate(Map<String, EditorVariable> varMap, Map<String, List<EditorVariableContent>> contentMap){
-        
-        Map<String,EditorWidget> widgetMap = getWidgetMap();
-        for(Map.Entry<String, EditorVariable> entry : varMap.entrySet()){
+    public boolean populate(Map<String, List<EditorVariableContent>> contentMap){
+
+        for( EditorWidget widget : widgets ){
             
-            if(widgetMap.containsKey(entry.getKey())){
-                EditorWidget widget = widgetMap.get(entry.getKey()); 
-                widget.configure(entry.getValue());
-                List<EditorVariableContent> content = contentMap.get(entry.getKey());
-                widget.populate(content);
+            String varName = widget.getVariableName();
+            if( !contentMap.containsKey(varName)){
+                throw new InvalidEditorConfigurationException( varName + " has not associated content/variable in template." );
             }
+            
+            List<EditorVariableContent> content = contentMap.get(varName);
+            widget.populate(content);            
         }
-        
+                
         return allPopulated();
        
-        
     }
     
     private boolean allPopulated(){
@@ -163,5 +162,28 @@ public class EditorPage implements Serializable {
             }
         }
         
+    }
+
+    /**
+     * Add configuration from the editor variables to the editor widgets.
+     * @param varMap The map of editor variables.
+     * @throws InvalidEditorConfigurationException Thrown if a widget refersh to a variable not found
+     * in the template. 
+     * @return Always returns true at the moment.
+     */
+    public boolean configure(Map<String, EditorVariable> varMap) {
+        
+        for( EditorWidget widget : widgets ){
+            
+            String varName = widget.getVariableName();
+            if( !varMap.containsKey(varName)){
+                throw new InvalidEditorConfigurationException( varName + " is not found in the template." );
+            }
+            
+            EditorVariable ev = varMap.get(varName);
+            widget.configure(ev);
+        }
+        
+        return true;
     }
 }
