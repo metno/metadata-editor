@@ -20,6 +20,8 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import no.met.metadataeditor.EditorException;
+
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
@@ -62,7 +64,7 @@ public class EditorTemplate {
             xmlReader.setContentHandler(th);
             xmlReader.parse(source);
         } catch (ParserConfigurationException e) {
-            e.printStackTrace();
+            throw new EditorException("Parsing template failed.", e);
         }
         varMap = th.getResultConfig();
         namespacePrefixes = th.getNamespacePrefixes();
@@ -147,8 +149,7 @@ public class EditorTemplate {
 
                 }
             } catch (XPathExpressionException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                throw new EditorException("Failed to evaluate XPath expression: " + evPath, e);
             }
         }
         return content;
