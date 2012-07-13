@@ -1,5 +1,6 @@
 package no.met.metadataeditor;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import java.io.BufferedReader;
@@ -7,8 +8,16 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.net.URL;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import no.met.metadataeditor.dataTypes.EditorTemplate;
+import no.met.metadataeditor.dataTypes.EditorVariable;
+import no.met.metadataeditor.dataTypes.EditorVariableContent;
 
 import org.jdom2.Document;
 import org.jdom2.JDOMException;
@@ -16,6 +25,7 @@ import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 public class TestHelpers {
 
@@ -68,6 +78,55 @@ public class TestHelpers {
         return sb.toString();
 
     }
+    
+    public static Map<String, List<EditorVariableContent>> getContent(String templateResource, String metadataResource ){
+        
+        URL templateUrl = TestHelpers.class.getResource(templateResource);
+        URL metadataUrl = TestHelpers.class.getResource(metadataResource);
+        EditorTemplate et = null;
+        Map<String, List<EditorVariableContent>> content = null;
+        try {
+            et = new EditorTemplate(new InputSource(templateUrl.openStream()));
+            content = et.getContent(new InputSource(metadataUrl.openStream()));
+            
+        } catch (SAXException e) {
+            e.printStackTrace();
+            fail();
+        } catch (IOException e) {
+            e.printStackTrace();
+            fail();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+            fail();
+        }
+        return content;        
+    }     
+    
+    public static EditorConfiguration getConfiguration(String configurationResource){
+        
+        String configString = fileAsString(configurationResource);
+        EditorConfiguration config = EditorConfigurationFactory.unmarshallConfiguration(configString);
+        return config;
+        
+    }
+    
+    public static Map<String, EditorVariable> getVariables(String templateResource ){
+        
+        URL url = TestHelpers.class.getResource(templateResource);
+        Map<String, EditorVariable> mse = null;
+        EditorTemplate et = null;
+        try {
+            et = new EditorTemplate(new InputSource(url.openStream()));
+            mse = et.getVarMap();
+        } catch (SAXException e) {
+            e.printStackTrace();
+            fail();
+        } catch (IOException e) {
+            e.printStackTrace();
+            fail();
+        }        
+        return mse;
+    }    
 
 
 }
