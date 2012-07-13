@@ -96,7 +96,7 @@ public class Config {
                 //logger.severe(npex.getMessage());
                 logger.log(Level.INFO, "Failed to get ENV '" + environmentVariable + "'", npex.getMessage());
             } catch (IOException ioex) {
-                logger.log(Level.SEVERE, "Failed to open config:", ioex.getMessage());
+                logger.log(Level.SEVERE, "Failed to open config:", ioex);
                 //throw new ConfigException("Failed to read config file", ioex);
             }
         }
