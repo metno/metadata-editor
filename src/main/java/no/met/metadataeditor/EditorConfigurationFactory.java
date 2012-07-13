@@ -11,10 +11,19 @@ import no.met.metadataeditor.datastore.DataStoreFactory;
 
 
 /**
- * Factory used to create new EditorConfiguration objects. 
+ * Factory used to create new EditorConfiguration objects.
+ * 
+ *  EditorConfiguration objects are created by inflating XML files using JAXB.
  */
 public class EditorConfigurationFactory {
 
+    /**
+     * Get an editor configuration for the record that is being edited. The editor configuration 
+     * used will depend on the XML format of the metadata.s 
+     * @param project The project to look of the record in.
+     * @param recordIdentifier The identifier for the record that is being edited.
+     * @return A EditorConfiguration object.
+     */
     public static EditorConfiguration getInstance(String project, String recordIdentifier){
         
         DataStore dataStore = DataStoreFactory.getInstance();

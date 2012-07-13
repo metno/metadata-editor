@@ -2,9 +2,15 @@ package no.met.metadataeditor.datastore;
 
 import no.met.metadataeditor.Config;
 
+/**
+ * Factory class for creating new DataStore objects. 
+ */
 public class DataStoreFactory {
 
     
+    /**
+     * @return A DataStore instance based on the values found in the metadata editor configuration.
+     */
     public static DataStore getInstance() {
         
         Config config = new Config("/metadataeditor.properties", Config.ENV_NAME);

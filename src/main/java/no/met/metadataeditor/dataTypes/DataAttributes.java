@@ -3,14 +3,22 @@ package no.met.metadataeditor.dataTypes;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import no.met.metadataeditor.EditorException;
 
 /**
- * Interface class that is only used as a type placeholder in the
- * EditorVariable class.
+ * Abstract base class for all DataAttributes
  */
- 
 public abstract class DataAttributes {
 
+    private static final Logger logger = Logger.getLogger(DataAttributes.class.getName());
+    
+    /**
+     * @return A mapping between field names and DataType for all attributes 
+     * supported by the class. 
+     */
     public Map<String, DataType> getAttributesSetup(){
         return getAttributesSetup(getClass());
     }
@@ -40,15 +48,15 @@ public abstract class DataAttributes {
     }
 
     /**
-     *
      * @return a new Instance of the subtype
      */
     public abstract DataAttributes newInstance();
 
     /**
      * add a attributes value by a string
-     * @param string
-     * @param value
+     * @param attr The name of the attribute to set.
+     * @param value The value that the attribute should be set to.
+     * @throws AttributeMismatchException If the class does not have the attribute.
      */
     public void addAttribute(String attr, String value){
         
@@ -83,15 +91,20 @@ public abstract class DataAttributes {
             }
 
         } catch (IllegalAccessException e) {
-            System.out.println("Illegal to access the get method of the property: " + e.getMessage());
-
+            logger.log(Level.SEVERE, "Illegal to access the get method of the property: " + attr, e);
+            throw new EditorException("Illegal to access the get method of the property: " + attr, e);
         } catch (SecurityException e) {
-            System.out.println("Security problem to access the get method of the property: " + e.getMessage());
-
+            logger.log(Level.SEVERE, "Security problem to access the get method of the property: " + attr, e);            
+            throw new EditorException("Security problem to access the get method of the property: " + attr, e);
         }         
         
     }
     
+    /**
+     * @param attr The name of the attribute.
+     * @throws AttributeMismatchException Thrown if the attribute does not exist for the class.
+     * @return The value of an attribute. 
+     */
     public String getAttribute(String attr) {        
         
         Map<String,DataType> attributes = getAttributesSetup();
@@ -131,12 +144,12 @@ public abstract class DataAttributes {
             }
 
         } catch (IllegalAccessException e) {
-            System.out.println("Illegal to access the get method of the property: " + e.getMessage());
-
+            logger.log(Level.SEVERE, "Illegal to access the get method of the property: " + attribute, e);
+            throw new EditorException("Illegal to access the get method of the property: " + attribute, e);
         } catch (SecurityException e) {
-            System.out.println("Security problem to access the get method of the property: " + e.getMessage());
-
-        }
+            logger.log(Level.SEVERE, "Security problem to access the get method of the property: " + attribute, e);            
+            throw new EditorException("Security problem to access the get method of the property: " + attribute, e);
+        } 
         
         return value;        
         

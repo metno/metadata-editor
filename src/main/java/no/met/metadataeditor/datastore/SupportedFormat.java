@@ -1,5 +1,8 @@
 package no.met.metadataeditor.datastore;
 
+/**
+ * Enum of supported XML metadata formats. 
+ */
 public enum SupportedFormat {
     
     MM2,

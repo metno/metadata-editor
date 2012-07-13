@@ -7,9 +7,7 @@ import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
 
@@ -24,25 +22,26 @@ import no.met.metadataeditor.datastore.DataStoreFactory;
 import no.met.metadataeditor.widget.EditorWidget;
 
 /**
- * Simple stateless bean that is just used in the generation of the editor HTML.
+ * Bean used to the hold the current state of the editor.
+ * 
+ * The bean is in view scope.
  */
 @ManagedBean
 @ViewScoped
 public class EditorBean implements Serializable {
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = 243543721833686400L;
 
     private EditorConfiguration editorConfiguration;
     
+    // automatically set based on the query parameters
     private String recordIdentifier;
     
+    // automatically set based on the query parameters
     private String project;
     
     // used to track the current active tab. We need this as some times the entire form is re-rendered and we lose
-    // the current tab wihout this
+    // the current tab wihtout this
     private int activeTabId = 0;
     
     boolean initPerformed = false;
@@ -51,11 +50,15 @@ public class EditorBean implements Serializable {
 
         
     }
-    
+
+    /**
+     * Initialise the the bean based on the "project" and "recordIdentifier".
+     * This method is automatically called in the preRenderView phase.
+     * @param event
+     * @throws IOException
+     */
     public void init(ComponentSystemEvent event) throws IOException {
 
-        
-        
         if(!initPerformed){
 
             validateProject(project);

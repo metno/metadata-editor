@@ -10,9 +10,17 @@ import javax.xml.stream.XMLStreamReader;
 
 import no.met.metadataeditor.EditorException;
 
+/**
+ * Utility functions for DataStore classes.
+ */
 public class DataStoreUtils {
 
-    
+    /**
+     * Find the XML format used by the a metadata file by looking at the first tag in the file.
+     * @param metadataXML The raw XML for the metadata file.
+     * @throws IllegalArgumentException Thrown if the format is not known.
+     * @return The format used by the XML file. 
+     */
     public static SupportedFormat getFormat(String metadataXML){
 
         StringReader metadataReader = new StringReader(metadataXML);

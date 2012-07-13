@@ -4,9 +4,6 @@ import org.xml.sax.SAXException;
 
 public class UndefinedEditorVariableException extends SAXException {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = -661617075332607371L;
 
     public UndefinedEditorVariableException() {

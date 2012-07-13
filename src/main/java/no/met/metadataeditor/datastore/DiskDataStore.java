@@ -11,6 +11,9 @@ import java.util.logging.*;
 
 import no.met.metadataeditor.EditorException;
 
+/**
+ * DataStore implementation that reads and writes files from the local disk.
+ */
 public class DiskDataStore implements DataStore {
 
     private String basePath;

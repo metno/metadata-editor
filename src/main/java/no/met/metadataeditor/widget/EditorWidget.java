@@ -3,18 +3,14 @@ package no.met.metadataeditor.widget;
 import java.io.Serializable;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.bind.annotation.XmlAnyAttribute;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
-import javax.xml.bind.annotation.XmlTransient;
 
 import no.met.metadataeditor.dataTypes.DataAttributes;
 import no.met.metadataeditor.dataTypes.EditorVariable;
@@ -30,9 +26,6 @@ import no.met.metadataeditor.datastore.DataStore;
         UriWidget.class, TextAreaWidget.class, TimeWidget.class, MultiSelectListWidget.class })
 public abstract class EditorWidget implements Serializable {
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = -2532825684273483564L;
 
     // the variable name that is used for this field. Must correspond with the
