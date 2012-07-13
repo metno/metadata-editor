@@ -36,8 +36,6 @@ public class EditorBean implements Serializable {
 
     private Editor editor;
     
-    private EditorConfiguration editorConfiguration;
-    
     // automatically set based on the query parameters
     private String recordIdentifier;
     
@@ -67,15 +65,10 @@ public class EditorBean implements Serializable {
 
             validateProject(project);
             validateRecordIdentifier(project, recordIdentifier);
-            
-            EditorTemplate editorTemplate = getTemplate(project,recordIdentifier);            
-            editorConfiguration = EditorConfigurationFactory.getInstance(project, recordIdentifier);
-            
-            editorConfiguration.validateVarNames(editorTemplate);
-            
-            editorConfiguration.populate(project, recordIdentifier);
-            editorConfiguration.addMissingOccurs();
-            
+
+            editor = new Editor(project, recordIdentifier);
+            editor.init();
+                        
             // need to get the session before the view is rendered to avoid getting exception.
             // see http://stackoverflow.com/questions/7433575/cannot-create-a-session-after-the-response-has-been-committed
             FacesContext.getCurrentInstance().getExternalContext().getSession(true);           
@@ -105,7 +98,7 @@ public class EditorBean implements Serializable {
     
     public void save() {
         
-        editorConfiguration.save(project, recordIdentifier);
+        editor.save(project, recordIdentifier);
 
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Changes has been saved.", "Changes has been saved.");
         FacesContext.getCurrentInstance().addMessage(null, msg);        
@@ -133,11 +126,7 @@ public class EditorBean implements Serializable {
     }
     
     public EditorConfiguration getEditorConfiguration() {
-        return editorConfiguration;
-    }
-
-    public void setEditorConfiguration(EditorConfiguration editorConfiguration) {
-        this.editorConfiguration = editorConfiguration;
+        return editor.getEditorConfiguration();
     }
 
 
