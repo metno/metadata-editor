@@ -19,8 +19,6 @@ public class EditorVariable {
     private int minOccurs = 1;
     private int maxOccurs = 1;
 
-    //private List<EditorVariableContent> content = new ArrayList<EditorVariableContent>();
-
     public EditorVariable() {
 
     }
@@ -57,35 +55,6 @@ public class EditorVariable {
         resources.put(name, uri);
     }
     
-    /**
-     * Fetch a list of values from an associated resource.
-     * @param name The given to the name of the resource when it was added. 
-     * @return A list of values from the resource.
-     */
-    public List<String> getResourceValues(String name){
-    
-        if(!(resources.containsKey(name))){
-            throw new IllegalArgumentException(name + " is not a valid resource name");
-        }
-        
-        List<String> values = new ArrayList<String>();
-        values.add("Africa");
-        values.add("Europa");
-        values.add("North America");
-        values.add("y_wind");
-        
-        return values;
-        
-    }
-    
-    /**
-     * Fetch the resource values for the default resource.
-     * @return A list of values from the default resource.
-     */
-    public List<String> getDefaultResourceValues(){
-        return getResourceValues(DEFAULT_RESOURCE);
-    }
-
     public URI getDefaultResourceURI(){
         return getResourceURI(DEFAULT_RESOURCE);
     }
@@ -154,20 +123,7 @@ public class EditorVariable {
     public void setChildren(Map<String, EditorVariable> children){
         this.children = children;
     }
-
-    /**
-     * Add content-data to the variable. Make sure the content-attributes
-     * are already defined, otherwise a runtime-exception will be thrown.
-     * @param content
-     */
-    public void addContent(EditorVariableContent content) {
-        if (content.getAttrs().getClass().isInstance(getDataAttributes())) {
-            //this.content.add(content);
-        } else {
-            throw new AttributesMismatchException(content.getAttrs().getClass().getSimpleName() + " != " + getDataAttributes().getClass().getSimpleName());
-        }
-    }
-  
+ 
     /**
      * Get the attributes xpath directive, e.g. where to find
      * content in a existing document
