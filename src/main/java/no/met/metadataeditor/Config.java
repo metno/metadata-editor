@@ -30,7 +30,7 @@ public class Config {
             config = getDefaultproperties(propertyResource);
             this.environmentVariable = env;
         } catch (IOException e) {
-            logger.log(Level.SEVERE, "Failed to open config: ", e.getMessage());
+            logger.log(Level.SEVERE, "Failed to open config: ", e);
             throw new ConfigException("Failed to read config file", e);
         }
     }
