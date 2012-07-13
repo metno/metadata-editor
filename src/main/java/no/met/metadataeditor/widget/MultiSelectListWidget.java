@@ -24,23 +24,7 @@ public class MultiSelectListWidget extends EditorWidget {
         Map<String,String> defaultValue = new HashMap<String,String>();
         defaultValue.put("listElement", currentValue);    
         return defaultValue;
-    }
-    
-    public List<String> getFilteredResourceValues() {
-
-        List<String> currentValues = new ArrayList<String>();
-        List<Map<String,String>> valueMaps = getValues();
-        for( Map<String, String> values : valueMaps ){
-            currentValues.add(values.get("listElement"));
-        }        
-        
-        List<String> filteredValues = this.getResourceValues();
-        for( String value : currentValues ){
-            filteredValues.remove(value);
-        }
-
-        return filteredValues;
-    }
+    }    
     
     public String getCurrentValue() {
         return currentValue;

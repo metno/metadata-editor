@@ -3,6 +3,8 @@ package no.met.metadataeditor;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.faces.application.FacesMessage;
@@ -32,6 +34,8 @@ public class EditorBean implements Serializable {
 
     private static final long serialVersionUID = 243543721833686400L;
 
+    private Editor editor;
+    
     private EditorConfiguration editorConfiguration;
     
     // automatically set based on the query parameters
@@ -169,7 +173,6 @@ public class EditorBean implements Serializable {
      */
     public void tabChanged(TabChangeEvent event){  
         TabView tv = (TabView)event.getTab().getParent();
-        System.out.println("tabChanged(): " + tv.getActiveIndex());
         activeTabId = tv.getActiveIndex();
     }    
 
@@ -180,6 +183,36 @@ public class EditorBean implements Serializable {
     public void removeValue(EditorWidget widget, Map<String,String> value){
         widget.removeValue(value);
     }
+    
+    public List<String> getResourceValues(EditorWidget widget){
+        
+        DataStore dataStore = DataStoreFactory.getInstance();
+        String resourceString = dataStore.readResource(project, widget.getResourceUri().toString());
+
+        String[] resourceValues = resourceString.split("\n");
+        List<String> values = new ArrayList<String>();
+        for(String s : resourceValues ){
+            values.add(s);
+        }
+        return values;        
+        
+    }
+    
+    public List<String> getFilteredResourceValues(EditorWidget widget, String filterAttribute) {
+
+        List<String> currentValues = new ArrayList<String>();
+        List<Map<String,String>> valueMaps = widget.getValues();
+        for( Map<String, String> values : valueMaps ){
+            currentValues.add(values.get(filterAttribute));
+        }        
+        
+        List<String> filteredValues = getResourceValues(widget);
+        for( String value : currentValues ){
+            filteredValues.remove(value);
+        }
+
+        return filteredValues;
+    }    
     
     /**
      * Validates that the project parameter refers to an acutal project.

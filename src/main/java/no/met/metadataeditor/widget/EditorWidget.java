@@ -41,9 +41,9 @@ public abstract class EditorWidget implements Serializable {
     private int maxOccurs = 1;
 
     private int minOccurs = 1;
-
-    private List<String> resourceValues = new ArrayList<String>();
     
+    private URI resourceUri;
+
     private List<EditorWidget> children = new ArrayList<EditorWidget>();
 
     public EditorWidget() {
@@ -91,9 +91,7 @@ public abstract class EditorWidget implements Serializable {
         maxOccurs = variable.getMaxOccurs();
         minOccurs = variable.getMinOccurs();
 
-        if (null != variable.getDefaultResourceURI()) {
-            resourceValues = fetchResourceValues(variable.getDefaultResourceURI(), project, dataStore);
-        }
+        setResourceUri(variable.getDefaultResourceURI());
     }
 
     public void populate(List<EditorVariableContent> contents) {
@@ -199,18 +197,6 @@ public abstract class EditorWidget implements Serializable {
         return getClass().getName();
     }
 
-    private List<String> fetchResourceValues(URI resourceURI, String project, DataStore dataStore) {
-
-        String resourceString = dataStore.readResource(project, resourceURI.toString());
-
-        String[] resourceValues = resourceString.split("\n");
-        List<String> values = new ArrayList<String>();
-        for(String s : resourceValues ){
-            values.add(s);
-        }
-        return values;
-    }
-
     public int getMaxOccurs() {
         return maxOccurs;
     }
@@ -219,15 +205,19 @@ public abstract class EditorWidget implements Serializable {
         return minOccurs;
     }
 
+    public URI getResourceUri() {
+        return resourceUri;
+    }
+
+    public void setResourceUri(URI resourceUri) {
+        this.resourceUri = resourceUri;
+    }
+
     public boolean isPopulated() {
         return isPopulated;
     }
 
     public abstract Map<String, String> getDefaultValue();
-
-    public List<String> getResourceValues() {
-        return resourceValues;
-    }
 
     public void addMissingOccurs() {
         

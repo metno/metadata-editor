@@ -21,7 +21,7 @@
         <br />
 
         <h:selectOneMenu id="selectone" value="#{cc.attrs.widget.currentValue}">
-            <f:selectItems value="#{cc.attrs.widget.filteredResourceValues}" />
+            <f:selectItems value="#{editorBean.getFilteredResourceValues(cc.attrs.widget, 'listElement')}" />
         </h:selectOneMenu>           
         
         <h:commandButton value=" " action="#{editorBean.addValue(cc.attrs.widget)}" rendered="#{cc.attrs.widget.maxOccurs gt cc.attrs.widget.values.size()}" styleClass="add-button">
