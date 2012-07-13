@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ec:editor xmlns:ec="http://www.met.no/schema/metadataeditor/editorConfiguration" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <ec:page id="MM2" label="MM2">
+        <ec:widget xsi:type="listWidget" variableName="keywords" label="Keywords">
+            <ec:widget xsi:type="stringWidget" variableName="child1" label="Child1" />
+            <ec:widget xsi:type="stringWidget" variableName="child2" label="Child2" />
+        </ec:widget>
+    </ec:page>
+</ec:editor>
