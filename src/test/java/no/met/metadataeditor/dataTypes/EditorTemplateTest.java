@@ -11,25 +11,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 import org.junit.Test;
-import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import static no.met.metadataeditor.TestHelpers.*;
 
 public class EditorTemplateTest {
 
@@ -395,48 +385,6 @@ public class EditorTemplateTest {
        getVariables("/testMaxOccurs/empty.xml");
     }         
        
-    private Map<String, EditorVariable> getVariables(String templateResource ){
-        
-        URL url = getClass().getResource(templateResource);
-        Map<String, EditorVariable> mse = null;
-        EditorTemplate et = null;
-        try {
-            et = new EditorTemplate(new InputSource(url.openStream()));
-            mse = et.getVarMap();
-            assertNotNull(mse);
-        } catch (SAXException e) {
-            e.printStackTrace();
-            fail();
-        } catch (IOException e) {
-            e.printStackTrace();
-            fail();
-        }        
-        return mse;
-    }
-
-    private Map<String, List<EditorVariableContent>> getContent(String templateResource, String metadataResource ){
-        
-        URL templateUrl = getClass().getResource(templateResource);
-        URL metadataUrl = getClass().getResource(metadataResource);
-        EditorTemplate et = null;
-        Map<String, List<EditorVariableContent>> content = null;
-        try {
-            et = new EditorTemplate(new InputSource(templateUrl.openStream()));
-            content = et.getContent(new InputSource(metadataUrl.openStream()));
-            
-        } catch (SAXException e) {
-            e.printStackTrace();
-            fail();
-        } catch (IOException e) {
-            e.printStackTrace();
-            fail();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-            fail();
-        }
-        return content;        
-    }    
-
     private EditorTemplate getTemplate(String templateResource ){
         
         URL templateUrl = getClass().getResource(templateResource);
