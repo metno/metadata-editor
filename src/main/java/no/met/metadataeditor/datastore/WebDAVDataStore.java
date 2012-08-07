@@ -171,7 +171,7 @@ public class WebDAVDataStore implements DataStore {
 
     @Override
     public List<SupportedFormat> getSupportedFormats(String project) {
-        return DataStoreUtils.parseSupportedFormats(webdavUrl(project, "config", SUPPORTED_FORMATS));
+        return DataStoreUtils.parseSupportedFormats(urlContents(webdavUrl(project, "config", SUPPORTED_FORMATS)));
     }
 
 }
