@@ -16,6 +16,15 @@
 <h:head>
     <title>Metadata editor</title>
     <h:outputStylesheet name="editor.css" library="css"/>
+    <h:outputScript name="utils.js" library="javascript"/>
+    
+    <h:outputScript >
+//disable the enter key on input elements.
+jQuery(document).ready(function () {    
+    jQuery('input').keypress(ignore_enter_key)
+});        
+    </h:outputScript>
+    
 </h:head>
 
 <h:body>
