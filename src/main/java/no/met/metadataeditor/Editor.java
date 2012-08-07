@@ -66,8 +66,33 @@ public class Editor implements Serializable {
         return true;
     }
     
-    
+
+    /**
+     * Save the contents of the editor to the datastore.
+     * @param project The name of the current project.
+     * @param identifier The identifier of the current record.
+     */
     public void save(String project, String identifier) {
+
+        String xml = editorContentToXML(project, identifier);        
+        DataStore dataStore = DataStoreFactory.getInstance();
+        dataStore.writeMetadata(project, identifier, xml);
+        
+    }
+
+    /**
+     * @param project The name of the current project
+     * @param identifier The identifier of the current record.
+     * @return The XML contents of the editor in its current state.
+     */
+    public String export(String project, String identifier) {
+
+        String xml = editorContentToXML(project, identifier);
+        return xml;
+    }        
+
+    
+    private String editorContentToXML(String project, String identifier){
 
         DataStore dataStore = DataStoreFactory.getInstance();
         String templateString = dataStore.readTemplate(project, identifier);
@@ -77,10 +102,10 @@ public class Editor implements Serializable {
         
         Map<String, List<EditorVariableContent>> content = editorConfiguration.getContent(varMap);
         
+        String resultString;
         try {
             Document resultDoc = et.writeContent(templateSource, content);
-            String resultString = docToString(resultDoc);
-            dataStore.writeMetadata(project, identifier, resultString);
+            resultString = docToString(resultDoc);
             
         } catch (JDOMException e) {
             throw new EditorException(e.getMessage());
@@ -88,9 +113,13 @@ public class Editor implements Serializable {
             throw new EditorException(e.getMessage());
         }
         
-    }    
-
-
+        return resultString;
+        
+        
+        
+    }
+    
+    
     private EditorTemplate getTemplate(String project, String identifier){
         
         DataStore dataStore = DataStoreFactory.getInstance();

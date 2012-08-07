@@ -6,15 +6,15 @@
     xmlns:p="http://primefaces.org/ui"
     xmlns:metaedit="http://java.sun.com/jsf/composite/component">
 
-<h:body>
-
-    <p:menubar>
-        <p:menuitem value="Save" process="@form" update="@form" actionListener="#{editorBean.save}" />
-        <p:menuitem value="Validate" process="@form" update="@form" actionListener="#{editorBean.validate}" />        
-        <p:menuitem value="Reset" process="@form" update="@form" actionListener="#{editorBean.reset}" />        
-    
-    </p:menubar>
-    
-</h:body>
+<body>
+	<ui:composition>
+	    <p:menubar>
+	        <p:menuitem value="Save" process="@form" update="@form" action="#{editorBean.save}" />
+	        <p:menuitem value="Validate" process="@form" update="@form" action="#{editorBean.validate}" />        
+	        <p:menuitem value="Reset" process="@form" update="@form" action="#{editorBean.reset}" />        
+	        <p:menuitem value="Export" action="#{editorBean.export}" ajax="false" target="_blank" />
+	    </p:menubar>
+	</ui:composition>    
+</body>
 
 </html>

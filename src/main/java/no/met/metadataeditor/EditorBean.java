@@ -12,6 +12,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
+import javax.servlet.http.HttpServletResponse;
 
 import org.primefaces.component.tabview.TabView;
 import org.primefaces.event.TabChangeEvent;
@@ -122,6 +123,29 @@ public class EditorBean implements Serializable {
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Validation has not been implemented yet.", "Validation has not been implemented yet.");
         FacesContext.getCurrentInstance().addMessage(null, msg);             
         
+        
+    }
+    
+    public void export() {
+        
+        String editorContent = editor.export(project, recordIdentifier);
+        
+
+        FacesContext ctx = FacesContext.getCurrentInstance();
+        final HttpServletResponse resp = (HttpServletResponse)ctx.getExternalContext().getResponse();
+
+        resp.setContentType("application/octet-stream");
+        resp.setContentLength(editorContent.length());
+        resp.setHeader( "Content-Disposition", "attachment;filename=" + recordIdentifier + ".xml" );
+        try {
+            resp.getOutputStream().write(editorContent.getBytes());
+            resp.getOutputStream().flush();
+            resp.getOutputStream().close();            
+        } catch (IOException e) {
+            throw new EditorException("Failed to write XML to response", e);
+        }
+
+        ctx.responseComplete();
         
     }
     
