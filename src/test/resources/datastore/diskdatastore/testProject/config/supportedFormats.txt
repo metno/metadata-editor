@@ -1,0 +1,11 @@
+# Definition of Supported Formats
+#
+# The types define the Editor and Template names, e.g. TYEPEditor.xml and TYPETemplate.xml
+# Leave root-namespace empty if not namespace aware. It is not possible to define
+# a webdav-repository with different templates for documents with the same root-tag
+#
+# TYPE      root-tag        root-namespace
+MM2         MM2             http://www.met.no/schema/metamod/MM2
+MM2COMBINED mmCombinedMM2   http://www.met.no/schema/metamod/mmCombined
+ISO19139    MD_Metadata     http://www.isotc211.org/2005/gmd
+ISO19139COMBINED    mmCombinedISO http://www.met.no/schema/metamod/mmCombined

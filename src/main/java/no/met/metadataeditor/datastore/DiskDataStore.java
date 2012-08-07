@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import java.util.List;
 import java.util.logging.*;
 
 import no.met.metadataeditor.EditorException;
@@ -16,6 +17,7 @@ import no.met.metadataeditor.EditorException;
  */
 public class DiskDataStore implements DataStore {
 
+    final static String SUPPORTED_FORMATS = "supportedFormats.txt";
     private String basePath;
 
     public DiskDataStore(String basePath) {
@@ -44,7 +46,7 @@ public class DiskDataStore implements DataStore {
                 }
             }
         }
-        
+
         return true;
 
     }
@@ -61,7 +63,7 @@ public class DiskDataStore implements DataStore {
 
         String metadata = readMetadata(project, recordIdentifier);
 
-        SupportedFormat format = DataStoreUtils.getFormat(metadata);
+        SupportedFormat format = DataStoreUtils.getFormat(getSupportedFormats(project), metadata);
         File templatePath = templatePath(project, format);
 
         if (!templatePath.exists()) {
@@ -73,44 +75,47 @@ public class DiskDataStore implements DataStore {
 
     @Override
     public String readEditorConfiguration(String project, String recordIdentifier) {
-        
+
         String metadata = readMetadata(project, recordIdentifier);
 
-        SupportedFormat format = DataStoreUtils.getFormat(metadata);
-        
-        File configPath = configurationPath(project, format);
+        SupportedFormat format = DataStoreUtils.getFormat(getSupportedFormats(project), metadata);
+
+        File configPath = editorConfigPath(project, format);
         if(!configPath.exists()){
             throw new EditorException("No configuration exists for the format: " + format );
         }
-        
+
         return readFile(configPath);
     }
 
     @Override
     public String readResource(String project, String resourceIdentifier) {
-        
+
         File resourcePath = resourcePath(project, resourceIdentifier);
         if( !resourcePath.exists()){
             throw new EditorException("Resource file does not exist: " + resourcePath.getAbsolutePath());
         }
-        
+
         return readFile(resourcePath);
     }
 
-    
-    private File configurationPath(String project, SupportedFormat format){
-        File dir = new File(new File(basePath, project), "config");
-        File path = new File(dir, format.editorConfigName());
+    private File configurationPath(String project, String configFileName) {
+        File configDir = new File(new File(basePath, project), "config");
+        File path = new File(configDir, configFileName);
         return path;
     }
-    
+
+    private File editorConfigPath(String project, SupportedFormat format) {
+        return configurationPath(project, format.editorConfigName());
+    }
+
     private File resourcePath(String project, String resourceIdentifier){
-        
+
         File dir = new File(basePath, project);
         File path = new File(dir, resourceIdentifier);
         return path;
     }
-    
+
     private File metadataPath(String project, String recordIdentifier) {
 
         File dir = new File(new File(basePath, project), "XML");
@@ -128,7 +133,7 @@ public class DiskDataStore implements DataStore {
     private String readFile(File file) {
 
         StringBuilder sb = new StringBuilder();
-        
+
         BufferedReader br = null;
         try {
             br = new BufferedReader(new FileReader(file));
@@ -155,7 +160,7 @@ public class DiskDataStore implements DataStore {
 
     @Override
     public boolean projectExists(String project) {
-        
+
         File projectDir = new File(basePath, project);
 
         return projectDir.exists() ? true : false;
@@ -163,10 +168,15 @@ public class DiskDataStore implements DataStore {
 
     @Override
     public boolean metadataExists(String project, String recordIdentifier) {
-        
+
         File metadataFile = metadataPath(project, recordIdentifier);
-        
+
         return metadataFile.exists() ? true : false;
+    }
+
+    @Override
+    public List<SupportedFormat> getSupportedFormats(String project) {
+        return DataStoreUtils.parseSupportedFormats(readFile(configurationPath(project, SUPPORTED_FORMATS)));
     }
 
 }
