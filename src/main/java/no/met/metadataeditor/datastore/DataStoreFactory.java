@@ -26,6 +26,12 @@ public class DataStoreFactory {
             }
             
             return new DiskDataStore(path);
+        } else if ( "WebDAVDataStore".equalsIgnoreCase(datastore)){
+            
+            String protocol = config.getRequired("datastore.protocol");
+            String host = config.getRequired("datastore.host");
+            return new WebDAVDataStore(protocol, host); 
+            
         }
         
         return null;
