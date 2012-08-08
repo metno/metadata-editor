@@ -18,7 +18,7 @@
         <h:outputLabel value="#{cc.attrs.widget.label}" styleClass="main-label"/>
 
         <h:commandButton value=" " action="#{editorBean.addValue(cc.attrs.widget)}" rendered="#{cc.attrs.widget.maxOccurs gt cc.attrs.widget.values.size()}" styleClass="add-button">
-            <f:ajax execute="@this" render="string-container" />
+            <f:ajax execute="@this" render="string-container" onevent="input_field_added"/>
         </h:commandButton>
 
         <h:dataTable value="#{cc.attrs.widget.values}" var="value" id="string">
