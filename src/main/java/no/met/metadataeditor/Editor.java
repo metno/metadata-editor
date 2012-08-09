@@ -37,8 +37,7 @@ public class Editor implements Serializable {
         this.project = project;
         this.recordIdentifier = recordIdentifier;
         
-        
-        
+               
     }
     
     public EditorConfiguration getEditorConfiguration() {
@@ -104,7 +103,7 @@ public class Editor implements Serializable {
         
         String resultString;
         try {
-            Document resultDoc = et.writeContent(templateSource, content);
+            Document resultDoc = et.writeContent(content);
             resultString = docToString(resultDoc);
             
         } catch (JDOMException e) {

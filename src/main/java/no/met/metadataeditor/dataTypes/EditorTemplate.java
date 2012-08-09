@@ -1,6 +1,7 @@
 package no.met.metadataeditor.dataTypes;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -25,6 +26,7 @@ import no.met.metadataeditor.EditorException;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
+import org.apache.commons.io.IOUtils;
 import org.jdom2.Attribute;
 import org.jdom2.Content;
 import org.jdom2.Element;
@@ -42,6 +44,8 @@ public class EditorTemplate {
 
     private static Map<String,String> templateTags = new HashMap<String,String>();
     
+    private String templateXML;
+    
     static {
         templateTags.put("container", "container");
         templateTags.put("lonLatBoundingBox", "lonLatBoundingBox");
@@ -55,6 +59,10 @@ public class EditorTemplate {
     }
     
     public EditorTemplate(InputSource source) throws SAXException, IOException {
+        
+        // we read the entire XML contents from the source so that we can re-use it later.
+        templateXML = IOUtils.toString(source.getByteStream());
+        
         TemplateHandler th = new TemplateHandler();
         SAXParserFactory spf = SAXParserFactory.newInstance();
         spf.setNamespaceAware(true);
@@ -62,7 +70,7 @@ public class EditorTemplate {
             SAXParser saxParser = spf.newSAXParser();
             XMLReader xmlReader = saxParser.getXMLReader();
             xmlReader.setContentHandler(th);
-            xmlReader.parse(source);
+            xmlReader.parse(new InputSource(new StringReader(templateXML)));
         } catch (ParserConfigurationException e) {
             throw new EditorException("Parsing template failed.", e);
         }
@@ -185,11 +193,11 @@ public class EditorTemplate {
      * @throws JDOMException
      * @throws IOException
      */
-    public org.jdom2.Document writeContent(InputSource templateXML, Map<String, List<EditorVariableContent>> content) throws JDOMException, IOException  {
+    public org.jdom2.Document writeContent(Map<String, List<EditorVariableContent>> content) throws JDOMException, IOException  {
 
         SAXBuilder builder = new SAXBuilder();
 
-        org.jdom2.Document templateDoc = builder.build(templateXML);
+        org.jdom2.Document templateDoc = builder.build(new InputSource(new StringReader(templateXML)));
         TemplateNode rootNode = genTemplateTree(templateDoc, content);
 
         org.jdom2.Document doc = replaceVars(rootNode);

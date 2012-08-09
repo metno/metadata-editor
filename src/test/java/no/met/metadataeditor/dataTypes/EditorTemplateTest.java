@@ -33,8 +33,7 @@ public class EditorTemplateTest {
         keywordContent.add(EditorVariableContentFactory.childlessStringAttribute("arctic"));
         content.put("keyword", keywordContent);
         
-        URL metadataUrl = getClass().getResource("/testWrite/singleVarTemplate.xml");               
-        org.jdom2.Document result = et.writeContent(new InputSource(metadataUrl.openStream()), content);
+        org.jdom2.Document result = et.writeContent(content);
         
         org.jdom2.Document expected = openDocument("/testWrite/singleValueResult.xml");
         
@@ -53,8 +52,7 @@ public class EditorTemplateTest {
         keywordContent.add(EditorVariableContentFactory.childlessStringAttribute("snow"));
         content.put("keyword", keywordContent);
         
-        URL metadataUrl = getClass().getResource("/testWrite/singleVarTemplate.xml");               
-        org.jdom2.Document result = et.writeContent(new InputSource(metadataUrl.openStream()), content);
+        org.jdom2.Document result = et.writeContent(content);
         
         org.jdom2.Document expected = openDocument("/testWrite/multiValueResult.xml");
         
@@ -71,8 +69,7 @@ public class EditorTemplateTest {
         List<EditorVariableContent> keywordContent = new ArrayList<EditorVariableContent>();
         content.put("keyword", keywordContent);
 
-        URL templateUrl = getClass().getResource(templateName);               
-        org.jdom2.Document result = et.writeContent(new InputSource(templateUrl.openStream()), content);
+        org.jdom2.Document result = et.writeContent(content);
         
         org.jdom2.Document expected = openDocument("/testWrite/noContentResult.xml");
         
@@ -92,8 +89,7 @@ public class EditorTemplateTest {
         keywordContent.add(EditorVariableContentFactory.childlessStringAttribute("snow"));        
         content.put("keyword", keywordContent);
 
-        URL templateUrl = getClass().getResource(templateName);               
-        org.jdom2.Document result = et.writeContent(new InputSource(templateUrl.openStream()), content);
+        org.jdom2.Document result = et.writeContent(content);
         
         org.jdom2.Document expected = openDocument("/testWrite/siblingResult.xml");
         
@@ -112,8 +108,7 @@ public class EditorTemplateTest {
         keywordContent.add(EditorVariableContentFactory.childlessStringAttribute("snow"));        
         content.put("keyword", keywordContent);
 
-        URL templateUrl = getClass().getResource(templateName);               
-        org.jdom2.Document result = et.writeContent(new InputSource(templateUrl.openStream()), content);
+        org.jdom2.Document result = et.writeContent(content);
         
         org.jdom2.Document expected = openDocument("/testWrite/subTreeInVarResult.xml");
         
@@ -132,8 +127,7 @@ public class EditorTemplateTest {
         keywordContent.add(EditorVariableContentFactory.childlessStringAttribute("snow"));        
         content.put("keyword", keywordContent);
 
-        URL templateUrl = getClass().getResource(templateName);               
-        org.jdom2.Document result = et.writeContent(new InputSource(templateUrl.openStream()), content);
+        org.jdom2.Document result = et.writeContent(content);
         
         org.jdom2.Document expected = openDocument("/testWrite/subTreeInVarResult2.xml");
         
@@ -151,8 +145,7 @@ public class EditorTemplateTest {
         keywordContent.add(EditorVariableContentFactory.childlessStringAttribute("snow"));        
         content.put("keyword", keywordContent);
 
-        URL templateUrl = getClass().getResource(templateName);               
-        org.jdom2.Document result = et.writeContent(new InputSource(templateUrl.openStream()), content);
+        org.jdom2.Document result = et.writeContent(content);
         
         org.jdom2.Document expected = openDocument("/testWrite/varInAttributeResult.xml");
         
@@ -174,9 +167,7 @@ public class EditorTemplateTest {
         globalBBContent.add(EditorVariableContentFactory.childlessBoundingboxAttribute("0", "85", "-10", "54"));        
         content.put("globalBB", globalBBContent);
         
-
-        URL templateUrl = getClass().getResource(templateName);               
-        org.jdom2.Document result = et.writeContent(new InputSource(templateUrl.openStream()), content);
+        org.jdom2.Document result = et.writeContent(content);
         
         org.jdom2.Document expected = openDocument("/testWrite/boundingboxResult.xml");
         
@@ -211,9 +202,8 @@ public class EditorTemplateTest {
         
         Map<String, List<EditorVariableContent>> varMap = new HashMap<String,List<EditorVariableContent>>();
         varMap.put("wmsSetup", wmsSetupContent);
-        
-        URL templateUrl = getClass().getResource(templateName);               
-        org.jdom2.Document result = et.writeContent(new InputSource(templateUrl.openStream()), varMap);
+                       
+        org.jdom2.Document result = et.writeContent(varMap);
         
         org.jdom2.Document expected = openDocument("/testWrite/childResult.xml");
         
