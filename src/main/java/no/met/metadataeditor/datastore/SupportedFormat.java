@@ -1,16 +1,16 @@
 package no.met.metadataeditor.datastore;
 
+
 /**
  * Enum of supported XML metadata formats.
  */
 public class SupportedFormat {
-
+   
     SupportedFormat(String tag, String rootNode, String namespace) {
         this.tag = tag;
         this.rootNode = rootNode;
         this.namespace = namespace;
     }
-
 
     public String getNamespace() {
         return namespace;
@@ -52,6 +52,30 @@ public class SupportedFormat {
         return false;
     }
 
+    @Override
+    public boolean equals(Object o){
+        
+        if( !( o instanceof SupportedFormat ) ){
+            return false;
+        }
+        
+        SupportedFormat f = (SupportedFormat) o;
+        
+        return this.tag.equals(f.tag) && this.namespace.equals(f.namespace) && this.rootNode.endsWith(f.rootNode);
+        
+    }
+    
+    public int hashCode(){
+        
+        int result = 17;
+        result = 31 * result + tag.hashCode();
+        result = 31 * result + namespace.hashCode();
+        result = 31 * result + rootNode.hashCode();
+        
+        return result;
+        
+    }
+   
     private String tag;
     private String rootNode;
     private String namespace;

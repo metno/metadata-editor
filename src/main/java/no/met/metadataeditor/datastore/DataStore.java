@@ -54,6 +54,14 @@ public interface DataStore {
     String readTemplate(String project, String recordIdentifier);
 
     /**
+     * This function is used when you need to read a template but do not yet have a record.
+     * @param project The project to read from
+     * @param format The format to read the template for
+     * @return The raw XML for the template for the supported format.
+     */
+    String readTemplate(String project, SupportedFormat format);
+    
+    /**
      * @param project The project to read from.
      * @param recordIdentifier The record identifier for the metadata we want a configuration for.
      * @return The raw XML for the metadata on success. Throws and EditorException on error.

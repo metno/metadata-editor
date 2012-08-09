@@ -74,6 +74,23 @@ abstract class DataStoreImpl implements DataStore {
 
         return get(templateUrl);
     }
+    
+    @Override
+    public String readTemplate(String project, SupportedFormat format){
+        String templateUrl = templateUrl(project, format);
+
+        List<SupportedFormat> formats = getSupportedFormats(project);
+        
+        if( !formats.contains(format) ){
+            throw new IllegalArgumentException("Format not supported by project: " + format);
+        }
+        
+        if (!exists(templateUrl)) {
+            throw new EditorException("Template does not exist: " + templateUrl);
+        }
+
+        return get(templateUrl);        
+    }
 
     @Override
     public String readEditorConfiguration(String project, String recordIdentifier) {

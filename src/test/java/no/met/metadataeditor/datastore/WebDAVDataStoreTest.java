@@ -163,6 +163,28 @@ public class WebDAVDataStoreTest {
     }
 
 
+    @Test(expected=IllegalArgumentException.class)
+    public void testReadTemplateForFormatUnsupportedFormat() {
+
+        WebDAVDataStore datastore = new WebDAVDataStore(webdavProtocol, webdavHost);
+        datastore.readTemplate("project1", new SupportedFormat("dummy", "", ""));
+    }
+
+    @Test(expected=EditorException.class)
+    public void testReadTemplateForFormatNoTemplate() {
+
+        WebDAVDataStore datastore = new WebDAVDataStore(webdavProtocol, webdavHost);
+        datastore.readTemplate("project1", new SupportedFormat("MM2COMBINED", "mmCombinedMM2", "http://www.met.no/schema/metamod/mmCombined"));
+    }
+
+    @Test
+    public void testReadTemplateForFormat() {
+
+        WebDAVDataStore datastore = new WebDAVDataStore(webdavProtocol, webdavHost);
+        assertEquals("Template for MM2 file", "Template contents", datastore.readTemplate("project1", new SupportedFormat("MM2", "MM2", "http://www.met.no/schema/metamod/MM2")));
+    }    
+    
+
     @Test(expected=EditorException.class)
     public void testReadConfigurationNoRecord() {
 
