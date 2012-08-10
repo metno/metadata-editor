@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import no.met.metadataeditor.Config;
 import no.met.metadataeditor.EditorException;
 
 import org.junit.AfterClass;
@@ -34,7 +33,7 @@ public class WebDAVDataStoreTest {
     @BeforeClass
     public static void setupWebDAV () throws IOException {
 
-        webdavConn = SardineFactory.begin();
+        webdavConn = SardineFactory.begin("dummy", "xxx");
 
         // create the structure in the WebDAV required for the tests.
         webdavConn.createDirectory( webdavPath("project1" ) );
@@ -83,7 +82,7 @@ public class WebDAVDataStoreTest {
     @Test
     public void testProjectExists() {
 
-        WebDAVDataStore datastore = new WebDAVDataStore(webdavProtocol, webdavHost);
+        WebDAVDataStore datastore = getDataStore();
 
         assertFalse("Non-existant project does not exist", datastore.projectExists("dummy") );
 
@@ -94,7 +93,7 @@ public class WebDAVDataStoreTest {
     @Test
     public void testMetadataExists() {
 
-        WebDAVDataStore datastore = new WebDAVDataStore(webdavProtocol, webdavHost);
+        WebDAVDataStore datastore = getDataStore();
 
         assertFalse("Non-existant record in non-existant project does not exist", datastore.metadataExists("dummy", "test") );
 
@@ -106,7 +105,7 @@ public class WebDAVDataStoreTest {
 
     @Test
     public void testSupportedFormatsExist() {
-        WebDAVDataStore datastore = new WebDAVDataStore(webdavProtocol, webdavHost);
+        WebDAVDataStore datastore = getDataStore();
         List<SupportedFormat> formats = datastore.getSupportedFormats("project1");
         assertEquals(4, formats.size());
     }
@@ -114,21 +113,21 @@ public class WebDAVDataStoreTest {
     @Test(expected=EditorException.class)
     public void testReadMetadataNoProject(){
 
-        WebDAVDataStore datastore = new WebDAVDataStore(webdavProtocol, webdavHost);
+        WebDAVDataStore datastore = getDataStore();
         datastore.readMetadata("dummy", "test");
     }
 
     @Test(expected=EditorException.class)
     public void testReadMetadataNoRecord(){
 
-        WebDAVDataStore datastore = new WebDAVDataStore(webdavProtocol, webdavHost);
+        WebDAVDataStore datastore = getDataStore();
         datastore.readMetadata("project1", "dummy");
     }
 
     @Test
     public void testReadMetadata() {
 
-        WebDAVDataStore datastore = new WebDAVDataStore(webdavProtocol, webdavHost);
+        WebDAVDataStore datastore = getDataStore();
 
         assertEquals("Metadata content as expected", "<metadata />", datastore.readMetadata("project1", "record1"));
 
@@ -137,28 +136,28 @@ public class WebDAVDataStoreTest {
     @Test(expected=EditorException.class)
     public void testReadTemplateNoRecord() {
 
-        WebDAVDataStore datastore = new WebDAVDataStore(webdavProtocol, webdavHost);
+        WebDAVDataStore datastore = getDataStore();
         datastore.readTemplate("project1", "dummy");
     }
 
     @Test(expected=IllegalArgumentException.class)
     public void testReadTemplateUnsupportedFormat() {
 
-        WebDAVDataStore datastore = new WebDAVDataStore(webdavProtocol, webdavHost);
+        WebDAVDataStore datastore = getDataStore();
         datastore.readTemplate("project1", "record1");
     }
 
     @Test(expected=EditorException.class)
     public void testReadTemplateNoTemplate() {
 
-        WebDAVDataStore datastore = new WebDAVDataStore(webdavProtocol, webdavHost);
+        WebDAVDataStore datastore = getDataStore();
         datastore.readTemplate("project1", "iso1");
     }
 
     @Test
     public void testReadTemplate() {
 
-        WebDAVDataStore datastore = new WebDAVDataStore(webdavProtocol, webdavHost);
+        WebDAVDataStore datastore = getDataStore();
         assertEquals("Template for MM2 file", "Template contents", datastore.readTemplate("project1", "mm2_1"));
     }
 
@@ -166,21 +165,21 @@ public class WebDAVDataStoreTest {
     @Test(expected=IllegalArgumentException.class)
     public void testReadTemplateForFormatUnsupportedFormat() {
 
-        WebDAVDataStore datastore = new WebDAVDataStore(webdavProtocol, webdavHost);
+        WebDAVDataStore datastore = getDataStore();
         datastore.readTemplate("project1", new SupportedFormat("dummy", "", ""));
     }
 
     @Test(expected=EditorException.class)
     public void testReadTemplateForFormatNoTemplate() {
 
-        WebDAVDataStore datastore = new WebDAVDataStore(webdavProtocol, webdavHost);
+        WebDAVDataStore datastore = getDataStore();
         datastore.readTemplate("project1", new SupportedFormat("MM2COMBINED", "mmCombinedMM2", "http://www.met.no/schema/metamod/mmCombined"));
     }
 
     @Test
     public void testReadTemplateForFormat() {
 
-        WebDAVDataStore datastore = new WebDAVDataStore(webdavProtocol, webdavHost);
+        WebDAVDataStore datastore = getDataStore();
         assertEquals("Template for MM2 file", "Template contents", datastore.readTemplate("project1", new SupportedFormat("MM2", "MM2", "http://www.met.no/schema/metamod/MM2")));
     }    
     
@@ -188,28 +187,28 @@ public class WebDAVDataStoreTest {
     @Test(expected=EditorException.class)
     public void testReadConfigurationNoRecord() {
 
-        WebDAVDataStore datastore = new WebDAVDataStore(webdavProtocol, webdavHost);
+        WebDAVDataStore datastore = getDataStore();
         datastore.readEditorConfiguration("project1", "dummy");
     }
 
     @Test(expected=IllegalArgumentException.class)
     public void testReadConfigurationUnsupportedFormat() {
 
-        WebDAVDataStore datastore = new WebDAVDataStore(webdavProtocol, webdavHost);
+        WebDAVDataStore datastore = getDataStore();
         datastore.readTemplate("project1", "record1");
     }
 
     @Test(expected=EditorException.class)
     public void testReadConfigurationNoTemplate() {
 
-        WebDAVDataStore datastore = new WebDAVDataStore(webdavProtocol, webdavHost);
+        WebDAVDataStore datastore = getDataStore();
         datastore.readEditorConfiguration("project1", "iso1");
     }
 
     @Test
     public void testReadConfiguration() {
 
-        WebDAVDataStore datastore = new WebDAVDataStore(webdavProtocol, webdavHost);
+        WebDAVDataStore datastore = getDataStore();
         assertEquals("Editor configuration for MM2 file", "Editor config", datastore.readEditorConfiguration("project1", "mm2_1"));
     }
 
@@ -217,14 +216,14 @@ public class WebDAVDataStoreTest {
     @Test(expected=EditorException.class)
     public void testReadNonExistantResource() {
 
-        WebDAVDataStore datastore = new WebDAVDataStore(webdavProtocol, webdavHost);
+        WebDAVDataStore datastore = getDataStore();
         datastore.readResource("project1", "dummyResource");
     }
 
     @Test
     public void testReadResource() {
 
-        WebDAVDataStore datastore = new WebDAVDataStore(webdavProtocol, webdavHost);
+        WebDAVDataStore datastore = getDataStore();
         assertEquals("Resource content", "Resource contents", datastore.readResource("project1", "resource1.txt"));
     }
 
@@ -232,7 +231,7 @@ public class WebDAVDataStoreTest {
     @Test
     public void testWriteMetadata(){
 
-        WebDAVDataStore datastore = new WebDAVDataStore(webdavProtocol, webdavHost);
+        WebDAVDataStore datastore = getDataStore();
 
         datastore.writeMetadata("project1", "write1", "Some xml");
 
@@ -249,6 +248,10 @@ public class WebDAVDataStoreTest {
         }
         return webdavProtocol + "://" + fullPath.toString();
 
+    }
+    
+    private WebDAVDataStore getDataStore(){
+        return new WebDAVDataStore(webdavProtocol, webdavHost, "dummy", "xxx");
     }
 
 }

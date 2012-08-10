@@ -30,7 +30,9 @@ public class DataStoreFactory {
             
             String protocol = config.getRequired("datastore.protocol");
             String host = config.getRequired("datastore.host");
-            return new WebDAVDataStore(protocol, host); 
+            String defaultUser = config.getRequired("datastore.defaultUser");
+            String defaultPassword = config.getRequired("datastore.defaultPassword");
+            return new WebDAVDataStore(protocol, host, defaultUser, defaultPassword); 
             
         }
         

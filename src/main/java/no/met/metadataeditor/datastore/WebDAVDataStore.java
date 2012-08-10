@@ -18,15 +18,20 @@ public class WebDAVDataStore extends DataStoreImpl {
 
     private String host;
     private String protocol;
+    private String username;
+    private String password;
+        
 
-    public WebDAVDataStore(String protocol, String host) {
+    public WebDAVDataStore(String protocol, String host, String username, String password) {
         this.protocol = protocol;
         this.host = host;
+        this.username = username;
+        this.password = password;
     }
 
 
     private Sardine getConnection() {
-        return SardineFactory.begin();
+        return SardineFactory.begin(username, password);
     }
 
 
