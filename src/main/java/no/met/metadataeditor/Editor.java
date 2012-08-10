@@ -104,7 +104,7 @@ public class Editor implements Serializable {
         String resultString;
         try {
             Document resultDoc = et.writeContent(content);
-            resultString = docToString(resultDoc);
+            resultString = EditorUtils.docToString(resultDoc);
             
         } catch (JDOMException e) {
             throw new EditorException(e.getMessage());
@@ -151,13 +151,6 @@ public class Editor implements Serializable {
             throw new EditorException(e.getMessage());
         }      
         return varContent;        
-    }    
-    
-    private String docToString(Document doc) throws IOException {
-        XMLOutputter xout = new XMLOutputter(Format.getPrettyFormat());
-        StringWriter writer = new StringWriter();
-        xout.output(doc, writer);
-        return writer.toString();
-    }    
+    }          
 
 }
