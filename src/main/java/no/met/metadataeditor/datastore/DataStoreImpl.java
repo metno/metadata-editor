@@ -139,14 +139,6 @@ abstract class DataStoreImpl implements DataStore {
 
     }
 
-
-    String convertStreamToString(InputStream is) {
-
-        // tokenize from the beginning of the string with \A. See for more details http://weblogs.java.net/blog/pat/archive/2004/10/stupid_scanner_1.html
-        return new java.util.Scanner(is).useDelimiter("\\A").next();
-    }
-
-
     @Override
     public List<SupportedFormat> getSupportedFormats(String project) {
         return DataStoreUtils.parseSupportedFormats(get(makePath(project, "config", SUPPORTED_FORMATS)));

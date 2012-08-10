@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.io.IOUtils;
+
 import no.met.metadataeditor.EditorException;
 
 import com.googlecode.sardine.Sardine;
@@ -46,7 +48,7 @@ public class WebDAVDataStore extends DataStoreImpl {
 
         try {
             InputStream is = webdavConn.get(id);
-            return convertStreamToString(is);
+            return IOUtils.toString(is);
         } catch (IOException e) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Failed to fetch data from WebDAV: " + id, e);
             throw new EditorException("Failed to fetch metadata from WebDAV", e);
