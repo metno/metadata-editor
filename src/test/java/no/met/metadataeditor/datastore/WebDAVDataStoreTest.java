@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import no.met.metadataeditor.EditorException;
@@ -57,13 +58,9 @@ public class WebDAVDataStoreTest {
 
         webdavConn.put(webdavPath("project1", "XML", "mm2_1.xml"), mm2Metadata.getBytes() );
 
-        String supported = "#test comment line\n"+
-                "MM2         MM2             http://www.met.no/schema/metamod/MM2\n"+
-                "MM2COMBINED mmCombinedMM2   http://www.met.no/schema/metamod/mmCombined\n" +
-                "ISO19139    MD_Metadata     http://www.isotc211.org/2005/gmd\n" +
-                "ISO19139COMBINED    mmCombinedISO http://www.met.no/schema/metamod/mmCombined";
+        InputStream setup = DataStoreUtilsTest.class.getResourceAsStream("/datastore/diskdatastore/testProject/config/setup.xml");
 
-        webdavConn.put(webdavPath("project1", "config", "supportedFormats.txt"), supported.getBytes());
+        webdavConn.put(webdavPath("project1", "config", "setup.xml"), setup);
 
         webdavConn.put(webdavPath("project1", "config", "MM2Editor.xml"), "Editor config".getBytes() );
         webdavConn.put(webdavPath("project1", "config", "MM2Template.xml"), "Template contents".getBytes() );
@@ -181,8 +178,8 @@ public class WebDAVDataStoreTest {
 
         WebDAVDataStore datastore = getDataStore();
         assertEquals("Template for MM2 file", "Template contents", datastore.readTemplate("project1", new SupportedFormat("MM2", "MM2", "http://www.met.no/schema/metamod/MM2")));
-    }    
-    
+    }
+
 
     @Test(expected=EditorException.class)
     public void testReadConfigurationNoRecord() {
@@ -249,7 +246,7 @@ public class WebDAVDataStoreTest {
         return webdavProtocol + "://" + fullPath.toString();
 
     }
-    
+
     private WebDAVDataStore getDataStore(){
         return new WebDAVDataStore(webdavProtocol, webdavHost, "dummy", "xxx");
     }

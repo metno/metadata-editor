@@ -1,15 +1,55 @@
 package no.met.metadataeditor.datastore;
 
-import java.io.InputStream;
+import java.io.IOException;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import no.met.metadataeditor.EditorException;
 
 abstract class DataStoreImpl implements DataStore {
 
-    private final String SUPPORTED_FORMATS = "supportedFormats.txt";
+    private final String SETUPFILE = "setup.xml";
     private final String CONFIGDIR = "config";
     private final String XMLDIR = "XML";
+
+    private Document setupDoc = null;
+    private Date setupDocDate = null;
+
+    private Document getSetupDoc(String project) {
+        String path = makePath(project, CONFIGDIR, SETUPFILE);
+
+        // use existing if not too old
+        if (setupDoc != null && setupDocDate != null) {
+            Date lastModified = getLastModified(path);
+            if (!lastModified.after(setupDocDate)) {
+                return setupDoc;
+            }
+        }
+
+        // fetch new file
+        setupDocDate = getLastModified(path);
+        String setupDocStr = get(path);
+        javax.xml.parsers.DocumentBuilderFactory dbf = javax.xml.parsers.DocumentBuilderFactory.newInstance();
+        try {
+            javax.xml.parsers.DocumentBuilder db = dbf.newDocumentBuilder();
+            setupDoc = db.parse(new InputSource(new java.io.StringReader(setupDocStr)));
+        } catch (SAXException e) {
+            Logger.getLogger(DataStoreImpl.class.getName()).log(Level.SEVERE, null, e);
+        } catch (IOException e) {
+            Logger.getLogger(DataStoreImpl.class.getName()).log(Level.SEVERE, null, e);
+        } catch (ParserConfigurationException e) {
+            Logger.getLogger(DataStoreImpl.class.getName()).log(Level.SEVERE, null, e);
+        }
+
+        return setupDoc;
+    }
 
     /**
      * put a resource to the datastor
@@ -23,6 +63,12 @@ abstract class DataStoreImpl implements DataStore {
      * @return
      */
     abstract String get(String id);
+    /**
+     * check the last change of a resource
+     * @param id
+     * @return date of last modification, or current date if not detectable
+     */
+    abstract java.util.Date getLastModified(String id);
     /**
      * check if a resource exists
      * @param id
@@ -74,22 +120,22 @@ abstract class DataStoreImpl implements DataStore {
 
         return get(templateUrl);
     }
-    
+
     @Override
     public String readTemplate(String project, SupportedFormat format){
         String templateUrl = templateUrl(project, format);
 
         List<SupportedFormat> formats = getSupportedFormats(project);
-        
+
         if( !formats.contains(format) ){
             throw new IllegalArgumentException("Format not supported by project: " + format);
         }
-        
+
         if (!exists(templateUrl)) {
             throw new EditorException("Template does not exist: " + templateUrl);
         }
 
-        return get(templateUrl);        
+        return get(templateUrl);
     }
 
     @Override
@@ -141,7 +187,8 @@ abstract class DataStoreImpl implements DataStore {
 
     @Override
     public List<SupportedFormat> getSupportedFormats(String project) {
-        return DataStoreUtils.parseSupportedFormats(get(makePath(project, "config", SUPPORTED_FORMATS)));
+        Document doc = getSetupDoc(project);
+        return DataStoreUtils.parseSupportedFormats(doc);
     }
 
 }

@@ -2,6 +2,7 @@ package no.met.metadataeditor.datastore;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -9,6 +10,7 @@ import org.apache.commons.io.IOUtils;
 
 import no.met.metadataeditor.EditorException;
 
+import com.googlecode.sardine.DavResource;
 import com.googlecode.sardine.Sardine;
 import com.googlecode.sardine.SardineFactory;
 
@@ -20,7 +22,7 @@ public class WebDAVDataStore extends DataStoreImpl {
     private String protocol;
     private String username;
     private String password;
-        
+
 
     public WebDAVDataStore(String protocol, String host, String username, String password) {
         this.protocol = protocol;
@@ -58,6 +60,19 @@ public class WebDAVDataStore extends DataStoreImpl {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Failed to fetch data from WebDAV: " + id, e);
             throw new EditorException("Failed to fetch metadata from WebDAV", e);
         }
+    }
+
+    @Override
+    java.util.Date getLastModified(String id) {
+        Sardine webdavConn = getConnection();
+        try {
+            List<DavResource> res = webdavConn.list(id, 0);
+            assert (res.size() == 1);
+            return res.get(0).getModified();
+        } catch (IOException e) {
+            Logger.getLogger(WebDAVDataStore.class.getName()).log(Level.SEVERE, "Failed to fetch information from WebDAV: " + id, e);
+        }
+        return new java.util.Date();
     }
 
 

@@ -2,28 +2,42 @@ package no.met.metadataeditor.datastore;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLStreamException;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 import static no.met.metadataeditor.TestHelpers.*;
 
 public class DataStoreUtilsTest {
 
-    List<SupportedFormat> formats;
+    List<SupportedFormat> formats = new ArrayList<SupportedFormat>();
 
     @Before
     public void setUp() {
-        String supported = "#test comment line\n"+
-            "MM2         MM2             http://www.met.no/schema/metamod/MM2\n"+
-            "MM2COMBINED mmCombinedMM2   http://www.met.no/schema/metamod/mmCombined\n" +
-            "ISO19139    MD_Metadata     http://www.isotc211.org/2005/gmd\n" +
-            "ISO19139COMBINED    mmCombinedISO http://www.met.no/schema/metamod/mmCombined";
-        formats = DataStoreUtils.parseSupportedFormats(supported);
+        Document doc;
+        javax.xml.parsers.DocumentBuilderFactory dbf = javax.xml.parsers.DocumentBuilderFactory.newInstance();
+        try {
+            javax.xml.parsers.DocumentBuilder db = dbf.newDocumentBuilder();
+            doc = db.parse(DataStoreUtilsTest.class.getResourceAsStream("/datastore/diskdatastore/testProject/config/setup.xml"));
+            formats = DataStoreUtils.parseSupportedFormats(doc);
+        } catch (SAXException e) {
+            Logger.getLogger(DataStoreImpl.class.getName()).log(Level.SEVERE, null, e);
+        } catch (IOException e) {
+            Logger.getLogger(DataStoreImpl.class.getName()).log(Level.SEVERE, null, e);
+        } catch (ParserConfigurationException e) {
+            Logger.getLogger(DataStoreImpl.class.getName()).log(Level.SEVERE, null, e);
+        }
     }
 
     @Test

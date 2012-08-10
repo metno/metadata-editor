@@ -3,14 +3,22 @@ package no.met.metadataeditor.datastore;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathException;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import no.met.metadataeditor.EditorException;
 
@@ -68,17 +76,33 @@ public class DataStoreUtils {
         return format;
     }
 
-    public static List<SupportedFormat> parseSupportedFormats(String supportedFormats) {
+    static List<SupportedFormat> parseSupportedFormats(Document doc) {
         List<SupportedFormat> formats = new ArrayList<SupportedFormat>();
-        Pattern p = Pattern.compile("^(?!#)(\\S+)\\s+(\\S+)(\\s+(\\S+))?\\s*$", Pattern.MULTILINE);
-        Matcher m = p.matcher(supportedFormats);
-        while (m.find()) {
-            String tag = m.group(1);
-            String node = m.group(2);
-            String namespace = null;
-            if (m.groupCount() >= 4)
-                namespace = m.group(4);
-            formats.add(new SupportedFormat(tag, node, namespace));
+        try {
+            XPathFactory factory = XPathFactory.newInstance();
+            XPath xpath = factory.newXPath();
+            XPathExpression expr = xpath.compile("//supportedMetadataFormats/format");
+            NodeList nodes = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
+            for (int i = 0; i < nodes.getLength(); i++) {
+                Node node = nodes.item(i);
+                String tag = xpath.evaluate("@tag", node);
+                NodeList detectors = (NodeList) xpath.evaluate("detector", node, XPathConstants.NODESET);
+                if (detectors.getLength() != 1) {
+                    throw new EditorException(String.format("found %d detectors, need exactly 1 for format %s",
+                            detectors.getLength(), tag));
+                }
+                String detectorType = xpath.evaluate("@type", detectors.item(0));
+                if (!"rootNode".equals(detectorType)) {
+                    throw new EditorException(String.format(
+                            "found detector-type '%s' for format '%s', currently only 'rootNode' allowed in %s",
+                            detectorType, tag));
+                }
+                String rootNode = xpath.evaluate("arg[@name='rootNode']/@value", detectors.item(0));
+                String namespace = xpath.evaluate("arg[@name='namespace']/@value", detectors.item(0));
+                formats.add(new SupportedFormat(tag, rootNode, namespace));
+            }
+        } catch (XPathException e) {
+            Logger.getLogger(DataStoreImpl.class.getName()).log(Level.SEVERE, null, e);
         }
 
         return formats;

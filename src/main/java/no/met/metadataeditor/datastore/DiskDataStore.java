@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import java.util.Date;
 import java.util.logging.*;
 
 import no.met.metadataeditor.EditorException;
@@ -73,6 +74,12 @@ public class DiskDataStore extends DataStoreImpl {
             }
         }
         return sb.toString();
+    }
+
+    @Override
+    Date getLastModified(String id) {
+        File file = new File(id);
+        return new java.util.Date(file.lastModified());
     }
 
     @Override
