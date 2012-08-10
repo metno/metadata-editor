@@ -61,8 +61,12 @@ public class EditorTemplate {
     public EditorTemplate(InputSource source) throws SAXException, IOException {
         
         // we read the entire XML contents from the source so that we can re-use it later.
-        templateXML = IOUtils.toString(source.getByteStream());
-        
+        if( source.getCharacterStream() != null ){
+            templateXML = IOUtils.toString(source.getCharacterStream());    
+        } else {
+            templateXML = IOUtils.toString(source.getByteStream());
+        }
+
         TemplateHandler th = new TemplateHandler();
         SAXParserFactory spf = SAXParserFactory.newInstance();
         spf.setNamespaceAware(true);
