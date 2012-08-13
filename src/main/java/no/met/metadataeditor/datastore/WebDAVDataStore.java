@@ -99,4 +99,21 @@ public class WebDAVDataStore extends DataStoreImpl {
         return fullPath.toString();
     }
 
+
+    @Override
+    public boolean userHasWriteAccess(String project, String username, String password) {
+
+        Sardine webdavConn = SardineFactory.begin(username, password);        
+        String accessCheckFile = makePath(project, "checkAccessOk.txt");
+        
+        try {
+            webdavConn.put(accessCheckFile, "Some bytes".getBytes());
+        } catch (IOException e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Failed to write to access file", e);
+            return false;
+        }
+        
+        return true;
+    }
+
 }

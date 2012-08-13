@@ -97,4 +97,11 @@ public class DiskDataStore extends DataStoreImpl {
         return out.toString();
     }
 
+    @Override
+    public boolean userHasWriteAccess(String project, String username, String password) {
+
+        // For the disk data store we assume that all user have access to write.
+        return true;
+    }
+
 }

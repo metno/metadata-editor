@@ -75,4 +75,11 @@ public interface DataStore {
      */
     String readResource(String project, String resourceIdentifier);
 
+    /**
+     * @param project The project to write to.
+     * @param username The username of the user
+     * @param password The un-hashed password of the user.
+     * @return True if the user has write access to the project. False otherwise
+     */
+    boolean userHasWriteAccess(String project, String username, String password);
 }
