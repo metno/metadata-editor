@@ -29,18 +29,20 @@ jQuery(document).ready(function () {
 
 <h:body>
     
-    <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>  
+    <p:ajaxStatus onstart="statusDialog.show();" oncomplete="statusDialog.hide()" />  
               
-    <p:dialog modal="true" widgetVar="statusDialog" header="Status" draggable="false" closable="false">  
+    <p:dialog id="status-dialog" modal="true" widgetVar="statusDialog" header="Status" draggable="false" closable="false">  
         <p:graphicImage value="/resources/images/ajaxloadingbar.gif" />  
     </p:dialog>  
+
+    <ui:include src="login-dialog.xhtml" />
 
     <p:growl  globalOnly="true" autoUpdate="true" sticky="false" life="4000" />
    
     <h:form id="metadataeditor" name="metadataeditor">
     
     <ui:include src="menu.xhtml"/>
-   
+       
     <br />
     
 

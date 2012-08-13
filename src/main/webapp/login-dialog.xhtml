@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:metaedit="http://java.sun.com/jsf/composite/component">
+
+<body>
+    <ui:composition>
+
+    <p:dialog modal="true" widgetVar="loginDialog" header="Login" draggable="true" closable="false" >  
+
+        <h:form id="login-form">      
+
+            <p:messages id="login-messages" />
+            
+            <h:panelGrid columns="2" rendered="#{!userBean.validated}">
+            
+                <p:outputLabel for="username" value="Username:" />
+                <p:inputText id="username" value="#{userBean.username}" />
+
+                <p:outputLabel for="password" value="Password:" />
+                <p:inputText id="password" value="#{userBean.password}" />
+
+                <p:commandButton value="Login" update="@form" action="#{userBean.validateCredentials}" >
+                    <f:ajax>
+                        <f:param name="project" value="#{editorBean.project}"/>
+                    </f:ajax>
+                </p:commandButton>
+                
+                <p:commandLink value="Cancel" onclick="loginDialog.hide()" url="#" />
+        
+            </h:panelGrid>
+            
+            <p:commandButton value="Ok" onclick="loginDialig.hide()" action="#{userBean.closeLoginDialog}" ajax="false" process="@all" rendered="#{userBean.validated}" />
+            
+        </h:form>
+  
+    </p:dialog>  
+    
+    </ui:composition>
+</body>
+</html>

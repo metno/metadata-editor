@@ -9,9 +9,12 @@ import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
+import javax.faces.validator.ValidatorException;
 import javax.servlet.http.HttpServletResponse;
 
 import org.primefaces.component.tabview.TabView;
@@ -22,6 +25,8 @@ import org.xml.sax.SAXException;
 import no.met.metadataeditor.dataTypes.EditorTemplate;
 import no.met.metadataeditor.datastore.DataStore;
 import no.met.metadataeditor.datastore.DataStoreFactory;
+import no.met.metadataeditor.datastore.DataStoreUtils;
+import no.met.metadataeditor.datastore.SupportedFormat;
 import no.met.metadataeditor.widget.EditorWidget;
 
 /**
@@ -48,7 +53,11 @@ public class EditorBean implements Serializable {
     private int activeTabId = 0;
     
     boolean initPerformed = false;
-
+    
+    @ManagedProperty(value="#{userBean}")
+    private UserBean user;
+    
+    
     public EditorBean() {
 
         
@@ -149,6 +158,7 @@ public class EditorBean implements Serializable {
         
     }
     
+    
     public EditorConfiguration getEditorConfiguration() {
         return editor.getEditorConfiguration();
     }
@@ -171,6 +181,14 @@ public class EditorBean implements Serializable {
         this.project = project;
     }
 
+
+    public UserBean getUser() {
+        return user;
+    }
+
+    public void setUser(UserBean user) {
+        this.user = user;
+    }
 
     public int getActiveTabId() {
         return activeTabId;
@@ -242,7 +260,7 @@ public class EditorBean implements Serializable {
             FacesContext.getCurrentInstance().getExternalContext().responseSendError(404, msg);
         }
     }
-
+    
     /**
      * Validate that the record identifier exists 
      * @param context
@@ -258,6 +276,6 @@ public class EditorBean implements Serializable {
             msg += "Please check that both the record identifier and the project is correct";
             FacesContext.getCurrentInstance().getExternalContext().responseSendError(404, msg);
         }
-    }    
+    }        
     
 }

@@ -9,10 +9,13 @@
 <body>
 	<ui:composition>
 	    <p:menubar>
-	        <p:menuitem value="Save" process="@form" update="@form" action="#{editorBean.save}" />
-	        <p:menuitem value="Validate" process="@form" update="@form" action="#{editorBean.validate}" />        
-	        <p:menuitem value="Reset" process="@form" update="@form" action="#{editorBean.reset}" />        
-	        <p:menuitem value="Export" action="#{editorBean.export}" ajax="false" target="_blank" />
+            <p:menuitem value="New" url="new.xhtml?project=#{editorBean.project}" rendered="#{userBean.validated}" />	    
+	        <p:menuitem value="Save" process="@form" update="@form" action="#{editorBean.save}" rendered="#{userBean.validated}" />
+	        <p:menuitem value="Validate" process="@form" update="@form" action="#{editorBean.validate}" rendered="#{userBean.validated}" />        
+	        <p:menuitem value="Reset" process="@form" update="@form" action="#{editorBean.reset}" rendered="#{userBean.validated}" />        
+	        <p:menuitem value="Export" action="#{editorBean.export}" ajax="false" rendered="#{userBean.validated}" />
+	        <p:menuitem value="Log In" onclick="loginDialog.show()" url="#" rendered="#{!userBean.validated}" />
+	        <p:menuitem value="Log Out" action="#{userBean.logout}" rendered="#{userBean.validated}" ajax="false" />
 	    </p:menubar>
 	</ui:composition>    
 </body>
