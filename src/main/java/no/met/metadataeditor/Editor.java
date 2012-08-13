@@ -74,7 +74,7 @@ public class Editor implements Serializable {
     public void save(String project, String identifier, String username, String password) {
 
         String xml = editorContentToXML(project, identifier);        
-        DataStore dataStore = DataStoreFactory.getInstance();
+        DataStore dataStore = DataStoreFactory.getInstance(project);
         dataStore.writeMetadata(project, identifier, xml, username, password);
         
     }
@@ -93,7 +93,7 @@ public class Editor implements Serializable {
     
     private String editorContentToXML(String project, String identifier){
 
-        DataStore dataStore = DataStoreFactory.getInstance();
+        DataStore dataStore = DataStoreFactory.getInstance(project);
         String templateString = dataStore.readTemplate(project, identifier);
         InputSource templateSource = new InputSource(new StringReader(templateString));
         EditorTemplate et = getTemplate(project, identifier);        
@@ -121,7 +121,7 @@ public class Editor implements Serializable {
     
     private EditorTemplate getTemplate(String project, String identifier){
         
-        DataStore dataStore = DataStoreFactory.getInstance();
+        DataStore dataStore = DataStoreFactory.getInstance(project);
         String templateString = dataStore.readTemplate(project, identifier);
         InputSource templateSource = new InputSource(new StringReader(templateString));
         
@@ -138,7 +138,7 @@ public class Editor implements Serializable {
     
     public Map<String,List<EditorVariableContent>> getContent(String project, String identifier, EditorTemplate template){
         
-        DataStore dataStore = DataStoreFactory.getInstance();
+        DataStore dataStore = DataStoreFactory.getInstance(project);
         String metadataString = dataStore.readMetadata(project, identifier);
         Map<String,List<EditorVariableContent>> varContent = null;
         try {

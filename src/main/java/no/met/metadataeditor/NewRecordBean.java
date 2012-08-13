@@ -67,7 +67,7 @@ public class NewRecordBean implements Serializable {
         }
         
         
-        DataStore datastore = DataStoreFactory.getInstance();        
+        DataStore datastore = DataStoreFactory.getInstance(project);        
         if( datastore.metadataExists(project, identifier)){
             
             FacesMessage message = new FacesMessage("Record identifier already in use.", "The record identifier is already in use and cannot be reused for a new record.");
@@ -78,7 +78,7 @@ public class NewRecordBean implements Serializable {
     
     public List<SupportedFormat> getSupportedFormats() {
         
-        DataStore datastore = DataStoreFactory.getInstance();
+        DataStore datastore = DataStoreFactory.getInstance(project);
         return datastore.getSupportedFormats(project);
         
     }
@@ -86,7 +86,7 @@ public class NewRecordBean implements Serializable {
     public String newRecord() {
 
         if( user.isValidated() ){
-            DataStore datastore = DataStoreFactory.getInstance();
+            DataStore datastore = DataStoreFactory.getInstance(project);
             String templateXML = datastore.readTemplate(project, newRecordFormat);
             try {
                 EditorTemplate template = new EditorTemplate(new InputSource(new StringReader(templateXML)));

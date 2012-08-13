@@ -90,7 +90,7 @@ public class EditorBean implements Serializable {
     
     public EditorTemplate getTemplate(String project, String recordIdentifier){
         
-        DataStore dataStore = DataStoreFactory.getInstance();
+        DataStore dataStore = DataStoreFactory.getInstance(project);
         String templateString = dataStore.readTemplate(project, recordIdentifier);
         InputSource templateSource = new InputSource(new StringReader(templateString));
         
@@ -222,7 +222,7 @@ public class EditorBean implements Serializable {
     
     public List<String> getResourceValues(EditorWidget widget){
         
-        DataStore dataStore = DataStoreFactory.getInstance();
+        DataStore dataStore = DataStoreFactory.getInstance(project);
         String resourceString = dataStore.readResource(project, widget.getResourceUri().toString());
 
         String[] resourceValues = resourceString.split("\n");
@@ -259,7 +259,7 @@ public class EditorBean implements Serializable {
      */
     public void validateProject(String project) throws IOException {
 
-        DataStore dataStore = DataStoreFactory.getInstance();
+        DataStore dataStore = DataStoreFactory.getInstance(project);
         if( !dataStore.projectExists(project)){
             String msg = "The project '" + project + "' does not exist. Please check that the project is correct.";
             FacesContext.getCurrentInstance().getExternalContext().responseSendError(404, msg);
@@ -275,7 +275,7 @@ public class EditorBean implements Serializable {
      */
     public void validateRecordIdentifier(String project, String recordIdentifier) throws IOException {
 
-        DataStore dataStore = DataStoreFactory.getInstance();
+        DataStore dataStore = DataStoreFactory.getInstance(project);
         if( !dataStore.metadataExists(project, recordIdentifier)){
             String msg = "The metadata record '" + recordIdentifier + "' does not exist for the project '" + project + "'. ";
             msg += "Please check that both the record identifier and the project is correct";

@@ -59,7 +59,7 @@ public class UserBean implements Serializable {
         String project = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("project");
         
         // if validate set to validated
-        DataStore datastore = DataStoreFactory.getInstance();
+        DataStore datastore = DataStoreFactory.getInstance(project);
         if(datastore.userHasWriteAccess(project, username, password)){
             
             isValidated = true;
