@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:metaedit="http://java.sun.com/jsf/composite/component">
+
+<f:metadata>
+    <f:viewParam name="project" value="#{newRecordBean.project}" required="true" />
+ </f:metadata>
+
+
+<h:head>
+    <title>Metadata editor</title>
+    <h:outputStylesheet name="editor.css" library="css"/>
+    <h:outputScript name="utils.js" library="javascript"/>        
+</h:head>
+
+<h:body>
+
+    <ui:include src="login-dialog.xhtml" />
+
+	<h:form id="newRecordForm" rendered="#{userBean.validated}">  
+	
+	   <p:messages />
+	
+	    <h:panelGrid columns="2" cellpadding="5">  
+	        <p:outputLabel for="identifier" value="Record identifier:" />  
+	        <p:inputText id="identifier" value="#{newRecordBean.newRecordIdentifier}" required="true" validator="#{newRecordBean.validateRecordIdentifier}" />  
+	          
+	        <p:outputLabel for="format" value="Metadata format:" />  
+	        <h:selectOneMenu id="format" value="#{newRecordBean.newRecordFormat}" converter="omnifaces.SelectItemsConverter">
+	           <f:selectItems value="#{newRecordBean.supportedFormats}" var="item" itemLabel="#{item.tagName}" itemValue="#{item}" />
+	        </h:selectOneMenu>
+	           
+            <p:commandButton id="createButton" value="Create" action="#{newRecordBean.newRecord}" ajax="false"/>
+   
+	    </h:panelGrid>  
+
+	   <h:panelGroup layout="block" rendered="#{!userBean.validated}">
+	  
+	       <h:outputText value="You need to login before you can add a new record." />
+	       <h:link outcome="index.xhtml?project=#{newRecordBean.project}" value="Go to project" />
+	     
+	   </h:panelGroup>
+
+	      
+	</h:form>
+	
+	
+</h:body>
+
+</html>
