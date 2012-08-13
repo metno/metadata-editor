@@ -55,8 +55,10 @@ abstract class DataStoreImpl implements DataStore {
      * put a resource to the datastor
      * @param id
      * @param resource
+     * @param username The username in the data store for the user doing the put action
+     * @param password The password of the user doing the put action
      */
-    abstract void put(String id, String resource);
+    abstract void put(String id, String resource, String username, String password);
     /**
      * fetch a resource as string from the datastore
      * @param id
@@ -83,10 +85,10 @@ abstract class DataStoreImpl implements DataStore {
     abstract String makePath(String... paths);
 
     @Override
-    public boolean writeMetadata(String project, String recordIdentifier, String xml) {
+    public boolean writeMetadata(String project, String recordIdentifier, String xml, String username, String password) {
 
         String url = metadataUrl(project, recordIdentifier);
-        put(url, xml);
+        put(url, xml, username, password);
         return true;
     }
 

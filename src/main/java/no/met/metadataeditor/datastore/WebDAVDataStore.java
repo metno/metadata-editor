@@ -38,8 +38,8 @@ public class WebDAVDataStore extends DataStoreImpl {
 
 
     @Override
-    void put(String id, String resource) {
-        Sardine webdavConn = getConnection();
+    void put(String id, String resource, String username, String password) {
+        Sardine webdavConn = SardineFactory.begin(username, password);
         try {
             webdavConn.put(id, resource.getBytes());
         } catch (IOException e) {

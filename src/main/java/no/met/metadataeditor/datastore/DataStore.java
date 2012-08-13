@@ -17,7 +17,7 @@ public interface DataStore {
      * @param xml The XML that should be written. The XML will be written directly without further processing.
      * @return Returns true on success and throws a EditorException on error.
      */
-    boolean writeMetadata(String project, String recordIdentifier, String xml);
+    boolean writeMetadata(String project, String recordIdentifier, String xml, String username, String password);
 
     /**
      * @param project The project to check.

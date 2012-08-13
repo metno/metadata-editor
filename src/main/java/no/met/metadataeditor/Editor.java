@@ -71,11 +71,11 @@ public class Editor implements Serializable {
      * @param project The name of the current project.
      * @param identifier The identifier of the current record.
      */
-    public void save(String project, String identifier) {
+    public void save(String project, String identifier, String username, String password) {
 
         String xml = editorContentToXML(project, identifier);        
         DataStore dataStore = DataStoreFactory.getInstance();
-        dataStore.writeMetadata(project, identifier, xml);
+        dataStore.writeMetadata(project, identifier, xml, username, password);
         
     }
 

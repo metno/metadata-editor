@@ -108,10 +108,15 @@ public class EditorBean implements Serializable {
     
     public void save() {
         
-        editor.save(project, recordIdentifier);
+        if(user.isValidated()){        
+            editor.save(project, recordIdentifier, user.getUsername(), user.getPassword());
 
-        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Changes has been saved.", "Changes has been saved.");
-        FacesContext.getCurrentInstance().addMessage(null, msg);        
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Changes has been saved.", "Changes has been saved.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+        } else {
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login required before saving.", "Login required before saving.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);            
+        }
         
     }
     

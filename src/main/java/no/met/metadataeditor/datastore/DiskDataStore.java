@@ -24,7 +24,10 @@ public class DiskDataStore extends DataStoreImpl {
     }
 
     @Override
-    void put(String id, String resource) {
+    void put(String id, String resource, String username, String password) {
+        
+        // IMPLEMENTATION NOTE: We ignore username and password for the DiskDataStore on purpose for simplicity reasons
+        
         File file = new File(id);
 
         BufferedWriter out = null;

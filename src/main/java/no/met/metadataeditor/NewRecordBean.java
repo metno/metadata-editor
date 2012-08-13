@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -40,10 +41,10 @@ public class NewRecordBean implements Serializable {
     
     // the format for a new record. Used when the user clicks "New"
     private SupportedFormat newRecordFormat;    
+
+    @ManagedProperty(value="#{userBean}")
+    private UserBean user;    
     
-    /**
-     * 
-     */
     private static final long serialVersionUID = 6284081275030111665L;
 
     
@@ -83,28 +84,31 @@ public class NewRecordBean implements Serializable {
     }
     
     public String newRecord() {
-        
-        DataStore datastore = DataStoreFactory.getInstance();
-        
-        // get the XML template for the format form the datastore
-        
-        String templateXML = datastore.readTemplate(project, newRecordFormat);
-        try {
-            EditorTemplate template = new EditorTemplate(new InputSource(new StringReader(templateXML)));
-            Document emptyRecord = template.writeContent(new HashMap<String, List<EditorVariableContent>>());
-            datastore.writeMetadata(project, newRecordIdentifier, EditorUtils.docToString(emptyRecord));
-        } catch (SAXException e) {           
-            logger.log(Level.SEVERE, "Failed to parse template", e);
-            throw new EditorException("Failed to parse template", e);
-        } catch (IOException e) {
-            logger.log(Level.SEVERE, "Failed to read template", e);
-            throw new EditorException("Failed to read template", e);
-        } catch (JDOMException e) {
-            logger.log(Level.SEVERE, "Failed to write empty template", e);
-            throw new EditorException("Failed to write template", e);            
-        }        
-        
-        return "editor.xhtml?project=" + project + "&record=" + newRecordIdentifier + "&faces-redirect=true";
+
+        if( user.isValidated() ){
+            DataStore datastore = DataStoreFactory.getInstance();
+            String templateXML = datastore.readTemplate(project, newRecordFormat);
+            try {
+                EditorTemplate template = new EditorTemplate(new InputSource(new StringReader(templateXML)));
+                Document emptyRecord = template.writeContent(new HashMap<String, List<EditorVariableContent>>());
+                datastore.writeMetadata(project, newRecordIdentifier, EditorUtils.docToString(emptyRecord), user.getUsername(), user.getPassword());
+            } catch (SAXException e) {           
+                logger.log(Level.SEVERE, "Failed to parse template", e);
+                throw new EditorException("Failed to parse template", e);
+            } catch (IOException e) {
+                logger.log(Level.SEVERE, "Failed to read template", e);
+                throw new EditorException("Failed to read template", e);
+            } catch (JDOMException e) {
+                logger.log(Level.SEVERE, "Failed to write empty template", e);
+                throw new EditorException("Failed to write template", e);            
+            }        
+            
+            return "editor.xhtml?project=" + project + "&record=" + newRecordIdentifier + "&faces-redirect=true";
+        } else {
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login required before creating record.", "Login required before creating record");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return null;
+        }
     }
 
     public String getNewRecordIdentifier() {

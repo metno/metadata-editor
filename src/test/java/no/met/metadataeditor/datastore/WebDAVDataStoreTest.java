@@ -30,11 +30,16 @@ public class WebDAVDataStoreTest {
     private static String webdavHost = "dev-vm087/svn/unittest";
 
     private static String webdavProtocol = "http";
+    
+    private static final String WEBDAV_USERNAME = "dummy";
+    
+    private static final String WEBDAV_PASSWORD = "xxx";
+    
 
     @BeforeClass
     public static void setupWebDAV () throws IOException {
 
-        webdavConn = SardineFactory.begin("dummy", "xxx");
+        webdavConn = SardineFactory.begin(WEBDAV_USERNAME, WEBDAV_PASSWORD);
 
         // create the structure in the WebDAV required for the tests.
         webdavConn.createDirectory( webdavPath("project1" ) );
@@ -230,7 +235,7 @@ public class WebDAVDataStoreTest {
 
         WebDAVDataStore datastore = getDataStore();
 
-        datastore.writeMetadata("project1", "write1", "Some xml");
+        datastore.writeMetadata("project1", "write1", "Some xml", WEBDAV_USERNAME, WEBDAV_PASSWORD);
 
         assertEquals("Data read is same as written", "Some xml", datastore.readMetadata("project1", "write1"));
 
@@ -243,9 +248,9 @@ public class WebDAVDataStoreTest {
         
         assertFalse("Unknown user does not have write access", datastore.userHasWriteAccess("project1", "unknown", "dummy"));
         
-        assertFalse("Wrong password does not give write access", datastore.userHasWriteAccess("project1", "dummy", "asdfadsfasfdfsa"));
+        assertFalse("Wrong password does not give write access", datastore.userHasWriteAccess("project1", WEBDAV_USERNAME, "asdfadsfasfdfsa"));
         
-        assertTrue("Correct username and password gives write access", datastore.userHasWriteAccess("project1", "dummy", "xxx"));
+        assertTrue("Correct username and password gives write access", datastore.userHasWriteAccess("project1", WEBDAV_USERNAME, WEBDAV_PASSWORD));
         
     }
 
@@ -261,7 +266,7 @@ public class WebDAVDataStoreTest {
     }
 
     private WebDAVDataStore getDataStore(){
-        return new WebDAVDataStore(webdavProtocol, webdavHost, "dummy", "xxx");
+        return new WebDAVDataStore(webdavProtocol, webdavHost, WEBDAV_USERNAME, WEBDAV_PASSWORD);
     }
 
 }
