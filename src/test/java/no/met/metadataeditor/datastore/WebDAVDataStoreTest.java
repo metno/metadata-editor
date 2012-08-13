@@ -235,6 +235,19 @@ public class WebDAVDataStoreTest {
         assertEquals("Data read is same as written", "Some xml", datastore.readMetadata("project1", "write1"));
 
     }
+    
+    @Test
+    public void testUserHasWriteAccess(){
+
+        WebDAVDataStore datastore = getDataStore();
+        
+        assertFalse("Unknown user does not have write access", datastore.userHasWriteAccess("project1", "unknown", "dummy"));
+        
+        assertFalse("Wrong password does not give write access", datastore.userHasWriteAccess("project1", "dummy", "asdfadsfasfdfsa"));
+        
+        assertTrue("Correct username and password gives write access", datastore.userHasWriteAccess("project1", "dummy", "xxx"));
+        
+    }
 
     private static String webdavPath(String... paths){
 
