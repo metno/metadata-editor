@@ -41,6 +41,14 @@ jQuery(document).ready(function () {
    
     <h:form id="metadataeditor" name="metadataeditor">
     
+    <p:breadCrumb>
+        <p:menuitem value="Projects" url="index.xhtml" />
+        <p:menuitem value="#{editorBean.project}" url="project.xhtml?project=#{editorBean.project}" />
+        <p:menuitem value="#{editorBean.recordIdentifier}" url="#" />
+    </p:breadCrumb>
+
+    <br />    
+    
     <ui:include src="menu.xhtml"/>
        
     <br />
