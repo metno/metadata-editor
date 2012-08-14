@@ -1,12 +1,16 @@
 package no.met.metadataeditor.datastore;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
+
+import org.apache.commons.io.FilenameUtils;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -84,6 +88,11 @@ abstract class DataStoreImpl implements DataStore {
      */
     abstract String makePath(String... paths);
 
+    /**
+     * @return A list of all available metadata in the data store
+     */
+    abstract List<String> list(String url);
+    
     @Override
     public boolean writeMetadata(String recordIdentifier, String xml, String username, String password) {
 
@@ -181,6 +190,10 @@ abstract class DataStoreImpl implements DataStore {
         return makePath(XMLDIR, recordIdentifier + ".xml");
 
     }
+    
+    private String metadataDirUrl() {
+        return makePath(XMLDIR);
+    }
 
     @Override
     public List<SupportedFormat> getSupportedFormats() {
@@ -188,4 +201,18 @@ abstract class DataStoreImpl implements DataStore {
         return DataStoreUtils.parseSupportedFormats(doc);
     }
 
+    @Override
+    public List<String> availableMetadata(){
+        
+        List<String> filenames = list(metadataDirUrl());
+        List<String> identifiers = new ArrayList<String>();
+        for( String filename : filenames ){            
+            identifiers.add(FilenameUtils.removeExtension(filename));            
+        }
+        
+        // we sort the identifiers for simple automatic testing.        
+        Collections.sort(identifiers);
+        return identifiers;
+        
+    }
 }

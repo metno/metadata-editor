@@ -2,6 +2,8 @@ package no.met.metadataeditor.datastore;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import no.met.metadataeditor.EditorException;
 
@@ -53,6 +55,15 @@ public class DiskDataStoreTest {
         DataStore store = new DiskDataStore(testDir.getAbsolutePath());
         store.readTemplate("mm2combined");
         
+        
+    }
+    
+    @Test
+    public void testAvailableMetadata(){
+    
+        DataStore store = new DiskDataStore(testDir.getAbsolutePath());
+        List<String> expected = Arrays.asList("metadata1", "mm2combined");
+        assertEquals("Available list as expected", expected, store.availableMetadata());
         
     }
     

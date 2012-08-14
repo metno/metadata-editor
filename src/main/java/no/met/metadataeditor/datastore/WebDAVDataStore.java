@@ -1,11 +1,15 @@
 package no.met.metadataeditor.datastore;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
 import no.met.metadataeditor.EditorException;
@@ -87,6 +91,27 @@ public class WebDAVDataStore extends DataStoreImpl {
         return false;
     }
 
+    @Override
+    List<String> list(String url){
+        
+        Sardine webdavConn = getConnection();
+        
+        try {
+            Collection<DavResource> resources = webdavConn.list(url);
+            List<String> filenames = new ArrayList<String>();
+            for( DavResource r : resources ){
+                if(!r.isDirectory()){
+                    filenames.add(r.getName());
+                }
+            }
+            return filenames;
+            
+        } catch (IOException e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Failed to fetch resource list", e);
+            throw new EditorException("Failed to fetch resource list from WebDAV", e);
+        }
+        
+    }    
 
     @Override
     String makePath(String... paths) {

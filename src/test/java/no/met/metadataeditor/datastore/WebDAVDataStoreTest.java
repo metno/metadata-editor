@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.List;
 
 import no.met.metadataeditor.EditorException;
@@ -233,6 +234,16 @@ public class WebDAVDataStoreTest {
         assertFalse("Wrong password does not give write access", datastore.userHasWriteAccess(WEBDAV_USERNAME, "asdfadsfasfdfsa"));
         
         assertTrue("Correct username and password gives write access", datastore.userHasWriteAccess(WEBDAV_USERNAME, WEBDAV_PASSWORD));
+        
+    }
+    
+    @Test
+    public void testAvailableMetadata(){
+        
+        WebDAVDataStore datastore = getDataStore();
+        
+        List<String> expected = Arrays.asList("iso1", "mm2_1", "record1", "write1" );
+        assertEquals("Available metadata found as expected", expected, datastore.availableMetadata());
         
     }
 

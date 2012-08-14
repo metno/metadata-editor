@@ -67,4 +67,9 @@ public interface DataStore {
      * @return True if the user has write access to the project. False otherwise
      */
     boolean userHasWriteAccess(String username, String password);
+    
+    /**
+     * @return A list of record identifiers for the available metadata in the datastore
+     */
+    List<String> availableMetadata();
 }

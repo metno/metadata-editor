@@ -7,8 +7,13 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.*;
+
+import org.apache.commons.io.FileUtils;
 
 import no.met.metadataeditor.EditorException;
 
@@ -100,6 +105,17 @@ public class DiskDataStore extends DataStoreImpl {
         return out.toString();
     }
 
+    List<String> list(String url){
+        
+        Collection<File> files = FileUtils.listFiles(new File(url), null, false);
+        
+        List<String> fileNames = new ArrayList<String>();
+        for(File f : files){
+            fileNames.add(f.getName());
+        }
+        return fileNames;
+    }
+    
     @Override
     public boolean userHasWriteAccess(String username, String password) {
 
