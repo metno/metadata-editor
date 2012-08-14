@@ -54,13 +54,8 @@ public class EditorBean implements Serializable {
     private int activeTabId = 0;
     
     boolean initPerformed = false;
-    
-    @ManagedProperty(value="#{userBean}")
-    private UserBean user;
-    
-    
+       
     public EditorBean() {
-
         
     }
 
@@ -109,9 +104,8 @@ public class EditorBean implements Serializable {
     
     public void save() {
         
-//        HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
-//        UserBean user = (UserBean) request.getSession().getAttribute("userBean");        
-        
+  
+        UserBean user = getUser();
         if(user.isValidated()){        
             editor.save(project, recordIdentifier, user.getUsername(), user.getPassword());
 
@@ -190,14 +184,6 @@ public class EditorBean implements Serializable {
         this.project = project;
     }
 
-
-    public UserBean getUser() {
-        return user;
-    }
-
-    public void setUser(UserBean user) {
-        this.user = user;
-    }
 
     public int getActiveTabId() {
         return activeTabId;
@@ -289,4 +275,15 @@ public class EditorBean implements Serializable {
         }
     }        
     
+    /**
+     * @return The UserBean object for the current user.
+     */
+    private UserBean getUser(){
+        
+        // IMPLEMENTATION NOTE: This was first implemented as a @ManagedProperty, but that did not work
+        // for unknown reasons. It seemed like the UserBean object changed between request even if should
+        // stay the same. So this workaround was added instead.
+        HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest(); 
+        return (UserBean) request.getSession().getAttribute("userBean");
+    }
 }

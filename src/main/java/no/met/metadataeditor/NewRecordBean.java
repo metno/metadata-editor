@@ -15,6 +15,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
+import javax.servlet.http.HttpServletRequest;
 
 import org.jdom2.Document;
 import org.jdom2.JDOMException;
@@ -41,9 +42,6 @@ public class NewRecordBean implements Serializable {
     
     // the format for a new record. Used when the user clicks "New"
     private SupportedFormat newRecordFormat;    
-
-    @ManagedProperty(value="#{userBean}")
-    private UserBean user;    
     
     private static final long serialVersionUID = 6284081275030111665L;
 
@@ -85,6 +83,7 @@ public class NewRecordBean implements Serializable {
     
     public String newRecord() {
 
+        UserBean user = getUser();
         if( user.isValidated() ){
             DataStore datastore = DataStoreFactory.getInstance(project);
             String templateXML = datastore.readTemplate(newRecordFormat);
@@ -135,12 +134,17 @@ public class NewRecordBean implements Serializable {
         this.project = project;
     }
 
-    public UserBean getUser() {
-        return user;
-    }
-
-    public void setUser(UserBean user) {
-        this.user = user;
+    /**
+     * @return The UserBean object for the current user.
+     */
+    private UserBean getUser(){
+        
+        // IMPLEMENTATION NOTE: This was first implemented as a @ManagedProperty, but that did not work
+        // for unknown reasons. It seemed like the UserBean object changed between request even if should
+        // stay the same. So this workaround was added instead.
+        HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest(); 
+        return (UserBean) request.getSession().getAttribute("userBean");
     }    
+    
     
 }
