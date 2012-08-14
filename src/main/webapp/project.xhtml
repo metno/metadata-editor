@@ -5,6 +5,10 @@
     xmlns:p="http://primefaces.org/ui"
     xmlns:f="http://java.sun.com/jsf/core">
 
+<f:metadata>
+    <f:viewParam name="project" value="#{metadataListBean.project}" />
+ </f:metadata>
+
 <h:head>
     <title>Metadata editor</title>
 </h:head>
@@ -13,12 +17,20 @@
 
     <h:form>
     
-        <p:dataTable id="projects" var="project" value="#{projectListBean.projects}">
+        <p:breadCrumb>
+            <p:menuitem value="Projects" url="index.xhtml" />
+            <p:menuitem value="#{metadataListBean.project}" url="#" />
+        </p:breadCrumb>
+    
+        <br />
+        <br />
+        
+        <p:dataTable id="availableMetadata" var="record" value="#{metadataListBean.availableMetadata}">
             <p:column id="projectName">
                 <f:facet name="header">
-                Project
+                Metadata records
                 </f:facet>
-                <h:link outcome="project.xhtml?project=#{project}" value="#{project}" />
+                <h:link outcome="editor.xhtml?record=#{record}&amp;project=#{metadataListBean.project}" value="#{record}" />
             </p:column>
 
         </p:dataTable>
