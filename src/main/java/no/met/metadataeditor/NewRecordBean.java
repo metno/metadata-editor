@@ -68,7 +68,7 @@ public class NewRecordBean implements Serializable {
         
         
         DataStore datastore = DataStoreFactory.getInstance(project);        
-        if( datastore.metadataExists(project, identifier)){
+        if( datastore.metadataExists(identifier)){
             
             FacesMessage message = new FacesMessage("Record identifier already in use.", "The record identifier is already in use and cannot be reused for a new record.");
             message.setSeverity(FacesMessage.SEVERITY_FATAL);
@@ -79,7 +79,7 @@ public class NewRecordBean implements Serializable {
     public List<SupportedFormat> getSupportedFormats() {
         
         DataStore datastore = DataStoreFactory.getInstance(project);
-        return datastore.getSupportedFormats(project);
+        return datastore.getSupportedFormats();
         
     }
     
@@ -87,11 +87,11 @@ public class NewRecordBean implements Serializable {
 
         if( user.isValidated() ){
             DataStore datastore = DataStoreFactory.getInstance(project);
-            String templateXML = datastore.readTemplate(project, newRecordFormat);
+            String templateXML = datastore.readTemplate(newRecordFormat);
             try {
                 EditorTemplate template = new EditorTemplate(new InputSource(new StringReader(templateXML)));
                 Document emptyRecord = template.writeContent(new HashMap<String, List<EditorVariableContent>>());
-                datastore.writeMetadata(project, newRecordIdentifier, EditorUtils.docToString(emptyRecord), user.getUsername(), user.getPassword());
+                datastore.writeMetadata(newRecordIdentifier, EditorUtils.docToString(emptyRecord), user.getUsername(), user.getPassword());
             } catch (SAXException e) {           
                 logger.log(Level.SEVERE, "Failed to parse template", e);
                 throw new EditorException("Failed to parse template", e);
@@ -134,5 +134,13 @@ public class NewRecordBean implements Serializable {
     public void setProject(String project) {
         this.project = project;
     }
-        
+
+    public UserBean getUser() {
+        return user;
+    }
+
+    public void setUser(UserBean user) {
+        this.user = user;
+    }    
+    
 }
