@@ -15,6 +15,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
 import javax.faces.validator.ValidatorException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.primefaces.component.tabview.TabView;
@@ -91,7 +92,7 @@ public class EditorBean implements Serializable {
     public EditorTemplate getTemplate(String project, String recordIdentifier){
         
         DataStore dataStore = DataStoreFactory.getInstance(project);
-        String templateString = dataStore.readTemplate(project, recordIdentifier);
+        String templateString = dataStore.readTemplate(recordIdentifier);
         InputSource templateSource = new InputSource(new StringReader(templateString));
         
         EditorTemplate et = null;
@@ -107,6 +108,9 @@ public class EditorBean implements Serializable {
     }
     
     public void save() {
+        
+//        HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+//        UserBean user = (UserBean) request.getSession().getAttribute("userBean");        
         
         if(user.isValidated()){        
             editor.save(project, recordIdentifier, user.getUsername(), user.getPassword());
@@ -223,7 +227,7 @@ public class EditorBean implements Serializable {
     public List<String> getResourceValues(EditorWidget widget){
         
         DataStore dataStore = DataStoreFactory.getInstance(project);
-        String resourceString = dataStore.readResource(project, widget.getResourceUri().toString());
+        String resourceString = dataStore.readResource(widget.getResourceUri().toString());
 
         String[] resourceValues = resourceString.split("\n");
         List<String> values = new ArrayList<String>();
@@ -259,9 +263,11 @@ public class EditorBean implements Serializable {
      */
     public void validateProject(String project) throws IOException {
 
-        DataStore dataStore = DataStoreFactory.getInstance(project);
-        if( !dataStore.projectExists(project)){
-            String msg = "The project '" + project + "' does not exist. Please check that the project is correct.";
+        Config config = new Config("/metadataeditor.properties", Config.ENV_NAME);
+        List<String> projects = config.getRequiredList("projects");
+
+        if( !projects.contains(project)){
+            String msg = "The project '" + project + "' has not been configured correctly. Please check that the project is correct.";
             FacesContext.getCurrentInstance().getExternalContext().responseSendError(404, msg);
         }
     }
@@ -276,7 +282,7 @@ public class EditorBean implements Serializable {
     public void validateRecordIdentifier(String project, String recordIdentifier) throws IOException {
 
         DataStore dataStore = DataStoreFactory.getInstance(project);
-        if( !dataStore.metadataExists(project, recordIdentifier)){
+        if( !dataStore.metadataExists(recordIdentifier)){
             String msg = "The metadata record '" + recordIdentifier + "' does not exist for the project '" + project + "'. ";
             msg += "Please check that both the record identifier and the project is correct";
             FacesContext.getCurrentInstance().getExternalContext().responseSendError(404, msg);

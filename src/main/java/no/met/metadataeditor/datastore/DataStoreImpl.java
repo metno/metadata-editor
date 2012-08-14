@@ -22,8 +22,8 @@ abstract class DataStoreImpl implements DataStore {
     private Document setupDoc = null;
     private Date setupDocDate = null;
 
-    private Document getSetupDoc(String project) {
-        String path = makePath(project, CONFIGDIR, SETUPFILE);
+    private Document getSetupDoc() {
+        String path = makePath(CONFIGDIR, SETUPFILE);
 
         // use existing if not too old
         if (setupDoc != null && setupDocDate != null) {
@@ -85,36 +85,31 @@ abstract class DataStoreImpl implements DataStore {
     abstract String makePath(String... paths);
 
     @Override
-    public boolean writeMetadata(String project, String recordIdentifier, String xml, String username, String password) {
+    public boolean writeMetadata(String recordIdentifier, String xml, String username, String password) {
 
-        String url = metadataUrl(project, recordIdentifier);
+        String url = metadataUrl(recordIdentifier);
         put(url, xml, username, password);
         return true;
     }
 
     @Override
-    public boolean projectExists(String project) {
-        return exists(makePath(project));
+    public boolean metadataExists(String recordIdentifier) {
+        return exists(metadataUrl(recordIdentifier));
     }
 
     @Override
-    public boolean metadataExists(String project, String recordIdentifier) {
-        return exists(metadataUrl(project, recordIdentifier));
+    public String readMetadata(String recordIdentifier) {
+
+        return get(metadataUrl(recordIdentifier));
     }
 
     @Override
-    public String readMetadata(String project, String recordIdentifier) {
+    public String readTemplate(String recordIdentifier) {
 
-        return get(metadataUrl(project, recordIdentifier));
-    }
+        String metadata = readMetadata(recordIdentifier);
 
-    @Override
-    public String readTemplate(String project, String recordIdentifier) {
-
-        String metadata = readMetadata(project, recordIdentifier);
-
-        SupportedFormat format = DataStoreUtils.getFormat(getSupportedFormats(project), metadata);
-        String templateUrl = templateUrl(project, format);
+        SupportedFormat format = DataStoreUtils.getFormat(getSupportedFormats(), metadata);
+        String templateUrl = templateUrl(format);
 
         if (!exists(templateUrl)) {
             throw new EditorException("Template does not exist: " + templateUrl);
@@ -124,10 +119,10 @@ abstract class DataStoreImpl implements DataStore {
     }
 
     @Override
-    public String readTemplate(String project, SupportedFormat format){
-        String templateUrl = templateUrl(project, format);
+    public String readTemplate(SupportedFormat format){
+        String templateUrl = templateUrl(format);
 
-        List<SupportedFormat> formats = getSupportedFormats(project);
+        List<SupportedFormat> formats = getSupportedFormats();
 
         if( !formats.contains(format) ){
             throw new IllegalArgumentException("Format not supported by project: " + format);
@@ -141,12 +136,12 @@ abstract class DataStoreImpl implements DataStore {
     }
 
     @Override
-    public String readEditorConfiguration(String project, String recordIdentifier) {
+    public String readEditorConfiguration(String recordIdentifier) {
 
-        String metadata = readMetadata(project, recordIdentifier);
+        String metadata = readMetadata(recordIdentifier);
 
-        SupportedFormat format = DataStoreUtils.getFormat(getSupportedFormats(project), metadata);
-        String configurationUrl = editorConfigUrl(project, format);
+        SupportedFormat format = DataStoreUtils.getFormat(getSupportedFormats(), metadata);
+        String configurationUrl = editorConfigUrl(format);
 
         if (!exists(configurationUrl)) {
             throw new EditorException("Template does not exist: " + configurationUrl);
@@ -157,9 +152,9 @@ abstract class DataStoreImpl implements DataStore {
     }
 
     @Override
-    public String readResource(String project, String resourceIdentifier) {
+    public String readResource(String resourceIdentifier) {
 
-        String resourceUrl = resourceUrl(project, resourceIdentifier);
+        String resourceUrl = resourceUrl(resourceIdentifier);
 
         if (!exists(resourceUrl)) {
             throw new EditorException("Resource does not exist: " + resourceUrl);
@@ -167,29 +162,29 @@ abstract class DataStoreImpl implements DataStore {
         return get(resourceUrl);
     }
 
-    private String templateUrl(String project, SupportedFormat format) {
-        return makePath(project, CONFIGDIR, format.templateName());
+    private String templateUrl(SupportedFormat format) {
+        return makePath(CONFIGDIR, format.templateName());
     }
 
-    private String editorConfigUrl(String project, SupportedFormat format){
+    private String editorConfigUrl(SupportedFormat format){
 
-        return makePath(project, CONFIGDIR, format.editorConfigName());
+        return makePath(CONFIGDIR, format.editorConfigName());
     }
 
-    private String resourceUrl(String project, String resourceIdentifier){
+    private String resourceUrl(String resourceIdentifier){
 
-        return makePath(project, resourceIdentifier);
+        return makePath(resourceIdentifier);
     }
 
-    private String metadataUrl(String project, String recordIdentifier) {
+    private String metadataUrl(String recordIdentifier) {
 
-        return makePath(project, XMLDIR, recordIdentifier + ".xml");
+        return makePath(XMLDIR, recordIdentifier + ".xml");
 
     }
 
     @Override
-    public List<SupportedFormat> getSupportedFormats(String project) {
-        Document doc = getSetupDoc(project);
+    public List<SupportedFormat> getSupportedFormats() {
+        Document doc = getSetupDoc();
         return DataStoreUtils.parseSupportedFormats(doc);
     }
 

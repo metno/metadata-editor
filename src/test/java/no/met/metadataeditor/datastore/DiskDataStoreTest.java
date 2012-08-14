@@ -25,7 +25,7 @@ public class DiskDataStoreTest {
         testDir = new File(tmpDir, baseDir);
         testDir.mkdirs();
         
-        File startDir = new File(DiskDataStoreTest.class.getResource("/datastore/diskdatastore/").getFile());
+        File startDir = new File(DiskDataStoreTest.class.getResource("/datastore/diskdatastore/testProject").getFile());
         
         FileUtils.copyDirectory(startDir, testDir);
     }
@@ -41,7 +41,7 @@ public class DiskDataStoreTest {
     public void testExistingTemplate() {
         
         DataStore store = new DiskDataStore(testDir.getAbsolutePath());
-        String template = store.readTemplate("testProject", "metadata1");
+        String template = store.readTemplate("metadata1");
         String expectedTemplate = fileAsString("/datastore/diskdatastore/testProject/config/MM2Template.xml");
         assertEquals(expectedTemplate, template);        
         
@@ -51,7 +51,7 @@ public class DiskDataStoreTest {
     public void testNonExistingTemplate() {
 
         DataStore store = new DiskDataStore(testDir.getAbsolutePath());
-        store.readTemplate("testProject", "mm2combined");
+        store.readTemplate("mm2combined");
         
         
     }

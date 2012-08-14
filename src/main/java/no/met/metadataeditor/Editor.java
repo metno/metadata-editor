@@ -75,7 +75,7 @@ public class Editor implements Serializable {
 
         String xml = editorContentToXML(project, identifier);        
         DataStore dataStore = DataStoreFactory.getInstance(project);
-        dataStore.writeMetadata(project, identifier, xml, username, password);
+        dataStore.writeMetadata(identifier, xml, username, password);
         
     }
 
@@ -94,7 +94,7 @@ public class Editor implements Serializable {
     private String editorContentToXML(String project, String identifier){
 
         DataStore dataStore = DataStoreFactory.getInstance(project);
-        String templateString = dataStore.readTemplate(project, identifier);
+        String templateString = dataStore.readTemplate(identifier);
         InputSource templateSource = new InputSource(new StringReader(templateString));
         EditorTemplate et = getTemplate(project, identifier);        
         Map<String, EditorVariable> varMap = et.getVarMap();
@@ -122,7 +122,7 @@ public class Editor implements Serializable {
     private EditorTemplate getTemplate(String project, String identifier){
         
         DataStore dataStore = DataStoreFactory.getInstance(project);
-        String templateString = dataStore.readTemplate(project, identifier);
+        String templateString = dataStore.readTemplate(identifier);
         InputSource templateSource = new InputSource(new StringReader(templateString));
         
         EditorTemplate et = null;
@@ -139,7 +139,7 @@ public class Editor implements Serializable {
     public Map<String,List<EditorVariableContent>> getContent(String project, String identifier, EditorTemplate template){
         
         DataStore dataStore = DataStoreFactory.getInstance(project);
-        String metadataString = dataStore.readMetadata(project, identifier);
+        String metadataString = dataStore.readMetadata(identifier);
         Map<String,List<EditorVariableContent>> varContent = null;
         try {
             varContent = template.getContent(new InputSource(new StringReader(metadataString)));

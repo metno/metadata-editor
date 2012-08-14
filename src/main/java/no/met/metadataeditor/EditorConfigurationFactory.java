@@ -27,7 +27,7 @@ public class EditorConfigurationFactory {
     public static EditorConfiguration getInstance(String project, String recordIdentifier){
         
         DataStore dataStore = DataStoreFactory.getInstance(project);
-        String configString = dataStore.readEditorConfiguration(project, recordIdentifier);
+        String configString = dataStore.readEditorConfiguration(recordIdentifier);
         
         return unmarshallConfiguration(configString);
         

@@ -101,10 +101,10 @@ public class WebDAVDataStore extends DataStoreImpl {
 
 
     @Override
-    public boolean userHasWriteAccess(String project, String username, String password) {
+    public boolean userHasWriteAccess(String username, String password) {
 
         Sardine webdavConn = SardineFactory.begin(username, password);        
-        String accessCheckFile = makePath(project, "checkAccessOk.txt");
+        String accessCheckFile = makePath("checkAccessOk.txt");
         
         try {
             webdavConn.put(accessCheckFile, "Some bytes".getBytes());
