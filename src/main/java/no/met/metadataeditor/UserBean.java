@@ -26,10 +26,10 @@ public class UserBean implements Serializable {
     // We store the password so that we can use it for authentication with the underlying data store on writing.
     private transient String password;
 
-    private transient boolean isValidated = false;
+    private transient boolean validated = false;
     
     public UserBean() {
-        
+
     }
     
     public String getUsername() {
@@ -60,9 +60,9 @@ public class UserBean implements Serializable {
         
         // if validate set to validated
         DataStore datastore = DataStoreFactory.getInstance(project);
-        if(datastore.userHasWriteAccess(project, username, password)){
+        if(datastore.userHasWriteAccess(username, password)){
             
-            isValidated = true;
+            validated = true;
             FacesMessage msg = new FacesMessage("Login successfull!");
             msg.setSeverity(FacesMessage.SEVERITY_INFO);
             FacesContext.getCurrentInstance().addMessage(null, msg);            
@@ -85,18 +85,18 @@ public class UserBean implements Serializable {
     }
     
     public void logout(){
-        isValidated = false;
+        validated = false;
         username = null;
         password = null;
                
     }
 
     public boolean isValidated() {
-        return isValidated;
+        return validated;
     }
 
     public void setValidated(boolean isValidated) {
-        this.isValidated = isValidated;
+        this.validated = isValidated;
     }
     
 }
