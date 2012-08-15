@@ -37,18 +37,28 @@
 	<dependency>
 	    <groupId>com.sun.jersey</groupId>
 	    <artifactId>jersey-server</artifactId>
-	    <version>1.10</version>
+	    <version>1.13</version>
 	</dependency>
 	<dependency>
 	    <groupId>com.sun.jersey</groupId>
 	    <artifactId>jersey-servlet</artifactId>
-	    <version>1.10</version>
+	    <version>1.13</version>
 	</dependency>
 	<dependency>
 	    <groupId>javax.persistence</groupId>
 	    <artifactId>persistence-api</artifactId>
 	    <version>1.0.2</version>
 	</dependency>
+    <dependency>
+        <groupId>com.sun.jersey.jersey-test-framework</groupId>
+        <artifactId>jersey-test-framework-grizzly2</artifactId>
+        <version>1.13</version>
+    </dependency>
+    <dependency>
+        <groupId>com.sun.jersey.jersey-test-framework</groupId>
+        <artifactId>jersey-test-framework-external</artifactId>
+        <version>1.13</version>
+    </dependency>    
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -120,6 +130,21 @@
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
         <version>1.6.6</version>
+    </dependency>
+    <dependency>
+        <groupId>com.jayway.restassured</groupId>
+        <artifactId>rest-assured</artifactId>
+        <version>1.2.3</version>
+    </dependency>
+    <dependency>
+        <groupId>com.sun.jersey</groupId>
+        <artifactId>jersey-grizzly2</artifactId>
+        <version>1.13</version>
+    </dependency>
+    <dependency>
+        <groupId>com.sun.jersey</groupId>
+        <artifactId>jersey-grizzly2-servlet</artifactId>
+        <version>1.13</version>
     </dependency>
   </dependencies>
   <build>
