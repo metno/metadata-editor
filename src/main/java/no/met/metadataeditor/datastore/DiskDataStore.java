@@ -122,5 +122,15 @@ public class DiskDataStore extends DataStoreImpl {
         // For the disk data store we assume that all user have access to write.
         return true;
     }
+    
+    @Override
+    public String getDefaultUser(){
+        return "";
+    }
+    
+    @Override
+    public String getDefaultPassword(){
+        return "";
+    }
 
 }

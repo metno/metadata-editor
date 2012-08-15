@@ -9,7 +9,12 @@ import java.util.List;
  */
 public interface DataStore {
 
-
+    /**
+     * Constant used to identify a suggested version of a record. A user most later
+     * choose between the current version and the THEIRS version.
+     */
+    String THEIRS_IDENTIFIER = ".theirs";
+    
     /**
      * Write the metadata to the datastore.
      * @param recordIdentifier The recordIdentifer for the metadata record to write to.
@@ -18,6 +23,7 @@ public interface DataStore {
      */
     boolean writeMetadata(String recordIdentifier, String xml, String username, String password);
 
+    
     /**
      * @param recordIdentifier The metadata record to check if exists.
      * @return Returns true if the metadata record exists in the datastore. Returns false otherwise.
@@ -72,4 +78,15 @@ public interface DataStore {
      * @return A list of record identifiers for the available metadata in the datastore
      */
     List<String> availableMetadata();
+    
+    /**
+     * @return Get the default username for the datastore.
+     */
+    String getDefaultUser();
+    
+    /**
+     * @return Get the default password for the datastore.
+     * @return
+     */
+    String getDefaultPassword();
 }

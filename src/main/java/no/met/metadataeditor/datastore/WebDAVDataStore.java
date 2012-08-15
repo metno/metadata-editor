@@ -140,5 +140,15 @@ public class WebDAVDataStore extends DataStoreImpl {
         
         return true;
     }
+    
+    @Override
+    public String getDefaultUser(){
+        return username;
+    }
+    
+    @Override
+    public String getDefaultPassword(){
+        return password;
+    }
 
 }
