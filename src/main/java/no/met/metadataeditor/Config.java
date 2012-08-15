@@ -19,6 +19,7 @@ public class Config {
     private Properties config;
     private static final Logger logger = Logger.getLogger(Config.class.getName());
 
+       
     /**
      * Constructor to create object with resource name and local environment variable
      *
@@ -81,16 +82,12 @@ public class Config {
     
     public String get(String key){
         
-        Collection<Object> commonProps = new HashSet<Object>();
         Properties local = null;
         if (environmentVariable != null) {
             try {
                 String env = getEnv(environmentVariable);
                 if (env.length() > 0) {
                     local = getLocalProperties(env);
-                    Set<Object> localKey = local.keySet();
-                    Set<Object> configKey = config.keySet();
-                    commonProps = getCommonProperties(configKey, localKey);
                 }
             } catch (NullPointerException npex) {
                 //logger.severe(npex.getMessage());
@@ -102,7 +99,7 @@ public class Config {
         }
 
         String value = null;
-        if (commonProps.size() > 0 && commonProps.contains(key)) {
+        if( local != null && local.containsKey(key)){
             value = local.getProperty(key);
         } else {
             value = config.getProperty(key);
