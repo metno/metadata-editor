@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<editorSetup>
+<supportedMetadataFormats>
+    <format tag="MM2">
+        <detector type="rootNode">
+            <arg name="rootNode" value="MM2"/>
+            <arg name="namespace" value="http://www.met.no/schema/metamod/MM2"/>
+        </detector>
+        <validator type="simplePutService">
+            <arg name="URL" value="./mm2Validator" />
+        </validator>
+    </format>
+    <format tag="MM2COMBINED">
+        <detector type="rootNode">
+            <arg name="rootNode" value="mmCombinedMM2"/>
+            <arg name="namespace" value="http://www.met.no/schema/metamod/mmCombined" />
+        </detector>
+    </format>
+    <format tag="ISO19139">
+        <detector type="rootNode">
+            <arg name="rootNode" value="MD_Metadata" />
+            <arg name="namespace" value="http://www.isotc211.org/2005/gmd" />
+        </detector>
+    </format>
+    <format tag="ISO19139COMBINED">
+        <detector type="rootNode">
+            <arg name="rootNode" value="mmCombinedISO" />
+            <arg name="namespace" value="http://www.met.no/schema/metamod/mmCombined" />
+        </detector>
+    </format>
+</supportedMetadataFormats>
+</editorSetup>
