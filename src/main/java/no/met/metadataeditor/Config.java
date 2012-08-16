@@ -157,9 +157,4 @@ public class Config {
         return value;
     }
 
-    private Collection<Object> getCommonProperties(Collection<Object> c1, Collection<Object> c2) {
-        Collection<Object> result = new HashSet<Object>(c1);
-        result.retainAll(c2);
-        return result;
-    }
 }
