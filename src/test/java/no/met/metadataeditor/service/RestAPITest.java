@@ -8,8 +8,6 @@ import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.Map;
 
-import javax.ws.rs.core.MediaType;
-
 import no.met.metadataeditor.Config;
 
 import org.apache.commons.io.FileUtils;
@@ -18,7 +16,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static com.jayway.restassured.RestAssured.*;
-import static com.jayway.restassured.matcher.RestAssuredMatchers.*;
 import static org.hamcrest.Matchers.*;
 
 import com.sun.jersey.test.framework.JerseyTest;
@@ -79,14 +76,6 @@ public class RestAPITest extends JerseyTest {
 
     }
     
-    // posting to non-existant metadata stores the metadata and returns editor url
-    
-    // POST without metadata to non-existant metadata gives 404
-    
-    // POST with equal metadata gives editor url
-    
-    // POST with un-equal metadata gives compare url
-
     @Test
     public void testPostDoesNotExist(){
         // Sending a POST without metadata to non-existant metadata gives 404
@@ -132,15 +121,17 @@ public class RestAPITest extends JerseyTest {
     
     private static void setEditorConfigEnv(String editorConfigPath) {
 
+        @SuppressWarnings("rawtypes")
         Class[] classes = Collections.class.getDeclaredClasses();
         Map<String, String> env = System.getenv();
-        for (Class cl : classes) {
+        for (@SuppressWarnings("rawtypes") Class cl : classes) {
             if ("java.util.Collections$UnmodifiableMap".equals(cl.getName())) {
                 Field field;
                 try {
                     field = cl.getDeclaredField("m");
                     field.setAccessible(true);
                     Object obj = field.get(env);
+                    @SuppressWarnings("unchecked")
                     Map<String, String> map = (Map<String, String>) obj;
                     map.put(Config.ENV_NAME, editorConfigPath);
 
