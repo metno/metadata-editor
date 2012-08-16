@@ -20,11 +20,11 @@
         
         <br />
 
-        <h:selectOneMenu id="selectone" value="#{cc.attrs.widget.currentValue}">
+        <h:selectOneMenu id="selectone" value="#{cc.attrs.widget.currentValue}" disabled="#{!userBean.validated}">
             <f:selectItems value="#{editorBean.getFilteredResourceValues(cc.attrs.widget, 'listElement')}" />
         </h:selectOneMenu>           
         
-        <h:commandButton value=" " action="#{editorBean.addValue(cc.attrs.widget)}" rendered="#{cc.attrs.widget.maxOccurs gt cc.attrs.widget.values.size()}" styleClass="add-button">
+        <h:commandButton value=" " action="#{editorBean.addValue(cc.attrs.widget)}" rendered="#{cc.attrs.widget.maxOccurs gt cc.attrs.widget.values.size() and userBean.validated}" styleClass="add-button">
             <f:ajax execute="@this selectone" render="text-input-multi" />
         </h:commandButton>                            
 
@@ -34,7 +34,7 @@
             <h:column>
                 <h:outputText value="#{value['listElement']}" />
             </h:column>
-            <h:column rendered="#{cc.attrs.widget.minOccurs lt cc.attrs.widget.values.size()}">
+            <h:column rendered="#{cc.attrs.widget.minOccurs lt cc.attrs.widget.values.size() and userBean.validated}">
                 <h:commandButton value=" " action="#{editorBean.removeValue(cc.attrs.widget, value)}" styleClass="remove-button">
                     <f:ajax execute="@this" render="@form" />
                 </h:commandButton>       

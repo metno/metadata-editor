@@ -17,7 +17,7 @@
         <h:panelGroup id="boundingbox-container" layout="block" styleClass="editor-widget-container">
         <h:outputLabel value="#{cc.attrs.widget.label}" styleClass="main-label"/>
 
-        <h:commandButton value=" " action="#{editorBean.addValue(cc.attrs.widget)}" rendered="#{cc.attrs.widget.maxOccurs gt cc.attrs.widget.values.size()}" styleClass="add-button">
+        <h:commandButton value=" " action="#{editorBean.addValue(cc.attrs.widget)}" rendered="#{cc.attrs.widget.maxOccurs gt cc.attrs.widget.values.size() and userBean.validated}" styleClass="add-button">
             <f:ajax execute="@this" render="boundingbox-container" onevent="input_field_added" />
         </h:commandButton>  
 
@@ -27,32 +27,32 @@
                 <f:facet name="header">
                     <h:outputText value="North" />
                 </f:facet>
-                <p:inputText value="#{value['north']}" size="10" />
+                <p:inputText value="#{value['north']}" size="10" disabled="#{!userBean.validated}" />
             </h:column>
 
             <h:column headerClass="lat-lon-header">
                 <f:facet name="header">
                     <h:outputText value="South" />
                 </f:facet>            
-                <p:inputText value="#{value['south']}" size="10" />
+                <p:inputText value="#{value['south']}" size="10" disabled="#{!userBean.validated}" />
             </h:column>
 
             <h:column headerClass="lat-lon-header">
                 <f:facet name="header">
                     <h:outputText value="East" />
                 </f:facet>            
-                <p:inputText value="#{value['east']}" size="10" />
+                <p:inputText value="#{value['east']}" size="10" disabled="#{!userBean.validated}" />
             </h:column>
 
             <h:column headerClass="lat-lon-header">
                 <f:facet name="header">
                     <h:outputText value="West" />
                 </f:facet>            
-                <p:inputText value="#{value['west']}" size="10" />
+                <p:inputText value="#{value['west']}" size="10" disabled="#{!userBean.validated}" />
             </h:column>
 
             <h:column>
-                <h:commandButton value=" " action="#{editorBean.removeValue(cc.attrs.widget, value)}" rendered="#{cc.attrs.widget.minOccurs lt cc.attrs.widget.values.size()}" styleClass="remove-button">
+                <h:commandButton value=" " action="#{editorBean.removeValue(cc.attrs.widget, value)}" rendered="#{cc.attrs.widget.minOccurs lt cc.attrs.widget.values.size() and userBean.validated}" styleClass="remove-button">
                     <f:ajax execute="@this" render="@form" />
                 </h:commandButton>                                            
             </h:column>

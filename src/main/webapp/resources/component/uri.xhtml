@@ -17,17 +17,17 @@
         <h:panelGroup id="uri-container" layout="block" styleClass="editor-widget-container">
         <h:outputLabel value="#{cc.attrs.widget.label}" styleClass="main-label"/>
     
-        <h:commandButton value=" " action="#{editorBean.addValue(cc.attrs.widget)}" rendered="#{cc.attrs.widget.maxOccurs gt cc.attrs.widget.values.size()}" styleClass="add-button">
+        <h:commandButton value=" " action="#{editorBean.addValue(cc.attrs.widget)}" rendered="#{cc.attrs.widget.maxOccurs gt cc.attrs.widget.values.size() and userBean.validated}" styleClass="add-button">
             <f:ajax execute="@this" render="uri-container" onevent="input_field_added" />
         </h:commandButton>
 
         <h:dataTable value="#{cc.attrs.widget.values}" var="value" id="uri">
         
         <h:column>
-            <p:inputText value="#{value['uri']}" size="#{cc.attrs.widget.size}" maxlength="#{cc.attrs.widget.maxlength}" />
+            <p:inputText value="#{value['uri']}" size="#{cc.attrs.widget.size}" maxlength="#{cc.attrs.widget.maxlength}" disabled="#{!userBean.validated}" />
         </h:column>        
         <h:column>
-            <h:commandButton value=" " action="#{editorBean.removeValue(cc.attrs.widget, value)}" rendered="#{cc.attrs.widget.minOccurs lt cc.attrs.widget.values.size()}" styleClass="remove-button">
+            <h:commandButton value=" " action="#{editorBean.removeValue(cc.attrs.widget, value)}" rendered="#{cc.attrs.widget.minOccurs lt cc.attrs.widget.values.size() and userBean.validated}" styleClass="remove-button">
                 <f:ajax execute="@this" render="@form" />
             </h:commandButton>     
         </h:column>

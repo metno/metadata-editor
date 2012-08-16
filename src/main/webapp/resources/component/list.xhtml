@@ -17,18 +17,18 @@
         <h:panelGroup id="text-input-multi" layout="block" styleClass="editor-widget-container">
         <h:outputLabel value="#{cc.attrs.widget.label}" styleClass="main-label" />
 
-        <h:commandButton value=" " action="#{editorBean.addValue(cc.attrs.widget)}" rendered="#{cc.attrs.widget.maxOccurs gt cc.attrs.widget.values.size()}" styleClass="add-button">
+        <h:commandButton value=" " action="#{editorBean.addValue(cc.attrs.widget)}" rendered="#{cc.attrs.widget.maxOccurs gt cc.attrs.widget.values.size() and userBean.validated}" styleClass="add-button">
             <f:ajax execute="@this" render="text-input-multi" />
         </h:commandButton>  
 
         <h:dataTable value="#{cc.attrs.widget.values}" var="value" id="list">
 
             <h:column>
-                <h:selectOneMenu value="#{value['listElement']}">
+                <h:selectOneMenu value="#{value['listElement']}" disabled="#{!userBean.validated}">
                     <f:selectItems value="#{editorBean.getResourceValues(cc.attrs.widget)}" />
                 </h:selectOneMenu>            
             </h:column>
-            <h:column rendered="#{cc.attrs.widget.minOccurs lt cc.attrs.widget.values.size()}">
+            <h:column rendered="#{cc.attrs.widget.minOccurs lt cc.attrs.widget.values.size() and userBean.validated}">
 	            <h:commandButton value=" " action="#{editorBean.removeValue(cc.attrs.widget, value)}" styleClass="remove-button">
 	                <f:ajax execute="@this" render="@form" />
 	            </h:commandButton>       
