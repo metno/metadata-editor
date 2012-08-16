@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:metaedit="http://java.sun.com/jsf/composite/component">
+
+<f:metadata>
+    <f:viewParam name="project" value="#{compareVersionBean.project}" required="true" />
+    <f:viewParam name="record" value="#{compareVersionBean.record}" required="true" />
+ </f:metadata>
+
+
+<h:head>
+    <title>Metadata editor</title>
+    <h:outputScript name="utils.js" library="javascript"/>        
+</h:head>
+
+<h:body>
+
+    <ui:include src="login-dialog.xhtml">
+        <ui:param name="project" value="#{compareVersionBean.project}"></ui:param>
+    </ui:include>
+
+    <h:panelGroup layout="block" rendered="#{compareVersionBean.hasVersions()}">
+        
+        <h:form name="compare-form" id="compare-form">
+        
+	    <p:breadCrumb>
+	        <p:menuitem value="Projects" url="index.xhtml" />
+	        <p:menuitem value="#{compareVersionBean.project}" url="project.xhtml?project=#{compareVersionBean.project}" />
+	        <p:menuitem value="#{compareVersionBean.record}" url="#" />
+	    </p:breadCrumb>        
+
+        <br />
+
+        <p:menubar>
+            <p:menuitem value="Log In" onclick="loginDialog.show()" url="#" rendered="#{!userBean.validated}" />
+            <p:menuitem value="Log Out" action="#{userBean.logout}" rendered="#{userBean.validated}" ajax="false" />
+        </p:menubar>
+        
+        <br />
+        
+        <h:panelGrid columns="2">
+        
+            <p:outputLabel value="Current editor Version" for="current" />
+            <p:outputLabel value="New suggested version" for="theirs" />
+            <p:inputTextarea id="current" value="#{compareVersionBean.currentVersion}" readonly="true" rows="40" cols="100" autoResize="false"  />
+            <p:inputTextarea id="theirs" value="#{compareVersionBean.theirVersion}" readonly="true" rows="40" cols="100" autoResize="false" />
+        
+            <p:commandButton ajax="false" action="#{compareVersionBean.selectCurrentVersion}"  value="Select current version" disabled="#{!userBean.validated}"/>
+            <p:commandButton ajax="false" action="#{compareVersionBean.selectTheirVersion}" value="Select new version" disabled="#{!userBean.validated}" />
+        
+        </h:panelGrid>
+        </h:form>
+    
+    </h:panelGroup>    
+    
+    <h:panelGroup layout="block" rendered="#{!compareVersionBean.hasVersions()}">
+            This record has no versions to choose from. Please go to <h:link outcome="editor.xhtml" includeViewParams="true" value="bla"/>
+    </h:panelGroup>        
+    
+</h:body>
+
+</html>
