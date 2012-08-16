@@ -9,6 +9,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -33,6 +34,15 @@ public class RESTApi {
 
     @Context
     HttpServletRequest request;
+
+    @GET
+    @Path("")
+    @Produces("application/xml")
+    @ServiceDescription("Return the list of services with parameters.")
+    public Response capabilities() throws ParserConfigurationException{
+        Document d = ServiceDescriptionGenerator.getXMLServiceDescription(this.getClass());
+        return Response.ok(d).build();
+    }    
     
     /**
      * Get the XML for a metadata record.
@@ -42,6 +52,7 @@ public class RESTApi {
      */
     @GET
     @Path("{project}/{record}")
+    @ServiceDescription("Get the XML for the metadata record.")
     public Response getMetadata(@PathParam("project") String project, @PathParam("record") String record ){
 
         DataStore datastore = DataStoreFactory.getInstance(project);
@@ -74,6 +85,7 @@ public class RESTApi {
      */
     @POST
     @Path("{project}/{record}")
+    @ServiceDescription("Get the URL to edit a metadata record and as an option suggest a new version of the XML in the metadata parameter")
     public Response postMetadata(@PathParam("project") String project, @PathParam("record") String record, @FormParam("metadata") String metadata){
         
         DataStore datastore = DataStoreFactory.getInstance(project);
