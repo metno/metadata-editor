@@ -89,4 +89,13 @@ public interface DataStore {
      * @return
      */
     String getDefaultPassword();
+
+    /**
+     * Delete a record from the editor metadata repository.
+     * @param recordIdentifier The identifier of the record to delete.
+     * @param username The username of the user
+     * @param password The un-hashed password of the user. 
+     * @return True if the record was delete. False otherwise, i.e. the record does not exist
+     */
+    boolean deleteMetadata(String recordIdentifier, String username, String password);
 }

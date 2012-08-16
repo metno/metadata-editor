@@ -93,6 +93,15 @@ abstract class DataStoreImpl implements DataStore {
      */
     abstract List<String> list(String url);
     
+    /**
+     * Delete a metadata record from the data store
+     * @param url The record to delete.
+     * @param username The username in the data store for the user doing the delete.
+     * @param password The password of the user doing the delete.
+     * @return True if the record was delete. False otherwise.
+     */
+    abstract boolean delete(String url, String username, String password);
+    
     @Override
     public boolean writeMetadata(String recordIdentifier, String xml, String username, String password) {
 
@@ -213,6 +222,13 @@ abstract class DataStoreImpl implements DataStore {
         // we sort the identifiers for simple automatic testing.        
         Collections.sort(identifiers);
         return identifiers;
+        
+    }
+    
+    @Override
+    public boolean deleteMetadata(String recordIdentifier, String username, String password){
+        
+        return delete(metadataUrl(recordIdentifier), username, password);
         
     }
 }

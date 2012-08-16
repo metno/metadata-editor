@@ -132,5 +132,10 @@ public class DiskDataStore extends DataStoreImpl {
     public String getDefaultPassword(){
         return "";
     }
+    
+    @Override
+    public boolean delete(String url, String username, String password){
+        return FileUtils.deleteQuietly(new File(url));
+    }
 
 }

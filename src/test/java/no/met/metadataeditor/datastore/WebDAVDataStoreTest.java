@@ -246,6 +246,22 @@ public class WebDAVDataStoreTest {
         assertEquals("Available metadata found as expected", expected, datastore.availableMetadata());
         
     }
+    
+    @Test
+    public void testDeleteMetadata(){
+        
+        WebDAVDataStore datastore = getDataStore();
+        
+        String id = "a-new-record-to-delete";
+        datastore.writeMetadata(id, "<MM2/>", WEBDAV_USERNAME, WEBDAV_PASSWORD);
+        
+        assertTrue("New metadata record created", datastore.metadataExists(id));
+        
+        assertTrue("Delete returns true on delete", datastore.deleteMetadata(id, WEBDAV_USERNAME, WEBDAV_PASSWORD));
+        
+        assertFalse("New metadata record deleted", datastore.metadataExists(id));
+        
+    }
 
     private static String webdavPath(String... paths){
 

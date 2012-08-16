@@ -150,5 +150,31 @@ public class WebDAVDataStore extends DataStoreImpl {
     public String getDefaultPassword(){
         return password;
     }
+    
+    @Override
+    public boolean delete(String url, String username, String password){
+        
+        Sardine webdavConn = SardineFactory.begin(username, password);
+        
+        if(!exists(url)){
+            return false;
+        }
+        
+        try {
+            webdavConn.delete(url);
+            
+            // check if the url actually was deleted
+            if(!exists(url)){
+                return true;
+            } else {
+                return false;
+            }
+            
+        } catch (IOException e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Failed to delete resource", e);
+            throw new EditorException("Failed to delete resource list from WebDAV", e);            
+        }
+        
+    }
 
 }
