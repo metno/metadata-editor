@@ -67,7 +67,7 @@ public class CompareVersionBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, msg);
         }
         
-        return "editor.xhtml?faces-redirect=true&include-view-params=true";
+        return "editor.xhtml?faces-redirect=true&includeViewParams=true";
     }
     
     public String selectTheirVersion(){
@@ -88,7 +88,7 @@ public class CompareVersionBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, msg);
         }        
         
-        return "editor.xhtml?faces-redirect=true&include-view-params=true";
+        return "editor.xhtml?faces-redirect=true&includeViewParams=true";
     }
     
     
