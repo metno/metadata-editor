@@ -9,12 +9,9 @@ import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
-import javax.faces.validator.ValidatorException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -26,8 +23,6 @@ import org.xml.sax.SAXException;
 import no.met.metadataeditor.dataTypes.EditorTemplate;
 import no.met.metadataeditor.datastore.DataStore;
 import no.met.metadataeditor.datastore.DataStoreFactory;
-import no.met.metadataeditor.datastore.DataStoreUtils;
-import no.met.metadataeditor.datastore.SupportedFormat;
 import no.met.metadataeditor.widget.EditorWidget;
 
 /**

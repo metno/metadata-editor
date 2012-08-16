@@ -3,7 +3,6 @@ package no.met.metadataeditor;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.StringReader;
-import java.io.StringWriter;
 import java.util.List;
 import java.util.Map;
 
@@ -11,8 +10,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.jdom2.Document;
 import org.jdom2.JDOMException;
-import org.jdom2.output.Format;
-import org.jdom2.output.XMLOutputter;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -93,9 +90,6 @@ public class Editor implements Serializable {
     
     private String editorContentToXML(String project, String identifier){
 
-        DataStore dataStore = DataStoreFactory.getInstance(project);
-        String templateString = dataStore.readTemplate(identifier);
-        InputSource templateSource = new InputSource(new StringReader(templateString));
         EditorTemplate et = getTemplate(project, identifier);        
         Map<String, EditorVariable> varMap = et.getVarMap();
         
