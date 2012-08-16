@@ -35,7 +35,9 @@ jQuery(document).ready(function () {
         <p:graphicImage value="/resources/images/ajaxloadingbar.gif" />  
     </p:dialog>  
 
-    <ui:include src="login-dialog.xhtml" />
+    <ui:include src="login-dialog.xhtml">
+        <ui:param name="project" value="#{editorBean.project}"/>
+    </ui:include>
 
     <p:growl  globalOnly="true" autoUpdate="true" sticky="false" life="4000" />
    

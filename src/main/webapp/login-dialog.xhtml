@@ -25,7 +25,7 @@
 
                 <p:commandButton value="Login" update="@form" action="#{userBean.validateCredentials}" >
                     <f:ajax>
-                        <f:param name="project" value="#{editorBean.project}"/>
+                        <f:param name="project" value="#{project}"/>
                     </f:ajax>
                 </p:commandButton>
                 
