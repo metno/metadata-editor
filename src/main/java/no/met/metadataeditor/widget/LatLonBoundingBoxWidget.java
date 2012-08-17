@@ -7,14 +7,6 @@ public class LatLonBoundingBoxWidget extends EditorWidget {
 
     private static final long serialVersionUID = 8770219744361367595L;
 
-    public LatLonBoundingBoxWidget(){
-        super();
-    }
-    
-    public LatLonBoundingBoxWidget(String label, String variableName) {
-        super(label, variableName);
-    }
-
     @Override
     public Map<String,String> getDefaultValue() {
         

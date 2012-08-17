@@ -9,14 +9,6 @@ public class MultiSelectListWidget extends EditorWidget {
     
     private String currentValue = "";
    
-    public MultiSelectListWidget(){
-        super();
-    }
-    
-    public MultiSelectListWidget(String label, String variableName) {
-        super(label, variableName);
-    }
-
     @Override
     public Map<String, String> getDefaultValue() {
         Map<String,String> defaultValue = new HashMap<String,String>();

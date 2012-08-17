@@ -7,14 +7,6 @@ public class StartAndStopTimeWidget extends EditorWidget {
 
     private static final long serialVersionUID = -6576841665492037629L;
 
-    public StartAndStopTimeWidget(){
-        super();
-    }
-    
-    public StartAndStopTimeWidget(String label, String variableName) {
-        super(label, variableName);
-    }
-
     @Override
     public Map<String, String> getDefaultValue() {
 
