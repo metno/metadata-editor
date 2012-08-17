@@ -168,7 +168,7 @@ public class EditorTemplate {
         return content;
     }    
     
-    private DataAttribute readAttributes(EditorVariable variable, Node node, XPath xpath) throws XPathExpressionException {
+    private DataAttribute readAttributes(EditorVariable variable, Node node, XPath xpath) {
 
         DataAttribute da = variable.getDataAttributes().newInstance();
         // set the attributes
@@ -180,10 +180,16 @@ public class EditorTemplate {
                 // remove leading / in e.g. /text()
                 relAttPath = relAttPath.substring(1);
             }
-            XPathExpression attExpr = xpath.compile(relAttPath);
-            String attVal = attExpr.evaluate(node);
-            Logger.getLogger(getClass().getName()).fine(String.format("%s + value = %s", relAttPath, attVal));
-            da.addAttribute(att, attVal);
+            XPathExpression attExpr;
+            try {
+                attExpr = xpath.compile(relAttPath);
+                String attVal = attExpr.evaluate(node);
+                Logger.getLogger(getClass().getName()).fine(String.format("%s + value = %s", relAttPath, attVal));
+                da.addAttribute(att, attVal);                
+            } catch (XPathExpressionException e) {
+                throw new EditorException("Failed to evaluate XPath expression when getting the actual attributes values:" + relAttPath, e );
+            }
+
         }
         
         return da;
