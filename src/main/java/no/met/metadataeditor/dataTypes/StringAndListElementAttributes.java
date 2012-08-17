@@ -8,11 +8,4 @@ public class StringAndListElementAttributes extends DataAttributes {
     @IsAttribute(DataType.STRING)
     String listElement;
 
-    public StringAndListElementAttributes() {
-    }
-
-    public DataAttributes newInstance() {
-        return new StringAndListElementAttributes();
-    }
-
 }

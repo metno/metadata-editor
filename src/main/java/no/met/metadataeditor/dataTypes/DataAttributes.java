@@ -1,6 +1,8 @@
 package no.met.metadataeditor.dataTypes;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -50,7 +52,37 @@ public abstract class DataAttributes {
     /**
      * @return a new Instance of the subtype
      */
-    public abstract DataAttributes newInstance();
+    public DataAttributes newInstance(){
+        try {
+            @SuppressWarnings("unchecked")
+            Constructor<DataAttributes> c = (Constructor<DataAttributes>) this.getClass().getConstructor(new Class<?>[] {} );
+            return c.newInstance();
+        } catch (NoSuchMethodException e) {
+            String msg = "Did not find constructor with no arguments for class: " + this.getClass().getName();
+            logger.log(Level.SEVERE, msg, e);
+            throw new EditorException(msg, e);            
+        } catch (SecurityException e) {
+            String msg = "Security exception finnd constructor with no arguments for class: " + this.getClass().getName();
+            logger.log(Level.SEVERE, msg, e);
+            throw new EditorException(msg, e);            
+        } catch (InstantiationException e) {
+            String msg = "Failed to instansiate class: " + this.getClass().getName();
+            logger.log(Level.SEVERE, msg, e);
+            throw new EditorException(msg, e);            
+        } catch (IllegalAccessException e) {
+            String msg = "Access exception when accessing empty constructor for class: " + this.getClass().getName();
+            logger.log(Level.SEVERE, msg, e);
+            throw new EditorException(msg, e);            
+        } catch (IllegalArgumentException e) {
+            String msg = "Wrong arguments to constructor: " + this.getClass().getName();
+            logger.log(Level.SEVERE, msg, e);
+            throw new EditorException(msg, e);            
+        } catch (InvocationTargetException e) {
+            String msg = "Invocation target when making new instance for: " + this.getClass().getName();
+            logger.log(Level.SEVERE, msg, e);
+            throw new EditorException(msg, e);            
+        }
+    }
 
     /**
      * add a attributes value by a string

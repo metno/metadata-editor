@@ -8,8 +8,4 @@ public class StartAndStopTimeAttributes extends DataAttributes {
     @IsAttribute(DataType.DATE)
     String stop;
 
-    public DataAttributes newInstance() {
-        return new StartAndStopTimeAttributes();
-    }
-
 }

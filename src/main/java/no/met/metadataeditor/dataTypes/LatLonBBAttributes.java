@@ -16,8 +16,4 @@ public class LatLonBBAttributes extends DataAttributes {
     String west;
 
 
-    public DataAttributes newInstance() {
-        return new LatLonBBAttributes();
-    }
-
 }
