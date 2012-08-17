@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 import no.met.metadataeditor.EditorException;
 import no.met.metadataeditor.dataTypes.AttributesMismatchException;
 import no.met.metadataeditor.dataTypes.DataType;
-import no.met.metadataeditor.dataTypes.IsAttribute;
+import no.met.metadataeditor.dataTypes.IsAttributeValue;
 
 /**
  * Abstract base class for all DataAttributes
@@ -33,9 +33,9 @@ public abstract class DataAttributes {
         Map<String, DataType> fields = new HashMap<String,DataType>();
         for (Field f : inClass.getDeclaredFields()) {
 
-            if (f.isAnnotationPresent(IsAttribute.class)) {
+            if (f.isAnnotationPresent(IsAttributeValue.class)) {
                 
-                IsAttribute ia = f.getAnnotation(IsAttribute.class);
+                IsAttributeValue ia = f.getAnnotation(IsAttributeValue.class);
                 DataType type = ia.value();
                 fields.put(f.getName(), type);
             }
@@ -113,7 +113,7 @@ public abstract class DataAttributes {
                     continue;
                 }
 
-                if (f.isAnnotationPresent(IsAttribute.class)) {
+                if (f.isAnnotationPresent(IsAttributeValue.class)) {
                     f.set(this, value);
                     isSet = true;
                 }
@@ -162,7 +162,7 @@ public abstract class DataAttributes {
                     continue;
                 }
 
-                if (f.isAnnotationPresent(IsAttribute.class)) {
+                if (f.isAnnotationPresent(IsAttributeValue.class)) {
                     value = "" + f.get(this);
                     if (value.trim().equalsIgnoreCase("null"))
                         value = "";

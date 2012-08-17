@@ -1,11 +1,11 @@
 package no.met.metadataeditor.dataTypes.attributes;
 
 import no.met.metadataeditor.dataTypes.DataType;
-import no.met.metadataeditor.dataTypes.IsAttribute;
+import no.met.metadataeditor.dataTypes.IsAttributeValue;
 
 public class ListElementAttributes extends DataAttributes {
     
-    @IsAttribute(DataType.STRING)
+    @IsAttributeValue(DataType.STRING)
     String listElement;
 
 }

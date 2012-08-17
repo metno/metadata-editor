@@ -1,21 +1,21 @@
 package no.met.metadataeditor.dataTypes.attributes;
 
 import no.met.metadataeditor.dataTypes.DataType;
-import no.met.metadataeditor.dataTypes.IsAttribute;
+import no.met.metadataeditor.dataTypes.IsAttributeValue;
 
 
 public class LatLonBBAttributes extends DataAttributes {
     
-    @IsAttribute(DataType.NUMBER)
+    @IsAttributeValue(DataType.NUMBER)
     String south;
 
-    @IsAttribute(DataType.NUMBER)
+    @IsAttributeValue(DataType.NUMBER)
     String north;
     
-    @IsAttribute(DataType.NUMBER)
+    @IsAttributeValue(DataType.NUMBER)
     String east;
     
-    @IsAttribute(DataType.NUMBER)
+    @IsAttributeValue(DataType.NUMBER)
     String west;
 
 

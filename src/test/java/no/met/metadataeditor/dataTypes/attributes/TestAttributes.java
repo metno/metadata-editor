@@ -1,7 +1,7 @@
 package no.met.metadataeditor.dataTypes.attributes;
 
 import no.met.metadataeditor.dataTypes.DataType;
-import no.met.metadataeditor.dataTypes.IsAttribute;
+import no.met.metadataeditor.dataTypes.IsAttributeValue;
 import no.met.metadataeditor.dataTypes.attributes.DataAttributes;
 
 /**
@@ -9,7 +9,7 @@ import no.met.metadataeditor.dataTypes.attributes.DataAttributes;
  */
 public class TestAttributes extends DataAttributes {
 
-    @IsAttribute(DataType.STRING)
+    @IsAttributeValue(DataType.STRING)
     String val;   
     
     String notExposed;
