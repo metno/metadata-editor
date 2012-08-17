@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.Map;
 
 import no.met.metadataeditor.dataTypes.EditorVariableContent;
-import no.met.metadataeditor.dataTypes.attributes.DataAttributes;
-import no.met.metadataeditor.dataTypes.attributes.LatLonBBAttributes;
+import no.met.metadataeditor.dataTypes.attributes.DataAttribute;
+import no.met.metadataeditor.dataTypes.attributes.LatLonBBAttribute;
 import no.met.metadataeditor.dataTypes.attributes.LatLonBBSingleAttribute;
-import no.met.metadataeditor.dataTypes.attributes.StringAttributes;
+import no.met.metadataeditor.dataTypes.attributes.StringAttribute;
 
 /**
  * Class that is used to create EditorVariableContent objects more easily
@@ -20,7 +20,7 @@ public class EditorVariableContentFactory {
     public static EditorVariableContent childlessStringAttribute(String value){
         
         EditorVariableContent evc = new EditorVariableContent();
-        DataAttributes da = new StringAttributes();
+        DataAttribute da = new StringAttribute();
         da.addAttribute("str", value);
         evc.setAttrs(da);
         
@@ -32,7 +32,7 @@ public class EditorVariableContentFactory {
             String west) {
 
         EditorVariableContent evc = new EditorVariableContent();
-        DataAttributes da = new LatLonBBAttributes();
+        DataAttribute da = new LatLonBBAttribute();
         da.addAttribute("north", north);
         da.addAttribute("south", south);
         da.addAttribute("west", west);
@@ -46,7 +46,7 @@ public class EditorVariableContentFactory {
     public static EditorVariableContent childlessSingleBBAttribute(String latLonStr){
         
         EditorVariableContent evc = new EditorVariableContent();
-        DataAttributes da = new LatLonBBSingleAttribute();
+        DataAttribute da = new LatLonBBSingleAttribute();
         da.addAttribute("latLonStr", latLonStr);
         evc.setAttrs(da);
         
@@ -57,7 +57,7 @@ public class EditorVariableContentFactory {
     public static EditorVariableContent stringAttributeWithChildren(String value, Map<String,List<EditorVariableContent>> children){
         
         EditorVariableContent evc = new EditorVariableContent();
-        DataAttributes da = new StringAttributes();
+        DataAttribute da = new StringAttribute();
         da.addAttribute("str", value);
         evc.setAttrs(da);
         evc.setChildren(children);

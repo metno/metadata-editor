@@ -4,7 +4,7 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
-import no.met.metadataeditor.dataTypes.attributes.DataAttributes;
+import no.met.metadataeditor.dataTypes.attributes.DataAttribute;
 
 public class EditorVariable {
 
@@ -14,7 +14,7 @@ public class EditorVariable {
     private Map<String, String> attrsXPath = new HashMap<String, String>();
     private String documentXPath = null;
     private String templateXPath;
-    private DataAttributes dataAttributesType;
+    private DataAttribute dataAttributesType;
     private Map<String, EditorVariable> children = new HashMap<String, EditorVariable>();
     private int minOccurs = 1;
     private int maxOccurs = 1;
@@ -28,7 +28,7 @@ public class EditorVariable {
      *
      * @param dataAttributesType an empty Object indicating the type of data
      */
-    public EditorVariable(DataAttributes dataAttributesType) {
+    public EditorVariable(DataAttribute dataAttributesType) {
         this.dataAttributesType = dataAttributesType;
     }
 
@@ -43,7 +43,7 @@ public class EditorVariable {
      * @return new instance of the dataAttributes
      * @see DataAttributes.addAttribute(String attr, String value)
      */
-    public DataAttributes getNewDataAttributes() {
+    public DataAttribute getNewDataAttributes() {
         return dataAttributesType.newInstance();
     }
 
@@ -104,7 +104,7 @@ public class EditorVariable {
      * @return returns a new DataAttributes object of the type belonging to this
      *         EditorVariable
      */
-    public DataAttributes getDataAttributes() {
+    public DataAttribute getDataAttributes() {
         return dataAttributesType;
     }
 

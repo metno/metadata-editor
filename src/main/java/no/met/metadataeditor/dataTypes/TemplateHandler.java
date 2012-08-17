@@ -12,16 +12,16 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import no.met.metadataeditor.dataTypes.attributes.DataAttributes;
-import no.met.metadataeditor.dataTypes.attributes.LatLonBBAttributes;
+import no.met.metadataeditor.dataTypes.attributes.DataAttribute;
+import no.met.metadataeditor.dataTypes.attributes.LatLonBBAttribute;
 import no.met.metadataeditor.dataTypes.attributes.LatLonBBSingleAttribute;
-import no.met.metadataeditor.dataTypes.attributes.ListElementAttributes;
-import no.met.metadataeditor.dataTypes.attributes.NullAttributes;
-import no.met.metadataeditor.dataTypes.attributes.StartAndStopTimeAttributes;
-import no.met.metadataeditor.dataTypes.attributes.StringAndListElementAttributes;
-import no.met.metadataeditor.dataTypes.attributes.StringAttributes;
-import no.met.metadataeditor.dataTypes.attributes.TimeAttributes;
-import no.met.metadataeditor.dataTypes.attributes.UriAttributes;
+import no.met.metadataeditor.dataTypes.attributes.ListElementAttribute;
+import no.met.metadataeditor.dataTypes.attributes.NullAttribute;
+import no.met.metadataeditor.dataTypes.attributes.StartAndStopTimeAttribute;
+import no.met.metadataeditor.dataTypes.attributes.StringAndListElementAttribute;
+import no.met.metadataeditor.dataTypes.attributes.StringAttribute;
+import no.met.metadataeditor.dataTypes.attributes.TimeAttribute;
+import no.met.metadataeditor.dataTypes.attributes.UriAttribute;
 
 import org.apache.commons.lang3.StringUtils;
 import org.xml.sax.Attributes;
@@ -121,7 +121,7 @@ class TemplateHandler extends DefaultHandler {
         }                
     }
 
-    private void addStandardEDT(DataAttributes da, String nsUri, String lName, Attributes atts) throws SAXException {
+    private void addStandardEDT(DataAttribute da, String nsUri, String lName, Attributes atts) throws SAXException {
         EditorVariable ev = new EditorVariable(da);
         String varName = variableAddAttributes(ev, atts);
         fullPathElements.addLast(getTemplateQName(nsUri, String.format("%s[@varName='%s']",lName, varName)));
@@ -213,27 +213,27 @@ class TemplateHandler extends DefaultHandler {
             if ("editorDataTypes".equals(lName)) {
                 //  start element, empty container
                 assert(edtElements.size() == 0);
-                EditorVariable ev = new EditorVariable(new NullAttributes());
+                EditorVariable ev = new EditorVariable(new NullAttribute());
                 edtElements.addLast(ev);
                 fullPathElements.addLast(getTemplateQName(nsUri, lName));
             } else if ("container".equals(lName)) {
-                addStandardEDT(new NullAttributes(), nsUri, lName, atts);
+                addStandardEDT(new NullAttribute(), nsUri, lName, atts);
             } else if ("lonLatBoundingBox".equals(lName)) {
-                addStandardEDT(new LatLonBBAttributes(), nsUri, lName, atts);
+                addStandardEDT(new LatLonBBAttribute(), nsUri, lName, atts);
             } else if ("lonLatBoundingBoxSingle".equals(lName)) {
                 addStandardEDT(new LatLonBBSingleAttribute(), nsUri, lName, atts);
             } else if ("string".equals(lName)) {
-                addStandardEDT(new StringAttributes(), nsUri, lName, atts);
+                addStandardEDT(new StringAttribute(), nsUri, lName, atts);
             } else if ("uri".equals(lName)) {
-                addStandardEDT(new UriAttributes(), nsUri, lName, atts);
+                addStandardEDT(new UriAttribute(), nsUri, lName, atts);
             } else if ("list".equals(lName)) {
-                addStandardEDT(new ListElementAttributes(), nsUri, lName, atts);
+                addStandardEDT(new ListElementAttribute(), nsUri, lName, atts);
             } else if ("stringAndList".equals(lName)) {
-                addStandardEDT(new StringAndListElementAttributes(), nsUri, lName, atts);
+                addStandardEDT(new StringAndListElementAttribute(), nsUri, lName, atts);
             } else if ("startAndStopTime".equals(lName)) {
-                addStandardEDT(new StartAndStopTimeAttributes(), nsUri, lName, atts);
+                addStandardEDT(new StartAndStopTimeAttribute(), nsUri, lName, atts);
             } else if ("time".equals(lName)) {
-                addStandardEDT(new TimeAttributes(), nsUri, lName, atts);
+                addStandardEDT(new TimeAttribute(), nsUri, lName, atts);
             }  else {
                 throw new UndefinedEditorVariableException(lName);
             }

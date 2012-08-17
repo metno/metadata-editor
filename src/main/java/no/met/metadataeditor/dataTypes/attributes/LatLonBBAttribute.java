@@ -4,7 +4,7 @@ import no.met.metadataeditor.dataTypes.DataType;
 import no.met.metadataeditor.dataTypes.IsAttributeValue;
 
 
-public class LatLonBBAttributes extends DataAttributes {
+public class LatLonBBAttribute extends DataAttribute {
     
     @IsAttributeValue(DataType.NUMBER)
     String south;

@@ -22,7 +22,7 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import no.met.metadataeditor.EditorException;
-import no.met.metadataeditor.dataTypes.attributes.DataAttributes;
+import no.met.metadataeditor.dataTypes.attributes.DataAttribute;
 
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -152,7 +152,7 @@ public class EditorTemplate {
                 for (int i = 0; i < evSubnodes.getLength(); ++i) {
 
                     Node subNode = evSubnodes.item(i);
-                    DataAttributes da = readAttributes(ev, subNode, xpath);                    
+                    DataAttribute da = readAttributes(ev, subNode, xpath);                    
                     EditorVariableContent evc = new EditorVariableContent();
                     evc.setAttrs(da);
 
@@ -168,9 +168,9 @@ public class EditorTemplate {
         return content;
     }    
     
-    private DataAttributes readAttributes(EditorVariable variable, Node node, XPath xpath) throws XPathExpressionException {
+    private DataAttribute readAttributes(EditorVariable variable, Node node, XPath xpath) throws XPathExpressionException {
 
-        DataAttributes da = variable.getDataAttributes().newInstance();
+        DataAttribute da = variable.getDataAttributes().newInstance();
         // set the attributes
         Map<String, String> attXpath = variable.getAttrsXPath();
         for (String att : attXpath.keySet()) {
@@ -381,7 +381,7 @@ public class EditorTemplate {
     
     private String getReplaceValue(String value, EditorVariableContent evc){
         
-        DataAttributes da = evc.getAttrs();
+        DataAttribute da = evc.getAttrs();
         for( String attrKey : da.getAttributesSetup().keySet() ){
             String newValue = da.getAttribute(attrKey);
             value = value.replace("$" + attrKey, newValue);

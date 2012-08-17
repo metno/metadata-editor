@@ -16,9 +16,9 @@ import no.met.metadataeditor.dataTypes.IsAttributeValue;
 /**
  * Abstract base class for all DataAttributes
  */
-public abstract class DataAttributes {
+public abstract class DataAttribute {
 
-    private static final Logger logger = Logger.getLogger(DataAttributes.class.getName());
+    private static final Logger logger = Logger.getLogger(DataAttribute.class.getName());
     
     /**
      * @return A mapping between field names and DataType for all attributes 
@@ -55,10 +55,10 @@ public abstract class DataAttributes {
     /**
      * @return a new Instance of the subtype
      */
-    public DataAttributes newInstance(){
+    public DataAttribute newInstance(){
         try {
             @SuppressWarnings("unchecked")
-            Constructor<DataAttributes> c = (Constructor<DataAttributes>) this.getClass().getConstructor(new Class<?>[] {} );
+            Constructor<DataAttribute> c = (Constructor<DataAttribute>) this.getClass().getConstructor(new Class<?>[] {} );
             return c.newInstance();
         } catch (NoSuchMethodException e) {
             String msg = "Did not find constructor with no arguments for class: " + this.getClass().getName();

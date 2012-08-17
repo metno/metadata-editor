@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import no.met.metadataeditor.dataTypes.attributes.DataAttributes;
+import no.met.metadataeditor.dataTypes.attributes.DataAttribute;
 
 /**
  * Class representing a single content value in an editor variable. The class is
@@ -12,7 +12,7 @@ import no.met.metadataeditor.dataTypes.attributes.DataAttributes;
  */
 public class EditorVariableContent {
 
-    private DataAttributes attrs;
+    private DataAttribute attrs;
 
     private Map<String, List<EditorVariableContent>> children;
 
@@ -20,11 +20,11 @@ public class EditorVariableContent {
         children = new HashMap<String, List<EditorVariableContent>>();
     }
 
-    public DataAttributes getAttrs() {
+    public DataAttribute getAttrs() {
         return attrs;
     }
 
-    public void setAttrs(DataAttributes attrs) {
+    public void setAttrs(DataAttribute attrs) {
         this.attrs = attrs;
     }
 
