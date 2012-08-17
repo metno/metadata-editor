@@ -1,7 +1,13 @@
-package no.met.metadataeditor.dataTypes;
+package no.met.metadataeditor.dataTypes.attributes;
 
 import java.util.List;
 import java.util.Map;
+
+import no.met.metadataeditor.dataTypes.EditorVariableContent;
+import no.met.metadataeditor.dataTypes.attributes.DataAttributes;
+import no.met.metadataeditor.dataTypes.attributes.LatLonBBAttributes;
+import no.met.metadataeditor.dataTypes.attributes.LatLonBBSingleAttribute;
+import no.met.metadataeditor.dataTypes.attributes.StringAttributes;
 
 /**
  * Class that is used to create EditorVariableContent objects more easily

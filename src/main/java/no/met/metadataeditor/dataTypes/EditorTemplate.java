@@ -22,6 +22,7 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import no.met.metadataeditor.EditorException;
+import no.met.metadataeditor.dataTypes.attributes.DataAttributes;
 
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;

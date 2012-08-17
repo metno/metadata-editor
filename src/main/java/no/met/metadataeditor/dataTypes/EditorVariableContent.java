@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import no.met.metadataeditor.dataTypes.attributes.DataAttributes;
+
 /**
  * Class representing a single content value in an editor variable. The class is
  * recursive so it can contain a mapping of child values as well.

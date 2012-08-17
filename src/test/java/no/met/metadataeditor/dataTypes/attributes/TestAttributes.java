@@ -1,8 +1,8 @@
-package no.met.metadataeditor.dataTypes;
+package no.met.metadataeditor.dataTypes.attributes;
 
-import no.met.metadataeditor.dataTypes.DataAttributes;
 import no.met.metadataeditor.dataTypes.DataType;
 import no.met.metadataeditor.dataTypes.IsAttribute;
+import no.met.metadataeditor.dataTypes.attributes.DataAttributes;
 
 /**
  * Class used to help testing of the DataAttributes class.

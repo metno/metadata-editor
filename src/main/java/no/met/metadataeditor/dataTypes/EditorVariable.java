@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
+import no.met.metadataeditor.dataTypes.attributes.DataAttributes;
+
 public class EditorVariable {
 
     public final static String DEFAULT_RESOURCE = "default";

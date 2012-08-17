@@ -1,10 +1,13 @@
-package no.met.metadataeditor.dataTypes;
+package no.met.metadataeditor.dataTypes.attributes;
 
 import static org.junit.Assert.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
+
+import no.met.metadataeditor.dataTypes.AttributesMismatchException;
+import no.met.metadataeditor.dataTypes.DataType;
 
 import org.junit.Test;
 

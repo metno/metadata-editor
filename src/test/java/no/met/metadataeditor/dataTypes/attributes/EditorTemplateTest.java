@@ -1,4 +1,4 @@
-package no.met.metadataeditor.dataTypes;
+package no.met.metadataeditor.dataTypes.attributes;
 
 import static org.junit.Assert.*;
 
@@ -10,6 +10,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import no.met.metadataeditor.dataTypes.EditorTemplate;
+import no.met.metadataeditor.dataTypes.EditorVariable;
+import no.met.metadataeditor.dataTypes.EditorVariableContent;
+import no.met.metadataeditor.dataTypes.InvalidTemplateException;
 
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;

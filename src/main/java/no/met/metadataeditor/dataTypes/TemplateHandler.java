@@ -12,6 +12,17 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import no.met.metadataeditor.dataTypes.attributes.DataAttributes;
+import no.met.metadataeditor.dataTypes.attributes.LatLonBBAttributes;
+import no.met.metadataeditor.dataTypes.attributes.LatLonBBSingleAttribute;
+import no.met.metadataeditor.dataTypes.attributes.ListElementAttributes;
+import no.met.metadataeditor.dataTypes.attributes.NullAttributes;
+import no.met.metadataeditor.dataTypes.attributes.StartAndStopTimeAttributes;
+import no.met.metadataeditor.dataTypes.attributes.StringAndListElementAttributes;
+import no.met.metadataeditor.dataTypes.attributes.StringAttributes;
+import no.met.metadataeditor.dataTypes.attributes.TimeAttributes;
+import no.met.metadataeditor.dataTypes.attributes.UriAttributes;
+
 import org.apache.commons.lang3.StringUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;

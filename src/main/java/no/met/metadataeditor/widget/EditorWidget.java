@@ -13,9 +13,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
 import no.met.metadataeditor.InvalidEditorConfigurationException;
-import no.met.metadataeditor.dataTypes.DataAttributes;
 import no.met.metadataeditor.dataTypes.EditorVariable;
 import no.met.metadataeditor.dataTypes.EditorVariableContent;
+import no.met.metadataeditor.dataTypes.attributes.DataAttributes;
 
 /**
  * Class for representing widgets. This is a pure data class and should never

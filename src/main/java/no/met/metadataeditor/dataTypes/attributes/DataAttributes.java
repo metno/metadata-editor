@@ -1,4 +1,4 @@
-package no.met.metadataeditor.dataTypes;
+package no.met.metadataeditor.dataTypes.attributes;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -9,6 +9,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import no.met.metadataeditor.EditorException;
+import no.met.metadataeditor.dataTypes.AttributesMismatchException;
+import no.met.metadataeditor.dataTypes.DataType;
+import no.met.metadataeditor.dataTypes.IsAttribute;
 
 /**
  * Abstract base class for all DataAttributes

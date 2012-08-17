@@ -1,4 +1,4 @@
-package no.met.metadataeditor.dataTypes;
+package no.met.metadataeditor.dataTypes.attributes;
 
 import static org.junit.Assert.*;
 
@@ -7,6 +7,9 @@ import java.net.URL;
 import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
+
+import no.met.metadataeditor.dataTypes.EditorTemplate;
+import no.met.metadataeditor.dataTypes.EditorVariable;
 
 import org.junit.Test;
 import org.xml.sax.InputSource;
