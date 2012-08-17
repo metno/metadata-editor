@@ -1,4 +1,4 @@
-package no.met.metadataeditor.dataTypes.attributes;
+package no.met.metadataeditor.dataTypes;
 
 import static org.junit.Assert.*;
 

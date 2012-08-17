@@ -1,4 +1,4 @@
-package no.met.metadataeditor.dataTypes.attributes;
+package no.met.metadataeditor.dataTypes;
 
 import java.util.List;
 import java.util.Map;
