@@ -267,6 +267,21 @@ public class EditorTemplateTest {
         
     }
     
+    @Test 
+    public void testVarInAttributeContent(){
+        
+        Map<String,List<EditorVariableContent>> content = getContent("/testContent/varInAttributeTemplate.xml", "/testContent/varInAttributeContent.xml");
+        
+        assertEquals("Content for variable found", true, content.containsKey("dates"));
+        
+        List<EditorVariableContent> evc = content.get("dates");
+        
+        assertEquals("Only a single value for attribute", 1, evc.size());        
+        assertEquals("Value for content ok", "created", evc.get(0).getAttrs().getAttribute("listElement"));        
+        assertEquals("Value for content ok", "2012-01-01", evc.get(0).getAttrs().getAttribute("str"));
+        
+    }
+    
     @Test
     public void testVariableNames() {
 

@@ -149,7 +149,7 @@ class TemplateHandler extends DefaultHandler {
             for (int i = 0; i < atts.getLength(); ++i) {
                 if (keyPattern.matcher(atts.getValue(i)).matches()) {
                     String xPath = org.apache.commons.lang3.StringUtils.join(finalPathElements.iterator(), "/");
-                    xPath += "@"+atts.getQName(i);
+                    xPath += "/@"+atts.getQName(i);
                     Deque<EditorVariable> evs = attributeXPath.get(key);
                     EditorVariable ev = evs.removeLast();
                     ev.setAttrsXPath(key, xPath);
