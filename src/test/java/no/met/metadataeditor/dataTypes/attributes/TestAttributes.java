@@ -14,9 +14,4 @@ public class TestAttributes extends DataAttributes {
     
     String notExposed;
     
-    @Override
-    public DataAttributes newInstance() {
-        return new TestAttributes();
-    }
-    
 }

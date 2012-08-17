@@ -103,4 +103,18 @@ public class DataAttributesTest {
         
     }    
     
+    
+    @Test
+    public void testGetInstanceTestAttributes(){
+        
+        TestAttributes ta = new TestAttributes();
+        assertTrue("TestAttributes newInstance of correct type", ta.newInstance() instanceof TestAttributes );
+    }
+    
+    @Test
+    public void testGetInstanceTestAttributesSub(){
+        
+        TestAttributesSub tas = new TestAttributesSub();
+        assertTrue("TestAttributesSub newInstance of correct type", tas.newInstance() instanceof TestAttributesSub );
+    }    
 }
