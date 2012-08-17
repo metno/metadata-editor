@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import no.met.metadataeditor.InvalidEditorConfigurationException;
 import no.met.metadataeditor.dataTypes.EditorVariable;
 import no.met.metadataeditor.dataTypes.EditorVariableContent;
-import no.met.metadataeditor.dataTypes.attributes.DataAttributes;
+import no.met.metadataeditor.dataTypes.attributes.DataAttribute;
 
 /**
  * Class for representing widgets. This is a pure data class and should never
@@ -119,7 +119,7 @@ public abstract class EditorWidget implements Serializable {
 
         Map<String, EditorWidget> childMap = getChildWidgetMap();
         for (EditorVariableContent content : contents) {
-            DataAttributes attrs = content.getAttrs();
+            DataAttribute attrs = content.getAttrs();
 
             Map<String, String> value = new HashMap<String, String>();
             List<String> relevantAttrs = getRelevantAttributes();
@@ -160,7 +160,7 @@ public abstract class EditorWidget implements Serializable {
         for (Map<String, String> value : values) {
 
             EditorVariableContent content = new EditorVariableContent();
-            DataAttributes da = ev.getNewDataAttributes();
+            DataAttribute da = ev.getNewDataAttributes();
             content.setAttrs(da);
             for (Map.Entry<String, String> entry : value.entrySet()) {
                 da.addAttribute(entry.getKey(), entry.getValue());
