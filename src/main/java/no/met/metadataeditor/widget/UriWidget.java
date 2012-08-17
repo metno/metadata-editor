@@ -4,9 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name="uri")
 public class UriWidget extends EditorWidget {
 
     private static final long serialVersionUID = -1244778870767868773L;
