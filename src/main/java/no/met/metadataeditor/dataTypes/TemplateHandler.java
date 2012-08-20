@@ -10,6 +10,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import no.met.metadataeditor.dataTypes.attributes.DataAttribute;
@@ -179,13 +181,18 @@ class TemplateHandler extends DefaultHandler {
     }
 
     private String getTemplateQName(String nsUri, String lName) {
+        
+        if(nsUri == null || "".equals(nsUri)){
+            return lName;
+        }
+        
         String prefix = namespacePrefixes.get(nsUri);
         if (prefix == null) {
             prefix = "ns" + namespacePrefixes.size();
             namespacePrefixes.put(nsUri, prefix);
         }
         return String.format("%s:%s", prefix, lName);
-    }
+    }    
 
     // generate a xpath identifier with name and attributes
     private String generateXPathIdentifier(String nsUri, String lName, String qName, Attributes atts) {
@@ -197,7 +204,7 @@ class TemplateHandler extends DefaultHandler {
                     atts.getURI(i).equals(nsUri)) {
                 // don't use local attributes containing EditorAttributes wildcards
                 if (!atts.getValue(i).matches("\\s*\\$.*")) {
-                    attrs.add(String.format("@%s='%s'", atts.getQName(i), atts.getValue(i)));
+                    attrs.add(String.format("@%s='%s'", getTemplateQName(atts.getURI(i), atts.getLocalName(i)), atts.getValue(i)));
                 }
             }
         }
