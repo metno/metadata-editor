@@ -16,9 +16,10 @@
         <h:panelGroup id="startandstoptime-container" layout="block" styleClass="editor-widget-container">
         <h:outputLabel value="#{cc.attrs.widget.label}" styleClass="main-label" />
 
-        <h:commandButton value=" " action="#{editorBean.addValue(cc.attrs.widget)}" rendered="#{cc.attrs.widget.maxOccurs gt cc.attrs.widget.values.size()} and userBean.validated" styleClass="add-button">
-            <f:ajax execute="@this" render="startandstoptime-container" onevent="input_field_added" />
-        </h:commandButton>
+        <ui:include src="../../add-value-button.xhtml" >
+            <ui:param name="widget" value="#{cc.attrs.widget}"/>
+            <ui:param name="updateId" value="startandstoptime-container"/>
+        </ui:include>
 
         <h:dataTable value="#{cc.attrs.widget.values}" var="value" id="startandstoptime">
         
@@ -37,9 +38,10 @@
         </h:column>
         
         <h:column>
-            <h:commandButton value=" " action="#{editorBean.removeValue(cc.attrs.widget, value)}" rendered="#{cc.attrs.widget.minOccurs lt cc.attrs.widget.values.size() and userBean.validated}" styleClass="remove-button">
-                <f:ajax execute="@this" render="@form" />
-            </h:commandButton>     
+	        <ui:include src="../../remove-value-button.xhtml" >
+	            <ui:param name="widget" value="#{cc.attrs.widget}"/>
+	            <ui:param name="value" value="#{value}"/>
+	        </ui:include>     
         </h:column>
         
         </h:dataTable>

@@ -10,11 +10,12 @@
     <composite:interface>
         <composite:valueHolder name="widget" type="no.met.metaeditor.widget.PickListWidget" />
         <composite:valueHolder name="page" type="no.met.metaeditor.EditorPage" />
+        <composite:attribute name="actualId" />
     </composite:interface>
 
     <composite:implementation>
 
-        <h:panelGroup id="text-input-multi" layout="block" styleClass="editor-widget-container">
+        <h:panelGroup id="multi-select-list-container" layout="block" styleClass="editor-widget-container">
 
         <h:outputLabel for="selectone" value="#{cc.attrs.widget.label}" styleClass="main-label" />
         
@@ -22,11 +23,13 @@
 
         <h:selectOneMenu id="selectone" value="#{cc.attrs.widget.currentValue}" disabled="#{!userBean.validated}">
             <f:selectItems value="#{editorBean.getFilteredResourceValues(cc.attrs.widget, 'listElement')}" />
-        </h:selectOneMenu>           
-        
-        <h:commandButton value=" " action="#{editorBean.addValue(cc.attrs.widget)}" rendered="#{cc.attrs.widget.maxOccurs gt cc.attrs.widget.values.size() and userBean.validated}" styleClass="add-button">
-            <f:ajax execute="@this selectone" render="text-input-multi" />
-        </h:commandButton>                            
+        </h:selectOneMenu>
+           
+        <ui:include src="../../add-value-button.xhtml" >
+            <ui:param name="widget" value="#{cc.attrs.widget}"/>
+            <ui:param name="updateId" value="multi-select-list-container"/>
+            <ui:param name="extraExecuteId" value="selectone"/>
+        </ui:include>
 
 
         <h:dataTable value="#{cc.attrs.widget.values}" var="value" id="list">
@@ -34,10 +37,11 @@
             <h:column>
                 <h:outputText value="#{value['listElement']}" />
             </h:column>
-            <h:column rendered="#{cc.attrs.widget.minOccurs lt cc.attrs.widget.values.size() and userBean.validated}">
-                <h:commandButton value=" " action="#{editorBean.removeValue(cc.attrs.widget, value)}" styleClass="remove-button">
-                    <f:ajax execute="@this" render="@form" />
-                </h:commandButton>       
+            <h:column>
+		        <ui:include src="../../remove-value-button.xhtml" >
+		            <ui:param name="widget" value="#{cc.attrs.widget}"/>
+		            <ui:param name="value" value="#{value}"/>
+		        </ui:include>            
             </h:column>
         </h:dataTable>
         

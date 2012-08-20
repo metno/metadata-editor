@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:metaedit="http://java.sun.com/jsf/composite/component">
+
+<body>
+
+    <ui:composition>
+    
+        <ui:remove>
+        <!-- 
+        Tried to implement this as a component, but it was not possible to get it to render the correct component
+        after the call is finished without updating the entire form. This instead works correctly when it is just a template
+         -->
+        </ui:remove>
+    
+    
+        <h:commandButton value=" " action="#{editorBean.removeValue(widget, value)}" styleClass="remove-button" rendered="#{widget.minOccurs lt widget.values.size() and userBean.validated}">
+            <f:ajax execute="@this" render="@form" />
+        </h:commandButton>       
+    
+    </ui:composition>
+</body>
+</html>
