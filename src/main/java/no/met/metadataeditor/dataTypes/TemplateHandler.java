@@ -16,7 +16,7 @@ import no.met.metadataeditor.dataTypes.attributes.DataAttribute;
 import no.met.metadataeditor.dataTypes.attributes.LatLonBBAttribute;
 import no.met.metadataeditor.dataTypes.attributes.LatLonBBSingleAttribute;
 import no.met.metadataeditor.dataTypes.attributes.ListElementAttribute;
-import no.met.metadataeditor.dataTypes.attributes.NullAttribute;
+import no.met.metadataeditor.dataTypes.attributes.ContainerAttribute;
 import no.met.metadataeditor.dataTypes.attributes.StartAndStopTimeAttribute;
 import no.met.metadataeditor.dataTypes.attributes.StringAndListElementAttribute;
 import no.met.metadataeditor.dataTypes.attributes.StringAttribute;
@@ -218,11 +218,11 @@ class TemplateHandler extends DefaultHandler {
             if ("editorDataTypes".equals(lName)) {
                 //  start element, empty container
                 assert(edtElements.size() == 0);
-                EditorVariable ev = new EditorVariable(new NullAttribute());
+                EditorVariable ev = new EditorVariable(new ContainerAttribute());
                 edtElements.addLast(ev);
                 fullPathElements.addLast(getTemplateQName(nsUri, lName));
             } else if ("container".equals(lName)) {
-                addStandardEDT(new NullAttribute(), nsUri, lName, atts);
+                addStandardEDT(new ContainerAttribute(), nsUri, lName, atts);
             } else if ("lonLatBoundingBox".equals(lName)) {
                 addStandardEDT(new LatLonBBAttribute(), nsUri, lName, atts);
             } else if ("lonLatBoundingBoxSingle".equals(lName)) {
