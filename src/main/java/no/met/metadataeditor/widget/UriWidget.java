@@ -13,6 +13,14 @@ public class UriWidget extends EditorWidget {
     
     private int maxlength = 400; 
     
+    public UriWidget(){
+        super();
+    }
+    
+    public UriWidget(UriWidget cloneFrom){
+        super(cloneFrom);
+    }
+    
     @Override
     public Map<String, String> getDefaultValue() {
         Map<String,String> defaultValue = new HashMap<String,String>();

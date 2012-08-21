@@ -13,6 +13,17 @@ public class StringWidget extends EditorWidget {
     
     private int maxlength = 40;
 
+    public StringWidget(){
+        super();
+    }
+    
+    public StringWidget(StringWidget cloneFrom){
+        super(cloneFrom);
+        
+        this.size = cloneFrom.size;
+        this.maxlength = cloneFrom.size;
+    }    
+    
     @Override
     public Map<String, String> getDefaultValue() {
         Map<String,String> defaultValue = new HashMap<String,String>();

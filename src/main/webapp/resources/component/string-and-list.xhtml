@@ -8,7 +8,7 @@
       xmlns:metaedit="http://java.sun.com/jsf/composite/component">
 
     <composite:interface>
-        <composite:attribute name="widget" type="no.met.metaedit.TextMultiInput" />
+        <composite:attribute name="widget" type="no.met.metadataeditor.widget.TextAndListWidget" />
     </composite:interface>
 
     <composite:implementation>
@@ -21,21 +21,21 @@
             <ui:param name="updateId" value="string-and-list-container"/>
         </ui:include>
 
-        <h:dataTable value="#{cc.attrs.widget.values}" var="value" id="list">
+        <h:dataTable value="#{cc.attrs.widget.widgetViews}" var="widgetView" id="list">
 
             <h:column>
-                <p:inputText value="#{value['str']}" size="${cc.attrs.widget.size}" maxlength="${cc.attrs.widget.maxlength}" disabled="#{!userBean.validated}" />
+                <p:inputText value="#{widgetView.values['str']}" size="${cc.attrs.widget.size}" maxlength="${cc.attrs.widget.maxlength}" disabled="#{!userBean.validated}" />
             </h:column>     
 
             <h:column>
-                <h:selectOneMenu value="#{value['listElement']}" disabled="#{!userBean.validated}">
+                <h:selectOneMenu value="#{widgetView.values['listElement']}" disabled="#{!userBean.validated}">
                     <f:selectItems value="#{editorBean.getResourceValues(cc.attrs.widget)}" />
                 </h:selectOneMenu>            
             </h:column>
             <h:column>
                 <ui:include src="../../remove-value-button.xhtml" >
                     <ui:param name="widget" value="#{cc.attrs.widget}"/>
-                    <ui:param name="value" value="#{value}"/>
+                    <ui:param name="value" value="#{widgetView}"/>
                 </ui:include>       
             </h:column>
         </h:dataTable>

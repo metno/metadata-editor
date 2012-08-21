@@ -62,9 +62,8 @@ jQuery(document).ready(function () {
         <p:ajax event="tabChange" listener="#{editorBean.tabChanged}" />
     
         <p:tab title="#{page.label}" id="tab">
-		    <ui:repeat var="widget"
-		        value="#{page.widgetTreeAsList}">
-		
+		    <ui:repeat var="widget" value="#{page.widgets}">
+
 		        <metaedit:string widget="#{widget}" rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.StringWidget'}" />
 		        <metaedit:text-area widget="#{widget}" rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.TextAreaWidget'}" />
 		        <metaedit:time widget="#{widget}" rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.TimeWidget'}" />
@@ -74,6 +73,7 @@ jQuery(document).ready(function () {
 		        <metaedit:start-and-stop-time widget="#{widget}" rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.StartAndStopTimeWidget'}" />        
 		        <metaedit:uri widget="#{widget}" rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.UriWidget'}" />        
 		        <metaedit:string-and-list widget="#{widget}" rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.StringAndListWidget'}" />
+                <metaedit:online-resource widget="#{widget}" rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.OnlineResourceWidget'}" />		        
 		
 		    </ui:repeat>
 	    </p:tab>

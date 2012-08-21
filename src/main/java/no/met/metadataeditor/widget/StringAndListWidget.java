@@ -11,7 +11,18 @@ public class StringAndListWidget extends EditorWidget {
 
     private int size = 40;
     
-    private int maxlength = 40;    
+    private int maxlength = 40;
+    
+    public StringAndListWidget(){
+        super();
+    }
+    
+    public StringAndListWidget(StringAndListWidget cloneFrom){
+        super(cloneFrom);
+        
+        this.size = cloneFrom.size;
+        this.maxlength = cloneFrom.size;
+    }
     
     @Override
     public Map<String, String> getDefaultValue() {

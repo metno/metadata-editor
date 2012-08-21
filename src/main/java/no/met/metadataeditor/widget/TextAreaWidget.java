@@ -13,6 +13,15 @@ public class TextAreaWidget extends EditorWidget {
     
     private int rows;
     
+    public TextAreaWidget(){
+        super();
+    }
+    
+    public TextAreaWidget(TextAreaWidget cloneFrom){
+        super(cloneFrom);
+        this.cols = cloneFrom.cols;
+        this.rows = cloneFrom.rows;        
+    }
 
     @Override
     public Map<String, String> getDefaultValue() {

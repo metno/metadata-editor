@@ -20,26 +20,26 @@
             <ui:param name="updateId" value="startandstoptime-container"/>
         </ui:include>
 
-        <h:dataTable value="#{cc.attrs.widget.values}" var="value" id="startandstoptime">
+        <h:dataTable value="#{cc.attrs.widget.widgetViews}" var="widgetView" id="startandstoptime">
         
         <h:column>
             <h:outputLabel value="Start time" />
         </h:column>
         <h:column>
-            <h:inputText name="start" id="start" value="#{value['start']}" disabled="#{!userBean.validated}" />
+            <h:inputText name="start" id="start" value="#{widgetView.values['start']}" disabled="#{!userBean.validated}" />
         </h:column>
 
         <h:column>
             <h:outputLabel value="Stop time" />
         </h:column>
         <h:column>
-            <h:inputText name="stop" id="stop" value="#{value['stop']}" disabled="#{!userBean.validated}" />
+            <h:inputText name="stop" id="stop" value="#{widgetView.values['stop']}" disabled="#{!userBean.validated}" />
         </h:column>
         
         <h:column>
 	        <ui:include src="../../remove-value-button.xhtml" >
 	            <ui:param name="widget" value="#{cc.attrs.widget}"/>
-	            <ui:param name="value" value="#{value}"/>
+	            <ui:param name="value" value="#{widgetView}"/>
 	        </ui:include>     
         </h:column>
         

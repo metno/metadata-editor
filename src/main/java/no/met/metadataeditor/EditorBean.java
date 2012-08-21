@@ -201,8 +201,8 @@ public class EditorBean implements Serializable {
         widget.addNewValue();        
     }    
        
-    public void removeValue(EditorWidget widget, Map<String,String> value){
-        widget.removeValue(value);
+    public void removeValue(EditorWidget widget, EditorWidgetView widgetView){
+        widget.removeValue(widgetView);
     }
     
     public List<String> getResourceValues(EditorWidget widget){
@@ -222,9 +222,9 @@ public class EditorBean implements Serializable {
     public List<String> getFilteredResourceValues(EditorWidget widget, String filterAttribute) {
 
         List<String> currentValues = new ArrayList<String>();
-        List<Map<String,String>> valueMaps = widget.getValues();
-        for( Map<String, String> values : valueMaps ){
-            currentValues.add(values.get(filterAttribute));
+        List<EditorWidgetView> widgetViews = widget.getWidgetViews();
+        for( EditorWidgetView view : widgetViews ){
+            currentValues.add(view.getValues().get(filterAttribute));
         }        
         
         List<String> filteredValues = getResourceValues(widget);

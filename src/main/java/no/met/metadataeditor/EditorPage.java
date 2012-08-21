@@ -25,6 +25,8 @@ public class EditorPage implements Serializable {
 
     private List<EditorWidget> widgets = new ArrayList<EditorWidget>();
     
+    //private List<EditorWidgetView> widgetViews = new ArrayList<EditorWidgetView>();
+    
     public EditorPage() {
 
     }
@@ -99,7 +101,24 @@ public class EditorPage implements Serializable {
     }
     
     
-    public boolean populate(Map<String, List<EditorVariableContent>> contentMap){
+//    public boolean populate(Map<String, List<EditorVariableContent>> contentMap){
+//
+//        for( EditorWidget widget : widgets ){
+//            
+//            String varName = widget.getVariableName();
+//            if( !contentMap.containsKey(varName)){
+//                throw new InvalidEditorConfigurationException( varName + " has not associated content/variable in template." );
+//            }
+//            
+//            List<EditorVariableContent> content = contentMap.get(varName);
+//            widget.populate(content);            
+//        }
+//                
+//        return allPopulated();
+//       
+//    }
+    
+    public boolean generateEditorWidgetViews(Map<String, List<EditorVariableContent>> contentMap){
 
         for( EditorWidget widget : widgets ){
             
@@ -109,11 +128,10 @@ public class EditorPage implements Serializable {
             }
             
             List<EditorVariableContent> content = contentMap.get(varName);
-            widget.populate(content);            
+            widget.generateWidgetViews(content);            
         }
                 
         return allPopulated();
-       
     }
     
     private boolean allPopulated(){
@@ -186,4 +204,5 @@ public class EditorPage implements Serializable {
         
         return true;
     }
+
 }

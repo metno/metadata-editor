@@ -1,8 +1,11 @@
 package no.met.metadataeditor.widget;
 
 import java.io.Serializable;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +15,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
+import no.met.metadataeditor.EditorException;
+import no.met.metadataeditor.EditorWidgetView;
 import no.met.metadataeditor.InvalidEditorConfigurationException;
 import no.met.metadataeditor.dataTypes.EditorVariable;
 import no.met.metadataeditor.dataTypes.EditorVariableContent;
@@ -23,7 +28,8 @@ import no.met.metadataeditor.dataTypes.attributes.DataAttribute;
  */
 @XmlRootElement
 @XmlSeeAlso({ LatLonBoundingBoxWidget.class, ListWidget.class, StartAndStopTimeWidget.class, StringWidget.class,
-        UriWidget.class, TextAreaWidget.class, TimeWidget.class, MultiSelectListWidget.class, StringAndListWidget.class })
+        UriWidget.class, TextAreaWidget.class, TimeWidget.class, MultiSelectListWidget.class, StringAndListWidget.class,
+        OnlineResourceWidget.class })
 public abstract class EditorWidget implements Serializable {
 
     private static final long serialVersionUID = -2532825684273483564L;
@@ -34,8 +40,6 @@ public abstract class EditorWidget implements Serializable {
 
     private String label;
 
-    private List<Map<String, String>> values;
-
     private boolean isPopulated = false;
 
     private int maxOccurs = 1;
@@ -45,18 +49,32 @@ public abstract class EditorWidget implements Serializable {
     private URI resourceUri;
 
     private List<EditorWidget> children = new ArrayList<EditorWidget>();
+    
+    private List<EditorWidgetView> widgetViews = new ArrayList<EditorWidgetView>();
 
-    public EditorWidget() {
-        values = new ArrayList<Map<String, String>>();
+    public EditorWidget() { 
+
     }
 
+
+    public EditorWidget(EditorWidget cloneFrom){
+
+        this.variableName = cloneFrom.variableName;
+        this.label = cloneFrom.label;
+        this.maxOccurs = cloneFrom.maxOccurs;
+        this.minOccurs = cloneFrom.minOccurs;
+        this.resourceUri = cloneFrom.resourceUri;
+        this.children = new ArrayList<EditorWidget>();
+        Collections.copy(this.children, cloneFrom.children);
+        
+    }    
+    
     public EditorWidget(String label, String variableName) {
         this.label = label;
         this.variableName = variableName;
 
-        values = new ArrayList<Map<String, String>>();
     }
-
+    
     @XmlAttribute
     public String getVariableName() {
         return variableName;
@@ -73,18 +91,6 @@ public abstract class EditorWidget implements Serializable {
 
     public void setLabel(String label) {
         this.label = label;
-    }
-
-    public List<Map<String, String>> getValues() {
-        return values;
-    }
-
-    public void addValue(Map<String, String> value) {
-        values.add(value);
-    }
-
-    public void removeValue(Map<String, String> value) {
-        values.remove(value);
     }
 
     /**
@@ -115,19 +121,25 @@ public abstract class EditorWidget implements Serializable {
         return true;
     }
 
-    public void populate(List<EditorVariableContent> contents) {
 
-        Map<String, EditorWidget> childMap = getChildWidgetMap();
+    public void generateWidgetViews(List<EditorVariableContent> contents){
+        
+        List<EditorWidgetView> views = new ArrayList<EditorWidgetView>();
+        
+        if( contents.isEmpty() ){
+            EditorWidgetView view = createWidgetView();
+            views.add(view);
+        }
+        
         for (EditorVariableContent content : contents) {
+            
+            EditorWidgetView view = createWidgetView();            
             DataAttribute attrs = content.getAttrs();
-
-            Map<String, String> value = new HashMap<String, String>();
             List<String> relevantAttrs = getRelevantAttributes();
             for (String attr : relevantAttrs) {
-                value.put(attr, attrs.getAttribute(attr));
+                view.addValue(attr, attrs.getAttribute(attr));
             }
-
-            addValue(value);
+            views.add(view);
             
             // recursively populate all children
             Map<String, List<EditorVariableContent>> childContentMap = content.getChildren();
@@ -136,33 +148,44 @@ public abstract class EditorWidget implements Serializable {
                 String varName = entry.getKey();
                 List<EditorVariableContent> childContent = entry.getValue();
                 
-                if( childMap.containsKey(varName) ){
-                    childMap.get(varName).populate(childContent);
+                if( view.hasChildWidget(varName) ){
+                    EditorWidget childWidget = view.getChildWidget(varName);
+                    childWidget.generateWidgetViews(childContent);
                 }
-                
-                
             }
-            
         }
 
         isPopulated = true;
-
+        widgetViews = views;
+        
+    }
+    
+    private EditorWidgetView createWidgetView(){
+        
+        EditorWidgetView view = new EditorWidgetView();
+        
+        List<EditorWidget> childWidgets = new ArrayList<EditorWidget>();
+        for( EditorWidget child : children ){
+            childWidgets.add(cloneInstance(child));
+        }
+        view.setChildren(childWidgets);
+        return view;
     }
 
+    
     /**
      * Take the information stored in the widget and send it back to the
      * EditorVariable
      */
     public List<EditorVariableContent> getContent(EditorVariable ev) {
 
-        Map<String, EditorWidget> childWidgetMap = getChildWidgetMap();
         List<EditorVariableContent> contentList = new ArrayList<EditorVariableContent>();
-        for (Map<String, String> value : values) {
+        for( EditorWidgetView view : widgetViews ){
 
             EditorVariableContent content = new EditorVariableContent();
             DataAttribute da = ev.getNewDataAttributes();
             content.setAttrs(da);
-            for (Map.Entry<String, String> entry : value.entrySet()) {
+            for (Map.Entry<String, String> entry : view.getValues().entrySet()) {
                 da.addAttribute(entry.getKey(), entry.getValue());
             }
             contentList.add(content);
@@ -173,30 +196,21 @@ public abstract class EditorWidget implements Serializable {
             for( Map.Entry<String, EditorVariable> entry : childVarMap.entrySet()){
                 String varName = entry.getKey();
                 
-                if( childWidgetMap.containsKey(varName)){
-                    EditorWidget childWidget = childWidgetMap.get(varName);
+                if( view.hasChildWidget(varName)) {
+                    EditorWidget childWidget = view.getChildWidget(varName);
                     List<EditorVariableContent> childContent = childWidget.getContent(entry.getValue());
                     childContentMap.put(varName, childContent);
                 }
             }
             content.setChildren(childContentMap);
             
+            
         }
         
         return contentList;
 
-    }
-    
-    private Map<String, EditorWidget> getChildWidgetMap(){
-        
-        Map<String, EditorWidget> widgetMap = new HashMap<String, EditorWidget>();
-        for( EditorWidget child : children ){
-            widgetMap.put(child.getVariableName(), child);
-        }
-        
-        return widgetMap;
-        
     }    
+    
 
     private List<String> getRelevantAttributes() {
 
@@ -211,7 +225,16 @@ public abstract class EditorWidget implements Serializable {
     }
 
     public void addNewValue() {
-        addValue(getDefaultValue());
+        
+        Map<String, String> newValue = getDefaultValue();
+        
+        EditorWidgetView view = createWidgetView();            
+        List<String> relevantAttrs = getRelevantAttributes();
+        for (String attr : relevantAttrs) {
+            view.addValue(attr, newValue.get(attr));
+        }
+        widgetViews.add(view);        
+
     }
 
     public String getWidgetType() {
@@ -242,7 +265,7 @@ public abstract class EditorWidget implements Serializable {
 
     public void addMissingOccurs() {
         
-        while( values.size() < minOccurs ){
+        while( widgetViews.size() < minOccurs ){
             addNewValue();
         }
         
@@ -270,5 +293,68 @@ public abstract class EditorWidget implements Serializable {
         }
         return widgetTree;
     }
+
+    public List<EditorWidgetView> getWidgetViews() {
+        return widgetViews;
+    }
+
+    public void setWidgetViews(List<EditorWidgetView> widgetViews) {
+        this.widgetViews = widgetViews;
+    }
+    
+    /**
+     * Clone an instance of an EditorWidget. Will clone correctly for subclasses as well.
+     * @param cloneFrom
+     * @return
+     */
+    private EditorWidget cloneInstance(EditorWidget cloneFrom){
+
+        Class<? extends EditorWidget> cls = cloneFrom.getClass();
+        
+        try {
+            Constructor<EditorWidget> ctr = getCopyConstructor(cls);        
+            EditorWidget widget = ctr.newInstance(cloneFrom);
+            return widget;
+            
+        } catch (SecurityException e) {
+            String msg = "No access to copy constructor for class: " + cls.getName();            
+            throw new EditorException(msg, e);
+        } catch (InstantiationException e) {
+            String msg = "Failed to execute copy constructor for class: " + cls.getName();
+            throw new EditorException(msg, e);
+        } catch (IllegalAccessException e) {
+            String msg = "No access to copy constructor for class: " + cls.getName();
+            throw new EditorException(msg, e);
+        } catch (IllegalArgumentException e) {
+            String msg = "Illegal argument to copy constructor for class: " + cls.getName();
+            throw new EditorException(msg, e);
+        } catch (InvocationTargetException e) {
+            String msg = "Wrong invocation target for copy constructor for class: " + cls.getName();
+            throw new EditorException(msg, e);
+        }
+        
+    }
+    
+    private Constructor<EditorWidget> getCopyConstructor(Class<? extends EditorWidget> cls){
+        
+        try {
+            Constructor<EditorWidget> ctr = (Constructor<EditorWidget>) cls.getConstructor(cls);
+            return ctr;
+        } catch (NoSuchMethodException e) {
+            String msg = "No copy constructor for class: " + cls.getName();            
+            throw new EditorException(msg, e);
+
+        } catch (SecurityException e) {
+            String msg = "No access to copy constructor for class: " + cls.getName();            
+            throw new EditorException(msg, e);
+        }
+        
+    }
+
+
+    public void removeValue(EditorWidgetView widgetView) {        
+        widgetViews.remove(widgetView);        
+    }
+
 
 }

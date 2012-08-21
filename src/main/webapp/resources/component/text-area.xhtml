@@ -21,15 +21,15 @@
             <ui:param name="updateId" value="textarea-container"/>
         </ui:include>
 
-        <h:dataTable value="#{cc.attrs.widget.values}" var="value" id="string">
+        <h:dataTable value="#{cc.attrs.widget.widgetViews}" var="widgetView" id="string">
         
             <h:column>
-                <p:inputTextarea value="#{value['str']}" rows="${cc.attrs.widget.rows}" cols="${cc.attrs.widget.cols}" disabled="#{!userBean.validated}" />
+                <p:inputTextarea value="#{widgetView.values['str']}" rows="${cc.attrs.widget.rows}" cols="${cc.attrs.widget.cols}" disabled="#{!userBean.validated}" />
             </h:column>        
             <h:column>
                 <ui:include src="../../remove-value-button.xhtml" >
                     <ui:param name="widget" value="#{cc.attrs.widget}"/>
-                    <ui:param name="value" value="#{value}"/>
+                    <ui:param name="value" value="#{widgetView}"/>
                 </ui:include>     
             </h:column>
         

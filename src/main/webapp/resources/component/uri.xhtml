@@ -21,15 +21,15 @@
             <ui:param name="updateId" value="uri-container"/>
         </ui:include>    
     
-        <h:dataTable value="#{cc.attrs.widget.values}" var="value" id="uri">
+        <h:dataTable value="#{cc.attrs.widget.widgetViews}" var="widgetView" id="uri">
         
         <h:column>
-            <p:inputText value="#{value['uri']}" size="#{cc.attrs.widget.size}" maxlength="#{cc.attrs.widget.maxlength}" disabled="#{!userBean.validated}" />
+            <p:inputText value="#{widgetView.values['uri']}" size="#{cc.attrs.widget.size}" maxlength="#{cc.attrs.widget.maxlength}" disabled="#{!userBean.validated}" />
         </h:column>        
         <h:column>
 	        <ui:include src="../../remove-value-button.xhtml" >
 	            <ui:param name="widget" value="#{cc.attrs.widget}"/>
-	            <ui:param name="value" value="#{value}"/>
+	            <ui:param name="value" value="#{widgetView}"/>
 	        </ui:include>   
         </h:column>
         

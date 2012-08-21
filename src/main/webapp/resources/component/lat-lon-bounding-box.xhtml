@@ -21,40 +21,40 @@
             <ui:param name="updateId" value="boundingbox-container"/>
         </ui:include>          
 
-        <h:dataTable value="#{cc.attrs.widget.values}" var="value" id="boundingbox">
+        <h:dataTable value="#{cc.attrs.widget.widgetViews}" var="widgetView" id="boundingbox">
 
             <h:column headerClass="lat-lon-header">
                 <f:facet name="header">
                     <h:outputText value="North" />
                 </f:facet>
-                <p:inputText value="#{value['north']}" size="10" disabled="#{!userBean.validated}" />
+                <p:inputText value="#{widgetView.values['north']}" size="10" disabled="#{!userBean.validated}" />
             </h:column>
 
             <h:column headerClass="lat-lon-header">
                 <f:facet name="header">
                     <h:outputText value="South" />
                 </f:facet>            
-                <p:inputText value="#{value['south']}" size="10" disabled="#{!userBean.validated}" />
+                <p:inputText value="#{widgetView.values['south']}" size="10" disabled="#{!userBean.validated}" />
             </h:column>
 
             <h:column headerClass="lat-lon-header">
                 <f:facet name="header">
                     <h:outputText value="East" />
                 </f:facet>            
-                <p:inputText value="#{value['east']}" size="10" disabled="#{!userBean.validated}" />
+                <p:inputText value="#{widgetView.values['east']}" size="10" disabled="#{!userBean.validated}" />
             </h:column>
 
             <h:column headerClass="lat-lon-header">
                 <f:facet name="header">
                     <h:outputText value="West" />
                 </f:facet>            
-                <p:inputText value="#{value['west']}" size="10" disabled="#{!userBean.validated}" />
+                <p:inputText value="#{widgetView.values['west']}" size="10" disabled="#{!userBean.validated}" />
             </h:column>
 
             <h:column>
                 <ui:include src="../../remove-value-button.xhtml" >
                     <ui:param name="widget" value="#{cc.attrs.widget}"/>
-                    <ui:param name="value" value="#{value}"/>
+                    <ui:param name="value" value="#{widgetView}"/>
                 </ui:include>                                            
             </h:column>
             

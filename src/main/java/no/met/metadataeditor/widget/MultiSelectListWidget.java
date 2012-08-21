@@ -8,7 +8,15 @@ public class MultiSelectListWidget extends EditorWidget {
     private static final long serialVersionUID = -7884248459977058910L;
     
     private String currentValue = "";
-   
+
+    public MultiSelectListWidget() {
+        super();
+    }
+    
+    public MultiSelectListWidget(MultiSelectListWidget cloneFrom){
+        super(cloneFrom);
+    }
+    
     @Override
     public Map<String, String> getDefaultValue() {
         Map<String,String> defaultValue = new HashMap<String,String>();

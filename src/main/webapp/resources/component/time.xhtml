@@ -21,15 +21,15 @@
             <ui:param name="updateId" value="time-container"/>
         </ui:include>
 
-        <h:dataTable value="#{cc.attrs.widget.values}" var="value" id="string">
+        <h:dataTable value="#{cc.attrs.widget.widgetViews}" var="widgetView" id="string">
         
             <h:column>
-                <p:calendar value="#{value['time']}" pattern="yyyy-MM-dd HH:mm" converter="no.met.metadataeditor.DateTimeConverter" maxlength="16" size="17" disabled="#{!userBean.validated}" />
+                <p:calendar value="#{widgetView.values['time']}" pattern="yyyy-MM-dd HH:mm" converter="no.met.metadataeditor.DateTimeConverter" maxlength="16" size="17" disabled="#{!userBean.validated}" />
             </h:column>
             <h:column>
                 <ui:include src="../../remove-value-button.xhtml" >
                     <ui:param name="widget" value="#{cc.attrs.widget}"/>
-                    <ui:param name="value" value="#{value}"/>
+                    <ui:param name="value" value="#{widgetView}"/>
                 </ui:include>    
             </h:column>
         

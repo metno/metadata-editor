@@ -42,11 +42,24 @@ public class EditorConfiguration implements Serializable {
         return true;
     }
 
-    public boolean populate(Map<String,List<EditorVariableContent>> contentMap ){
+//    public boolean populate(Map<String,List<EditorVariableContent>> contentMap ){
+//
+//        boolean allPopulated = true;
+//        for( EditorPage page : pages ) {
+//            boolean pagePopulated = page.populate(contentMap);
+//            if( !pagePopulated ){
+//                allPopulated = false;
+//            }
+//        }
+//        
+//        return allPopulated;
+//    }
+
+    public boolean generateEditorWidgetViews(Map<String,List<EditorVariableContent>> contentMap ){
 
         boolean allPopulated = true;
         for( EditorPage page : pages ) {
-            boolean pagePopulated = page.populate(contentMap);
+            boolean pagePopulated = page.generateEditorWidgetViews(contentMap);
             if( !pagePopulated ){
                 allPopulated = false;
             }
@@ -54,7 +67,6 @@ public class EditorConfiguration implements Serializable {
         
         return allPopulated;
     }
-    
     
     public Map<String, List<EditorVariableContent>> getContent(Map<String, EditorVariable> varMap) {
         

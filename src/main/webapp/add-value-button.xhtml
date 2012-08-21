@@ -17,8 +17,7 @@
          -->
         </ui:remove>
     
-    
-        <h:commandButton value=" " action="#{editorBean.addValue(widget)}" rendered="#{widget.maxOccurs gt widget.values.size() and userBean.validated}" styleClass="add-button">
+        <h:commandButton value=" " action="#{editorBean.addValue(widget)}" rendered="#{widget.maxOccurs gt widget.widgetViews.size() and userBean.validated}" styleClass="add-button">
             <f:ajax execute="@this #{extraExecuteId}" render="#{updateId}" onevent="input_field_added" />
         </h:commandButton>  
     
