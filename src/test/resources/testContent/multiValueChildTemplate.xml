@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<edt:editorDataTypes
+    xmlns:edt="http://www.met.no/schema/metadataeditor/editorDataTypes"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.met.no/schema/metadataeditor/editorDataTypes dataTypes.xsd">
+
+
+    <gmd:MD_Metadata xmlns:gmd="http://www.isotc211.org/2005/gmd"
+        xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gmx="http://www.isotc211.org/2005/gmx"
+        xmlns:gml="http://www.opengis.net/gml" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+
+        <gmd:transferOptions>
+            <gmd:MD_DigitalTransferOptions>
+                <edt:container varName="onlineResource"
+                    minOccurs="0" maxOccurs="unbounded">
+                    <gmd:onLine>
+                        <gmd:CI_OnlineResource>
+
+                            <edt:uri varName="uri" minOccurs="1"
+                                maxOccurs="1">
+                                <gmd:linkage>
+                                    <gmd:URL>$uri</gmd:URL>
+                                </gmd:linkage>
+                            </edt:uri>
+
+                            <edt:list varName="uriType"
+                                minOccurs="1" maxOccurs="1"
+                                resource="onlineResource.txt">
+                                <gmd:protocol>
+                                    <gco:CharacterString>$listElement
+                                    </gco:CharacterString>
+                                </gmd:protocol>
+                            </edt:list>
+
+                            <edt:string varName="name"
+                                minOccurs="1" maxOccurs="1">
+                                <gmd:name>
+                                    <gco:CharacterString>$str
+                                    </gco:CharacterString>
+                                </gmd:name>
+                            </edt:string>
+
+                            <edt:string varName="description"
+                                minOccurs="1" maxOccurs="1">
+                                <gmd:description>
+                                    <gco:CharacterString>$str
+                                    </gco:CharacterString>
+                                </gmd:description>
+                            </edt:string>
+                        </gmd:CI_OnlineResource>
+                    </gmd:onLine>
+                </edt:container>
+            </gmd:MD_DigitalTransferOptions>
+        </gmd:transferOptions>
+
+    </gmd:MD_Metadata>
+</edt:editorDataTypes>

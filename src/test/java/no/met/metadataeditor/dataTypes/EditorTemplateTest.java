@@ -283,6 +283,24 @@ public class EditorTemplateTest {
     }
     
     @Test
+    public void testMultiValueChild(){
+        
+        Map<String,List<EditorVariableContent>> content = getContent("/testContent/multiValueChildTemplate.xml", "/testContent/multiValueChildContent.xml");
+
+        assertTrue("Container variable found", content.containsKey("onlineResource"));
+        
+        List<EditorVariableContent> evc = content.get("onlineResource");
+        
+        assertEquals("Number of sub values found", 3, evc.size());
+        
+        Map<String,List<EditorVariableContent>> child1 = evc.get(0).getChildren();
+        
+        assertTrue("Child variable found", child1.containsKey("uri"));        
+        assertEquals("Child has correct number of values", 1, child1.get("uri").size() );
+        
+    }
+    
+    @Test
     public void testVariableNames() {
 
         Map<String, EditorVariable> mse = getVariables("/mm2TemplateTest.xml");
