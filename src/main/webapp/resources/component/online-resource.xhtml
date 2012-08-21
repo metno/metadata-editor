@@ -23,7 +23,13 @@
 
         <ui:repeat var="widgetView" value="#{cc.attrs.widget.widgetViews}">
         
-            <p:fieldset>        
+            <p:fieldset>
+            
+                <ui:include src="../../remove-value-button.xhtml" >
+                    <ui:param name="widget" value="#{cc.attrs.widget}"/>
+                    <ui:param name="value" value="#{widgetView}"/>
+                </ui:include>               
+                    
 		        <ui:repeat var="childWidget" value="#{widgetView.children}">
 		        
 		            <metaedit:uri widget="#{childWidget}" rendered="#{childWidget.widgetType == 'no.met.metadataeditor.widget.UriWidget'}" />
