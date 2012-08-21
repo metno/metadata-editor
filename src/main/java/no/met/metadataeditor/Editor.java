@@ -56,8 +56,7 @@ public class Editor implements Serializable {
         Map<String,EditorVariable> varMap = et.getVarMap();           
         
         editorConfiguration.configure(varMap);
-        editorConfiguration.generateEditorWidgetViews(contentMap);
-        editorConfiguration.addMissingOccurs();        
+        editorConfiguration.generateEditorWidgetViews(contentMap); 
         
         return true;
     }

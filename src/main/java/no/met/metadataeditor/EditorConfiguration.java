@@ -103,13 +103,6 @@ public class EditorConfiguration implements Serializable {
         return pageMap.get(id);
     }
     
-    public void addMissingOccurs(){
-        
-        for( EditorPage page : pages){
-            page.addMissingOccurs();
-        }
-    }
-
 
     public void validateVarNames(EditorTemplate editorTemplate) {
 

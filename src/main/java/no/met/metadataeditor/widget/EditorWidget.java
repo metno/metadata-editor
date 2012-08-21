@@ -124,22 +124,13 @@ public abstract class EditorWidget implements Serializable {
 
     public void generateWidgetViews(List<EditorVariableContent> contents){
         
-        List<EditorWidgetView> views = new ArrayList<EditorWidgetView>();
-        
-        if( contents.isEmpty() ){
-            EditorWidgetView view = createWidgetView();
-            views.add(view);
-        }
         
         for (EditorVariableContent content : contents) {
-            
-            EditorWidgetView view = createWidgetView();            
+                        
             DataAttribute attrs = content.getAttrs();
-            List<String> relevantAttrs = getRelevantAttributes();
-            for (String attr : relevantAttrs) {
-                view.addValue(attr, attrs.getAttribute(attr));
-            }
-            views.add(view);
+            Map<String,String> values = attrs.getAttributes(getRelevantAttributes().toArray(new String[0]));
+            EditorWidgetView view = createWidgetView(values);
+            widgetViews.add(view);
             
             // recursively populate all children
             Map<String, List<EditorVariableContent>> childContentMap = content.getChildren();
@@ -155,12 +146,16 @@ public abstract class EditorWidget implements Serializable {
             }
         }
 
+        // add extra widget views to ensure that we have as many as minOccurs demands
+        while( widgetViews.size() < minOccurs ){
+            addNewValue();
+        }        
+        
         isPopulated = true;
-        widgetViews = views;
         
     }
     
-    private EditorWidgetView createWidgetView(){
+    private EditorWidgetView createWidgetView(Map<String, String> values){
         
         EditorWidgetView view = new EditorWidgetView();
         
@@ -169,6 +164,7 @@ public abstract class EditorWidget implements Serializable {
             childWidgets.add(cloneInstance(child));
         }
         view.setChildren(childWidgets);
+        view.setValues(values);
         return view;
     }
 
@@ -226,13 +222,7 @@ public abstract class EditorWidget implements Serializable {
 
     public void addNewValue() {
         
-        Map<String, String> newValue = getDefaultValue();
-        
-        EditorWidgetView view = createWidgetView();            
-        List<String> relevantAttrs = getRelevantAttributes();
-        for (String attr : relevantAttrs) {
-            view.addValue(attr, newValue.get(attr));
-        }
+        EditorWidgetView view = createWidgetView(getDefaultValue());            
         widgetViews.add(view);        
 
     }
@@ -263,13 +253,6 @@ public abstract class EditorWidget implements Serializable {
 
     public abstract Map<String, String> getDefaultValue();
 
-    public void addMissingOccurs() {
-        
-        while( widgetViews.size() < minOccurs ){
-            addNewValue();
-        }
-        
-    }
 
     @XmlElement(name="widget", namespace="http://www.met.no/schema/metadataeditor/editorConfiguration")
     public List<EditorWidget> getChildren() {
@@ -338,6 +321,7 @@ public abstract class EditorWidget implements Serializable {
     private Constructor<EditorWidget> getCopyConstructor(Class<? extends EditorWidget> cls){
         
         try {
+            @SuppressWarnings("unchecked")
             Constructor<EditorWidget> ctr = (Constructor<EditorWidget>) cls.getConstructor(cls);
             return ctr;
         } catch (NoSuchMethodException e) {

@@ -151,6 +151,15 @@ public abstract class DataAttribute {
         return getAttribute(attr,getClass());                
     }
     
+    public Map<String,String> getAttributes(String... attributeNames){
+        
+        Map<String,String> attributes = new HashMap<String,String>();
+        for( String attrName : attributeNames ){
+            attributes.put(attrName, getAttribute(attrName));
+        }
+        return attributes;
+    }
+    
     private String getAttribute(String attribute, Class<? extends Object> inClass) {
         
         String value = null;

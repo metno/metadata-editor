@@ -163,15 +163,6 @@ public class EditorPage implements Serializable {
         return content;
     }
 
-    public void addMissingOccurs() {
-
-        for( EditorWidget widget : widgets ){
-            widget.addMissingOccurs();
-        }
-        
-        
-    }
-
     public void validateVarNames(Map<String, EditorVariable> varMap) {
 
         for( EditorWidget widget : widgets ){
