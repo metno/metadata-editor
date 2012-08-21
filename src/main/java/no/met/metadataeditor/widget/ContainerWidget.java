@@ -10,6 +10,14 @@ public class ContainerWidget extends EditorWidget {
 
     private static final long serialVersionUID = -2410666893171644122L;
     
+    public ContainerWidget(){
+        super();
+    }
+    
+    public ContainerWidget(ContainerWidget cloneFrom){
+        super(cloneFrom);
+    }
+    
     @Override
     public Map<String, String> getDefaultValue() {
         Map<String,String> defaultValue = new HashMap<String,String>();

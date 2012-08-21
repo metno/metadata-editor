@@ -73,7 +73,8 @@ jQuery(document).ready(function () {
 		        <metaedit:start-and-stop-time widget="#{widget}" rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.StartAndStopTimeWidget'}" />        
 		        <metaedit:uri widget="#{widget}" rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.UriWidget'}" />        
 		        <metaedit:string-and-list widget="#{widget}" rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.StringAndListWidget'}" />
-                <metaedit:online-resource widget="#{widget}" rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.OnlineResourceWidget'}" />		        
+		        <metaedit:online-resource widget="#{widget}" rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.OnlineResourceWidget'}" />              
+		        <metaedit:container widget="#{widget}"  rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.ContainerWidget'}" />    
 		
 		    </ui:repeat>
 	    </p:tab>
