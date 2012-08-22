@@ -7,7 +7,7 @@
             <arg name="namespace" value="http://www.met.no/schema/metamod/MM2"/>
         </detector>
         <validator type="simplePutService">
-            <arg name="URL" value="./mm2Validator" />
+            <arg name="URL" value="./validator/mm2" />
         </validator>
     </format>
     <format tag="MM2COMBINED">

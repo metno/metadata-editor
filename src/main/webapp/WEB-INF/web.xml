@@ -26,7 +26,16 @@
         <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>Jersey REST Service</servlet-name>
+        <servlet-name>REST Service</servlet-name>
+        <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+        <init-param>
+            <param-name>com.sun.jersey.config.property.packages</param-name>
+            <param-value>no.met.metadataeditor.service</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>SimplePutValidator</servlet-name>
         <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
         <init-param>
             <param-name>com.sun.jersey.config.property.packages</param-name>
@@ -35,8 +44,12 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
-        <servlet-name>Jersey REST Service</servlet-name>
+        <servlet-name>REST Service</servlet-name>
         <url-pattern>/metaedit_api/*</url-pattern>
+    </servlet-mapping>  
+    <servlet-mapping>
+        <servlet-name>SimplePutValidator</servlet-name>
+        <url-pattern>/validator/*</url-pattern>
     </servlet-mapping>  
 
     
