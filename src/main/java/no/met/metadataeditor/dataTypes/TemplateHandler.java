@@ -13,6 +13,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import no.met.metadataeditor.dataTypes.attributes.DataAttribute;
+import no.met.metadataeditor.dataTypes.attributes.KeyValueListAttribute;
 import no.met.metadataeditor.dataTypes.attributes.LatLonBBAttribute;
 import no.met.metadataeditor.dataTypes.attributes.LatLonBBSingleAttribute;
 import no.met.metadataeditor.dataTypes.attributes.ListElementAttribute;
@@ -149,7 +150,7 @@ class TemplateHandler extends DefaultHandler {
             for (int i = 0; i < atts.getLength(); ++i) {
                 if (keyPattern.matcher(atts.getValue(i)).matches()) {
                     String xPath = org.apache.commons.lang3.StringUtils.join(finalPathElements.iterator(), "/");
-                    xPath += "/@"+atts.getQName(i);
+                    xPath += "/@"+getTemplateQName(atts.getURI(i), atts.getLocalName(i));
                     Deque<EditorVariable> evs = attributeXPath.get(key);
                     EditorVariable ev = evs.removeLast();
                     ev.setAttrsXPath(key, xPath);
@@ -239,7 +240,9 @@ class TemplateHandler extends DefaultHandler {
                 addStandardEDT(new StartAndStopTimeAttribute(), nsUri, lName, atts);
             } else if ("time".equals(lName)) {
                 addStandardEDT(new TimeAttribute(), nsUri, lName, atts);
-            }  else {
+            } else if ("keyValueList".equals(lName)) {
+                addStandardEDT(new KeyValueListAttribute(), nsUri, lName, atts);
+            } else {
                 throw new UndefinedEditorVariableException(lName);
             }
         } else {
