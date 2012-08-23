@@ -44,22 +44,10 @@ public class EditorTemplate {
     private Map<String, String> prefixeNamspace;
     private Map<String, String> namespacePrefixes;
 
-    private static Map<String,String> templateTags = new HashMap<String,String>();
+    private static Map<String,Class<? extends DataAttribute>> supportedTags;
 
     private String templateXML;
 
-    static {
-        templateTags.put("container", "container");
-        templateTags.put("lonLatBoundingBox", "lonLatBoundingBox");
-        templateTags.put("lonLatBoundingBoxSingle", "lonLatBoundingBoxSingle");
-        templateTags.put("string", "string" );
-        templateTags.put("uri", "uri");
-        templateTags.put("list", "list");
-        templateTags.put("stringAndList", "stringAndList");
-        templateTags.put("startAndStopTime", "startAndStopTime");
-        templateTags.put("time", "time");
-        templateTags.put("keyValueList", "keyValueList");
-    }
 
     public EditorTemplate(InputSource source) throws SAXException, IOException {
 
@@ -90,6 +78,8 @@ public class EditorTemplate {
         for (String key : namespacePrefixes.keySet()) {
             prefixeNamspace.put(namespacePrefixes.get(key), key);
         }
+
+        supportedTags = TemplateHandler.getSupportedTags();
 
 
     }
@@ -310,7 +300,7 @@ public class EditorTemplate {
             children.add(child);
         }
 
-        if( templateTags.containsKey(element.getName())){
+        if( supportedTags.containsKey(element.getName())){
 
             element.detach();
             for( Content child : children ){
@@ -366,7 +356,7 @@ public class EditorTemplate {
 
             if( c instanceof Element ){
                 Element child = (Element) c;
-                if( templateTags.containsKey(child.getName()) ){
+                if( supportedTags.containsKey(child.getName()) ){
 
                     String varName = child.getAttributeValue("varName");
                     List<EditorVariableContent> contentList = contentMap.get(varName);

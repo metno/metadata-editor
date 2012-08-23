@@ -1,5 +1,6 @@
 package no.met.metadataeditor.dataTypes;
 
+import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayDeque;
@@ -10,8 +11,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
+import no.met.metadataeditor.EditorException;
 import no.met.metadataeditor.dataTypes.attributes.ContainerAttribute;
 import no.met.metadataeditor.dataTypes.attributes.DataAttribute;
 import no.met.metadataeditor.dataTypes.attributes.KeyValueListAttribute;
@@ -25,6 +29,7 @@ import no.met.metadataeditor.dataTypes.attributes.TimeAttribute;
 import no.met.metadataeditor.dataTypes.attributes.UriAttribute;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.reflect.ConstructorUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
@@ -45,6 +50,21 @@ class TemplateHandler extends DefaultHandler {
     // mapping between namespace names like 'gmd' => 'ns1'. Used to fix XPath expressions hardcoded
     // in the templates
     private Map<String, String> prefixMapping = new HashMap<String,String>();
+
+    private static Map<String, Class<? extends DataAttribute>> supportedTags = new HashMap<String, Class<? extends DataAttribute>>();
+
+    static {
+        supportedTags.put("container", ContainerAttribute.class);
+        supportedTags.put("lonLatBoundingBox", LatLonBBAttribute.class);
+        supportedTags.put("lonLatBoundingBoxSingle", LatLonBBSingleAttribute.class);
+        supportedTags.put("string", StringAttribute.class);
+        supportedTags.put("uri", UriAttribute.class);
+        supportedTags.put("list", ListElementAttribute.class);
+        supportedTags.put("stringAndList", StringAndListElementAttribute.class);
+        supportedTags.put("startAndStopTime", StartAndStopTimeAttribute.class);
+        supportedTags.put("time", TimeAttribute.class);
+        supportedTags.put("keyValueList", KeyValueListAttribute.class);
+    }
 
     @Override
     public void startDocument() throws SAXException {
@@ -145,7 +165,9 @@ class TemplateHandler extends DefaultHandler {
         }
     }
 
-    private void addStandardEDT(DataAttribute da, String nsUri, String lName, Attributes atts) throws SAXException {
+    private void addStandardEDT(String nsUri, String lName, Attributes atts) throws SAXException {
+
+        DataAttribute da = createInstance(lName);
         EditorVariable ev = new EditorVariable(da);
         String varName = variableAddAttributes(ev, atts);
         fullPathElements.addLast(getTemplateQName(nsUri, String.format("%s[@varName='%s']",lName, varName)));
@@ -160,6 +182,35 @@ class TemplateHandler extends DefaultHandler {
             }
             attributeXPath.get(key).addLast(ev);
         }
+    }
+
+    private DataAttribute createInstance(String lName) throws UndefinedEditorVariableException{
+
+        if(!supportedTags.containsKey(lName)){
+            throw new UndefinedEditorVariableException(lName);
+        }
+
+        Class<? extends DataAttribute> cls = supportedTags.get(lName);
+        try {
+            return ConstructorUtils.invokeConstructor(cls);
+        } catch (NoSuchMethodException e) {
+            String msg = "Missing empty constructor class: " + cls;
+            Logger.getLogger(TemplateHandler.class.getName()).log(Level.SEVERE, msg);
+            throw new EditorException(msg, e);
+        } catch (IllegalAccessException e) {
+            String msg = "No access to empty constructor for class: " + cls;
+            Logger.getLogger(TemplateHandler.class.getName()).log(Level.SEVERE, msg);
+            throw new EditorException(msg, e);
+        } catch (InvocationTargetException e) {
+            String msg = "Invocation problems for empty constructor for class: " + cls;
+            Logger.getLogger(TemplateHandler.class.getName()).log(Level.SEVERE, msg);
+            throw new EditorException(msg, e);
+        } catch (InstantiationException e) {
+            String msg = "Instansiation problems for empty constructor for class: " + cls;
+            Logger.getLogger(TemplateHandler.class.getName()).log(Level.SEVERE, msg);
+            throw new EditorException(msg, e);
+        }
+
     }
 
     /**
@@ -245,28 +296,8 @@ class TemplateHandler extends DefaultHandler {
                 EditorVariable ev = new EditorVariable(new ContainerAttribute());
                 edtElements.addLast(ev);
                 fullPathElements.addLast(getTemplateQName(nsUri, lName));
-            } else if ("container".equals(lName)) {
-                addStandardEDT(new ContainerAttribute(), nsUri, lName, atts);
-            } else if ("lonLatBoundingBox".equals(lName)) {
-                addStandardEDT(new LatLonBBAttribute(), nsUri, lName, atts);
-            } else if ("lonLatBoundingBoxSingle".equals(lName)) {
-                addStandardEDT(new LatLonBBSingleAttribute(), nsUri, lName, atts);
-            } else if ("string".equals(lName)) {
-                addStandardEDT(new StringAttribute(), nsUri, lName, atts);
-            } else if ("uri".equals(lName)) {
-                addStandardEDT(new UriAttribute(), nsUri, lName, atts);
-            } else if ("list".equals(lName)) {
-                addStandardEDT(new ListElementAttribute(), nsUri, lName, atts);
-            } else if ("stringAndList".equals(lName)) {
-                addStandardEDT(new StringAndListElementAttribute(), nsUri, lName, atts);
-            } else if ("startAndStopTime".equals(lName)) {
-                addStandardEDT(new StartAndStopTimeAttribute(), nsUri, lName, atts);
-            } else if ("time".equals(lName)) {
-                addStandardEDT(new TimeAttribute(), nsUri, lName, atts);
-            } else if ("keyValueList".equals(lName)) {
-                addStandardEDT(new KeyValueListAttribute(), nsUri, lName, atts);
             } else {
-                throw new UndefinedEditorVariableException(lName);
+                addStandardEDT(nsUri, lName, atts);
             }
         } else {
             fullPathElements.addLast(getTemplateQName(nsUri, lName));
@@ -339,4 +370,7 @@ class TemplateHandler extends DefaultHandler {
 
     }
 
+    public static Map<String,Class<? extends DataAttribute>> getSupportedTags(){
+        return supportedTags;
+    }
 }
