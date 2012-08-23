@@ -12,12 +12,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import no.met.metadataeditor.dataTypes.attributes.ContainerAttribute;
 import no.met.metadataeditor.dataTypes.attributes.DataAttribute;
 import no.met.metadataeditor.dataTypes.attributes.KeyValueListAttribute;
 import no.met.metadataeditor.dataTypes.attributes.LatLonBBAttribute;
 import no.met.metadataeditor.dataTypes.attributes.LatLonBBSingleAttribute;
 import no.met.metadataeditor.dataTypes.attributes.ListElementAttribute;
-import no.met.metadataeditor.dataTypes.attributes.ContainerAttribute;
 import no.met.metadataeditor.dataTypes.attributes.StartAndStopTimeAttribute;
 import no.met.metadataeditor.dataTypes.attributes.StringAndListElementAttribute;
 import no.met.metadataeditor.dataTypes.attributes.StringAttribute;
@@ -40,7 +40,11 @@ class TemplateHandler extends DefaultHandler {
     Map<String, Deque<EditorVariable>> attributeXPath;
     private Map<String, EditorVariable> resultConfig;
     StringBuffer elementContent;
-    private Map<String, String> namespacePrefixes;
+    private Map<String, String> namespacePrefixes = new HashMap<String,String>();
+
+    // mapping between namespace names like 'gmd' => 'ns1'. Used to fix XPath expressions hardcoded
+    // in the templates
+    private Map<String, String> prefixMapping = new HashMap<String,String>();
 
     @Override
     public void startDocument() throws SAXException {
@@ -51,12 +55,14 @@ class TemplateHandler extends DefaultHandler {
         resultConfig = null;
         attributeXPath = new HashMap<String, Deque<EditorVariable>>();
         elementContent = new StringBuffer();
-        namespacePrefixes = new HashMap<String, String>();
+
     }
 
-    private static String variableAddAttributes(EditorVariable ev, Attributes atts) throws SAXException {
+    private String variableAddAttributes(EditorVariable ev, Attributes atts) throws SAXException {
         ev.setMaxOccurs(getMaxOccurs(atts));
         ev.setMinOccurs(getMinOccurs(atts));
+
+        ev.setSelectionXPath(getXPath(atts));
 
         String res = atts.getValue("resource");
         if (res != null) {
@@ -71,33 +77,50 @@ class TemplateHandler extends DefaultHandler {
 
         return atts.getValue("varName");
     }
-    
+
+    private String getXPath(Attributes atts){
+
+        String xpath = atts.getValue("xpath");
+        if( xpath == null ){
+            return null;
+        }
+
+        for( Map.Entry<String, String> entry : prefixMapping.entrySet() ){
+
+            String oldNamespace = entry.getKey();
+            String newNamespace = entry.getValue();
+            xpath = xpath.replace(oldNamespace + ":", newNamespace + ":");
+        }
+        return xpath;
+
+    }
+
     private static int getMinOccurs(Attributes atts){
-        
+
         String minOccurs = atts.getValue("minOccurs");
-        
+
         if(null == minOccurs){
             return 1;
         }
-        
+
         if(0 == minOccurs.length()){
             throw new InvalidTemplateException("minOccurs was an empty string by needs to be a number.");
         }
-        
+
         int minValue;
         try {
             minValue = Integer.parseInt(minOccurs);
         } catch(NumberFormatException e){
             throw new InvalidTemplateException(e.getMessage());
         }
-        
+
         if( minValue < 0 ){
             throw new InvalidTemplateException("minOccurs needs to 0 or larger");
         }
-        
+
         return minValue;
     }
-    
+
     private static int getMaxOccurs(Attributes atts){
 
         String maxOccurs = atts.getValue("maxOccurs");
@@ -106,20 +129,20 @@ class TemplateHandler extends DefaultHandler {
         }else if ("unbounded".equals(maxOccurs)) {
             return Integer.MAX_VALUE;
         } else {
-            
+
             int maxValue;
             try {
                 maxValue = Integer.parseInt(maxOccurs);
             } catch(NumberFormatException e){
                 throw new InvalidTemplateException(e.getMessage());
             }
-            
+
             if( maxValue < 1 ){
                 throw new InvalidTemplateException("maxOccurs needs to be larger than 0");
             }
-            
+
             return maxValue;
-        }                
+        }
     }
 
     private void addStandardEDT(DataAttribute da, String nsUri, String lName, Attributes atts) throws SAXException {
@@ -180,18 +203,18 @@ class TemplateHandler extends DefaultHandler {
     }
 
     private String getTemplateQName(String nsUri, String lName) {
-        
+
         if(nsUri == null || "".equals(nsUri)){
             return lName;
         }
-        
+
         String prefix = namespacePrefixes.get(nsUri);
         if (prefix == null) {
             prefix = "ns" + namespacePrefixes.size();
             namespacePrefixes.put(nsUri, prefix);
         }
         return String.format("%s:%s", prefix, lName);
-    }    
+    }
 
     // generate a xpath identifier with name and attributes
     private String generateXPathIdentifier(String nsUri, String lName, String qName, Attributes atts) {
@@ -288,19 +311,32 @@ class TemplateHandler extends DefaultHandler {
     public Map<String, String> getNamespacePrefixes() {
         return namespacePrefixes;
     }
-    
+
+    public void setNamespacePrefixes(Map<String,String> namespacePrefixes){
+
+        this.namespacePrefixes.clear();
+        this.prefixMapping.clear();
+
+        for(Map.Entry<String, String> entry : namespacePrefixes.entrySet()){
+            String prefix = "ns" + this.namespacePrefixes.size();
+            this.namespacePrefixes.put(entry.getKey(), prefix);
+            this.prefixMapping.put(entry.getValue(), prefix);
+        }
+
+    }
+
     public void validateConfig(Map<String, EditorVariable> config, String namespace){
-        
+
         for( Map.Entry<String, EditorVariable> entry : config.entrySet()){
-            
+
             EditorVariable ev = entry.getValue();
             if( !ev.attrsXPathValid() ){
                 throw new InvalidTemplateException("One or $<varname> attributes are missing for variable: " + namespace + entry.getKey());
             }
-            
-            validateConfig(ev.getChildren(), entry.getKey() + "::");            
+
+            validateConfig(ev.getChildren(), entry.getKey() + "::");
         }
-        
+
     }
 
 }

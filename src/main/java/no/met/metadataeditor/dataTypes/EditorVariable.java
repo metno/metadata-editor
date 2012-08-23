@@ -9,7 +9,7 @@ import no.met.metadataeditor.dataTypes.attributes.DataAttribute;
 public class EditorVariable {
 
     public final static String DEFAULT_RESOURCE = "default";
-    
+
     private Map<String, URI> resources = new HashMap<String, URI>();
     private Map<String, String> attrsXPath = new HashMap<String, String>();
     private String documentXPath = null;
@@ -18,6 +18,8 @@ public class EditorVariable {
     private Map<String, EditorVariable> children = new HashMap<String, EditorVariable>();
     private int minOccurs = 1;
     private int maxOccurs = 1;
+
+    private String selectionXPath;
 
     public EditorVariable() {
 
@@ -54,15 +56,15 @@ public class EditorVariable {
     public void addResource(String name, URI uri) {
         resources.put(name, uri);
     }
-    
+
     public URI getDefaultResourceURI(){
         return getResourceURI(DEFAULT_RESOURCE);
     }
-    
+
     public URI getResourceURI(String resourceName){
         return resources.get(resourceName);
     }
-    
+
     /**
      *
      * @return minimum allowed occurences of content
@@ -119,11 +121,11 @@ public class EditorVariable {
     public void addChild(String varName, EditorVariable child) {
         children.put(varName, child);
     }
-    
+
     public void setChildren(Map<String, EditorVariable> children){
         this.children = children;
     }
- 
+
     /**
      * Get the attributes xpath directive, e.g. where to find
      * content in a existing document
@@ -140,15 +142,15 @@ public class EditorVariable {
             throw new AttributesMismatchException("cannot set xpath for attribute: "+attribute);
         }
     }
-    
+
     public boolean attrsXPathValid(){
-        
+
         for( String replaceVar : dataAttributesType.getAttributesSetup().keySet() ){
             if( !attrsXPath.containsKey(replaceVar)){
                 return false;
             }
         }
-        return true;        
+        return true;
     }
 
     public String getDocumentXPath() {
@@ -166,10 +168,18 @@ public class EditorVariable {
     public void setTemplateXPath(String templateXPath) {
         this.templateXPath = templateXPath;
     }
-    
+
 
     public boolean hasDefaultResource() {
         return resources.containsKey(DEFAULT_RESOURCE);
+    }
+
+    public String getSelectionXPath() {
+        return selectionXPath;
+    }
+
+    public void setSelectionXPath(String selectionXPath) {
+        this.selectionXPath = selectionXPath;
     }
 
 }

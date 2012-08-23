@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<edt:editorDataTypes
+    xmlns:edt="http://www.met.no/schema/metadataeditor/editorDataTypes"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.met.no/schema/metadataeditor/editorDataTypes dataTypes.xsd">
+
+    <gmd:MD_Metadata xmlns:gmd="http://www.isotc211.org/2005/gmd"
+        xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gmx="http://www.isotc211.org/2005/gmx"
+        xmlns:gml="http://www.opengis.net/gml" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+        <edt:keyValueList varName="storageUnits"
+            minOccurs="0" maxOccurs="unbounded" resource="bodc-units.txt" xpath="/gmd:MD_Keywords[{http://www.isotc211.org/2005/gmd}thesaurusName/{http://www.isotc211.org/2005/gmd}CI_Citation/{http://www.isotc211.org/2005/gmd}title/{http://www.isotc211.org/2005/gco}CharacterString/text() = 'BODC data storage units']">
+            <gmd:MD_Keywords>
+                <gmd:keyword>
+                    <gmx:Anchor xlink:href="$key">$value</gmx:Anchor>
+                </gmd:keyword>
+                <gmd:keyword>
+                    <gco:CharacterString>$key
+                    </gco:CharacterString>
+                </gmd:keyword>
+
+                <gmd:thesaurusName>
+                    <gmd:CI_Citation>
+                        <gmd:title>
+                            <gco:CharacterString>BODC data
+                                storage units
+                            </gco:CharacterString>
+                        </gmd:title>
+                        <gmd:date>
+                            <gmd:CI_Date>
+                                <gmd:date>
+                                    <gco:Date>2011-11-26
+                                    </gco:Date>
+                                </gmd:date>
+                                <gmd:dateType>
+                                    <gmd:CI_DateTypeCode
+                                        codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode"
+                                        codeListValue="revision">revision
+                                    </gmd:CI_DateTypeCode>
+                                </gmd:dateType>
+                            </gmd:CI_Date>
+                        </gmd:date>
+                    </gmd:CI_Citation>
+                </gmd:thesaurusName>
+            </gmd:MD_Keywords>
+        </edt:keyValueList>
+
+    </gmd:MD_Metadata>
+</edt:editorDataTypes>

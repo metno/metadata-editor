@@ -6,8 +6,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Logger;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.parsers.DocumentBuilder;
@@ -24,9 +25,6 @@ import javax.xml.xpath.XPathFactory;
 import no.met.metadataeditor.EditorException;
 import no.met.metadataeditor.dataTypes.attributes.DataAttribute;
 
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 import org.apache.commons.io.IOUtils;
 import org.jdom2.Attribute;
 import org.jdom2.Content;
@@ -37,6 +35,9 @@ import org.jdom2.input.SAXBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
 
 public class EditorTemplate {
     private Map<String, EditorVariable> varMap;
@@ -44,31 +45,34 @@ public class EditorTemplate {
     private Map<String, String> namespacePrefixes;
 
     private static Map<String,String> templateTags = new HashMap<String,String>();
-    
+
     private String templateXML;
-    
+
     static {
         templateTags.put("container", "container");
         templateTags.put("lonLatBoundingBox", "lonLatBoundingBox");
-        templateTags.put("lonLatBoundingBoxSingle", "lonLatBoundingBoxSingle");        
+        templateTags.put("lonLatBoundingBoxSingle", "lonLatBoundingBoxSingle");
         templateTags.put("string", "string" );
         templateTags.put("uri", "uri");
         templateTags.put("list", "list");
         templateTags.put("stringAndList", "stringAndList");
-        templateTags.put("startAndStopTime", "startAndStopTime");    
+        templateTags.put("startAndStopTime", "startAndStopTime");
         templateTags.put("time", "time");
+        templateTags.put("keyValueList", "keyValueList");
     }
-    
+
     public EditorTemplate(InputSource source) throws SAXException, IOException {
-        
+
         // we read the entire XML contents from the source so that we can re-use it later.
         if( source.getCharacterStream() != null ){
-            templateXML = IOUtils.toString(source.getCharacterStream());    
+            templateXML = IOUtils.toString(source.getCharacterStream());
         } else {
             templateXML = IOUtils.toString(source.getByteStream());
         }
 
+
         TemplateHandler th = new TemplateHandler();
+        th.setNamespacePrefixes(findNamespaces(templateXML));
         SAXParserFactory spf = SAXParserFactory.newInstance();
         spf.setNamespaceAware(true);
         try {
@@ -80,23 +84,29 @@ public class EditorTemplate {
             throw new EditorException("Parsing template failed.", e);
         }
         varMap = th.getResultConfig();
+
         namespacePrefixes = th.getNamespacePrefixes();
         prefixeNamspace = new HashMap<String, String>();
         for (String key : namespacePrefixes.keySet()) {
             prefixeNamspace.put(namespacePrefixes.get(key), key);
         }
+
+
     }
 
     NamespaceContext getTemplateContext() {
         return new NamespaceContext() {
+            @Override
             public String getNamespaceURI(String prefix) {
                 return prefixeNamspace.get(prefix);
             }
 
+            @Override
             public String getPrefix(String namespaceURI) {
                 return namespacePrefixes.get(namespaceURI);
             }
 
+            @Override
             @SuppressWarnings("rawtypes")
             public Iterator getPrefixes(String namespaceURI) {
                 // only one prefix by construction
@@ -110,7 +120,57 @@ public class EditorTemplate {
         };
     }
 
-  
+    /**
+     * Find all the declared namespaces in a XML document.
+     * @param templateXML The XML content to search for namespaces in
+     * @return A mapping between namespace URIs and namespace prefixes.
+     */
+    static Map<String,String> findNamespaces(String templateXML){
+
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        dbf.setNamespaceAware(true);
+        DocumentBuilder db;
+        Map<String,String> namespaces = new HashMap<String,String>();
+        try {
+            db = dbf.newDocumentBuilder();
+            Document doc = db.parse(IOUtils.toInputStream(templateXML));
+
+            XPathFactory xPathFactory = XPathFactory.newInstance();
+            XPath xPath = xPathFactory.newXPath();
+            XPathExpression xPathExpression = xPath.compile("//namespace::*");
+            NodeList namespaceNodes = (NodeList) xPathExpression.evaluate(doc, XPathConstants.NODESET);
+
+            for( int i = 0; i < namespaceNodes.getLength(); i++ ){
+                Node node = namespaceNodes.item(i);
+
+                // we skip the 'xml' namespace
+                if(!"xml".equals(node.getLocalName())){
+                    namespaces.put(node.getNodeValue(), node.getLocalName());
+                }
+            }
+
+        } catch (ParserConfigurationException e) {
+            String msg = "Failed to created parser";
+            Logger.getLogger(EditorTemplate.class.getName()).log(Level.SEVERE, msg);
+            throw new EditorException("Failed to create parser", e);
+        } catch (SAXException e) {
+            String msg = "SAX error when finding namespaces";
+            Logger.getLogger(EditorTemplate.class.getName()).log(Level.SEVERE, msg);
+            throw new EditorException("Failed to create parser", e);
+        } catch (IOException e) {
+            String msg = "IOException when fidning namespaces";
+            Logger.getLogger(EditorTemplate.class.getName()).log(Level.SEVERE, msg);
+            throw new EditorException("Failed to create parser", e);
+        } catch (XPathExpressionException e) {
+            String msg = "XPath problem when finding namespaces";
+            Logger.getLogger(EditorTemplate.class.getName()).log(Level.SEVERE, msg);
+            throw new EditorException("Failed to create parser", e);
+        }
+
+        return namespaces;
+
+    }
+
     public Map<String,List<EditorVariableContent>> getContent(InputSource xmlData) throws ParserConfigurationException, SAXException, IOException {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setNamespaceAware(true);
@@ -122,8 +182,8 @@ public class EditorTemplate {
 
         // retrieve the information for the EditorVariables
         return readEditorContent(xpath, "", doc, getVarMap());
-    }   
-    
+    }
+
     /**
      * recursively read the information in the xml-file, starting at the top-node
      *
@@ -133,26 +193,36 @@ public class EditorTemplate {
      * @param vars a map of editorVariables
      */
     private Map<String, List<EditorVariableContent>> readEditorContent(XPath xpath, String nodePath, Node node, Map<String, EditorVariable> vars) {
-        
+
         Map<String,List<EditorVariableContent>> content = new HashMap<String,List<EditorVariableContent>>();
         for (String varName : vars.keySet()) {
             List<EditorVariableContent> contentList = new ArrayList<EditorVariableContent>();
             content.put(varName, contentList);
-            
+
             EditorVariable ev = vars.get(varName);
-            String evPath = ev.getDocumentXPath().substring(nodePath.length());
-            if (evPath.startsWith("/")) {
-                evPath = evPath.substring(1);
+
+            String selectionPath = ev.getSelectionXPath();
+
+            // The variable does not have hard coded selection path (the most common case)
+            // then select using document path.
+            if( selectionPath == null ){
+                selectionPath = ev.getDocumentXPath();
             }
-            
+
+
+            selectionPath = selectionPath.substring(nodePath.length());
+            if (selectionPath.startsWith("/")) {
+                selectionPath = selectionPath.substring(1);
+            }
+
             try {
-                Logger.getLogger(getClass().getName()).fine(String.format("EditorVariable %s with path %s and local path %s", varName, ev.getDocumentXPath(), evPath));
-                XPathExpression expr =  xpath.compile(evPath);
+                Logger.getLogger(getClass().getName()).info(String.format("EditorVariable %s with path %s and local path %s", varName, ev.getDocumentXPath(), selectionPath));
+                XPathExpression expr =  xpath.compile(selectionPath);
                 NodeList evSubnodes = (NodeList) expr.evaluate(node, XPathConstants.NODESET);
                 for (int i = 0; i < evSubnodes.getLength(); ++i) {
 
                     Node subNode = evSubnodes.item(i);
-                    DataAttribute da = readAttributes(ev, subNode, xpath);                    
+                    DataAttribute da = readAttributes(ev, subNode, xpath);
                     EditorVariableContent evc = new EditorVariableContent();
                     evc.setAttrs(da);
 
@@ -162,12 +232,12 @@ public class EditorTemplate {
 
                 }
             } catch (XPathExpressionException e) {
-                throw new EditorException("Failed to evaluate XPath expression: " + evPath, e);
+                throw new EditorException("Failed to evaluate XPath expression: " + selectionPath, e);
             }
         }
         return content;
-    }    
-    
+    }
+
     private DataAttribute readAttributes(EditorVariable variable, Node node, XPath xpath) {
 
         DataAttribute da = variable.getDataAttributes().newInstance();
@@ -175,7 +245,7 @@ public class EditorTemplate {
         Map<String, String> attXpath = variable.getAttrsXPath();
         for (String att : attXpath.keySet()) {
             String relAttPath = attXpath.get(att).substring(variable.getDocumentXPath().length());
-            Logger.getLogger(getClass().getName()).fine(String.format("searching attr %s in %s", att, relAttPath));
+            Logger.getLogger(getClass().getName()).info(String.format("searching attr %s in %s", att, relAttPath));
             if (relAttPath.startsWith("/")) {
                 // remove leading / in e.g. /text()
                 relAttPath = relAttPath.substring(1);
@@ -184,16 +254,16 @@ public class EditorTemplate {
             try {
                 attExpr = xpath.compile(relAttPath);
                 String attVal = attExpr.evaluate(node);
-                Logger.getLogger(getClass().getName()).fine(String.format("%s + value = %s", relAttPath, attVal));
-                da.addAttribute(att, attVal);                
+                Logger.getLogger(getClass().getName()).info(String.format("%s + value = %s", relAttPath, attVal));
+                da.addAttribute(att, attVal);
             } catch (XPathExpressionException e) {
                 throw new EditorException("Failed to evaluate XPath expression when getting the actual attributes values:" + relAttPath, e );
             }
 
         }
-        
+
         return da;
-        
+
     }
 
     /**
@@ -212,12 +282,12 @@ public class EditorTemplate {
         TemplateNode rootNode = genTemplateTree(templateDoc, content);
 
         org.jdom2.Document doc = replaceVars(rootNode);
-        pruneTree(doc);        
+        pruneTree(doc);
 
         return doc;
-        
-    }       
-    
+
+    }
+
     /**
      * Remove the editor variables nodes from the tree.
      * @param doc
@@ -225,29 +295,29 @@ public class EditorTemplate {
     private void pruneTree(org.jdom2.Document doc){
         pruneTreeRecursive(doc.getRootElement(), null, doc);
     }
-    
+
     /**
      * Prune the tree recursively by making all children of editor variable nodes point to their grandparent
      * or if there is no grandparent attach them to the document directly, even though this leads to an invalid XML document.
      * @param element The element to process
      * @param parent The parent of the processed element
-     * @param doc The document 
+     * @param doc The document
      */
     private void pruneTreeRecursive(Element element, Element parent, org.jdom2.Document doc){
-       
+
         List<Content> children = new ArrayList<Content>();
         for( Content child : element.getContent()){
             children.add(child);
-        }        
-       
+        }
+
         if( templateTags.containsKey(element.getName())){
-            
+
             element.detach();
             for( Content child : children ){
 
                 if( child instanceof Element ){
                     Element e = (Element) child;
-                    pruneTreeRecursive(e, parent, doc);                    
+                    pruneTreeRecursive(e, parent, doc);
                 }
 
                 child.detach();
@@ -255,11 +325,11 @@ public class EditorTemplate {
                     parent.addContent(child);
                 } else {
                     doc.addContent(child);
-                }                
+                }
             }
         } else {
             for( Content child : children ){
-                
+
                 if( child instanceof Element ){
                     Element e = (Element) child;
                     pruneTreeRecursive(e, element, doc);
@@ -267,9 +337,9 @@ public class EditorTemplate {
             }
         }
     }
-    
+
     /**
-     * Generate a tree that combines the information from the template document and the variable content. The generated 
+     * Generate a tree that combines the information from the template document and the variable content. The generated
      * tree will be expanded with nodes depending on the information on the variables.
      * @param templateDoc
      * @param content
@@ -279,74 +349,74 @@ public class EditorTemplate {
 
         // skip the top node since it is part of the editor template and not the XML we want
         // in the end.
-        Element templateRoot = templateDoc.getRootElement().getChildren().get(0);        
-        
+        Element templateRoot = templateDoc.getRootElement().getChildren().get(0);
+
         TemplateNode trn = new TemplateNode();
         trn.children = genTemplateTreeRecursive(templateRoot, content);
         trn.xmlNode = templateRoot;
-        
+
         return trn;
     }
-    
+
     private List<TemplateNode> genTemplateTreeRecursive(Element element, Map<String, List<EditorVariableContent>> contentMap){
-               
+
         List<TemplateNode> children = new ArrayList<TemplateNode>();
 
         for( Content c : element.getContent() ){
-            
+
             if( c instanceof Element ){
                 Element child = (Element) c;
                 if( templateTags.containsKey(child.getName()) ){
-                                                    
+
                     String varName = child.getAttributeValue("varName");
                     List<EditorVariableContent> contentList = contentMap.get(varName);
-                    
+
                     // there is not content to fill in for this variable, so we should skip it.
                     if( contentList == null ){
-                        continue; 
+                        continue;
                     }
-                                           
+
                     for( EditorVariableContent evc : contentList ){
-    
+
                         TemplateVarNode tvn = new TemplateVarNode();
-                        tvn.content = evc;                        
+                        tvn.content = evc;
                         tvn.children = genTemplateTreeRecursive(child, evc.getChildren());
                         tvn.xmlNode = child;
-                        
+
                         children.add(tvn);
                     }
-                    
+
                 } else {
                     TemplateNode tn = new TemplateXMLNode();
                     tn.children = genTemplateTreeRecursive(child, contentMap);
                     tn.xmlNode = child;
                     children.add(tn);
-                    
+
                 }
             } else {
                 TemplateNode tn = new TemplateXMLNode();
                 tn.children = new ArrayList<TemplateNode>();
                 tn.xmlNode = c;
-                children.add(tn);                
+                children.add(tn);
             }
         }
-               
+
         return children;
-        
-    }    
-    
+
+    }
+
     private org.jdom2.Document replaceVars(TemplateNode root) {
-        
+
         org.jdom2.Document doc = new org.jdom2.Document();
         Content c = replaceVarsRecursive(root);
         doc.setContent(c);
         return doc;
     }
-    
+
     private Content replaceVarsRecursive(TemplateNode node){
-        
+
         Content c = node.xmlNode.clone();
-        
+
         if( c instanceof Element ){
             Element e = (Element) c;
             e.getContent().clear();
@@ -354,49 +424,49 @@ public class EditorTemplate {
                 Content child = replaceVarsRecursive(n);
                 e.addContent(child);
             }
-            
+
         }
-        
+
         if( node instanceof TemplateVarNode ){
             TemplateVarNode tvn = (TemplateVarNode) node;
             replace(c, tvn.content);
-        }        
+        }
         return c;
     }
-    
+
     private void replace(Content c, EditorVariableContent evc ){
-        
+
         if( c instanceof Text ){
             Text text = (Text) c;
             String currValue = text.getText();
             text.setText(getReplaceValue(currValue, evc));
         } else if ( c instanceof Element ){
             Element e = (Element) c;
-            
+
             for( Attribute a : e.getAttributes()){
 
                 String currValue = a.getValue();
                 a.setValue(getReplaceValue(currValue, evc));
             }
-            
+
             for( Content childContent : e.getContent()){
                 replace(childContent, evc);
             }
-        }        
+        }
     }
-    
+
     private String getReplaceValue(String value, EditorVariableContent evc){
-        
+
         DataAttribute da = evc.getAttrs();
         for( String attrKey : da.getAttributesSetup().keySet() ){
             String newValue = da.getAttribute(attrKey);
             value = value.replace("$" + attrKey, newValue);
         }
-        return value;        
-        
+        return value;
+
     }
-    
-        
+
+
     public Map<String, EditorVariable> getVarMap() {
         return varMap;
     }
