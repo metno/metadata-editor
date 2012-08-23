@@ -15,3 +15,9 @@ function input_field_added ( data ) {
     }
     
 }
+
+function jsf_element(jsf_id){
+    
+    return jQuery("[id='" + jsf_id + "']");
+    
+}
