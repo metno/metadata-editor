@@ -18,6 +18,7 @@ import java.util.regex.Pattern;
 import no.met.metadataeditor.EditorException;
 import no.met.metadataeditor.dataTypes.attributes.ContainerAttribute;
 import no.met.metadataeditor.dataTypes.attributes.DataAttribute;
+import no.met.metadataeditor.dataTypes.attributes.DateAttribute;
 import no.met.metadataeditor.dataTypes.attributes.KeyValueListAttribute;
 import no.met.metadataeditor.dataTypes.attributes.LatLonBBAttribute;
 import no.met.metadataeditor.dataTypes.attributes.LatLonBBSingleAttribute;
@@ -63,6 +64,7 @@ class TemplateHandler extends DefaultHandler {
         supportedTags.put("stringAndList", StringAndListElementAttribute.class);
         supportedTags.put("startAndStopTime", StartAndStopTimeAttribute.class);
         supportedTags.put("time", TimeAttribute.class);
+        supportedTags.put("date", DateAttribute.class);
         supportedTags.put("keyValueList", KeyValueListAttribute.class);
     }
 

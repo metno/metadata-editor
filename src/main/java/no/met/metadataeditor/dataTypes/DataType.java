@@ -5,6 +5,7 @@ public enum DataType {
     INTEGER,
     FLOAT,
     DATE,
+    DATETIME,
     STRING,
     URI
 }
