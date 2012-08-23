@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    An example how to use this DTD from your XML document:
+
+    <?xml version="1.0" encoding="iso8859-1"?>
+    <?xml-stylesheet href="MM2.xsl" type="text/xsl"?>
+    <MM2
+       xmlns="http://www.met.no/schema/metamod/MM2"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.met.no/schema/metamod/MM2 https://wiki.met.no/_media/metamod/mm2.xsd">
+      <metadata name="test">value</metadata>
+    </MM2>
+
+-->
+<schema
+  xmlns='http://www.w3.org/2001/XMLSchema'
+  targetNamespace='http://www.met.no/schema/metamod/MM2'
+  xmlns:t='http://www.met.no/schema/metamod/MM2'>
+      
+    <complexType name='Mm2'>
+        <sequence>
+            <element ref='t:metadata' minOccurs='0' maxOccurs='unbounded'/>
+        </sequence>
+    </complexType>
+    <complexType name='MetaData'>
+        <simpleContent>
+            <extension base="string">
+                <attribute name='name' type='string' use='required' />
+            </extension>
+        </simpleContent>
+    </complexType>
+
+    <element name='MM2' type='t:Mm2' />
+    <element name='metadata' type='t:MetaData' />
+</schema>

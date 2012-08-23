@@ -1,13 +1,14 @@
 package no.met.metadataeditor;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
+import java.lang.reflect.Field;
 import java.net.URL;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -78,9 +79,9 @@ public class TestHelpers {
         return sb.toString();
 
     }
-    
+
     public static Map<String, List<EditorVariableContent>> getContent(String templateResource, String metadataResource ){
-        
+
         URL templateUrl = TestHelpers.class.getResource(templateResource);
         URL metadataUrl = TestHelpers.class.getResource(metadataResource);
         EditorTemplate et = null;
@@ -88,7 +89,7 @@ public class TestHelpers {
         try {
             et = new EditorTemplate(new InputSource(templateUrl.openStream()));
             content = et.getContent(new InputSource(metadataUrl.openStream()));
-            
+
         } catch (SAXException e) {
             e.printStackTrace();
             fail();
@@ -99,19 +100,19 @@ public class TestHelpers {
             e.printStackTrace();
             fail();
         }
-        return content;        
-    }     
-    
+        return content;
+    }
+
     public static EditorConfiguration getConfiguration(String configurationResource){
-        
+
         String configString = fileAsString(configurationResource);
         EditorConfiguration config = EditorConfigurationFactory.unmarshallConfiguration(configString);
         return config;
-        
+
     }
-    
+
     public static Map<String, EditorVariable> getVariables(String templateResource ){
-        
+
         URL url = TestHelpers.class.getResource(templateResource);
         Map<String, EditorVariable> mse = null;
         EditorTemplate et = null;
@@ -124,9 +125,43 @@ public class TestHelpers {
         } catch (IOException e) {
             e.printStackTrace();
             fail();
-        }        
+        }
         return mse;
-    }    
+    }
 
+    /**
+     * read the editor configuration "metadataeditor.properties from this path
+     * instead of from resources
+     *
+     * @param editorConfigPath
+     */
+    public static void setEditorConfigEnv(String editorConfigPath) {
+        @SuppressWarnings("rawtypes")
+        Class[] classes = Collections.class.getDeclaredClasses();
+        Map<String, String> env = System.getenv();
+        for (@SuppressWarnings("rawtypes") Class cl : classes) {
+            if ("java.util.Collections$UnmodifiableMap".equals(cl.getName())) {
+                Field field;
+                try {
+                    field = cl.getDeclaredField("m");
+                    field.setAccessible(true);
+                    Object obj = field.get(env);
+                    @SuppressWarnings("unchecked")
+                    Map<String, String> map = (Map<String, String>) obj;
+                    map.put(Config.ENV_NAME, editorConfigPath);
+
+                } catch (NoSuchFieldException e) {
+                    fail(e.getMessage());
+                } catch (SecurityException e) {
+                    fail(e.getMessage());
+                } catch (IllegalArgumentException e) {
+                    fail(e.getMessage());
+                } catch (IllegalAccessException e) {
+                    fail(e.getMessage());
+                }
+            }
+        }
+
+    }
 
 }

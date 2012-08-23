@@ -1,30 +1,48 @@
 package no.met.metadataeditor.datastore;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.sax.SAXSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 
 import org.apache.commons.io.FilenameUtils;
 import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import no.met.metadataeditor.EditorException;
+import no.met.metadataeditor.validation.SchemaValidator;
+import no.met.metadataeditor.validation.Validator;
 
 abstract class DataStoreImpl implements DataStore {
 
-    private final String SETUPFILE = "setup.xml";
-    private final String CONFIGDIR = "config";
-    private final String XMLDIR = "XML";
+    private static final String SETUPFILE = "setup.xml";
+    private static final String CONFIGDIR = "config";
+    private static final String XMLDIR = "XML";
 
     private Document setupDoc = null;
     private Date setupDocDate = null;
+    private final Map<String, Validator> validator = new HashMap<String, Validator>();
+    private final Map<String, Date> lastDataStoreDate = new HashMap<String, Date>();
 
     private Document getSetupDoc() {
         String path = makePath(CONFIGDIR, SETUPFILE);
@@ -92,7 +110,7 @@ abstract class DataStoreImpl implements DataStore {
      * @return A list of all available metadata in the data store
      */
     abstract List<String> list(String url);
-    
+
     /**
      * Delete a metadata record from the data store
      * @param url The record to delete.
@@ -101,7 +119,7 @@ abstract class DataStoreImpl implements DataStore {
      * @return True if the record was delete. False otherwise.
      */
     abstract boolean delete(String url, String username, String password);
-    
+
     @Override
     public boolean writeMetadata(String recordIdentifier, String xml, String username, String password) {
 
@@ -199,7 +217,7 @@ abstract class DataStoreImpl implements DataStore {
         return makePath(XMLDIR, recordIdentifier + ".xml");
 
     }
-    
+
     private String metadataDirUrl() {
         return makePath(XMLDIR);
     }
@@ -212,23 +230,87 @@ abstract class DataStoreImpl implements DataStore {
 
     @Override
     public List<String> availableMetadata(){
-        
+
         List<String> filenames = list(metadataDirUrl());
         List<String> identifiers = new ArrayList<String>();
-        for( String filename : filenames ){            
-            identifiers.add(FilenameUtils.removeExtension(filename));            
+        for( String filename : filenames ){
+            identifiers.add(FilenameUtils.removeExtension(filename));
         }
-        
-        // we sort the identifiers for simple automatic testing.        
+
+        // we sort the identifiers for simple automatic testing.
         Collections.sort(identifiers);
         return identifiers;
-        
+
     }
-    
+
     @Override
     public boolean deleteMetadata(String recordIdentifier, String username, String password){
-        
+
         return delete(metadataUrl(recordIdentifier), username, password);
-        
+
+    }
+
+    @Override
+    public Validator getValidator(String tag) throws IllegalArgumentException {
+        synchronized (validator) {
+            Document doc = getSetupDoc();
+            try {
+                XPathFactory factory = XPathFactory.newInstance();
+                XPath xpath = factory.newXPath();
+                XPathExpression expr = xpath.compile(String.format(
+                        "//internalValidators/validator[@tag='%s' and @type='simplePutService']", tag));
+                NodeList nodes = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
+                if (nodes.getLength() != 1) {
+                    throw new IllegalArgumentException(String.format(
+                            "No unique internalValidator with tag %s in %s/%s", tag, CONFIGDIR, SETUPFILE));
+                }
+                String argName = xpath.evaluate("arg/@name", nodes.item(0));
+                String argVal = xpath.evaluate("arg/@value", nodes.item(0));
+                String argId = String.format("%s:%s", argName, argVal);
+                if ("resourceSchemaLocation".equals(argName)) {
+                    if (!validator.containsKey(argId)) {
+                        SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+                        Logger.getLogger(DataStoreImpl.class.getName()).info(String.format("fetching schema for %s as %s from %s", tag, argVal, getClass().getResource(argVal)));
+                        Schema schema = sf.newSchema(getClass().getResource(argVal));
+                        validator.put(argId, new SchemaValidator(schema));
+                    }
+                } else if ("externalSchemaLocation".equals(argName)) {
+                    if (!validator.containsKey(argId)) {
+                        SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+                        Logger.getLogger(DataStoreImpl.class.getName()).info(String.format("fetching schema for %s as %s", tag, argVal));
+                        Schema schema = sf.newSchema(new URL(argVal));
+                        validator.put(argId, new SchemaValidator(schema));
+                    }
+                } else if ("webdavSchemaLocation".equals(argName)) {
+                    String path = makePath(CONFIGDIR, argVal);
+                    // remove validator if too old
+                    Date date = getLastModified(path);
+                    if (lastDataStoreDate.containsKey(path)) {
+                        if (lastDataStoreDate.get(path).before(date)) {
+                            validator.remove(argId);
+                            Logger.getLogger(DataStoreImpl.class.getName()).info(String.format("schema for %s as %s updated, was %s, new is %s", tag, argVal, lastDataStoreDate.get(path).toString(), date.toString()));
+                        }
+                    }
+                    if (!validator.containsKey(argId)) {
+                        SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+                        Logger.getLogger(DataStoreImpl.class.getName()).info(String.format("fetching schema for %s from %s", tag, path));
+                        Schema schema = sf.newSchema(new SAXSource(new InputSource(new ByteArrayInputStream(get(path).getBytes()))));
+                        validator.put(argId, new SchemaValidator(schema));
+                        lastDataStoreDate.put(path, date);
+                    }
+                } else {
+                    throw new IllegalArgumentException(String.format(
+                            "Unknown argument name for validator with tag = %s", tag));
+                }
+                return validator.get(argId);
+            } catch (IOException e) {
+                throw new IllegalArgumentException(e);
+            } catch (SAXException e) {
+                throw new IllegalArgumentException(e);
+            } catch (XPathExpressionException e) {
+                Logger.getLogger(DataStoreImpl.class.getName()).log(Level.SEVERE, null, e);
+                throw new IllegalArgumentException(String.format("Internal error on handling tag = %s", tag));
+            }
+        }
     }
 }

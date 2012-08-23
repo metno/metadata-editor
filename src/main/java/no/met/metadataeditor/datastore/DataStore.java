@@ -2,6 +2,8 @@ package no.met.metadataeditor.datastore;
 
 import java.util.List;
 
+import no.met.metadataeditor.validation.Validator;
+
 /**
  * Interface supported by all data stores.
  *
@@ -14,7 +16,7 @@ public interface DataStore {
      * choose between the current version and the THEIRS version.
      */
     String THEIRS_IDENTIFIER = ".theirs";
-    
+
     /**
      * Write the metadata to the datastore.
      * @param recordIdentifier The recordIdentifer for the metadata record to write to.
@@ -23,7 +25,7 @@ public interface DataStore {
      */
     boolean writeMetadata(String recordIdentifier, String xml, String username, String password);
 
-    
+
     /**
      * @param recordIdentifier The metadata record to check if exists.
      * @return Returns true if the metadata record exists in the datastore. Returns false otherwise.
@@ -54,7 +56,7 @@ public interface DataStore {
      * @return The raw XML for the template for the supported format.
      */
     String readTemplate(SupportedFormat format);
-    
+
     /**
      * @param recordIdentifier The record identifier for the metadata we want a configuration for.
      * @return The raw XML for the metadata on success. Throws and EditorException on error.
@@ -73,17 +75,17 @@ public interface DataStore {
      * @return True if the user has write access to the project. False otherwise
      */
     boolean userHasWriteAccess(String username, String password);
-    
+
     /**
      * @return A list of record identifiers for the available metadata in the datastore
      */
     List<String> availableMetadata();
-    
+
     /**
      * @return Get the default username for the datastore.
      */
     String getDefaultUser();
-    
+
     /**
      * @return Get the default password for the datastore.
      * @return
@@ -94,8 +96,19 @@ public interface DataStore {
      * Delete a record from the editor metadata repository.
      * @param recordIdentifier The identifier of the record to delete.
      * @param username The username of the user
-     * @param password The un-hashed password of the user. 
+     * @param password The un-hashed password of the user.
      * @return True if the record was delete. False otherwise, i.e. the record does not exist
      */
     boolean deleteMetadata(String recordIdentifier, String username, String password);
+
+
+    /**
+     * Get a validator from the setup-file with the provided tag. Tag should, but does
+     * not need to be one of the supported formats.
+     *
+     * @param tag
+     * @return a validator to validate a string.
+     * @throws IllegalArgumentException if tag does not exists in setup
+     */
+    Validator getValidator(String tag) throws IllegalArgumentException;
 }
