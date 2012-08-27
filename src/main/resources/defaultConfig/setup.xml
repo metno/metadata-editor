@@ -7,7 +7,7 @@
             <arg name="namespace" value="http://www.met.no/schema/metamod/MM2"/>
         </detector>
         <validator type="simplePutService">
-            <arg name="URL" value="./mm2Validator" />
+            <arg name="URL" value="./validator/default/mm2" />
         </validator>
     </format>
     <format tag="MM2COMBINED">
@@ -29,4 +29,18 @@
         </detector>
     </format>
 </supportedMetadataFormats>
+<internalValidators>
+<!-- the internal validators will be configured under ./validator/project/tag -->
+<!-- currently only simplePutService allowed -->
+<validator type="simplePutService" tag="mm2">
+    <!-- name may be 'resourceSchemaLocation' or (exclusive) 'externalSchemaLocation' (e.g. http://...) -->
+    <!-- or 'webdavSchemaLocation' (which is relative path to webdav-catalog/config/) -->
+    <arg name="resourceSchemaLocation" value="/service/datastore/config/schemas/MM2.xsd" />
+</validator>
+<validator type="simplePutService" tag="mm2Store">
+    <!-- name may be 'resourceSchemaLocation' or (exclusive) 'externalSchemaLocation' (e.g. http://...) -->
+    <!-- or 'webdavSchemaLocation' (which is relative path to webdav-catalog/config/) -->
+    <arg name="webdavSchemaLocation" value="schemas/MM2.xsd" />
+</validator>
+</internalValidators>
 </editorSetup>
