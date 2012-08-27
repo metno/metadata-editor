@@ -7,7 +7,7 @@
             <arg name="namespace" value="http://www.met.no/schema/metamod/MM2"/>
         </detector>
         <validator type="simplePutService">
-            <arg name="URL" value="./validator/test/mm2" />
+            <arg name="URL" value="http://example.org/metaedit/service/validator/test/mm2" />
         </validator>
     </format>
     <format tag="MM2COMBINED">
@@ -30,7 +30,7 @@
     </format>
 </supportedMetadataFormats>
 <internalValidators>
-<!-- the internal validators will be configured under /validator/project/tag -->
+<!-- the internal validators will be configured under ./service/validator/project/tag -->
 <!-- currently only simplePutService allowed -->
 <validator type="simplePutService" tag="mm2">
     <!-- name may be 'resourceSchemaLocation' or (exclusive) 'externalSchemaLocation' (e.g. http://...) -->
