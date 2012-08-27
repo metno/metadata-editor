@@ -41,6 +41,8 @@ public abstract class EditorWidget implements Serializable {
 
     private String label;
 
+    private String description;
+
     private boolean isPopulated = false;
 
     private int maxOccurs = 1;
@@ -83,6 +85,15 @@ public abstract class EditorWidget implements Serializable {
 
     public void setVariableName(String variableName) {
         this.variableName = variableName;
+    }
+
+    @XmlElement(namespace="http://www.met.no/schema/metadataeditor/editorConfiguration")
+    public String getDescription(){
+        return description;
+    }
+
+    public void setDescription(String description){
+        this.description = description;
     }
 
     @XmlAttribute
