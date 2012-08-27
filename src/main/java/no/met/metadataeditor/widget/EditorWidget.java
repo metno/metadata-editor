@@ -183,7 +183,9 @@ public abstract class EditorWidget implements Serializable {
             DataAttribute da = ev.getNewDataAttributes();
             content.setAttrs(da);
             for (Map.Entry<String, String> entry : view.getValues().entrySet()) {
-                da.addAttribute(entry.getKey(), entry.getValue());
+                String value =  entry.getValue();
+                value = value.replace("\r", "");
+                da.addAttribute(entry.getKey(), value);
             }
             contentList.add(content);
 
