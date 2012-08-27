@@ -4,8 +4,13 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -35,6 +40,8 @@ import no.met.metadataeditor.widget.EditorWidget;
 public class EditorBean implements Serializable {
 
     private static final long serialVersionUID = 243543721833686400L;
+    
+    private static final Logger logger = Logger.getLogger(EditorBean.class.getName());
 
     private Editor editor;
     
@@ -217,6 +224,34 @@ public class EditorBean implements Serializable {
         }
         return values;        
         
+    }
+    
+    /**
+     * Get the values from a resources as key values pairs. The keys and values
+     * are taken from alternate lines in the resource file.
+     * @param widget The widget to get resource values for
+     * @return A map of key/value pairs
+     */
+    public Map<String,String> getKeyValueResourceValues(EditorWidget widget){
+
+        DataStore dataStore = DataStoreFactory.getInstance(project);
+        String resourceString = dataStore.readResource(widget.getResourceUri().toString());
+
+        
+        List<String> resourceValues = new ArrayList<String>(Arrays.asList(resourceString.split("\n")));
+        
+        // ensure that we have an even number of elements.
+        if( resourceValues.size() % 2 != 0 ){
+            logger.log(Level.WARNING, "Odd number of lines in key/value resource. Even number expected");
+            resourceValues.add("");
+        }
+        
+        Map<String, String> values = new LinkedHashMap<String,String>();
+        for( int i = 0; i < resourceValues.size(); i += 2 ){
+            values.put(resourceValues.get(i), resourceValues.get(i+1));
+        }
+        
+        return values;
     }
     
     public List<String> getFilteredResourceValues(EditorWidget widget, String filterAttribute) {
