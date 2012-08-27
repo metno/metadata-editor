@@ -28,6 +28,7 @@ import no.met.metadataeditor.dataTypes.attributes.StringAndListElementAttribute;
 import no.met.metadataeditor.dataTypes.attributes.StringAttribute;
 import no.met.metadataeditor.dataTypes.attributes.TimeAttribute;
 import no.met.metadataeditor.dataTypes.attributes.UriAttribute;
+import no.met.metadataeditor.dataTypes.attributes.XMDDisplayArea;
 import no.met.metadataeditor.dataTypes.attributes.XMDInfoAttribute;
 
 import org.apache.commons.lang3.StringUtils;
@@ -68,6 +69,7 @@ class TemplateHandler extends DefaultHandler {
         supportedTags.put("date", DateAttribute.class);
         supportedTags.put("keyValueList", KeyValueListAttribute.class);
         supportedTags.put("xmdInfo", XMDInfoAttribute.class);
+        supportedTags.put("xmdDisplayArea", XMDDisplayArea.class);
     }
 
     @Override

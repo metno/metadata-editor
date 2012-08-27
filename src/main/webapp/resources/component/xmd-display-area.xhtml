@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:metaedit="http://java.sun.com/jsf/composite/component">
+
+    <composite:interface>
+        <composite:attribute name="widget" type="no.met.metaeditor.widget.XMDDisplayAreaWidget" />
+    </composite:interface>
+
+    <composite:implementation>
+
+        <h:panelGroup id="xmd-display-area-container" layout="block" styleClass="editor-widget-container">
+        <h:outputLabel value="#{cc.attrs.widget.label}" styleClass="main-label"/>
+
+        <ui:include src="../../add-value-button.xhtml" >
+            <ui:param name="widget" value="#{cc.attrs.widget}"/>
+            <ui:param name="updateId" value="xmd-display-area-container"/>
+        </ui:include>
+
+        <ui:repeat var="widgetView" value="#{cc.attrs.widget.widgetViews}">
+
+            <ui:include src="../../remove-value-button.xhtml" >
+                <ui:param name="widget" value="#{cc.attrs.widget}"/>
+                <ui:param name="value" value="#{widgetView}"/>
+            </ui:include>               
+
+            <h:panelGrid columns="2">
+
+                <h:outputLabel for="crs" value="Projection" />
+                <h:selectOneMenu value="#{widgetView.values['crs']}" id="crs" disabled="#{!userBean.validated}">
+                    <f:selectItems value="#{editorBean.getResourceValues(cc.attrs.widget)}" />
+                </h:selectOneMenu>
+                
+                <h:outputLabel for="top" value="Top" />
+                <h:inputText id="top" value="#{widgetView.values['top']}" disabled="#{!userBean.validated}" />
+
+                <h:outputLabel for="left" value="Left" />
+                <h:inputText id="left" value="#{widgetView.values['left']}" disabled="#{!userBean.validated}" />
+
+                <h:outputLabel for="right" value="Right" />
+                <h:inputText id="right" value="#{widgetView.values['right']}" disabled="#{!userBean.validated}" />
+
+                <h:outputLabel for="bottom" value="Bottom" />
+                <h:inputText id="bottom" value="#{widgetView.values['bottom']}" disabled="#{!userBean.validated}" />
+                
+            </h:panelGrid>                
+
+        </ui:repeat>
+
+        
+        </h:panelGroup>
+
+    </composite:implementation>
+</html>
