@@ -29,7 +29,8 @@ import no.met.metadataeditor.dataTypes.attributes.DataAttribute;
 @XmlRootElement
 @XmlSeeAlso({ LatLonBoundingBoxWidget.class, ListWidget.class, StartAndStopTimeWidget.class, StringWidget.class,
         UriWidget.class, TextAreaWidget.class, TimeWidget.class, MultiSelectListWidget.class, StringAndListWidget.class,
-        OnlineResourceWidget.class, ContainerWidget.class, KeyValueListWidget.class, DateWidget.class, XMDInfoWidget.class })
+        OnlineResourceWidget.class, ContainerWidget.class, KeyValueListWidget.class, DateWidget.class, XMDInfoWidget.class,
+        XMDDisplayAreaWidget.class, XMDWmsInfoWidget.class })
 public abstract class EditorWidget implements Serializable {
 
     private static final long serialVersionUID = -2532825684273483564L;
