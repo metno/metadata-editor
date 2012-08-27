@@ -6,10 +6,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -25,6 +29,7 @@ import no.met.metadataeditor.datastore.DataStore;
 import no.met.metadataeditor.datastore.DataStoreFactory;
 import no.met.metadataeditor.validation.ValidatorException;
 
+import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -32,11 +37,21 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import com.sun.jersey.api.Responses;
 
+@ApplicationPath("/service/")
 @Path("/validator/")
-public class SimplePutValidator {
+public class SimplePutValidator extends Application {
 
     @Context
     HttpServletRequest request;
+
+    @GET
+    @Path("")
+    @Produces("application/xml")
+    @ServiceDescription("Return the list of services with parameters.")
+    public Response capabilities() throws ParserConfigurationException{
+        Document d = ServiceDescriptionGenerator.getXMLServiceDescription(this.getClass());
+        return Response.ok(d).build();
+    }
 
     /**
      * Get the XML for a metadata record.
