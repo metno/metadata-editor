@@ -55,9 +55,11 @@ jQuery(document).ready(function () {
        
     <br />
     
-
+    <p:messages showDetail="true" for="validation-messages" closable="true" />
     
     <p:tabView activeIndex="#{editorBean.activeTabId}" var="page" value="#{editorBean.editorConfiguration.pages}">
+
+
     
         <p:ajax event="tabChange" listener="#{editorBean.tabChanged}" />
     

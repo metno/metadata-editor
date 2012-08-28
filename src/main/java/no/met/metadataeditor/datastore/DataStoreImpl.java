@@ -23,15 +23,16 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import no.met.metadataeditor.EditorException;
+import no.met.metadataeditor.validation.SchemaValidator;
+import no.met.metadataeditor.validation.Validator;
+import no.met.metadataeditor.validationclient.ValidationClient;
+
 import org.apache.commons.io.FilenameUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
-import no.met.metadataeditor.EditorException;
-import no.met.metadataeditor.validation.SchemaValidator;
-import no.met.metadataeditor.validation.Validator;
 
 abstract class DataStoreImpl implements DataStore {
 
@@ -312,5 +313,14 @@ abstract class DataStoreImpl implements DataStore {
                 throw new IllegalArgumentException(String.format("Internal error on handling tag = %s", tag));
             }
         }
+    }
+
+    @Override
+    public ValidationClient getValidationClient(String recordIdentifier){
+
+        String metadata = readMetadata(recordIdentifier);
+
+        SupportedFormat format = DataStoreUtils.getFormat(getSupportedFormats(), metadata);
+        return format.getValidationClient();
     }
 }

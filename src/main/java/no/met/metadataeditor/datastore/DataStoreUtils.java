@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
@@ -14,13 +15,16 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathException;
 import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+
+import no.met.metadataeditor.EditorException;
+import no.met.metadataeditor.validationclient.SimplePutValidationClient;
+import no.met.metadataeditor.validationclient.ValidationClient;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import no.met.metadataeditor.EditorException;
 
 /**
  * Utility functions for DataStore classes.
@@ -84,9 +88,9 @@ public class DataStoreUtils {
             XPathExpression expr = xpath.compile("//supportedMetadataFormats/format");
             NodeList nodes = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
             for (int i = 0; i < nodes.getLength(); i++) {
-                Node node = nodes.item(i);
-                String tag = xpath.evaluate("@tag", node);
-                NodeList detectors = (NodeList) xpath.evaluate("detector", node, XPathConstants.NODESET);
+                Node formatNode = nodes.item(i);
+                String tag = xpath.evaluate("@tag", formatNode);
+                NodeList detectors = (NodeList) xpath.evaluate("detector", formatNode, XPathConstants.NODESET);
                 if (detectors.getLength() != 1) {
                     throw new EditorException(String.format("found %d detectors, need exactly 1 for format %s",
                             detectors.getLength(), tag));
@@ -99,13 +103,36 @@ public class DataStoreUtils {
                 }
                 String rootNode = xpath.evaluate("arg[@name='rootNode']/@value", detectors.item(0));
                 String namespace = xpath.evaluate("arg[@name='namespace']/@value", detectors.item(0));
-                formats.add(new SupportedFormat(tag, rootNode, namespace));
+
+                ValidationClient validationClient = parseValidationPart(formatNode, xpath);
+
+                formats.add(new SupportedFormat(tag, rootNode, namespace, validationClient));
             }
         } catch (XPathException e) {
             Logger.getLogger(DataStoreImpl.class.getName()).log(Level.SEVERE, null, e);
         }
 
         return formats;
+    }
+
+    private static ValidationClient parseValidationPart(Node formatNode, XPath xpath) throws XPathExpressionException{
+
+        Node validatorNode = (Node) xpath.evaluate("validator", formatNode, XPathConstants.NODE);
+
+        if( validatorNode == null ){
+            return null;
+        }
+
+        String validatorType = xpath.evaluate("@type", validatorNode);
+
+        if("simplePutService".equals(validatorType)){
+            String url = xpath.evaluate("arg[@name='URL']/@value", validatorNode);
+            ValidationClient client = new SimplePutValidationClient(url);
+            return client;
+        }
+
+        throw new EditorException("Invalid type for validation: " + validatorType );
+
     }
 
 }

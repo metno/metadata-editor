@@ -3,6 +3,7 @@ package no.met.metadataeditor.datastore;
 import java.util.List;
 
 import no.met.metadataeditor.validation.Validator;
+import no.met.metadataeditor.validationclient.ValidationClient;
 
 /**
  * Interface supported by all data stores.
@@ -111,4 +112,12 @@ public interface DataStore {
      * @throws IllegalArgumentException if tag does not exists in setup
      */
     Validator getValidator(String tag) throws IllegalArgumentException;
+
+    /**
+     * Get a ValidationClient for the record if it has been configured for the format.
+     * @param recordIdentifier
+     * @return The ValiationClient for the record or null if it has not been configured.
+     */
+    ValidationClient getValidationClient(String recordIdentifier);
+
 }

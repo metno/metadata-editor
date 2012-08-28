@@ -1,15 +1,18 @@
 package no.met.metadataeditor.datastore;
 
+import no.met.metadataeditor.validationclient.ValidationClient;
+
 
 /**
  * Enum of supported XML metadata formats.
  */
 public class SupportedFormat {
-   
-    SupportedFormat(String tag, String rootNode, String namespace) {
+
+    SupportedFormat(String tag, String rootNode, String namespace, ValidationClient validationClient) {
         this.tag = tag;
         this.rootNode = rootNode;
         this.namespace = namespace;
+        this.validationClient = validationClient;
     }
 
     public String getNamespace() {
@@ -22,6 +25,14 @@ public class SupportedFormat {
         return tag;
     }
 
+
+    public ValidationClient getValidationClient() {
+        return validationClient;
+    }
+
+    public void setValidationClient(ValidationClient validationClient) {
+        this.validationClient = validationClient;
+    }
 
     public String templateName(){
         return tag + "Template.xml";
@@ -54,29 +65,31 @@ public class SupportedFormat {
 
     @Override
     public boolean equals(Object o){
-        
+
         if( !( o instanceof SupportedFormat ) ){
             return false;
         }
-        
+
         SupportedFormat f = (SupportedFormat) o;
-        
+
         return this.tag.equals(f.tag) && this.namespace.equals(f.namespace) && this.rootNode.endsWith(f.rootNode);
-        
+
     }
-    
+
+    @Override
     public int hashCode(){
-        
+
         int result = 17;
         result = 31 * result + tag.hashCode();
         result = 31 * result + namespace.hashCode();
         result = 31 * result + rootNode.hashCode();
-        
+
         return result;
-        
+
     }
-   
+
     private String tag;
     private String rootNode;
     private String namespace;
+    private ValidationClient validationClient;
 }

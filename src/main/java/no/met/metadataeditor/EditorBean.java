@@ -5,7 +5,6 @@ import java.io.Serializable;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,19 +19,21 @@ import javax.faces.event.ComponentSystemEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import no.met.metadataeditor.dataTypes.EditorTemplate;
+import no.met.metadataeditor.datastore.DataStore;
+import no.met.metadataeditor.datastore.DataStoreFactory;
+import no.met.metadataeditor.validationclient.ValidationClient;
+import no.met.metadataeditor.validationclient.ValidationResponse;
+import no.met.metadataeditor.widget.EditorWidget;
+
 import org.primefaces.component.tabview.TabView;
 import org.primefaces.event.TabChangeEvent;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import no.met.metadataeditor.dataTypes.EditorTemplate;
-import no.met.metadataeditor.datastore.DataStore;
-import no.met.metadataeditor.datastore.DataStoreFactory;
-import no.met.metadataeditor.widget.EditorWidget;
-
 /**
  * Bean used to the hold the current state of the editor.
- * 
+ *
  * The bean is in view scope.
  */
 @ManagedBean
@@ -40,25 +41,25 @@ import no.met.metadataeditor.widget.EditorWidget;
 public class EditorBean implements Serializable {
 
     private static final long serialVersionUID = 243543721833686400L;
-    
+
     private static final Logger logger = Logger.getLogger(EditorBean.class.getName());
 
     private Editor editor;
-    
+
     // automatically set based on the query parameters
     private String recordIdentifier;
-    
+
     // automatically set based on the query parameters
     private String project;
-    
+
     // used to track the current active tab. We need this as some times the entire form is re-rendered and we lose
     // the current tab wihtout this
     private int activeTabId = 0;
-    
+
     boolean initPerformed = false;
-       
+
     public EditorBean() {
-        
+
     }
 
     /**
@@ -76,22 +77,22 @@ public class EditorBean implements Serializable {
 
             editor = new Editor(project, recordIdentifier);
             editor.init();
-                        
+
             // need to get the session before the view is rendered to avoid getting exception.
             // see http://stackoverflow.com/questions/7433575/cannot-create-a-session-after-the-response-has-been-committed
-            FacesContext.getCurrentInstance().getExternalContext().getSession(true);           
-            
+            FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+
             initPerformed = true;
         }
-        
+
     }
-    
+
     public EditorTemplate getTemplate(String project, String recordIdentifier){
-        
+
         DataStore dataStore = DataStoreFactory.getInstance(project);
         String templateString = dataStore.readTemplate(recordIdentifier);
         InputSource templateSource = new InputSource(new StringReader(templateString));
-        
+
         EditorTemplate et = null;
         try {
             et = new EditorTemplate(templateSource);
@@ -99,51 +100,68 @@ public class EditorBean implements Serializable {
             throw new EditorException(e.getMessage());
         } catch (IOException e) {
             throw new EditorException(e.getMessage());
-        } 
-        return et;        
-        
+        }
+        return et;
+
     }
-    
+
     public void save() {
-        
-  
+
+
         UserBean user = getUser();
-        if(user.isValidated()){        
+        if(user.isValidated()){
             editor.save(project, recordIdentifier, user.getUsername(), user.getPassword());
 
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Changes has been saved.", "Changes has been saved.");
             FacesContext.getCurrentInstance().addMessage(null, msg);
         } else {
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login required before saving.", "Login required before saving.");
-            FacesContext.getCurrentInstance().addMessage(null, msg);            
+            FacesContext.getCurrentInstance().addMessage(null, msg);
         }
-        
+
     }
-    
+
     public void reset() throws IOException {
-        
+
         if( initPerformed ){
             initPerformed = false;
             init(null);
-            
+
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "All changes have been reset.", "All changes have been reset.");
-            FacesContext.getCurrentInstance().addMessage(null, msg);             
+            FacesContext.getCurrentInstance().addMessage(null, msg);
         }
-        
+
     }
-    
+
     public void validate(){
 
-        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Validation has not been implemented yet.", "Validation has not been implemented yet.");
-        FacesContext.getCurrentInstance().addMessage(null, msg);             
-        
-        
+        DataStore datastore = DataStoreFactory.getInstance(project);
+
+        ValidationClient validationClient = datastore.getValidationClient(recordIdentifier);
+
+        if( validationClient == null ){
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "No validation configured for this format.", "No validation configured for this format.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return;
+        }
+
+        String xmlContent = editor.editorContentToXML(project, recordIdentifier);
+        ValidationResponse validationResponse = validationClient.validate(xmlContent);
+
+        if( validationResponse.success ){
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Validation successfull", "Validation successfull");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+        } else {
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Validation failed.", validationResponse.message);
+            FacesContext.getCurrentInstance().addMessage("validation-messages", msg);
+        }
+
     }
-    
+
     public void export() {
-        
+
         String editorContent = editor.export(project, recordIdentifier);
-        
+
 
         FacesContext ctx = FacesContext.getCurrentInstance();
         final HttpServletResponse resp = (HttpServletResponse)ctx.getExternalContext().getResponse();
@@ -154,16 +172,16 @@ public class EditorBean implements Serializable {
         try {
             resp.getOutputStream().write(editorContent.getBytes());
             resp.getOutputStream().flush();
-            resp.getOutputStream().close();            
+            resp.getOutputStream().close();
         } catch (IOException e) {
             throw new EditorException("Failed to write XML to response", e);
         }
 
         ctx.responseComplete();
-        
+
     }
-    
-    
+
+
     public EditorConfiguration getEditorConfiguration() {
         return editor.getEditorConfiguration();
     }
@@ -194,26 +212,26 @@ public class EditorBean implements Serializable {
     public void setActiveTabId(int activeTabId) {
         this.activeTabId = activeTabId;
     }
-    
+
     /**
      * Track that the currently selected tab has changed.
      * @param event
      */
-    public void tabChanged(TabChangeEvent event){  
+    public void tabChanged(TabChangeEvent event){
         TabView tv = (TabView)event.getTab().getParent();
         activeTabId = tv.getActiveIndex();
-    }    
+    }
 
     public void addValue(EditorWidget widget){
-        widget.addNewValue();        
-    }    
-       
+        widget.addNewValue();
+    }
+
     public void removeValue(EditorWidget widget, EditorWidgetView widgetView){
         widget.removeValue(widgetView);
     }
-    
+
     public List<String> getResourceValues(EditorWidget widget){
-        
+
         DataStore dataStore = DataStoreFactory.getInstance(project);
         String resourceString = dataStore.readResource(widget.getResourceUri().toString());
 
@@ -222,10 +240,10 @@ public class EditorBean implements Serializable {
         for(String s : resourceValues ){
             values.add(s);
         }
-        return values;        
-        
+        return values;
+
     }
-    
+
     /**
      * Get the values from a resources as key values pairs. The keys and values
      * are taken from alternate lines in the resource file.
@@ -237,45 +255,45 @@ public class EditorBean implements Serializable {
         DataStore dataStore = DataStoreFactory.getInstance(project);
         String resourceString = dataStore.readResource(widget.getResourceUri().toString());
 
-        
+
         List<String> resourceValues = new ArrayList<String>(Arrays.asList(resourceString.split("\n")));
-        
+
         // ensure that we have an even number of elements.
         if( resourceValues.size() % 2 != 0 ){
             logger.log(Level.WARNING, "Odd number of lines in key/value resource. Even number expected");
             resourceValues.add("");
         }
-        
+
         Map<String, String> values = new LinkedHashMap<String,String>();
         for( int i = 0; i < resourceValues.size(); i += 2 ){
             values.put(resourceValues.get(i), resourceValues.get(i+1));
         }
-        
+
         return values;
     }
-    
+
     public List<String> getFilteredResourceValues(EditorWidget widget, String filterAttribute) {
 
         List<String> currentValues = new ArrayList<String>();
         List<EditorWidgetView> widgetViews = widget.getWidgetViews();
         for( EditorWidgetView view : widgetViews ){
             currentValues.add(view.getValues().get(filterAttribute));
-        }        
-        
+        }
+
         List<String> filteredValues = getResourceValues(widget);
         for( String value : currentValues ){
             filteredValues.remove(value);
         }
 
         return filteredValues;
-    }    
-    
+    }
+
     /**
      * Validates that the project parameter refers to an acutal project.
      * @param context
      * @param component
      * @param object
-     * @throws IOException 
+     * @throws IOException
      */
     public void validateProject(String project) throws IOException {
 
@@ -287,9 +305,9 @@ public class EditorBean implements Serializable {
             FacesContext.getCurrentInstance().getExternalContext().responseSendError(404, msg);
         }
     }
-    
+
     /**
-     * Validate that the record identifier exists 
+     * Validate that the record identifier exists
      * @param context
      * @param component
      * @param object
@@ -303,17 +321,17 @@ public class EditorBean implements Serializable {
             msg += "Please check that both the record identifier and the project is correct";
             FacesContext.getCurrentInstance().getExternalContext().responseSendError(404, msg);
         }
-    }        
-    
+    }
+
     /**
      * @return The UserBean object for the current user.
      */
     private UserBean getUser(){
-        
+
         // IMPLEMENTATION NOTE: This was first implemented as a @ManagedProperty, but that did not work
         // for unknown reasons. It seemed like the UserBean object changed between request even if should
         // stay the same. So this workaround was added instead.
-        HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest(); 
+        HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
         return (UserBean) request.getSession().getAttribute("userBean");
     }
 }

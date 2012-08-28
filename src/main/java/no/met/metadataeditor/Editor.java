@@ -87,7 +87,7 @@ public class Editor implements Serializable {
     }
 
 
-    private String editorContentToXML(String project, String identifier){
+    protected String editorContentToXML(String project, String identifier){
 
         EditorTemplate et = getTemplate(project, identifier);
         Map<String, EditorVariable> varMap = et.getVarMap();
@@ -106,8 +106,6 @@ public class Editor implements Serializable {
         }
 
         return resultString;
-
-
 
     }
 

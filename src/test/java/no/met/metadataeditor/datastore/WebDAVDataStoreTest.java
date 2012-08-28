@@ -1,6 +1,8 @@
 package no.met.metadataeditor.datastore;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,11 +33,11 @@ public class WebDAVDataStoreTest {
     private static String webdavHost = "dev-vm087/svn/unittest";
 
     private static String webdavProtocol = "http";
-    
+
     private static final String WEBDAV_USERNAME = "dummy";
-    
+
     private static final String WEBDAV_PASSWORD = "xxx";
-    
+
 
     @BeforeClass
     public static void setupWebDAV () throws IOException {
@@ -151,21 +153,21 @@ public class WebDAVDataStoreTest {
     public void testReadTemplateForFormatUnsupportedFormat() {
 
         WebDAVDataStore datastore = getDataStore();
-        datastore.readTemplate(new SupportedFormat("dummy", "", ""));
+        datastore.readTemplate(new SupportedFormat("dummy", "", "", null));
     }
 
     @Test(expected=EditorException.class)
     public void testReadTemplateForFormatNoTemplate() {
 
         WebDAVDataStore datastore = getDataStore();
-        datastore.readTemplate(new SupportedFormat("MM2COMBINED", "mmCombinedMM2", "http://www.met.no/schema/metamod/mmCombined"));
+        datastore.readTemplate(new SupportedFormat("MM2COMBINED", "mmCombinedMM2", "http://www.met.no/schema/metamod/mmCombined", null));
     }
 
     @Test
     public void testReadTemplateForFormat() {
 
         WebDAVDataStore datastore = getDataStore();
-        assertEquals("Template for MM2 file", "Template contents", datastore.readTemplate(new SupportedFormat("MM2", "MM2", "http://www.met.no/schema/metamod/MM2")));
+        assertEquals("Template for MM2 file", "Template contents", datastore.readTemplate(new SupportedFormat("MM2", "MM2", "http://www.met.no/schema/metamod/MM2", null)));
     }
 
 
@@ -223,44 +225,44 @@ public class WebDAVDataStoreTest {
         assertEquals("Data read is same as written", "Some xml", datastore.readMetadata("write1"));
 
     }
-    
+
     @Test
     public void testUserHasWriteAccess(){
 
         WebDAVDataStore datastore = getDataStore();
-        
+
         assertFalse("Unknown user does not have write access", datastore.userHasWriteAccess("unknown", "dummy"));
-        
+
         assertFalse("Wrong password does not give write access", datastore.userHasWriteAccess(WEBDAV_USERNAME, "asdfadsfasfdfsa"));
-        
+
         assertTrue("Correct username and password gives write access", datastore.userHasWriteAccess(WEBDAV_USERNAME, WEBDAV_PASSWORD));
-        
+
     }
-    
+
     @Test
     public void testAvailableMetadata(){
-        
+
         WebDAVDataStore datastore = getDataStore();
-        
+
         List<String> expected = Arrays.asList("iso1", "mm2_1", "record1", "write1" );
         assertEquals("Available metadata found as expected", expected, datastore.availableMetadata());
-        
+
     }
-    
+
     @Test
     public void testDeleteMetadata(){
-        
+
         WebDAVDataStore datastore = getDataStore();
-        
+
         String id = "a-new-record-to-delete";
         datastore.writeMetadata(id, "<MM2/>", WEBDAV_USERNAME, WEBDAV_PASSWORD);
-        
+
         assertTrue("New metadata record created", datastore.metadataExists(id));
-        
+
         assertTrue("Delete returns true on delete", datastore.deleteMetadata(id, WEBDAV_USERNAME, WEBDAV_PASSWORD));
-        
+
         assertFalse("New metadata record deleted", datastore.metadataExists(id));
-        
+
     }
 
     private static String webdavPath(String... paths){
