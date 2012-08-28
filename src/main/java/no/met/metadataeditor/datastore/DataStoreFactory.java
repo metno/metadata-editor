@@ -15,6 +15,16 @@ public class DataStoreFactory {
     private static Config config_ = null;
     private static Map<String, DataStore> store_ = new HashMap<String, DataStore>();
 
+    /**
+     * Reread the metadataeditor.properties file and reset all datastores.
+     *
+     * This function is mainly useful for testing purposes.
+     */
+    public static synchronized void reset() {
+        config_ = null;
+        store_.clear();
+    }
+
     private static synchronized Config getConfig() {
         if (config_ == null) {
             config_ = new Config("/metadataeditor.properties", Config.ENV_NAME);

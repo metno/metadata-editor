@@ -19,6 +19,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import no.met.metadataeditor.dataTypes.EditorTemplate;
 import no.met.metadataeditor.dataTypes.EditorVariable;
 import no.met.metadataeditor.dataTypes.EditorVariableContent;
+import no.met.metadataeditor.datastore.DataStoreFactory;
 
 import org.jdom2.Document;
 import org.jdom2.JDOMException;
@@ -131,7 +132,8 @@ public class TestHelpers {
 
     /**
      * read the editor configuration "metadataeditor.properties from this path
-     * instead of from resources
+     * instead of from resources and reset the DataStoreFactory so that it
+     * rereads the new config
      *
      * @param editorConfigPath
      */
@@ -161,7 +163,7 @@ public class TestHelpers {
                 }
             }
         }
-
+        DataStoreFactory.reset();
     }
 
 }
