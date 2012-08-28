@@ -1,6 +1,5 @@
 package no.met.metadataeditor.datastore;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -14,7 +13,6 @@ import java.util.logging.Logger;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.sax.SAXSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.xpath.XPath;
@@ -101,11 +99,23 @@ abstract class DataStoreImpl implements DataStore {
      */
     abstract boolean exists(String id);
     /**
-     * build the full path for a datastore
+     * build the full path for a datastore, for using
+     * within the DataStore (i.e. for File, this is without prefix)
      * @param paths
      * @return
      */
-    abstract String makePath(String... paths);
+    String makePath(String... paths) {
+        return makeURL(paths).toString();
+    }
+
+    /**
+     * build the full path for a datastore, including protocol-prefix
+     * @param paths
+     * @return
+     */
+    abstract URL makeURL(String... paths);
+
+
 
     /**
      * @return A list of all available metadata in the data store
@@ -295,7 +305,7 @@ abstract class DataStoreImpl implements DataStore {
                     if (!validator.containsKey(argId)) {
                         SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
                         Logger.getLogger(DataStoreImpl.class.getName()).info(String.format("fetching schema for %s from %s", tag, path));
-                        Schema schema = sf.newSchema(new SAXSource(new InputSource(new ByteArrayInputStream(get(path).getBytes()))));
+                        Schema schema = sf.newSchema(makeURL(CONFIGDIR, argVal));
                         validator.put(argId, new SchemaValidator(schema));
                         lastDataStoreDate.put(path, date);
                     }

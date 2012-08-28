@@ -6,6 +6,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -30,9 +33,9 @@ public class DiskDataStore extends DataStoreImpl {
 
     @Override
     void put(String id, String resource, String username, String password) {
-        
+
         // IMPLEMENTATION NOTE: We ignore username and password for the DiskDataStore on purpose for simplicity reasons
-        
+
         File file = new File(id);
 
         BufferedWriter out = null;
@@ -97,42 +100,60 @@ public class DiskDataStore extends DataStoreImpl {
     }
 
     @Override
-    String makePath(String... paths) {
-        File out = new File(basePath);
+    URL makeURL(String... paths) {
+        File out = new File(basePath.trim());
         for (String p : paths) {
-            out = new File(out, p);
+            out = new File(out, p.trim());
         }
-        return out.toString();
+        try {
+            return out.toURI().toURL();
+        } catch (MalformedURLException e) {
+            Logger.getLogger(DiskDataStore.class.getName()).log(Level.SEVERE, null, e);
+            throw new EditorException(e);
+        }
     }
 
+    @Override
+    String makePath(String... paths) {
+        URL url = makeURL(paths);
+        try {
+            return (new File(url.toURI())).toString();
+        } catch (URISyntaxException e) {
+            // should not happen
+            Logger.getLogger(DiskDataStore.class.getName()).log(Level.SEVERE, null, e);
+            throw new EditorException(e);
+        }
+    }
+
+    @Override
     List<String> list(String url){
-        
+
         Collection<File> files = FileUtils.listFiles(new File(url), null, false);
-        
+
         List<String> fileNames = new ArrayList<String>();
         for(File f : files){
             fileNames.add(f.getName());
         }
         return fileNames;
     }
-    
+
     @Override
     public boolean userHasWriteAccess(String username, String password) {
 
         // For the disk data store we assume that all user have access to write.
         return true;
     }
-    
+
     @Override
     public String getDefaultUser(){
         return "";
     }
-    
+
     @Override
     public String getDefaultPassword(){
         return "";
     }
-    
+
     @Override
     public boolean delete(String url, String username, String password){
         return FileUtils.deleteQuietly(new File(url));

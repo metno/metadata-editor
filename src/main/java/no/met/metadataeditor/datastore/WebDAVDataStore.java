@@ -2,6 +2,8 @@ package no.met.metadataeditor.datastore;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -91,9 +93,9 @@ public class WebDAVDataStore extends DataStoreImpl {
 
     @Override
     List<String> list(String url){
-        
+
         Sardine webdavConn = getConnection();
-        
+
         try {
             Collection<DavResource> resources = webdavConn.list(url);
             List<String> filenames = new ArrayList<String>();
@@ -103,76 +105,81 @@ public class WebDAVDataStore extends DataStoreImpl {
                 }
             }
             return filenames;
-            
+
         } catch (IOException e) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Failed to fetch resource list", e);
             throw new EditorException("Failed to fetch resource list from WebDAV", e);
         }
-        
-    }    
+
+    }
 
     @Override
-    String makePath(String... paths) {
+    URL makeURL(String... paths) {
         StringBuffer fullPath = new StringBuffer();
         fullPath.append(protocol).append("://").append(host);
 
         for (String p : paths) {
             fullPath.append("/").append(p);
         }
-        return fullPath.toString();
+        try {
+            return new URL(fullPath.toString());
+        } catch (MalformedURLException e) {
+            Logger.getLogger(WebDAVDataStore.class.getName()).log(Level.SEVERE, null, e);
+            throw new EditorException(e);
+        }
     }
 
 
     @Override
     public boolean userHasWriteAccess(String username, String password) {
 
-        Sardine webdavConn = SardineFactory.begin(username, password);        
-        String accessCheckFile = makePath("checkAccessOk.txt");
-        
+        Sardine webdavConn = SardineFactory.begin(username, password);
+        URL accessCheckURL = makeURL("checkAccessOk.txt");
+
         try {
-            webdavConn.put(accessCheckFile, "Some bytes".getBytes());
+            webdavConn.put(accessCheckURL.toString(), "Some bytes".getBytes());
         } catch (IOException e) {
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Failed to write to access file", e);
             return false;
         }
-        
+
         return true;
     }
-    
+
     @Override
     public String getDefaultUser(){
         return username;
     }
-    
+
     @Override
     public String getDefaultPassword(){
         return password;
     }
-    
+
     @Override
     public boolean delete(String url, String username, String password){
-        
+
         Sardine webdavConn = SardineFactory.begin(username, password);
-        
+
         if(!exists(url)){
             return false;
         }
-        
+
         try {
             webdavConn.delete(url);
-            
+
             // check if the url actually was deleted
             if(!exists(url)){
                 return true;
             } else {
                 return false;
             }
-            
+
         } catch (IOException e) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Failed to delete resource", e);
-            throw new EditorException("Failed to delete resource list from WebDAV", e);            
+            throw new EditorException("Failed to delete resource list from WebDAV", e);
         }
-        
+
     }
 
 }
