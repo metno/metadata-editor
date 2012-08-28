@@ -2,6 +2,8 @@
 <edt:editorDataTypes
     xmlns:edt="http://www.met.no/schema/metadataeditor/editorDataTypes"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:gmd="http://www.w3.org/2001/gmd"
+    xmlns:gco="http://www.w3.org/2001/gco"
     xsi:schemaLocation="http://www.met.no/schema/metadataeditor/editorDataTypes dataTypes.xsd">
     <mmc:mmCombined xmlns:mmc="http://www.met.no/schema/metamod/mmCombined">
         <mmc:metadata>
@@ -10,6 +12,21 @@
                 <edt:string varName="keyword" minOccurs="0" maxOccurs="unbounded">
                     <metadata name="$str">Content</metadata>
                 </edt:string>
+                        <edt:stringAndList varName="dates" resource="datetypes.txt">
+                            <gmd:date>
+                                <gmd:CI_Date>
+                                    <gmd:date>
+                                        <gco:DateTime>$str</gco:DateTime>
+                                    </gmd:date>
+                                    <gmd:dateType>
+                                        <gmd:CI_DateTypeCode
+                                            codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/gmxCodelists.xml#CI_DateTypeCode"
+                                            codeListValue="$listElement">$listElement
+                                        </gmd:CI_DateTypeCode>
+                                    </gmd:dateType>
+                                </gmd:CI_Date>
+                            </gmd:date>
+                        </edt:stringAndList>            
             </MM2>
         </mmc:metadata>
     </mmc:mmCombined>
