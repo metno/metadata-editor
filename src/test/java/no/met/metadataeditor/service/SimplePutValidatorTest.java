@@ -45,11 +45,11 @@ public class SimplePutValidatorTest extends JerseyTest {
 
     @Override
     public int getPort(int defaultPort) {
-        return 8889;
+        return 8888;
     }
 
     public int getPort() {
-        return getPort(8889);
+        return getPort(8888);
     }
 
     @Test
