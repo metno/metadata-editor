@@ -1,5 +1,7 @@
 package no.met.metadataeditor.service;
 
+import static com.jayway.restassured.RestAssured.given;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -8,8 +10,6 @@ import no.met.metadataeditor.TestHelpers;
 import org.apache.commons.io.FileUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import static com.jayway.restassured.RestAssured.*;
 
 import com.sun.jersey.test.framework.JerseyTest;
 
@@ -45,11 +45,11 @@ public class SimplePutValidatorTest extends JerseyTest {
 
     @Override
     public int getPort(int defaultPort) {
-        return 8888;
+        return 8889;
     }
 
     public int getPort() {
-        return getPort(8888);
+        return getPort(8889);
     }
 
     @Test
