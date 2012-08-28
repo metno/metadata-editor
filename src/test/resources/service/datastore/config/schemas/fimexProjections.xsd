@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://www.met.no/schema/metamod/fimexProjections"
+        xmlns:fp="http://www.met.no/schema/metamod/fimexProjections"
+        elementFormDefault="qualified"
+        attributeFormDefault="unqualified">
+
+    <!-- root element -->
+    <element name='fimexProjections' type="fp:FimexProjections" />
+
+    <!-- embedded elements -->
+    <element name='dataset' type="fp:Dataset" />
+    <element name='projection' type='fp:Projection' />
+
+
+    <complexType name='FimexProjections'>
+        <sequence>
+            <element ref='fp:dataset' minOccurs='1' maxOccurs='1'/>
+            <element ref='fp:projection' minOccurs='0' maxOccurs='unbounded' />
+        </sequence>
+    </complexType>
+
+    <complexType name='Dataset'>
+        <attribute name="urlRegex" type="string" use="required"/>
+        <attribute name="urlReplace" type="string" use="required"/>
+    </complexType>    
+    
+    <complexType name='Projection'>
+        <attribute name="name" type="string" use="required"/>
+        <attribute name="method" type="string" use="required"/>
+        <attribute name="projString" type="string" use="required"/>
+        <attribute name="xAxis" type="string" use="required"/>
+        <attribute name="yAxis" type="string" use="required"/>
+        <attribute name="toDegree" type="boolean" use="required"/>
+    </complexType>    
+
+
+    
+</schema>

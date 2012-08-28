@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://www.met.no/schema/metamod/ncWmsSetup"
+        xmlns:w="http://www.met.no/schema/metamod/ncWmsSetup"
+        elementFormDefault="qualified"
+        attributeFormDefault="unqualified">
+
+    <!-- root element -->
+    <element name='ncWmsSetup' type="w:NcWmsSetup" />
+    <!-- embedded elements -->
+    <element name='displayArea' type="w:DisplayArea" />
+    <element name='baselayer' type="w:LayerAny" /> <!--opaque-->
+    <element name='layer' type="w:LayerAny" /> <!--transparent-->
+    <element name='thumbnail' type="w:Thumbnail" />
+
+    <complexType name='NcWmsSetup'>
+        <sequence>
+            <element ref='w:displayArea' minOccurs='1' maxOccurs='1'/>
+            <element ref='w:baselayer' minOccurs='0' maxOccurs="unbounded"/>
+            <element ref='w:layer' minOccurs='0' maxOccurs="unbounded"/>
+            <element ref='w:thumbnail' minOccurs='0' maxOccurs='1'/>
+        </sequence>
+        <attribute name="url" type="string" use="optional"/> <!-- not used in DefaultWMC or multiwmc -->
+        <attribute name="aggregate_url" type="string" use="optional"/> <!-- currently not expanded for %PARENT% etc -->
+    </complexType>
+
+    <complexType name='DisplayArea'>
+        <attribute name="crs" type="string" use="required"/>
+        <attribute name="left" type="double" use="optional"/>
+        <attribute name="right" type="double" use="optional"/>
+        <attribute name="top" type="double" use="optional"/>
+        <attribute name="bottom" type="double" use="optional"/>
+        <attribute name="units" type="string" use="optional"/>
+    </complexType>
+
+    <complexType name='LayerAny'>
+        <attribute name="name" type="string" use="required"/>  <!-- use '*' for default attrs -->
+        <attribute name="style" type="string" use="optional"/>
+        <attribute name="url" type="string" use="optional"/> <!-- currently not expanded for %PARENT% etc -->
+    </complexType>
+
+    <complexType name='Thumbnail'>
+        <attribute name="name" type="string" use="required"/>
+        <attribute name="url" type="string" use="optional"/> <!-- currently not expanded for %PARENT% etc -->
+        <attribute name="style" type="string" use="optional"/>
+        <attribute name="time" type="string" use="optional"/>
+    </complexType>
+
+</schema>

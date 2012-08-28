@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://www.met.no/schema/metamod/datasetRegion" 
+        xmlns:t="http://www.met.no/schema/metamod/datasetRegion"
+        elementFormDefault="qualified">
+        
+    <complexType name='DatasetRegion'>
+        <!-- regions points/polygons become invalid if too many data have been added -->
+        <sequence>
+            <element ref='t:boundingBox' minOccurs='1' maxOccurs='1'/>
+            <element ref='t:lonLatPoints' minOccurs='1' maxOccurs='1'/>
+            <element ref='t:lonLatPolygon' minOccurs='0' maxOccurs='unbounded' />
+        </sequence>
+        <attribute name='isValid' use='optional' default="true"/>
+    </complexType>
+    <complexType name='BoundingBox'>
+        <attribute name='north' use='optional'>
+            <simpleType>
+                <restriction base="decimal">
+                    <minInclusive value="-90"/>
+                    <maxInclusive value="90"/>
+                </restriction>
+            </simpleType>
+        </attribute>                
+        <attribute name='south' use='optional'>
+            <simpleType>
+                <restriction base="decimal">
+                    <minInclusive value="-90"/>
+                    <maxInclusive value="90"/>
+                </restriction>
+            </simpleType>
+        </attribute>                
+        <attribute name='east' use='optional'>
+            <simpleType>
+                <restriction base="decimal">
+                    <minInclusive value="-180"/>
+                    <maxInclusive value="180"/>
+                </restriction>
+            </simpleType>
+        </attribute>                
+        <attribute name='west' use='optional'>
+            <simpleType>
+                <restriction base="decimal">
+                    <minInclusive value="-180"/>
+                    <maxInclusive value="180"/>
+                </restriction>
+            </simpleType>
+        </attribute>                
+    </complexType>
+    
+    <complexType name='LonLatPoints'>
+        <simpleContent>
+            <extension base="string" />
+        </simpleContent>
+    </complexType>
+    <complexType name='LonLatPolygon'>
+        <simpleContent>
+            <extension base="string" />
+        </simpleContent>
+    </complexType>
+    
+    <element name='datasetRegion' type='t:DatasetRegion' />
+    <element name='boundingBox' type='t:BoundingBox' />
+    <element name='lonLatPoints' type='t:LonLatPoints' />
+    <element name='lonLatPolygon' type='t:LonLatPolygon' />
+</schema>

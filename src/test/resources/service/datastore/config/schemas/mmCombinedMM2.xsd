@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" 
+        targetNamespace="http://www.met.no/schema/metamod/mmCombinedMM2"
+        xmlns:mmc="http://www.met.no/schema/metamod/mmCombinedMM2"
+        xmlns:mm2="http://www.met.no/schema/metamod/MM2"
+        xmlns:xmd="http://www.met.no/schema/metamod/dataset" 
+        elementFormDefault="qualified">
+        
+<import namespace="http://www.met.no/schema/metamod/MM2" 
+           schemaLocation="MM2.xsd" />
+<import namespace="http://www.met.no/schema/metamod/dataset" 
+           schemaLocation="dataset_strict.xsd" />
+
+<complexType name='MMCombinedMM2'>
+  <sequence>
+    <element ref='xmd:dataset' minOccurs='1' maxOccurs='1'/>
+    <element ref='mm2:MM2' minOccurs='1' maxOccurs='1'/>
+  </sequence>
+</complexType>
+
+<element name='mmCombinedMM2' type='mmc:MMCombinedMM2' />
+</schema>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    An example how to use this DTD from your XML document:
+
+    <?xml version="1.0" encoding="iso8859-1" ?>
+    <?xml-stylesheet href="dataset.xsl" type="text/xsl"?>
+    <dataset
+       xmlns="http://www.met.no/schema/metamod/dataset"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.met.no/schema/metamod/dataset https://wiki.met.no/_media/metamod/dataset.xsd">
+      <info name="DAMOC/test" 
+            status="active" 
+            ownertag="DAM"
+            creationDate="2008-10-31T14:30:00Z"
+            metadataFormat="MM2" />
+      <quadtree_nodes>
+      1
+      11
+      113
+      </quadtree_nodes>
+    </dataset>
+
+-->
+<schema
+  xmlns='http://www.w3.org/2001/XMLSchema'
+  targetNamespace='http://www.met.no/schema/metamod/dataset'
+  xmlns:t='http://www.met.no/schema/metamod/dataset'
+  xmlns:r='http://www.met.no/schema/metamod/datasetRegion'
+  xmlns:wms="http://www.met.no/schema/metamod/ncWmsSetup"
+  xmlns:fi="http://www.met.no/schema/metamod/fimexProjections">
+
+<import namespace="http://www.met.no/schema/metamod/datasetRegion" 
+        schemaLocation="datasetRegion.xsd"/>
+<import namespace="http://www.met.no/schema/metamod/ncWmsSetup"
+        schemaLocation="ncWmsSetup.xsd" />
+<import namespace="http://www.met.no/schema/metamod/fimexProjections"
+        schemaLocation="fimexProjections.xsd" />
+      
+      
+    <complexType name='Dataset'>
+        <sequence>
+            <element ref='t:info'/>
+            <element ref='t:quadtree_nodes' minOccurs='0' maxOccurs='1'/>
+            <element ref='t:wmsInfo' minOccurs='0' maxOccurs='1' />
+            <element ref='t:projectionInfo' minOccurs='0' maxOccurs='1' />
+            <element ref='r:datasetRegion' minOccurs='0' maxOccurs='1' />
+        </sequence>
+    </complexType>
+    <complexType name='Info'>
+        <attribute name='name' type='string' use='required' />
+        <attribute name='status' use='required'>
+            <simpleType>
+                <restriction base="string">
+                    <enumeration value="active"/>
+                    <enumeration value="deleted"/>
+                </restriction>
+            </simpleType>
+        </attribute>                
+        <attribute name='ownertag' type='string' use='required' />
+        <attribute name='creationDate' type='dateTime' use='required' />
+        <attribute name='datestamp' type='dateTime' use='required' />
+        <attribute name='metadataFormat' type='string' />
+    </complexType>
+    <complexType name='QuadtreeNode'>
+        <simpleContent>
+            <extension base="string" />
+        </simpleContent>
+    </complexType>
+   <complexType name='WMSInfo'>
+      <sequence>
+        <element ref="wms:ncWmsSetup" />
+      </sequence>
+   </complexType>
+   <complexType name='ProjectionInfo'>
+      <sequence>
+        <element ref="fi:fimexProjections" />
+      </sequence>
+   </complexType>
+
+    <element name='dataset' type='t:Dataset' />
+    <element name='info' type='t:Info' />
+    <element name='quadtree_nodes' type='t:QuadtreeNode' />
+    <element name='wmsInfo' type='t:WMSInfo' />
+    <element name='projectionInfo' type='t:ProjectionInfo' />
+</schema>
