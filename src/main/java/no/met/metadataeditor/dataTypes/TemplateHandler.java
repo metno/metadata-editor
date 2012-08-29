@@ -30,6 +30,8 @@ import no.met.metadataeditor.dataTypes.attributes.TimeAttribute;
 import no.met.metadataeditor.dataTypes.attributes.UriAttribute;
 import no.met.metadataeditor.dataTypes.attributes.XMDDisplayArea;
 import no.met.metadataeditor.dataTypes.attributes.XMDInfoAttribute;
+import no.met.metadataeditor.dataTypes.attributes.XMDProjectionDataset;
+import no.met.metadataeditor.dataTypes.attributes.XMDProjectionFimex;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.ConstructorUtils;
@@ -70,6 +72,8 @@ class TemplateHandler extends DefaultHandler {
         supportedTags.put("keyValueList", KeyValueListAttribute.class);
         supportedTags.put("xmdInfo", XMDInfoAttribute.class);
         supportedTags.put("xmdDisplayArea", XMDDisplayArea.class);
+        supportedTags.put("xmdProjectionDataset", XMDProjectionDataset.class);
+        supportedTags.put("xmdProjectionFimex", XMDProjectionFimex.class);
     }
 
     @Override

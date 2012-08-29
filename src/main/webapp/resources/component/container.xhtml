@@ -41,6 +41,8 @@
 			        <metaedit:start-and-stop-time widget="#{childWidget}" rendered="#{childWidget.widgetType == 'no.met.metadataeditor.widget.StartAndStopTimeWidget'}" />        
 			        <metaedit:uri widget="#{childWidget}" rendered="#{childWidget.widgetType == 'no.met.metadataeditor.widget.UriWidget'}" />        
 			        <metaedit:string-and-list widget="#{childWidget}" rendered="#{childWidget.widgetType == 'no.met.metadataeditor.widget.StringAndListWidget'}" />
+                    <metaedit:xmd-projection-dataset widget="#{childWidget}" rendered="#{childWidget.widgetType == 'no.met.metadataeditor.widget.XMDProjectionDatasetWidget'}" />        
+                    <metaedit:xmd-projection-fimex widget="#{childWidget}" rendered="#{childWidget.widgetType == 'no.met.metadataeditor.widget.XMDProjectionFimexWidget'}" />			        
 
                 </ui:repeat>
             </p:fieldset>
