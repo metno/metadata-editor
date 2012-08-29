@@ -302,6 +302,15 @@ public class EditorTemplate {
 
         if( supportedTags.containsKey(element.getName())){
 
+            // need the index of the element to know where to insert the elements
+            // children
+            int elementIndex;
+            if( parent != null ){
+                elementIndex = parent.indexOf(element);
+            } else {
+                elementIndex = doc.indexOf(element);
+            }
+
             element.detach();
             for( Content child : children ){
 
@@ -312,9 +321,9 @@ public class EditorTemplate {
 
                 child.detach();
                 if( parent != null ){
-                    parent.addContent(child);
+                    parent.addContent(elementIndex++, child);
                 } else {
-                    doc.addContent(child);
+                    doc.addContent(elementIndex++, child);
                 }
             }
         } else {
