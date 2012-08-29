@@ -64,6 +64,7 @@ public abstract class EditorWidget implements Serializable {
 
         this.variableName = cloneFrom.variableName;
         this.label = cloneFrom.label;
+        this.description = cloneFrom.description;
         this.maxOccurs = cloneFrom.maxOccurs;
         this.minOccurs = cloneFrom.minOccurs;
         this.resourceUri = cloneFrom.resourceUri;

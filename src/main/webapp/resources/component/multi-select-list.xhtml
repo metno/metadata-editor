@@ -18,6 +18,8 @@
         <h:outputLabel for="selectone" value="#{cc.attrs.widget.label}" styleClass="main-label" />
         
         <br />
+        
+        <metaedit:description widget="#{cc.attrs.widget}"/>
 
         <h:selectOneMenu id="selectone" value="#{cc.attrs.widget.currentValue}" disabled="#{!userBean.validated}">
             <f:selectItems value="#{editorBean.getFilteredResourceValues(cc.attrs.widget, 'listElement')}" />

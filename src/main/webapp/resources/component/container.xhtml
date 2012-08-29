@@ -21,6 +21,8 @@
             <ui:param name="updateId" value="container"/>
         </ui:include>
 
+        <metaedit:description widget="#{cc.attrs.widget}"/>
+
         <ui:repeat var="widgetView" value="#{cc.attrs.widget.widgetViews}">
         
             <p:fieldset>

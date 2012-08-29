@@ -21,6 +21,8 @@
             <ui:param name="updateId" value="time-container"/>
         </ui:include>
 
+        <metaedit:description widget="#{cc.attrs.widget}"/>
+
         <h:dataTable value="#{cc.attrs.widget.widgetViews}" var="widgetView" id="string">
         
             <h:column>

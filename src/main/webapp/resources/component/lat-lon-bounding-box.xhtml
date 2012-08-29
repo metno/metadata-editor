@@ -21,6 +21,8 @@
             <ui:param name="updateId" value="boundingbox-container"/>
         </ui:include>          
 
+        <metaedit:description widget="#{cc.attrs.widget}"/>
+
         <h:dataTable value="#{cc.attrs.widget.widgetViews}" var="widgetView" id="boundingbox">
 
             <h:column headerClass="lat-lon-header">

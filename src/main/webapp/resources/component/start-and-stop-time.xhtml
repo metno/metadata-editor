@@ -20,6 +20,8 @@
             <ui:param name="updateId" value="startandstoptime-container"/>
         </ui:include>
 
+        <metaedit:description widget="#{cc.attrs.widget}"/>
+
         <h:dataTable value="#{cc.attrs.widget.widgetViews}" var="widgetView" id="startandstoptime">
         
         <h:column>

@@ -21,6 +21,8 @@
             <ui:param name="updateId" value="xmd-info-container"/>
         </ui:include>
 
+        <metaedit:description widget="#{cc.attrs.widget}"/>
+
         <ui:repeat var="widgetView" value="#{cc.attrs.widget.widgetViews}">
 
             <ui:include src="../../remove-value-button.xhtml" >
