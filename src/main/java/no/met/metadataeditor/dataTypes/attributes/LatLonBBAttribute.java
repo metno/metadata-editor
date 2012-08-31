@@ -5,17 +5,17 @@ import no.met.metadataeditor.dataTypes.IsAttributeValue;
 
 
 public class LatLonBBAttribute extends DataAttribute {
-    
-    @IsAttributeValue(DataType.NUMBER)
+
+    @IsAttributeValue(DataType.FLOAT)
     String south;
 
-    @IsAttributeValue(DataType.NUMBER)
+    @IsAttributeValue(DataType.FLOAT)
     String north;
-    
-    @IsAttributeValue(DataType.NUMBER)
+
+    @IsAttributeValue(DataType.FLOAT)
     String east;
-    
-    @IsAttributeValue(DataType.NUMBER)
+
+    @IsAttributeValue(DataType.FLOAT)
     String west;
 
 

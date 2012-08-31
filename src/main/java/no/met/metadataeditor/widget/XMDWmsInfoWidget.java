@@ -19,7 +19,7 @@ public class XMDWmsInfoWidget extends EditorWidget {
     public Map<String, String> getDefaultValue() {
 
         Map<String,String> defaultValue = new HashMap<String,String>();
-        defaultValue.put("str", "");
+        defaultValue.put("uri", "");
         return defaultValue;
     }
 

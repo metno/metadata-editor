@@ -26,7 +26,7 @@
         <h:dataTable value="#{cc.attrs.widget.widgetViews}" var="widgetView" id="string">
         
             <h:column>
-                <p:calendar value="#{widgetView.values['date']}" pattern="yyyy-MM-dd" converter="javax.faces.DateTime" maxlength="16" size="17" disabled="#{!userBean.validated}" />
+                <p:calendar value="#{widgetView.values['date']}" pattern="yyyy-MM-dd" converter="no.met.metadataeditor.DateConverter" maxlength="16" size="17" disabled="#{!userBean.validated}" />
             </h:column>
             <h:column>
                 <ui:include src="../../remove-value-button.xhtml" >
@@ -34,6 +34,9 @@
                     <ui:param name="value" value="#{widgetView}"/>
                 </ui:include>    
             </h:column>
+            <h:column id="validation-msg-date">
+               <h:outputText styleClass="input-validation-error" value="#{widgetView.validateAttribute('date')}" rendered="#{userBean.validated and widgetView.validateAttribute('date') != null}"/>
+            </h:column>            
         
         </h:dataTable>
        

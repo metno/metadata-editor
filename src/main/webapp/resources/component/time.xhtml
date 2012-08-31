@@ -34,6 +34,10 @@
                     <ui:param name="value" value="#{widgetView}"/>
                 </ui:include>    
             </h:column>
+            <h:column id="validation-msg-time">
+               <h:outputText styleClass="input-validation-error" value="#{widgetView.validateAttribute('time')}" rendered="#{userBean.validated and widgetView.validateAttribute('time') != null}"/>
+            </h:column>
+
         
         </h:dataTable>
        

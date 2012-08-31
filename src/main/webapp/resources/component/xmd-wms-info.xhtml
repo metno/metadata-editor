@@ -26,8 +26,12 @@
         <ui:repeat var="widgetView" value="#{cc.attrs.widget.widgetViews}">
 
             <p:fieldset>
-            <h:outputLabel for="url" value="URL"/> <br />
-            <h:inputText id="url" value="#{widgetView.values['str']}" />
+                       
+            <h:outputLabel for="url" value="URL"/>
+            <h:panelGrid columns="2">
+                <p:inputText id="url" value="#{widgetView.values['uri']}" />
+                <h:outputText id="validation-msg-uri" styleClass="input-validation-error" value="#{widgetView.validateAttribute('uri')}" rendered="#{userBean.validated and widgetView.validateAttribute('uri') != null}"/>
+            </h:panelGrid>
         
 	        <ui:repeat var="childWidget" value="#{widgetView.children}">
 	        

@@ -34,6 +34,9 @@
 		            <ui:param name="value" value="#{widgetView}"/>
 		        </ui:include>   
 	        </h:column>
+            <h:column id="validation-msg-uri">
+               <h:outputText styleClass="input-validation-error" value="#{widgetView.validateAttribute('uri')}" rendered="#{userBean.validated and widgetView.validateAttribute('uri') != null}"/>
+            </h:column>	        
         
         </h:dataTable>
         

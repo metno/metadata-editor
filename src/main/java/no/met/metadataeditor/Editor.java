@@ -66,12 +66,13 @@ public class Editor implements Serializable {
      * Save the contents of the editor to the datastore.
      * @param project The name of the current project.
      * @param identifier The identifier of the current record.
+     * @return true if the save is successfull, false otherwise
      */
-    public void save(String project, String identifier, String username, String password) {
+    public boolean save(String project, String identifier, String username, String password) {
 
         String xml = editorContentToXML(project, identifier);
         DataStore dataStore = DataStoreFactory.getInstance(project);
-        dataStore.writeMetadata(identifier, xml, username, password);
+        return dataStore.writeMetadata(identifier, xml, username, password);
 
     }
 

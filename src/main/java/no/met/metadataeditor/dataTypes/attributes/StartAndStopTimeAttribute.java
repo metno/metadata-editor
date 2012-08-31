@@ -4,11 +4,11 @@ import no.met.metadataeditor.dataTypes.DataType;
 import no.met.metadataeditor.dataTypes.IsAttributeValue;
 
 public class StartAndStopTimeAttribute extends DataAttribute {
-    
-    @IsAttributeValue(DataType.DATE)
+
+    @IsAttributeValue(DataType.DATETIME)
     String start;
-    
-    @IsAttributeValue(DataType.DATE)
+
+    @IsAttributeValue(DataType.DATETIME)
     String stop;
 
 }

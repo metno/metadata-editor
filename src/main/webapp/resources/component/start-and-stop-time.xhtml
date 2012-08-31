@@ -3,6 +3,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
       xmlns:composite="http://java.sun.com/jsf/composite"
       xmlns:metaedit="http://java.sun.com/jsf/composite/component">
 
@@ -24,19 +25,26 @@
 
         <h:dataTable value="#{cc.attrs.widget.widgetViews}" var="widgetView" id="startandstoptime">
         
-        <h:column>
-            <h:outputLabel value="Start time" />
+        <h:column headerClass="lat-lon-header">
+            <f:facet name="header">
+                <h:outputText value="Start time" />
+            </f:facet>
+            <p:calendar value="#{widgetView.values['start']}" pattern="yyyy-MM-dd HH:mm" converter="no.met.metadataeditor.DateTimeConverter" maxlength="16" size="20" disabled="#{!userBean.validated}" />
         </h:column>
-        <h:column>
-            <h:inputText name="start" id="start" value="#{widgetView.values['start']}" disabled="#{!userBean.validated}" />
-        </h:column>
+        <h:column id="validation-msg-start">
+            <h:outputText styleClass="input-validation-error" value="#{widgetView.validateAttribute('start')}" rendered="#{userBean.validated and widgetView.validateAttribute('start') != null}"/>
+        </h:column>        
+        
 
-        <h:column>
-            <h:outputLabel value="Stop time" />
+        <h:column headerClass="lat-lon-header">
+            <f:facet name="header">
+                <h:outputText value="Stop time" />
+            </f:facet>        
+            <p:calendar value="#{widgetView.values['stop']}" pattern="yyyy-MM-dd HH:mm" converter="no.met.metadataeditor.DateTimeConverter" maxlength="16" size="20" disabled="#{!userBean.validated}" />
         </h:column>
-        <h:column>
-            <h:inputText name="stop" id="stop" value="#{widgetView.values['stop']}" disabled="#{!userBean.validated}" />
-        </h:column>
+        <h:column id="validation-msg-stop">
+            <h:outputText styleClass="input-validation-error" value="#{widgetView.validateAttribute('stop')}" rendered="#{userBean.validated and widgetView.validateAttribute('stop') != null}"/>
+        </h:column>         
         
         <h:column>
 	        <ui:include src="../../remove-value-button.xhtml" >

@@ -30,28 +30,44 @@
                 <ui:param name="value" value="#{widgetView}"/>
             </ui:include>               
 
-            <h:panelGrid columns="2">
+            <h:panelGrid columns="3">
 
                 <h:outputLabel for="name" value="Name" />
-                <h:inputText value="#{widgetView.values['name']}" id="name" disabled="#{!userBean.validated}"/>                
+                <p:inputText value="#{widgetView.values['name']}" id="name" disabled="#{!userBean.validated}"/>
+                <h:panelGroup>
+                    <h:outputText id="validation-msg-name" styleClass="input-validation-error" value="#{widgetView.validateAttribute('name')}" rendered="#{userBean.validated and widgetView.validateAttribute('name') != null}"/>                
+                </h:panelGroup>                                
 
                 <h:outputLabel for="method" value="Method" />
-                <h:inputText value="#{widgetView.values['method']}" id="method" disabled="#{!userBean.validated}"/>                
+                <p:inputText value="#{widgetView.values['method']}" id="method" disabled="#{!userBean.validated}"/>
+                <h:panelGroup>
+                    <h:outputText id="validation-msg-url-method" styleClass="input-validation-error" value="#{widgetView.validateAttribute('method')}" rendered="#{userBean.validated and widgetView.validateAttribute('method') != null}"/>                
+                </h:panelGroup>                                
 
                 <h:outputLabel for="projString" value="Proj String" />
-                <h:inputText value="#{widgetView.values['projString']}" id="projString" disabled="#{!userBean.validated}"/>                
+                <p:inputText value="#{widgetView.values['projString']}" id="projString" disabled="#{!userBean.validated}"/>
+                <h:panelGroup>
+                    <h:outputText id="validation-msg-proj-string" styleClass="input-validation-error" value="#{widgetView.validateAttribute('projString')}" rendered="#{userBean.validated and widgetView.validateAttribute('projString') != null}"/>                
+                </h:panelGroup>
 
                 <h:outputLabel for="xAxis" value="X Axis" />
-                <h:inputText value="#{widgetView.values['xAxis']}" id="xAxis" disabled="#{!userBean.validated}"/>                
+                <p:inputText value="#{widgetView.values['xAxis']}" id="xAxis" disabled="#{!userBean.validated}"/>
+                <h:panelGroup>
+                    <h:outputText id="validation-msg-x-axis" styleClass="input-validation-error" value="#{widgetView.validateAttribute('xAxis')}" rendered="#{userBean.validated and widgetView.validateAttribute('xAxis') != null}"/>                
+                </h:panelGroup>
 
                 <h:outputLabel for="yAxis" value="Y Axis" />
-                <h:inputText value="#{widgetView.values['yAxis']}" id="yAxis" disabled="#{!userBean.validated}"/>                
+                <p:inputText value="#{widgetView.values['yAxis']}" id="yAxis" disabled="#{!userBean.validated}"/>
+                <h:panelGroup>
+                    <h:outputText id="validation-msg-y-axis" styleClass="input-validation-error" value="#{widgetView.validateAttribute('yAxis')}" rendered="#{userBean.validated and widgetView.validateAttribute('yAxis') != null}"/>                
+                </h:panelGroup>
 
                 <h:outputLabel for="toDegree" value="To Degree?" />
                 <h:selectOneMenu value="#{widgetView.values['toDegree']}" id="toDegree" disabled="#{!userBean.validated}">
                     <f:selectItem itemValue="true" itemLabel="Yes" />
                     <f:selectItem itemValue="false" itemLabel="No" />
                 </h:selectOneMenu>
+                <h:outputText value="" />
 
             </h:panelGrid>                
 

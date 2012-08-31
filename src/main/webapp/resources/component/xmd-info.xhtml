@@ -30,26 +30,42 @@
                 <ui:param name="value" value="#{widgetView}"/>
             </ui:include>               
 
-            <h:panelGrid columns="2">
+            <h:panelGrid columns="3">
 
 
                 <h:outputLabel for="name" value="Name" />
-                <h:inputText value="#{widgetView.values['name']}" id="name" disabled="#{!userBean.validated}"/>                
+                <p:inputText value="#{widgetView.values['name']}" id="name" disabled="#{!userBean.validated}"/>                
+
+                <h:panelGroup>
+                    <h:outputText id="validation-msg-name" styleClass="input-validation-error" value="#{widgetView.validateAttribute('name')}" rendered="#{userBean.validated and widgetView.validateAttribute('name') != null}"/>
+                </h:panelGroup>
 
                 <h:outputLabel for="status" value="Status" />
                 <h:selectOneMenu value="#{widgetView.values['status']}" id="status" disabled="#{!userBean.validated}">
                     <f:selectItem itemValue="active" itemLabel="active" />
                     <f:selectItem itemValue="deleted" itemLabel="deleted" />
                 </h:selectOneMenu>
+                <h:outputText value="" />
+
                 
                 <h:outputLabel for="creation" value="Creation Time" />
                 <p:calendar id="creation" value="#{widgetView.values['creation']}" pattern="yyyy-MM-dd HH:mm" converter="no.met.metadataeditor.DateTimeConverter" maxlength="16" size="17" disabled="#{!userBean.validated}" />
+                <h:panelGroup>
+                    <h:outputText id="validation-msg-creation" styleClass="input-validation-error" value="#{widgetView.validateAttribute('creation')}" rendered="#{userBean.validated and widgetView.validateAttribute('creation') != null}"/>
+                </h:panelGroup>
                 
                 <h:outputLabel for="lastChanged" value="Last Changed" />
                 <p:calendar id="lastChanged" value="#{widgetView.values['lastChanged']}" pattern="yyyy-MM-dd HH:mm" converter="no.met.metadataeditor.DateTimeConverter" maxlength="16" size="17" disabled="#{!userBean.validated}" />                                
-
+                <h:panelGroup>
+                    <h:outputText id="validation-msg-last-changed" styleClass="input-validation-error" value="#{widgetView.validateAttribute('lastChanged')}" rendered="#{userBean.validated and widgetView.validateAttribute('lastChanged') != null}"/>
+                </h:panelGroup>
+                
                 <h:outputLabel for="ownertag" value="Ownertag" />
-                <h:inputText value="#{widgetView.values['ownertag']}" id="ownertag" disabled="#{!userBean.validated}"/>                
+                <p:inputText value="#{widgetView.values['ownertag']}" id="ownertag" disabled="#{!userBean.validated}"/>
+                <h:panelGroup>
+                    <h:outputText id="validation-msg-ownertag" styleClass="input-validation-error" value="#{widgetView.validateAttribute('ownertag')}" rendered="#{userBean.validated and widgetView.validateAttribute('ownertag') != null}"/>                
+                </h:panelGroup>
+            
             </h:panelGrid>                
 
         </ui:repeat>

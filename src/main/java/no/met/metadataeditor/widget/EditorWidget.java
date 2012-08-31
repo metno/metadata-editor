@@ -55,6 +55,8 @@ public abstract class EditorWidget implements Serializable {
 
     private List<EditorWidgetView> widgetViews = new ArrayList<EditorWidgetView>();
 
+    private Class<? extends DataAttribute> attributeClass;
+
     public EditorWidget() {
 
     }
@@ -68,6 +70,7 @@ public abstract class EditorWidget implements Serializable {
         this.maxOccurs = cloneFrom.maxOccurs;
         this.minOccurs = cloneFrom.minOccurs;
         this.resourceUri = cloneFrom.resourceUri;
+        this.attributeClass = cloneFrom.attributeClass;
         this.children = new ArrayList<EditorWidget>();
         Collections.copy(this.children, cloneFrom.children);
 
@@ -116,6 +119,8 @@ public abstract class EditorWidget implements Serializable {
     public boolean configure(EditorVariable variable) {
         maxOccurs = variable.getMaxOccurs();
         minOccurs = variable.getMinOccurs();
+
+        attributeClass = variable.getDataAttributes().getClass();
 
         setResourceUri(variable.getDefaultResourceURI());
 
@@ -178,6 +183,7 @@ public abstract class EditorWidget implements Serializable {
         }
         view.setChildren(childWidgets);
         view.setValues(values);
+        view.setDataAttributeClass(attributeClass);
         return view;
     }
 
@@ -192,16 +198,8 @@ public abstract class EditorWidget implements Serializable {
         for( EditorWidgetView view : widgetViews ){
 
             EditorVariableContent content = new EditorVariableContent();
-            DataAttribute da = ev.getNewDataAttributes();
+            DataAttribute da = view.valuesAsAttriubte();
             content.setAttrs(da);
-            for (Map.Entry<String, String> entry : view.getValues().entrySet()) {
-                String value =  entry.getValue();
-
-                if( value != null ){
-                    value = value.replace("\r", "");
-                }
-                da.addAttribute(entry.getKey(), value);
-            }
             contentList.add(content);
 
             // recursively get content from child widgets.

@@ -27,7 +27,10 @@
 
             <h:column>
                 <p:inputText value="#{widgetView.values['str']}" size="${cc.attrs.widget.size}" maxlength="${cc.attrs.widget.maxlength}" disabled="#{!userBean.validated}" />
-            </h:column>     
+            </h:column>  
+            <h:column id="validation-msg-str">
+               <h:outputText styleClass="input-validation-error" value="#{widgetView.validateAttribute('str')}" rendered="#{userBean.validated and widgetView.validateAttribute('str') != null}"/>
+            </h:column>               
 
             <h:column>
                 <h:selectOneMenu value="#{widgetView.values['listElement']}" disabled="#{!userBean.validated}">

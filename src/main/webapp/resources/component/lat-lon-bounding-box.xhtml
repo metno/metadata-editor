@@ -31,6 +31,9 @@
                 </f:facet>
                 <p:inputText value="#{widgetView.values['north']}" size="10" disabled="#{!userBean.validated}" />
             </h:column>
+            <h:column id="validation-msg-north">
+               <h:outputText styleClass="input-validation-error" value="#{widgetView.validateAttribute('north')}" rendered="#{userBean.validated and widgetView.validateAttribute('north') != null}"/>
+            </h:column>            
 
             <h:column headerClass="lat-lon-header">
                 <f:facet name="header">
@@ -38,6 +41,9 @@
                 </f:facet>            
                 <p:inputText value="#{widgetView.values['south']}" size="10" disabled="#{!userBean.validated}" />
             </h:column>
+            <h:column id="validation-msg-south">
+               <h:outputText styleClass="input-validation-error" value="#{widgetView.validateAttribute('south')}" rendered="#{userBean.validated and widgetView.validateAttribute('south') != null}"/>
+            </h:column>            
 
             <h:column headerClass="lat-lon-header">
                 <f:facet name="header">
@@ -45,6 +51,9 @@
                 </f:facet>            
                 <p:inputText value="#{widgetView.values['east']}" size="10" disabled="#{!userBean.validated}" />
             </h:column>
+            <h:column id="validation-msg-east">
+               <h:outputText styleClass="input-validation-error" value="#{widgetView.validateAttribute('east')}" rendered="#{userBean.validated and widgetView.validateAttribute('east') != null}"/>
+            </h:column>            
 
             <h:column headerClass="lat-lon-header">
                 <f:facet name="header">
@@ -52,6 +61,9 @@
                 </f:facet>            
                 <p:inputText value="#{widgetView.values['west']}" size="10" disabled="#{!userBean.validated}" />
             </h:column>
+            <h:column id="validation-msg-west">
+               <h:outputText styleClass="input-validation-error" value="#{widgetView.validateAttribute('west')}" rendered="#{userBean.validated and widgetView.validateAttribute('west') != null}"/>
+            </h:column>            
 
             <h:column>
                 <ui:include src="../../remove-value-button.xhtml" >

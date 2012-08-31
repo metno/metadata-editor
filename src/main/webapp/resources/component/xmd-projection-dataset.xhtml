@@ -30,13 +30,19 @@
                 <ui:param name="value" value="#{widgetView}"/>
             </ui:include>               
 
-            <h:panelGrid columns="2">
+            <h:panelGrid columns="3">
 
                 <h:outputLabel for="regex" value="Url regex" />
-                <h:inputText value="#{widgetView.values['urlRegex']}" id="regex" disabled="#{!userBean.validated}"/>                
+                <p:inputText value="#{widgetView.values['urlRegex']}" id="regex" disabled="#{!userBean.validated}"/>
+                <h:panelGroup>
+                    <h:outputText id="validation-msg-url-regex" styleClass="input-validation-error" value="#{widgetView.validateAttribute('urlRegex')}" rendered="#{userBean.validated and widgetView.validateAttribute('urlRegex') != null}"/>                
+                </h:panelGroup>                                
 
                 <h:outputLabel for="replace" value="Url replace" />
-                <h:inputText value="#{widgetView.values['urlReplace']}" id="replace" disabled="#{!userBean.validated}"/>                
+                <p:inputText value="#{widgetView.values['urlReplace']}" id="replace" disabled="#{!userBean.validated}"/>
+                <h:panelGroup>
+                    <h:outputText id="validation-msg-url-replace" styleClass="input-validation-error" value="#{widgetView.validateAttribute('urlReplace')}" rendered="#{userBean.validated and widgetView.validateAttribute('urlReplace') != null}"/>                
+                </h:panelGroup>
 
             </h:panelGrid>                
 
