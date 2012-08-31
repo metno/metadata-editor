@@ -5,7 +5,7 @@ import no.met.metadataeditor.dataTypes.IsAttributeValue;
 
 public class TestAttributesSub extends TestAttributes {
 
-    @IsAttributeValue(DataType.NUMBER)
+    @IsAttributeValue(DataType.FLOAT)
     String otherAttribute;
 
 }
