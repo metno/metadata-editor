@@ -142,7 +142,8 @@ public class RESTApi extends Application {
         int removeLength = 0;
         removeLength += record.length() + 1; // the length of '/<record>
         removeLength += project.length() + 1; // the length of '/<project>
-        removeLength += request.getServletPath().length(); // the length of the servlet path. For instance "/metaedit
+        removeLength += request.getServletPath().length(); // the length of the application path
+        removeLength += "metaedit_api/".length(); // length of the service path
 
         startPath = startPath.substring(0, startPath.length() - removeLength);
 
