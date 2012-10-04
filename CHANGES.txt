@@ -1,2 +1,4 @@
-release date=00:00 13.07.2012,version=0.1,urgency=low,by=Øystein Torget <oysteint@met.no>,distribution=all
+release date=14:00 04.10.2012,version=1.1,urgency=low,by=Øystein Torget <oysteint@met.no>,distribution=all
+ * Attempt to fix packaging problem.
+release date=13:00 04.10.2012,version=1.0,urgency=low,by=Øystein Torget <oysteint@met.no>,distribution=all
  * initial release

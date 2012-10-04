@@ -5,5 +5,4 @@ Priority: optional
 Architecture: all
 Depends: tomcat7
 Maintainer: Metsis <oysteint@met.no>
-Description: Metadata Editor web application
-Distribution: This is the Debian package for Metadata Editor developed by met.no
+Description: This is the Debian package for Metadata Editor web-application developed by met.no 
