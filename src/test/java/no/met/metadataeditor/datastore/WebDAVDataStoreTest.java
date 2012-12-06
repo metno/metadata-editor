@@ -216,13 +216,16 @@ public class WebDAVDataStoreTest {
 
 
     @Test
-    public void testWriteMetadata(){
+    public void testWriteMetadata() throws IOException{
 
         WebDAVDataStore datastore = getDataStore();
 
         datastore.writeMetadata("write1", "Some xml", WEBDAV_USERNAME, WEBDAV_PASSWORD);
 
         assertEquals("Data read is same as written", "Some xml", datastore.readMetadata("write1"));
+        
+        // remove the created file to prevent problems in testAvailableMetadata()
+        webdavConn.delete( webdavPath("project1/XML/write1.xml"));
 
     }
 
@@ -244,7 +247,7 @@ public class WebDAVDataStoreTest {
 
         WebDAVDataStore datastore = getDataStore();
 
-        List<String> expected = Arrays.asList("iso1", "mm2_1", "record1", "write1" );
+        List<String> expected = Arrays.asList("iso1", "mm2_1", "record1" );
         assertEquals("Available metadata found as expected", expected, datastore.availableMetadata());
 
     }
