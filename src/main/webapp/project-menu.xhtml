@@ -1,0 +1,19 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:metaedit="http://java.sun.com/jsf/composite/component">
+
+<body>
+    <ui:composition>
+        <p:menubar>
+            <p:menuitem value="New" url="new.xhtml?project=#{metadataListBean.project}" rendered="#{userBean.validated}" />       
+            <p:menuitem value="Log In" onclick="loginDialog.show()" url="#" rendered="#{!userBean.validated}" />
+            <p:menuitem value="Log Out" action="#{userBean.logout}" rendered="#{userBean.validated}" ajax="false" />
+        </p:menubar>
+    </ui:composition>    
+</body>
+
+</html>

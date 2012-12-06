@@ -15,6 +15,10 @@
 
 <body>
 
+    <ui:include src="login-dialog.xhtml">
+        <ui:param name="project" value="#{metadataListBean.project}"/>
+    </ui:include>
+
     <h:form>
     
         <p:breadCrumb>
@@ -23,6 +27,9 @@
         </p:breadCrumb>
     
         <br />
+        
+        <ui:include src="project-menu.xhtml"/>
+        
         <br />
         
         <p:dataTable id="availableMetadata" var="record" value="#{metadataListBean.availableMetadata}">
