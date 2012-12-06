@@ -21,7 +21,7 @@
                 <p:inputText id="username" value="#{userBean.username}" />
 
                 <p:outputLabel for="password" value="Password:" />
-                <p:inputText id="password" value="#{userBean.password}" />
+                <p:password id="password" value="#{userBean.password}" />
 
                 <p:commandButton value="Login" update="@form" action="#{userBean.validateCredentials}" >
                     <f:ajax>
