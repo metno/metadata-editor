@@ -180,7 +180,7 @@
 				<version>2.12</version>
                 <configuration>
                     <argLine>-XX:-UseSplitVerifier</argLine>
-                </configuration>                                        
+                </configuration>                
 				<dependencies>
 					<dependency>
 						<groupId>org.apache.maven.surefire</groupId>
@@ -225,6 +225,12 @@
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>cobertura-maven-plugin</artifactId>
         <version>2.5.2</version>
+        <configuration>
+           <formats>
+               <format>html</format>
+               <format>xml</format>
+           </formats>
+       </configuration>      
       </plugin>
     </plugins>
   </reporting>
