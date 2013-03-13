@@ -16,7 +16,10 @@ import no.met.metadataeditor.widget.EditorWidget;
  * Class used to represent one set of values for EditorWidget.
  * 
  * EditorWidgets can have several different values. Each set of value is represented by one
- * instance of this class. 
+ * instance of this class.
+ * 
+ * The widget views are exposed to the JSF .xhtml files and used to fetch the values displayed
+ * to the user.
  */
 public class EditorWidgetView implements Serializable {
 
