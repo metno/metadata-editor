@@ -12,6 +12,12 @@ import no.met.metadataeditor.dataTypes.DataAttributeValidationResult;
 import no.met.metadataeditor.dataTypes.attributes.DataAttribute;
 import no.met.metadataeditor.widget.EditorWidget;
 
+/**
+ * Class used to represent one set of values for EditorWidget.
+ * 
+ * EditorWidgets can have several different values. Each set of value is represented by one
+ * instance of this class. 
+ */
 public class EditorWidgetView implements Serializable {
 
     private static final long serialVersionUID = 4577883892935459131L;
