@@ -1,8 +1,10 @@
 Package: [[name]]
 Version: [[version]]
+Provides: metadataeditor
+Conflicts: metadataeditor
 Section: contrib/misc
 Priority: optional
 Architecture: all
-Depends: tomcat7
+Depends: openjdk-7-jdk, tomcat7
 Maintainer: Metsis <oysteint@met.no>
 Description: This is the Debian package for Metadata Editor web-application developed by met.no 
