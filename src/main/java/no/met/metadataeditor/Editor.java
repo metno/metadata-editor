@@ -51,9 +51,8 @@ public class Editor implements Serializable {
         editorConfiguration = EditorConfigurationFactory.getInstance(project, recordIdentifier);
         editorConfiguration.validateVarNames(editorTemplate);
 
-        EditorTemplate et = getTemplate(project, recordIdentifier);
-        Map<String,List<EditorVariableContent>> contentMap = getContent(project, recordIdentifier, et);
-        Map<String,EditorVariable> varMap = et.getVarMap();
+        Map<String,List<EditorVariableContent>> contentMap = getContent(project, recordIdentifier, editorTemplate);
+        Map<String,EditorVariable> varMap = editorTemplate.getVarMap();
 
         editorConfiguration.configure(varMap);
         editorConfiguration.generateEditorWidgetViews(contentMap);
