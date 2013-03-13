@@ -1,6 +1,9 @@
 package no.met.metadataeditor.dataTypes.attributes;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
@@ -148,5 +151,37 @@ public class DataAttributesTest {
         expected.put("east", new DataAttributeValidationResult(false, "'' is not a valid number."));
 
         assertEquals("Some attribute values are valid", expected, attr.validateAttributes());
+    }
+    
+    @Test
+    public void testEquals(){
+        
+        StringAttribute sa1 = new StringAttribute();
+        sa1.addAttribute("str", "test");
+        
+        StringAttribute sa2 = new StringAttribute();
+        sa2.addAttribute("str", "test");
+        
+        StringAttribute sa3 = new StringAttribute();
+        sa3.addAttribute("str", "");
+        
+        StringAttribute sa4 = new StringAttribute();
+        sa4.addAttribute("str", "");
+
+        DateAttribute da1 = new DateAttribute();
+        da1.addAttribute("date", "2012-12-12");
+
+        DateAttribute da2 = new DateAttribute();
+        da2.addAttribute("date", "2012-12-12");
+        
+        DateAttribute da3 = new DateAttribute();
+        da3.addAttribute("date", "2012-13-12");
+        
+        assertThat(sa1, equalTo(sa2));
+        assertThat(sa1, not(equalTo(sa3)));
+        assertThat(sa3, equalTo(sa4));
+        assertThat(da1, equalTo(da2));
+        assertThat(da2, not(equalTo(da3)));
+        
     }
 }

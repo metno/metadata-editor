@@ -215,4 +215,35 @@ public abstract class DataAttribute {
 
         return result;
     }
+    
+    /**
+     * @return Returns true if two data attributes are of the same type and all
+     *         their attribute values are the same.
+     */
+    @Override
+    public boolean equals(Object o){
+        
+        if( !(o instanceof DataAttribute)){
+            return false;
+        }
+        
+        if( !( getClass().isInstance(o))){
+            return false;
+        }
+        
+        DataAttribute that = (DataAttribute) o;
+        
+        Map<String,DataType> attributes = getAttributesSetup(getClass());
+        for( String attributeName : attributes.keySet()){
+            
+            String thisValue = this.getAttribute(attributeName);
+            String thatValue = that.getAttribute(attributeName);
+            
+            if( !thisValue.equals(thatValue)){
+                return false;
+            }
+        }
+        
+        return true;
+    }
 }
