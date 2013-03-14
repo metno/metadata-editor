@@ -81,7 +81,8 @@ jQuery(document).ready(function () {
 		        <metaedit:container widget="#{widget}"  rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.ContainerWidget'}" />    
 		        <metaedit:xmd-info widget="#{widget}" rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.XMDInfoWidget'}" />
 		        <metaedit:xmd-wms-info widget="#{widget}" rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.XMDWmsInfoWidget'}" />
-		
+		        <metaedit:auto-uuid widget="#{widget}" rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.AutoUUIDWidget'}" />
+		        
 		    </ui:repeat>
 	    </p:tab>
     </p:tabView>

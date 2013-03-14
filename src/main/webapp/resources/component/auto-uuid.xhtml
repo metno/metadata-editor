@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:metaedit="http://java.sun.com/jsf/composite/component">
+
+    <composite:interface>
+        <composite:attribute name="widget" type="no.met.metaeditor.widget.AutoUUIDWidget" />
+    </composite:interface>
+
+    <composite:implementation>
+
+        <h:panelGroup id="uuid-container" layout="block" styleClass="editor-widget-container">
+        <h:outputLabel value="#{cc.attrs.widget.label}" styleClass="main-label"/>
+
+        <metaedit:description widget="#{cc.attrs.widget}"/>
+
+        <h:dataTable value="#{cc.attrs.widget.widgetViews}" var="widgetView" id="string">
+        
+            <h:column>
+                <h:outputText value="#{widgetView.values['str']}" />
+            </h:column>        
+        
+        </h:dataTable>
+        
+        </h:panelGroup>
+
+    </composite:implementation>
+</html>

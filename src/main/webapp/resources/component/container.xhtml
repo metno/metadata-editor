@@ -45,7 +45,7 @@
 			        <metaedit:string-and-list widget="#{childWidget}" rendered="#{childWidget.widgetType == 'no.met.metadataeditor.widget.StringAndListWidget'}" />
                     <metaedit:xmd-projection-dataset widget="#{childWidget}" rendered="#{childWidget.widgetType == 'no.met.metadataeditor.widget.XMDProjectionDatasetWidget'}" />        
                     <metaedit:xmd-projection-fimex widget="#{childWidget}" rendered="#{childWidget.widgetType == 'no.met.metadataeditor.widget.XMDProjectionFimexWidget'}" />			        
-
+                    <metaedit:auto-uuid widget="#{childWidget}" rendered="#{childWidget.widgetType == 'no.met.metadataeditor.widget.AutoUUIDWidget'}" />
                 </ui:repeat>
             </p:fieldset>
         </ui:repeat>
