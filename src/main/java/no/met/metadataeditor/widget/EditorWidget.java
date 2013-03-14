@@ -31,7 +31,7 @@ import no.met.metadataeditor.dataTypes.attributes.DataAttribute;
         UriWidget.class, TextAreaWidget.class, TimeWidget.class, MultiSelectListWidget.class, StringAndListWidget.class,
         OnlineResourceWidget.class, ContainerWidget.class, KeyValueListWidget.class, DateWidget.class, XMDInfoWidget.class,
         XMDDisplayAreaWidget.class, XMDWmsInfoWidget.class, XMDProjectionDatasetWidget.class, XMDProjectionFimexWidget.class,
-        AutoUUIDWidget.class})
+        AutoUUIDWidget.class, NowDateWidget.class})
 public abstract class EditorWidget implements Serializable {
 
     private static final long serialVersionUID = -2532825684273483564L;
@@ -228,9 +228,7 @@ public abstract class EditorWidget implements Serializable {
         List<EditorVariableContent> contentList = new ArrayList<EditorVariableContent>();
         for( EditorWidgetView view : widgetViews ){
 
-            EditorVariableContent content = new EditorVariableContent();
-            DataAttribute da = view.valuesAsAttriubte();
-            content.setAttrs(da);
+            EditorVariableContent content = getContentForView(view);
             contentList.add(content);
 
             // recursively get content from child widgets.
