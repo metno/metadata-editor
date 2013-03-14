@@ -1,10 +1,12 @@
-package no.met.metadataeditor;
+package no.met.metadataeditor.view;
 
 import java.io.Serializable;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+
+import no.met.metadataeditor.Config;
 
 @ManagedBean
 @RequestScoped

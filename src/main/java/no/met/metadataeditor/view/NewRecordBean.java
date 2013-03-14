@@ -1,4 +1,4 @@
-package no.met.metadataeditor;
+package no.met.metadataeditor.view;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -21,6 +21,8 @@ import org.jdom2.JDOMException;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import no.met.metadataeditor.EditorException;
+import no.met.metadataeditor.EditorUtils;
 import no.met.metadataeditor.dataTypes.EditorTemplate;
 import no.met.metadataeditor.dataTypes.EditorVariableContent;
 import no.met.metadataeditor.datastore.DataStore;

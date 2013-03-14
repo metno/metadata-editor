@@ -87,7 +87,7 @@ public class Editor implements Serializable {
     }
 
 
-    protected String editorContentToXML(String project, String identifier){
+    public String editorContentToXML(String project, String identifier){
 
         EditorTemplate et = getTemplate(project, identifier);
         Map<String, List<EditorVariableContent>> content = editorConfiguration.getContent();

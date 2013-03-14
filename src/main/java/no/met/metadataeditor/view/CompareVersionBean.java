@@ -1,4 +1,4 @@
-package no.met.metadataeditor;
+package no.met.metadataeditor.view;
 
 import java.io.Serializable;
 

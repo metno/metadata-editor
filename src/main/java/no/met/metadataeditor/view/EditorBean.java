@@ -1,4 +1,4 @@
-package no.met.metadataeditor;
+package no.met.metadataeditor.view;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -18,6 +18,11 @@ import javax.faces.event.ComponentSystemEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import no.met.metadataeditor.Config;
+import no.met.metadataeditor.Editor;
+import no.met.metadataeditor.EditorConfiguration;
+import no.met.metadataeditor.EditorException;
+import no.met.metadataeditor.EditorWidgetView;
 import no.met.metadataeditor.datastore.DataStore;
 import no.met.metadataeditor.datastore.DataStoreFactory;
 import no.met.metadataeditor.validationclient.ValidationClient;
