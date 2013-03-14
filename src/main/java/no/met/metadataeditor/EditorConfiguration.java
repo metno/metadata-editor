@@ -55,11 +55,11 @@ public class EditorConfiguration implements Serializable {
         return allPopulated;
     }
 
-    public Map<String, List<EditorVariableContent>> getContent(Map<String, EditorVariable> varMap) {
+    public Map<String, List<EditorVariableContent>> getContent() {
 
         Map<String, List<EditorVariableContent>> content = new HashMap<String, List<EditorVariableContent>>();
         for( EditorPage page : pages ){
-            content.putAll(page.getContent(varMap));
+            content.putAll(page.getContent());
         }
 
         return content;
