@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 import no.met.metadataeditor.EditorWidgetView;
-import no.met.metadataeditor.dataTypes.EditorVariable;
 import no.met.metadataeditor.dataTypes.EditorVariableContent;
 import no.met.metadataeditor.dataTypes.attributes.DataAttribute;
 import no.met.metadataeditor.dataTypes.attributes.StringAttribute;
@@ -163,11 +162,6 @@ public class EditorWidgetTest {
         addStringWidgetViews(parentEwv.getChildren().get(1), "child2_2");
         addStringWidgetViews(parentEwv.getChildren().get(1), "child2_3");
 
-        EditorVariable evParent = new EditorVariable(new StringAttribute());
-        EditorVariable evChild1 = new EditorVariable(new StringAttribute());
-        EditorVariable evChild2 = new EditorVariable(new StringAttribute());
-        evParent.addChild("child1", evChild1);
-        evParent.addChild("child2", evChild2);
         List<EditorVariableContent> evcl = ew.getContent();
         
         assertEquals(1, evcl.size());
