@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import no.met.metadataeditor.InvalidEditorConfigurationException;
+import no.met.metadataeditor.dataTypes.attributes.StringAttribute;
+
 public class AutoUUIDWidget extends EditorWidget {
 
     private static final long serialVersionUID = -2261929414552684579L;
@@ -23,6 +26,23 @@ public class AutoUUIDWidget extends EditorWidget {
         String uuid = UUID.randomUUID().toString();
         defaultValue.put("str", uuid);
         return defaultValue;
-    }    
+    }   
+    
+    @Override
+    public void validateConfiguration() {
+        
+        if( getMaxOccurs() != 1 ){
+            throw new InvalidEditorConfigurationException("maxOccurs for a variable associated with a AutoUUIDWidget must be 1");
+        }
+
+        if( getMinOccurs() != 1 ){
+            throw new InvalidEditorConfigurationException("minOccurs for a variable associated with a AutoUUIDWidget must be 1");
+        }
+        
+        if( !getAttributeClass().equals(StringAttribute.class)){
+            throw new InvalidEditorConfigurationException("A AutoUUIDWidget must be associated with a string attribute");
+        }
+        
+    }
 
 }

@@ -132,7 +132,7 @@ public abstract class EditorWidget implements Serializable {
      * Add configuration from the editor variable to the widget and the widgets children.
      * @param variable
      * @throws InvalidEditorConfigurationException Thrown if a child widget refers to a variable not
-     * found in the child variables.
+     * found in the child variables or the widget configuration is not valid.
      * @return Always returns true
      */
     public boolean configure(EditorVariable variable) {
@@ -154,8 +154,20 @@ public abstract class EditorWidget implements Serializable {
             EditorVariable ev = childVarMap.get(varName);
             child.configure(ev);
         }
+        
+        // throws
+        validateConfiguration();
 
         return true;
+    }
+    
+    /**
+     * Validate that the configuration of the widget is valid or not. The base class implementation never
+     * throws an exception.
+     * @throws InvalidEditorConfigurationException If the configuration is not valid it will throw an exception.
+     */
+    protected void validateConfiguration() {
+        // do nothing in base class
     }
 
 
