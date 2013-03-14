@@ -3,6 +3,7 @@ package no.met.metadataeditor.dataTypes;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import no.met.metadataeditor.dataTypes.attributes.DataAttribute;
 
@@ -38,5 +39,18 @@ public class EditorVariableContent {
 
     public Map<String, List<EditorVariableContent>> getChildren() {
         return children;
+    }
+    
+    @Override
+    public boolean equals(Object o){
+        
+        if(!(o instanceof EditorVariableContent)){
+            return false;
+        }
+        
+        EditorVariableContent evc = (EditorVariableContent) o;
+        
+        return Objects.equals(attrs, evc.attrs) && Objects.equals(children, evc.children);
+        
     }
 }

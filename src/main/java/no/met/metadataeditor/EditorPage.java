@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import javax.xml.bind.annotation.XmlAttribute;
@@ -149,15 +148,12 @@ public class EditorPage implements Serializable {
         return notPopulated.isEmpty() ? true : false; 
     }
     
-    public Map<String, List<EditorVariableContent>> getContent(Map<String, EditorVariable> variables){
+    public Map<String, List<EditorVariableContent>> getContent(){
         
-        Map<String,EditorWidget> widgetMap = getWidgetMap();
         Map<String, List<EditorVariableContent>> content = new HashMap<String, List<EditorVariableContent>>();
-        for(Entry<String, EditorWidget> entry : widgetMap.entrySet()){  
-            EditorWidget widget = entry.getValue();            
-            content.put(entry.getKey(), widget.getContent());
+        for(EditorWidget widget : widgets){  
+            content.put(widget.getVariableName(), widget.getContent());
         }
-        
         return content;
     }
 

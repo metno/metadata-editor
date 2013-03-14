@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<edt:editorDataTypes xmlns:edt="http://www.met.no/schema/metadataeditor/editorDataTypes"
+                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:schemaLocation="http://www.met.no/schema/metadataeditor/editorDataTypes dataTypes.xsd">
+
+<edt:list varName="keywords" maxOccurs="2" minOccurs="0" resource="test.txt">
+    <metadata name="keyword">$listElement</metadata>
+    <submeta>
+    <edt:string varName="child1" minOccurs="2" maxOccurs="5">
+        <sub name="$str" />
+    </edt:string>
+    <edt:string varName="child2" minOccurs="0" maxOccurs="1">
+        <bus name="$str"/>
+    </edt:string>    
+    </submeta>
+</edt:list>
+</edt:editorDataTypes>

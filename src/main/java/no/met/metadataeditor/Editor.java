@@ -90,9 +90,7 @@ public class Editor implements Serializable {
     protected String editorContentToXML(String project, String identifier){
 
         EditorTemplate et = getTemplate(project, identifier);
-        Map<String, EditorVariable> varMap = et.getVarMap();
-
-        Map<String, List<EditorVariableContent>> content = editorConfiguration.getContent(varMap);
+        Map<String, List<EditorVariableContent>> content = editorConfiguration.getContent();
 
         String resultString;
         try {

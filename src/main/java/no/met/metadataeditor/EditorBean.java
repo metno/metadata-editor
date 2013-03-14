@@ -2,7 +2,6 @@ package no.met.metadataeditor;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -19,7 +18,6 @@ import javax.faces.event.ComponentSystemEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import no.met.metadataeditor.dataTypes.EditorTemplate;
 import no.met.metadataeditor.datastore.DataStore;
 import no.met.metadataeditor.datastore.DataStoreFactory;
 import no.met.metadataeditor.validationclient.ValidationClient;
@@ -28,8 +26,6 @@ import no.met.metadataeditor.widget.EditorWidget;
 
 import org.primefaces.component.tabview.TabView;
 import org.primefaces.event.TabChangeEvent;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 /**
  * Bean used to the hold the current state of the editor.
@@ -87,23 +83,23 @@ public class EditorBean implements Serializable {
 
     }
 
-    public EditorTemplate getTemplate(String project, String recordIdentifier){
-
-        DataStore dataStore = DataStoreFactory.getInstance(project);
-        String templateString = dataStore.readTemplate(recordIdentifier);
-        InputSource templateSource = new InputSource(new StringReader(templateString));
-
-        EditorTemplate et = null;
-        try {
-            et = new EditorTemplate(templateSource);
-        } catch (SAXException e) {
-            throw new EditorException(e.getMessage());
-        } catch (IOException e) {
-            throw new EditorException(e.getMessage());
-        }
-        return et;
-
-    }
+//    public EditorTemplate getTemplate(String project, String recordIdentifier){
+//
+//        DataStore dataStore = DataStoreFactory.getInstance(project);
+//        String templateString = dataStore.readTemplate(recordIdentifier);
+//        InputSource templateSource = new InputSource(new StringReader(templateString));
+//
+//        EditorTemplate et = null;
+//        try {
+//            et = new EditorTemplate(templateSource);
+//        } catch (SAXException e) {
+//            throw new EditorException(e.getMessage());
+//        } catch (IOException e) {
+//            throw new EditorException(e.getMessage());
+//        }
+//        return et;
+//
+//    }
 
     public void save() {
 
