@@ -154,10 +154,8 @@ public class EditorPage implements Serializable {
         Map<String,EditorWidget> widgetMap = getWidgetMap();
         Map<String, List<EditorVariableContent>> content = new HashMap<String, List<EditorVariableContent>>();
         for(Entry<String, EditorWidget> entry : widgetMap.entrySet()){  
-            EditorVariable ev = variables.get(entry.getKey());
-            EditorWidget widget = entry.getValue();
-            
-            content.put(entry.getKey(), widget.getContent(ev));
+            EditorWidget widget = entry.getValue();            
+            content.put(entry.getKey(), widget.getContent());
         }
         
         return content;

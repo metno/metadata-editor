@@ -108,6 +108,24 @@ public abstract class EditorWidget implements Serializable {
     public void setLabel(String label) {
         this.label = label;
     }
+    
+    public void setMinOccurs(int minOccurs){
+        this.minOccurs = minOccurs;
+    }
+    
+    public void setMaxOccurs(int maxOccurs){
+        this.maxOccurs = maxOccurs;
+    }
+
+    public Class<? extends DataAttribute> getAttributeClass() {
+        return attributeClass;
+    }
+
+
+    public void setAttributeClass(Class<? extends DataAttribute> attributeClass) {
+        this.attributeClass = attributeClass;
+    }
+
 
     /**
      * Add configuration from the editor variable to the widget and the widgets children.
@@ -173,15 +191,15 @@ public abstract class EditorWidget implements Serializable {
 
     }
 
-    private EditorWidgetView createWidgetView(Map<String, String> values){
+    EditorWidgetView createWidgetView(Map<String, String> values){
 
         EditorWidgetView view = new EditorWidgetView();
 
-        List<EditorWidget> childWidgets = new ArrayList<EditorWidget>();
+        List<EditorWidget> viewChildWidgets = new ArrayList<EditorWidget>();
         for( EditorWidget child : children ){
-            childWidgets.add(cloneInstance(child));
+            viewChildWidgets.add(cloneInstance(child));
         }
-        view.setChildren(childWidgets);
+        view.setChildren(viewChildWidgets);
         view.setValues(values);
         view.setDataAttributeClass(attributeClass);
         return view;
@@ -192,7 +210,7 @@ public abstract class EditorWidget implements Serializable {
      * Take the information stored in the widget and send it back to the
      * EditorVariable
      */
-    public List<EditorVariableContent> getContent(EditorVariable ev) {
+    public List<EditorVariableContent> getContent() {
 
         List<EditorVariableContent> contentList = new ArrayList<EditorVariableContent>();
         for( EditorWidgetView view : widgetViews ){
@@ -203,24 +221,30 @@ public abstract class EditorWidget implements Serializable {
             contentList.add(content);
 
             // recursively get content from child widgets.
-            Map<String, EditorVariable> childVarMap = ev.getChildren();
             Map<String, List<EditorVariableContent>> childContentMap = new HashMap<String,List<EditorVariableContent>>();
-            for( Map.Entry<String, EditorVariable> entry : childVarMap.entrySet()){
-                String varName = entry.getKey();
+            for( EditorWidget child : children){
+                String varName = child.getVariableName();
 
                 if( view.hasChildWidget(varName)) {
                     EditorWidget childWidget = view.getChildWidget(varName);
-                    List<EditorVariableContent> childContent = childWidget.getContent(entry.getValue());
+                    List<EditorVariableContent> childContent = childWidget.getContent();
                     childContentMap.put(varName, childContent);
                 }
-            }
+            }            
             content.setChildren(childContentMap);
-
-
         }
 
         return contentList;
 
+    }
+    
+    protected EditorVariableContent getContentForView(EditorWidgetView view){
+        
+        EditorVariableContent content = new EditorVariableContent();
+        DataAttribute da = view.valuesAsAttriubte();
+        content.setAttrs(da);
+        return content;
+        
     }
 
 

@@ -27,6 +27,10 @@ public class EditorVariableContent {
     public void setAttrs(DataAttribute attrs) {
         this.attrs = attrs;
     }
+    
+    public void addChild(String childName, List<EditorVariableContent> childContent){
+        children.put(childName, childContent);
+    }
 
     public void setChildren(Map<String, List<EditorVariableContent>> children) {
         this.children = children;
