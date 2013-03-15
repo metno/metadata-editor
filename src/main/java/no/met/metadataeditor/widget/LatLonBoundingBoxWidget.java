@@ -3,6 +3,10 @@ package no.met.metadataeditor.widget;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Widget for editing a square bounding box with the south-, north-, east- 
+ * and west-most coordinates.  
+ */
 public class LatLonBoundingBoxWidget extends EditorWidget {
 
     private static final long serialVersionUID = 8770219744361367595L;

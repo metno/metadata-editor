@@ -23,8 +23,7 @@ import no.met.metadataeditor.dataTypes.EditorVariableContent;
 import no.met.metadataeditor.dataTypes.attributes.DataAttribute;
 
 /**
- * Class for representing widgets. This is a pure data class and should never
- * contain any logic.
+ * Base class for widgets. Contains most of the logic for working with the widgets.
  */
 @XmlRootElement
 @XmlSeeAlso({ LatLonBoundingBoxWidget.class, ListWidget.class, StartAndStopTimeWidget.class, StringWidget.class,

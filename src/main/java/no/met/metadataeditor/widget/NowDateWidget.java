@@ -11,6 +11,9 @@ import no.met.metadataeditor.dataTypes.EditorVariableContent;
 import no.met.metadataeditor.dataTypes.attributes.DataAttribute;
 import no.met.metadataeditor.dataTypes.attributes.DateAttribute;
 
+/**
+ * Widget that auto generates a new date stamp before the data is saved.
+ */
 public class NowDateWidget extends EditorWidget {
 
     private static final long serialVersionUID = 1L;

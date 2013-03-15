@@ -7,6 +7,11 @@ import java.util.UUID;
 import no.met.metadataeditor.InvalidEditorConfigurationException;
 import no.met.metadataeditor.dataTypes.attributes.StringAttribute;
 
+/**
+ * Widget for auto generating a UUID value if a value is not found.
+ * 
+ * The widget only works with string variable with a max and min occurs of 1.
+ */
 public class AutoUUIDWidget extends EditorWidget {
 
     private static final long serialVersionUID = -2261929414552684579L;

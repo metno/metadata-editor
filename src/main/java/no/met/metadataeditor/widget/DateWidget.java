@@ -3,6 +3,9 @@ package no.met.metadataeditor.widget;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Widget used to display a date selector.
+ */
 public class DateWidget extends EditorWidget {
 
     private static final long serialVersionUID = 8298634817093453102L;
