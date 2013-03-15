@@ -88,24 +88,6 @@ public class EditorBean implements Serializable {
 
     }
 
-//    public EditorTemplate getTemplate(String project, String recordIdentifier){
-//
-//        DataStore dataStore = DataStoreFactory.getInstance(project);
-//        String templateString = dataStore.readTemplate(recordIdentifier);
-//        InputSource templateSource = new InputSource(new StringReader(templateString));
-//
-//        EditorTemplate et = null;
-//        try {
-//            et = new EditorTemplate(templateSource);
-//        } catch (SAXException e) {
-//            throw new EditorException(e.getMessage());
-//        } catch (IOException e) {
-//            throw new EditorException(e.getMessage());
-//        }
-//        return et;
-//
-//    }
-
     public void save() {
 
 
