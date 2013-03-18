@@ -11,7 +11,7 @@ public class StringWidget extends EditorWidget {
         
     private int size = 40;
     
-    private int maxlength = 40;
+    private int maxlength = Integer.MAX_VALUE;
 
     public StringWidget(){
         super();

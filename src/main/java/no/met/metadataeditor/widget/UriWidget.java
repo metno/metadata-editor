@@ -11,7 +11,7 @@ public class UriWidget extends EditorWidget {
 
     private int size = 100;
     
-    private int maxlength = 400; 
+    private int maxlength = Integer.MAX_VALUE; 
     
     public UriWidget(){
         super();
