@@ -18,9 +18,14 @@
         </ui:remove>
     
     
-        <h:commandButton value=" " action="#{editorBean.removeValue(widget, value)}" styleClass="remove-button" rendered="#{widget.minOccurs lt widget.widgetViews.size() and userBean.validated}">
-            <f:ajax execute="@this" render="@form" />
-        </h:commandButton>       
+        <p:commandButton value="Remove value" 
+            action="#{editorBean.removeValue(widget, value)}" 
+            styleClass="remove-button" 
+            rendered="#{widget.minOccurs lt widget.widgetViews.size() and userBean.validated}"
+            ajax="true"
+            process="@this"
+            update="@form">
+        </p:commandButton>       
     
     </ui:composition>
 </body>

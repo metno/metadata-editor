@@ -29,7 +29,9 @@
                 <f:facet name="header">
                     <h:outputText value="North" />
                 </f:facet>
-                <p:inputText value="#{widgetView.values['north']}" size="10" disabled="#{!userBean.validated}" />
+                <p:inputText value="#{widgetView.values['north']}" size="10" disabled="#{!userBean.validated}">
+                    <p:ajax event="change" global="false" />
+                </p:inputText>
             </h:column>
             <h:column id="validation-msg-north">
                <h:outputText styleClass="input-validation-error" value="#{widgetView.validateAttribute('north')}" rendered="#{userBean.validated and widgetView.validateAttribute('north') != null}"/>
@@ -39,7 +41,9 @@
                 <f:facet name="header">
                     <h:outputText value="South" />
                 </f:facet>            
-                <p:inputText value="#{widgetView.values['south']}" size="10" disabled="#{!userBean.validated}" />
+                <p:inputText value="#{widgetView.values['south']}" size="10" disabled="#{!userBean.validated}">
+                    <p:ajax event="change" global="false" />
+                </p:inputText>
             </h:column>
             <h:column id="validation-msg-south">
                <h:outputText styleClass="input-validation-error" value="#{widgetView.validateAttribute('south')}" rendered="#{userBean.validated and widgetView.validateAttribute('south') != null}"/>
@@ -49,7 +53,9 @@
                 <f:facet name="header">
                     <h:outputText value="East" />
                 </f:facet>            
-                <p:inputText value="#{widgetView.values['east']}" size="10" disabled="#{!userBean.validated}" />
+                <p:inputText value="#{widgetView.values['east']}" size="10" disabled="#{!userBean.validated}">
+                    <p:ajax event="change" global="false" />
+                </p:inputText>
             </h:column>
             <h:column id="validation-msg-east">
                <h:outputText styleClass="input-validation-error" value="#{widgetView.validateAttribute('east')}" rendered="#{userBean.validated and widgetView.validateAttribute('east') != null}"/>

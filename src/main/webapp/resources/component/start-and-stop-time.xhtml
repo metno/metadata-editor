@@ -29,7 +29,9 @@
             <f:facet name="header">
                 <h:outputText value="Start time" />
             </f:facet>
-            <p:calendar value="#{widgetView.values['start']}" pattern="yyyy-MM-dd HH:mm" converter="no.met.metadataeditor.DateTimeConverter" maxlength="16" size="20" disabled="#{!userBean.validated}" />
+            <p:calendar value="#{widgetView.values['start']}" pattern="yyyy-MM-dd HH:mm" converter="no.met.metadataeditor.DateTimeConverter" maxlength="16" size="20" disabled="#{!userBean.validated}">
+                <p:ajax event="change" global="false" />
+            </p:calendar>
         </h:column>
         <h:column id="validation-msg-start">
             <h:outputText styleClass="input-validation-error" value="#{widgetView.validateAttribute('start')}" rendered="#{userBean.validated and widgetView.validateAttribute('start') != null}"/>

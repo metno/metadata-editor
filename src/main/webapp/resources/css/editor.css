@@ -1,16 +1,13 @@
 .add-button, .remove-button {
-	border: 0px;
-	cursor: pointer;
+	margin: 0px;
+	vertical-align: top;
 }
 
-.add-button {
-	background: white url('../resources/images/add.png') no-repeat center;
-	border: 0px;
-}
-
-.remove-button {
-    background: white url('../resources/images/delete.png') no-repeat center;
-    border: 0px;
+.add-button span.ui-button-text, .remove-button span.ui-button-text {
+	/*background: white url('../resources/images/add.png') no-repeat center;
+	border: 0px; */
+    padding: 2px;
+    font-size: 0.7em;	
 }
 
 span.input-validation-error {

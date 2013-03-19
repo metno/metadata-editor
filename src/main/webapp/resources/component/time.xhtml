@@ -26,7 +26,9 @@
         <h:dataTable value="#{cc.attrs.widget.widgetViews}" var="widgetView" id="string">
         
             <h:column>
-                <p:calendar value="#{widgetView.values['time']}" pattern="yyyy-MM-dd HH:mm" converter="no.met.metadataeditor.DateTimeConverter" maxlength="16" size="17" disabled="#{!userBean.validated}" />
+                <p:calendar value="#{widgetView.values['time']}" pattern="yyyy-MM-dd HH:mm" converter="no.met.metadataeditor.DateTimeConverter" maxlength="16" size="17" disabled="#{!userBean.validated}">
+                    <p:ajax event="change" global="false" />
+                </p:calendar>
             </h:column>
             <h:column>
                 <ui:include src="../../remove-value-button.xhtml" >

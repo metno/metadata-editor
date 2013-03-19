@@ -26,7 +26,9 @@
         <h:dataTable value="#{cc.attrs.widget.widgetViews}" var="widgetView" id="uri">
         
 	        <h:column>
-	            <p:inputText value="#{widgetView.values['uri']}" size="#{cc.attrs.widget.size}" maxlength="#{cc.attrs.widget.maxlength}" disabled="#{!userBean.validated}" />
+	            <p:inputText value="#{widgetView.values['uri']}" size="#{cc.attrs.widget.size}" maxlength="#{cc.attrs.widget.maxlength}" disabled="#{!userBean.validated}">
+	               <p:ajax event="change" global="false" />
+	            </p:inputText>
 	        </h:column>        
 	        <h:column>
 		        <ui:include src="../../remove-value-button.xhtml" >

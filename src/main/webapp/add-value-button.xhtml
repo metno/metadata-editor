@@ -17,9 +17,14 @@
          -->
         </ui:remove>
     
-        <h:commandButton value=" " action="#{editorBean.addValue(widget)}" rendered="#{widget.maxOccurs gt widget.widgetViews.size() and userBean.validated}" styleClass="add-button">
-            <f:ajax execute="@this #{extraExecuteId}" render="#{updateId}" onevent="input_field_added" />
-        </h:commandButton>  
+        <p:commandButton value="Add value" 
+            action="#{editorBean.addValue(widget)}" 
+            rendered="#{widget.maxOccurs gt widget.widgetViews.size() and userBean.validated}" 
+            styleClass="add-button"
+            ajax="true"
+            process="@this #{extraExecuteId}"
+            update="#{updateId}" >
+        </p:commandButton>  
     
     </ui:composition>
 </body>
