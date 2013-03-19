@@ -13,25 +13,25 @@
     <title>Metadata editor</title>
 </h:head>
 
-<body>
+<h:body>
 
     <ui:include src="login-dialog.xhtml">
         <ui:param name="project" value="#{metadataListBean.project}"/>
     </ui:include>
 
-    <h:form>
+    <h:form id="project-form" name="project-form">
     
         <p:breadCrumb>
             <p:menuitem value="Projects" url="index.xhtml" />
             <p:menuitem value="#{metadataListBean.project}" url="#" />
         </p:breadCrumb>
-    
+        
         <br />
         
         <ui:include src="project-menu.xhtml"/>
         
         <br />
-        
+
         <p:dataTable id="availableMetadata" var="record" value="#{metadataListBean.availableMetadata}">
             <p:column id="projectName">
                 <f:facet name="header">
@@ -41,11 +41,11 @@
             </p:column>
 
         </p:dataTable>
-    
+
     
     </h:form>
 
 
-</body>
+</h:body>
 
 </html>

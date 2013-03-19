@@ -4,24 +4,28 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 
 import no.met.metadataeditor.datastore.DataStore;
 import no.met.metadataeditor.datastore.DataStoreFactory;
 
 @ManagedBean
-@RequestScoped
+@ViewScoped
 public class MetadataListBean implements Serializable {
 
     private static final long serialVersionUID = 1952040514283840588L;
 
     private String project;
     
+    private List<String> availableMetadata;
+    
     public List<String> getAvailableMetadata(){
         
-        DataStore datastore = DataStoreFactory.getInstance(project);
-        return datastore.availableMetadata();
-
+        if( availableMetadata == null ){
+            DataStore datastore = DataStoreFactory.getInstance(project);
+            availableMetadata = datastore.availableMetadata();
+        }
+        return availableMetadata;
     }
 
     public String getProject() {

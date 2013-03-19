@@ -84,10 +84,14 @@ public class UserBean implements Serializable {
         //this is a no-op, but it simplified some JSF code to have it.
     }
     
-    public void logout(){
+    public String logout(){
         validated = false;
         username = null;
         password = null;
+        
+        String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
+        
+        return viewId + "?faces-redirect=true&includeViewParams=true";
                
     }
 
