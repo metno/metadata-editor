@@ -61,7 +61,7 @@ jQuery(document).ready(function () {
 
 
     
-        <p:ajax event="tabChange" listener="#{editorBean.tabChanged}" />
+        <p:ajax event="tabChange" listener="#{editorBean.tabChanged}" global="false" />
     
         <p:tab title="#{page.label}" id="tab">
 		    <ui:repeat var="widget" value="#{page.widgets}">
