@@ -9,6 +9,15 @@
 <body>
     <ui:composition>
 
+	<h:outputScript>  
+	    function handleLoginRequest(xhr, status, args) {  
+	        if(!(args.validationFailed || !args.validated)) {  
+	            loginDialog.hide();
+	            window.location.reload(true);
+	        }  
+	    }  
+	</h:outputScript>  
+
     <p:dialog modal="true" widgetVar="loginDialog" header="Login" draggable="true" closable="false" >  
 
         <h:form id="login-form">      
@@ -23,12 +32,7 @@
                 <p:outputLabel for="password" value="Password:" />
                 <p:password id="password" value="#{userBean.password}" />
 
-                <p:commandButton value="Login" update="@form" action="#{userBean.validateCredentials}" >
-                    <f:ajax>
-                        <f:param name="project" value="#{project}"/>
-                    </f:ajax>
-                </p:commandButton>
-                
+                <p:commandButton value="Login" update="@form" action="#{userBean.validateCredentials(project)}" oncomplete="handleLoginRequest(xhr, status, args)" />
                 <p:commandLink value="Cancel" onclick="loginDialog.hide()" url="#" />
         
             </h:panelGrid>

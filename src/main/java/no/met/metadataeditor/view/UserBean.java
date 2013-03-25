@@ -10,6 +10,8 @@ import javax.faces.context.FacesContext;
 import no.met.metadataeditor.datastore.DataStore;
 import no.met.metadataeditor.datastore.DataStoreFactory;
 
+import org.primefaces.context.RequestContext;
+
 /**
  * Bean for holding the current user state and for validating the user with the server. 
  */
@@ -54,9 +56,7 @@ public class UserBean implements Serializable {
      * 
      * Sets the state of the bean if the user credentials are ok.
      */
-    public void validateCredentials(){
-        
-        String project = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("project");
+    public void validateCredentials(String project){
         
         // if validate set to validated
         DataStore datastore = DataStoreFactory.getInstance(project);
@@ -74,6 +74,7 @@ public class UserBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, msg);            
         }
         
+        RequestContext.getCurrentInstance().addCallbackParam("validated", validated);  
     }
     
     /**
