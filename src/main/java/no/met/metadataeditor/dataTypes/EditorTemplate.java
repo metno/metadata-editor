@@ -206,7 +206,7 @@ public class EditorTemplate {
             }
 
             try {
-                Logger.getLogger(getClass().getName()).info(String.format("EditorVariable %s with path %s and local path %s", varName, ev.getDocumentXPath(), selectionPath));
+                Logger.getLogger(getClass().getName()).fine(String.format("EditorVariable %s with path %s and local path %s", varName, ev.getDocumentXPath(), selectionPath));
                 XPathExpression expr =  xpath.compile(selectionPath);
                 NodeList evSubnodes = (NodeList) expr.evaluate(node, XPathConstants.NODESET);
                 for (int i = 0; i < evSubnodes.getLength(); ++i) {
@@ -235,7 +235,7 @@ public class EditorTemplate {
         Map<String, String> attXpath = variable.getAttrsXPath();
         for (String att : attXpath.keySet()) {
             String relAttPath = attXpath.get(att).substring(variable.getDocumentXPath().length());
-            Logger.getLogger(getClass().getName()).info(String.format("searching attr %s in %s", att, relAttPath));
+            Logger.getLogger(getClass().getName()).fine(String.format("searching attr %s in %s", att, relAttPath));
             if (relAttPath.startsWith("/")) {
                 // remove leading / in e.g. /text()
                 relAttPath = relAttPath.substring(1);
@@ -244,7 +244,7 @@ public class EditorTemplate {
             try {
                 attExpr = xpath.compile(relAttPath);
                 String attVal = attExpr.evaluate(node);
-                Logger.getLogger(getClass().getName()).info(String.format("%s + value = %s", relAttPath, attVal));
+                Logger.getLogger(getClass().getName()).fine(String.format("%s + value = %s", relAttPath, attVal));
                 da.addAttribute(att, attVal);
             } catch (XPathExpressionException e) {
                 throw new EditorException("Failed to evaluate XPath expression when getting the actual attributes values:" + relAttPath, e );
