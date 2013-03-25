@@ -14,7 +14,7 @@
     <composite:implementation>
 
         <h:panelGroup id="textarea-container" layout="block" styleClass="editor-widget-container">
-        <h:outputLabel value="#{cc.attrs.widget.label}" styleClass="main-label" />
+        <h:outputText value="#{cc.attrs.widget.label}" styleClass="main-label" />
 
         <ui:include src="../../add-value-button.xhtml" >
             <ui:param name="widget" value="#{cc.attrs.widget}"/>

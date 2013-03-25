@@ -23,7 +23,7 @@ span.input-validation-error {
 	
 }
 
-label.main-label {
+label.main-label, span.main-label {
 	font-size: 1.1em;
 	font-weight: bolder;
 	
