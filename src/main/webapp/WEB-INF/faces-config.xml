@@ -7,7 +7,7 @@
     </application>
     <factory>
         <exception-handler-factory>
-        org.omnifaces.exceptionhandler.FullAjaxExceptionHandlerFactory
+        no.met.metadataeditor.view.EditorExceptionHandlerFactory
         </exception-handler-factory>
     </factory>
 </faces-config>
