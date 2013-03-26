@@ -1,4 +1,8 @@
 release date=12:00 06.12.2012,version=1.2,urgency=low,by=Øystein Torget <oysteint@met.no>,distribution=all
+ * Added MetnoDatasetIdentifierWidet, NowDateWidget and AutoUUID widget.
+ * No longer forgets values when adding more items to a widget.
+ * Fixed bugs and improvements METAEDIT-51, METAEDIT-52, METAEDIT-54, METAEDIT-55, METAEDIT-56.
+release date=12:00 06.12.2012,version=1.2,urgency=low,by=Øystein Torget <oysteint@met.no>,distribution=all
  * Add menu to project view.
  * Replace normal text field with password field for password input.
 release date=14:00 04.10.2012,version=1.1,urgency=low,by=Øystein Torget <oysteint@met.no>,distribution=all

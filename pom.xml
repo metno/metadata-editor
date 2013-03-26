@@ -9,7 +9,7 @@
   <url>http://maven.apache.org</url>
 
     <properties>
-        <majorMinorVersion>1.3</majorMinorVersion>
+        <majorMinorVersion>1.4</majorMinorVersion>
         <incrementalVersion>0</incrementalVersion>    
     </properties>
 
