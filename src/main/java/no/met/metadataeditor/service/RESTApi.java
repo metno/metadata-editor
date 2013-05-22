@@ -5,7 +5,6 @@ import java.io.StringReader;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -89,7 +88,7 @@ public class RESTApi extends Application {
     @POST
     @Path("{project}/{record}")
     @ServiceDescription("Get the URL to edit a metadata record and as an option suggest a new version of the XML in the metadata parameter")
-    public Response postMetadata(@PathParam("project") String project, @PathParam("record") String record, @FormParam("metadata") String metadata){
+    public Response postMetadata(@PathParam("project") String project, @PathParam("record") String record, String metadata){
 
         DataStore datastore = DataStoreFactory.getInstance(project);
         boolean metadataExists = datastore.metadataExists(record);
