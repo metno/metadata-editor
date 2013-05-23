@@ -94,14 +94,14 @@ public class RESTApi extends Application {
         boolean metadataExists = datastore.metadataExists(record);
 
         Response response;
-        if(!metadataExists && metadata == null ){
+        if(!metadataExists && (metadata == null || "".equals(metadata.trim()) )){
             response = Responses.notFound().build();
         } else if ( !metadataExists && metadata != null ){
 
             datastore.writeMetadata(record, metadata, datastore.getDefaultUser(), datastore.getDefaultPassword());
 
             response = Response.ok(getEditorUrl(project, record)).build();
-        } else if( metadataExists && metadata == null ){
+        } else if( metadataExists && (metadata == null || "".equals(metadata.trim()) )){
             response = Response.ok(getEditorUrl(project, record)).build();
         } else {
 

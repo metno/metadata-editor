@@ -91,7 +91,7 @@ public class RestAPITest extends JerseyTest {
         String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><MM2/>";
 
         // Sending a POST with metadata to a non-existant record creates the record
-        given().port(getPort()).formParam("metadata", xml).expect().body(containsString("editor.xhtml")).when().post("/metaedit_api/test/new_metadata");
+        given().port(getPort()).body(xml).expect().body(containsString("editor.xhtml")).when().post("/metaedit_api/test/new_metadata");
 
         given().port(getPort()).expect().body(equalToIgnoringWhiteSpace(xml)).statusCode(200).when().get("/metaedit_api/test/new_metadata");
 
@@ -103,7 +103,7 @@ public class RestAPITest extends JerseyTest {
         File metadata1File = new File(RestAPITest.class.getResource("/service/datastore/XML/metadata1.xml").getFile());
         String metadataXML = FileUtils.readFileToString(metadata1File);
 
-        given().port(getPort()).formParam("metadata", metadataXML).expect().body(containsString("editor.xhtml")).when().post("/metaedit_api/test/metadata1");
+        given().port(getPort()).body(metadataXML).expect().body(containsString("editor.xhtml")).when().post("/metaedit_api/test/metadata1");
 
     }
 
@@ -111,7 +111,7 @@ public class RestAPITest extends JerseyTest {
     public void testPostUnequalMetadata(){
 
         String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><MM2/>";
-        given().port(getPort()).formParam("metadata", xml).expect().body(containsString("compare.xhtml")).when().post("/metaedit_api/test/metadata1");
+        given().port(getPort()).body(xml).expect().body(containsString("compare.xhtml")).when().post("/metaedit_api/test/metadata1");
 
     }
 
