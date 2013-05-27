@@ -19,6 +19,9 @@ public class UriWidget extends EditorWidget {
     
     public UriWidget(UriWidget cloneFrom){
         super(cloneFrom);
+        
+        this.size = cloneFrom.size;
+        this.maxlength = cloneFrom.maxlength;        
     }
     
     @Override

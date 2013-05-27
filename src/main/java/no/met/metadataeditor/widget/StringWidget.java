@@ -21,7 +21,7 @@ public class StringWidget extends EditorWidget {
         super(cloneFrom);
         
         this.size = cloneFrom.size;
-        this.maxlength = cloneFrom.size;
+        this.maxlength = cloneFrom.maxlength;
     }    
     
     @Override
