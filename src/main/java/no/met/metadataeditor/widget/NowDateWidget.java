@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TimeZone;
 
 import no.met.metadataeditor.EditorWidgetView;
 import no.met.metadataeditor.InvalidEditorConfigurationException;
@@ -18,7 +19,7 @@ public class NowDateWidget extends EditorWidget {
 
     private static final long serialVersionUID = 1L;
 
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");    
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");    
     
     @Override
     public Map<String, String> getDefaultValue() {
@@ -63,6 +64,7 @@ public class NowDateWidget extends EditorWidget {
     public static String nowTimeStamp() {
         
         Date now = new Date();
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         String strDate = dateFormat.format(now);
         return strDate;
 
