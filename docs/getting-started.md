@@ -71,3 +71,100 @@ A single repository can support multiple formats if you want to. You just need t
 
 ## An example <FORMAT>Template.xml file
 
+The templates files is the core of how the metadata editor reads and writes the metadata files. The template files are basically in the same format as the format as your metadata XML files, but mixed with template tags for the metadata editor. This is easiest explained by and example.
+
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <edt:editorDataTypes xmlns:edt="http://www.met.no/schema/metadataeditor/editorDataTypes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.met.no/schema/metadataeditor/editorDataTypes dataTypes.xsd">
+
+        <mmd:mmd xmlns:mmd="http://www.met.no/schema/mmd" xmlns:gml="http://www.opengis.net/gml">
+            <mmd:metadata_version>1</mmd:metadata_version>        
+            <mmd:dataset_language>en</mmd:dataset_language>
+
+            <edt:string varName="metadata_identifier" minOccurs="1" maxOccurs="1">
+                <mmd:metadata_identifier>$str</mmd:metadata_identifier>
+            </edt:string>
+
+            <edt:string varName="title_en" minOccurs="0" maxOccurs="1" xpath="/mmd:mmd/mmd:title[lang('en')]">
+                <mmd:title xml:lang="en">$str</mmd:title>
+            </edt:string>
+            
+            <edt:string varName="title_no" minOccurs="0" maxOccurs="1" xpath="/mmd:mmd/mmd:title[lang('no')]">
+                <mmd:title xml:lang="no">$str</mmd:title>
+            </edt:string>            
+            
+            <edt:list varName="iso_topic_category" minOccurs="0" maxOccurs="1" resource="isoTopicCategories.txt">
+                <mmd:iso_topic_category>$listElement</mmd:iso_topic_category>
+            </edt:list>   
+            
+            <mmd:geographic_extent>
+                <edt:lonLatBoundingBox varName="geographic_extent_rectangle" minOccurs="0" maxOccurs="1">
+                    <mmd:rectangle>
+                        <mmd:north>$north</mmd:north>
+                        <mmd:south>$south</mmd:south>
+                        <mmd:east>$east</mmd:east>
+                        <mmd:west>$west</mmd:west>
+                    </mmd:rectangle>
+                </edt:lonLatBoundingBox>
+            </mmd:geographic_extent>
+            
+            <edt:container varName="data_access" minOccurs="0" maxOccurs="unbounded">
+                <mmd:data_access>
+                    <edt:string varName="data_access_name" minOccurs="1" maxOccurs="1">
+                        <mmd:name>$str</mmd:name>
+                    </edt:string>
+                    <edt:uri varName="data_access_resource" minOccurs="1" maxOccurs="1">
+                        <mmd:resource>$uri</mmd:resource>
+                    </edt:uri>
+                </mmd:data_access>
+            </edt:container>  
+        </mmd:mmd>
+    </edt:editorDataTypes>            
+    
+The goal of this template is be able to edit XML files that look like this:
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <mmd:mmd xmlns:mmd="http://www.met.no/schema/mmd" xmlns:gml="http://www.opengis.net/gml">
+        <mmd:metadata_version>1</mmd:metadata_version>        
+        <mmd:dataset_language>en</mmd:dataset_language>
+
+        <mmd:metadata_identifier>xyz-123</mmd:metadata_identifier>    
+        <mmd:title xml:lang="en">Some dataset</mmd:title>  
+        <mmd:title xml:lang="no">Et datasett</mmd:title>   
+        <mmd:iso_topic_category>oceans</mmd:iso_topic_category>
+
+        <mmd:geographic_extent>
+            <mmd:rectangle>
+                <mmd:north>90</mmd:north>
+                <mmd:south>0</mmd:south>
+                <mmd:east>43.2</mmd:east>
+                <mmd:west>-20.1</mmd:west>
+            </mmd:rectangle>
+        </mmd:geographic_extent>
+        
+        <mmd:data_access>
+            <mmd:name>WMS</mmd:name>
+            <mmd:resource>http://example.org/wms</mmd:resource>
+        </mmd:data_access>
+        
+        <mmd:data_access>
+            <mmd:name>OPeNDAP</mmd:name>
+            <mmd:resource>http://example.org/opendap</mmd:resource>
+        </mmd:data_access>
+
+    </mmd:mmd>
+    
+As you can see the two types of files are quite similar, but the template contains a number of tags from the "edt" namespace.
+
+All tags from the edt namespace except editorDataTypes declares a named variable in the template. These variables are used to read and write the dynamic parts of the metadata, i.e the part of the metadata files that are different between each file. Each editor variable has type determined by its tag name and it also has number of attributes
+
+  * varName (required): The name of the particular variable. This is later used in the configuration of the editor view.
+  * minOccurs: The minimal number of times the variable can occur. This is used to generate an appropriate view of the variable and NOT for validation. Default unbounded
+  * maxOccurs: The maximum number of times the variable can occur. This is used to generate an appropriate view of the variable and NOT for validation. Default unbounded
+  * resource: The name a resource that contains the possible valid values for this variable. This is used to generate an appropriate view of the variable and NOT for validation.
+  * xpath: The XPath that is used to find the XML node in the metadata file that the variable contains. This is almost always calculated for you, but in the cases that the XPath to more than one variable is the same it needs to specified manually. For instance in the example the editor cannot calculate a unique XPath the variables "title_en" and "title_no" since they have the same XPath /mmd:mmd/mmd:title.
+   
+The editor variables can also contain other editor variables. This is mostly used when two or more variables can be grouped into a bigger entity and at the same repeated more the once. This is the case for <mmd:data_access> in the example. <mmd:data_access> has two sub element <mmd:name> and <mmd:resource> and it can also be repeated as many times as the user would like.
+
+When reading the metadata files the editor will populate all variables based on the data found the template file and when it writes the metadata it will fill the template will the values for the varibles to generate the new file. ***It is important to note that the editor does not update the existing file, it instead generates a entirely new file based on the template!*** This is important since it means that anything in the metadata file that is not mentioned in the template will be gone once the file is written once.
