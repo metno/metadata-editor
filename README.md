@@ -23,3 +23,7 @@ Debian package that can be used for installation on Debian based systems.
 
 To install the metadata-editor, deploy the metadata-editor.war file to you servlet
 container.
+
+## How to configure
+
+See docs/getting-started.md in the source code.
