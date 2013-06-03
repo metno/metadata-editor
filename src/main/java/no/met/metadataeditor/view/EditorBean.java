@@ -23,6 +23,7 @@ import no.met.metadataeditor.Editor;
 import no.met.metadataeditor.EditorConfiguration;
 import no.met.metadataeditor.EditorException;
 import no.met.metadataeditor.EditorWidgetView;
+import no.met.metadataeditor.LogUtils;
 import no.met.metadataeditor.datastore.DataStore;
 import no.met.metadataeditor.datastore.DataStoreFactory;
 import no.met.metadataeditor.validationclient.ValidationClient;
@@ -137,7 +138,16 @@ public class EditorBean implements Serializable {
         }
 
         String xmlContent = editor.editorContentToXML(project, recordIdentifier);
-        ValidationResponse validationResponse = validationClient.validate(xmlContent);
+        
+        ValidationResponse validationResponse;
+        try {
+            validationResponse = validationClient.validate(xmlContent);
+        } catch (EditorException e){
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Exception happend during validation. Please check the logs", "Exception happend during validation. Please check the logs.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            LogUtils.logException(logger, "Exception happend during the validation.", e);
+            return;            
+        }
 
         if( validationResponse.success ){
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Validation successfull", "Validation successfull");
