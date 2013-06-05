@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A utility to parse the GMCD SKOS taxonomy.
+ * A utility to parse the GCMD SKOS taxonomy.
  */
 public final class SkosUtils {
 
@@ -75,6 +75,12 @@ public final class SkosUtils {
         return queryBuilder.toString();
     }
 
+    /**
+     * Get SKOS keywords
+     * @param model model
+     * @param level level of SKOS hierarchy (e.g., LEVEL 3 gets Science Keywords > Earth Science > SOLID EARTH)
+     * @return a map of the outer most keyword and its hierarchy
+     */
     public static Map<String, String> getSkos(Model model, LEVEL level) {
         if (model == null) {
             throw new IllegalArgumentException("Model can not be null");
@@ -109,9 +115,15 @@ public final class SkosUtils {
             }
             skosClassification.put(key, hierachiyBuilder.toString());
         }
+        qe.close();
         return skosClassification;
     }
 
+    /**
+     * Get all the SKOS keyword hierarchy
+     * @param inputStream 
+     * @return a map of the outer most keyword and its hierarchy
+     */
     public static Map<String, String> getAllSkos(InputStream inputStream) {
 
         if (inputStream == null) {
@@ -121,10 +133,15 @@ public final class SkosUtils {
         Map<String, String> allSkos = getSkos(model, LEVEL.FIVE);
         Map<String, String> skosLevel7 = getSkos(model, LEVEL.SEVEN);
         allSkos.putAll(skosLevel7);
-
+        model.close();
         return allSkos;
     }
 
+    /**
+     * Get the model 
+     * @param inputStream
+     * @return model
+     */
     public static Model getModel(InputStream inputStream) {
         if (inputStream == null) {
             throw new IllegalArgumentException("Stream can not be null");
