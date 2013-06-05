@@ -32,12 +32,13 @@
                 <p:outputLabel for="password" value="Password:" />
                 <p:password id="password" value="#{userBean.password}" />
 
-                <p:commandButton value="Login" update="@form" action="#{userBean.validateCredentials(project)}" oncomplete="handleLoginRequest(xhr, status, args)" />
+                <p:commandButton id="login-btn" value="Login" update="@form" action="#{userBean.validateCredentials(project)}" oncomplete="handleLoginRequest(xhr, status, args)" />
                 <p:commandLink value="Cancel" onclick="loginDialog.hide()" url="#" />
         
             </h:panelGrid>
             
             <p:commandButton value="Ok" onclick="loginDialig.hide()" action="#{userBean.closeLoginDialog}" ajax="false" process="@all" rendered="#{userBean.validated}" />
+            <p:defaultCommand target="login-btn" />  
             
         </h:form>
   

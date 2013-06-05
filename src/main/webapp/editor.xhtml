@@ -84,6 +84,7 @@ jQuery(document).ready(function () {
 		        <metaedit:auto-uuid widget="#{widget}" rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.AutoUUIDWidget'}" />
 		        <metaedit:now-date widget="#{widget}" rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.NowDateWidget'}" />
 		        <metaedit:metno-dataset-identifier widget="#{widget}" rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.MetnoDatasetIdentifierWidget'}" />
+                <metaedit:skos-list widget="#{widget}" rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.SkosListWidget'}" />
 		        
 		    </ui:repeat>
 	    </p:tab>
