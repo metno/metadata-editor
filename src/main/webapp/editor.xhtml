@@ -15,14 +15,23 @@
 
 <h:head>
     <title>Metadata editor</title>
-    <h:outputStylesheet name="editor.css" library="css"/>
+    <h:outputStylesheet name="editor.css" library="css"/>                              
     <h:outputScript name="utils.js" library="javascript"/>
+    <h:outputScript name="OpenLayers.js" library="javascript"/>    
     
     <h:outputScript >
-//disable the enter key on input elements.
-jQuery(document).ready(function () {    
+
+jQuery(document).ready(function () {
+
+    //disable the enter key on input elements.    
     jQuery('input').keypress(ignore_enter_key)
-});        
+    
+    OpenLayers.ImgPath = "http://js.mapbox.com/theme/dark/";
+    // init the map client
+    init_map('mapClient');
+});      
+
+  
     </h:outputScript>
     
 </h:head>
@@ -33,7 +42,11 @@ jQuery(document).ready(function () {
               
     <p:dialog id="status-dialog" modal="true" widgetVar="statusDialog" header="Status" draggable="false" closable="false">  
         <p:graphicImage value="/resources/images/ajaxloadingbar.gif" />  
-    </p:dialog>  
+    </p:dialog>
+    
+    <p:dialog modal="true" widgetVar="wmsDialog" header="Map" draggable="true" closable="true" >  
+        <div id="mapClient"></div>  
+    </p:dialog>    
 
     <ui:include src="login-dialog.xhtml">
         <ui:param name="project" value="#{editorBean.project}"/>

@@ -29,7 +29,7 @@
                 <f:facet name="header">
                     <h:outputText value="North" />
                 </f:facet>
-                <p:inputText value="#{widgetView.values['north']}" size="10" disabled="#{!userBean.validated}">
+                <p:inputText value="#{widgetView.values['north']}" size="10" disabled="#{!userBean.validated}" styleClass="lat-lon-north">
                     <p:ajax event="change" global="false" />
                 </p:inputText>
             </h:column>
@@ -41,7 +41,7 @@
                 <f:facet name="header">
                     <h:outputText value="South" />
                 </f:facet>            
-                <p:inputText value="#{widgetView.values['south']}" size="10" disabled="#{!userBean.validated}">
+                <p:inputText value="#{widgetView.values['south']}" size="10" disabled="#{!userBean.validated}" styleClass="lat-lon-south">
                     <p:ajax event="change" global="false" />
                 </p:inputText>
             </h:column>
@@ -53,7 +53,7 @@
                 <f:facet name="header">
                     <h:outputText value="East" />
                 </f:facet>            
-                <p:inputText value="#{widgetView.values['east']}" size="10" disabled="#{!userBean.validated}">
+                <p:inputText value="#{widgetView.values['east']}" size="10" disabled="#{!userBean.validated}"  styleClass="lat-lon-east">
                     <p:ajax event="change" global="false" />
                 </p:inputText>
             </h:column>
@@ -65,11 +65,15 @@
                 <f:facet name="header">
                     <h:outputText value="West" />
                 </f:facet>            
-                <p:inputText value="#{widgetView.values['west']}" size="10" disabled="#{!userBean.validated}" />
+                <p:inputText value="#{widgetView.values['west']}" size="10" disabled="#{!userBean.validated}" styleClass="lat-lon-west" />
             </h:column>
             <h:column id="validation-msg-west">
                <h:outputText styleClass="input-validation-error" value="#{widgetView.validateAttribute('west')}" rendered="#{userBean.validated and widgetView.validateAttribute('west') != null}"/>
             </h:column>            
+
+            <h:column id="view-in-map-button">
+                <p:button onclick="add_lat_lon_bounding_box(jsf_element('#{p:component('boundingbox')}')); wmsDialog.show(); return false;" url="#" value="Show in map" styleClass="map-button" />
+            </h:column>
 
             <h:column>
                 <ui:include src="../../remove-value-button.xhtml" >
