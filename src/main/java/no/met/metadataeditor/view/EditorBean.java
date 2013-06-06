@@ -25,9 +25,12 @@ import no.met.metadataeditor.EditorException;
 import no.met.metadataeditor.EditorWidgetView;
 import no.met.metadataeditor.datastore.DataStore;
 import no.met.metadataeditor.datastore.DataStoreFactory;
+import no.met.metadataeditor.util.SkosUtils;
 import no.met.metadataeditor.validationclient.ValidationClient;
 import no.met.metadataeditor.validationclient.ValidationResponse;
 import no.met.metadataeditor.widget.EditorWidget;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import org.primefaces.component.tabview.TabView;
 import org.primefaces.event.TabChangeEvent;
@@ -58,6 +61,8 @@ public class EditorBean implements Serializable {
     private int activeTabId = 0;
 
     boolean initPerformed = false;
+    
+    private Map<String, String> skosKeywords;
 
     public EditorBean() {
 
@@ -234,6 +239,37 @@ public class EditorBean implements Serializable {
         return values;
 
     }
+    
+    public List<String> getSkosResourceValues(EditorWidget widget){
+        if (skosKeywords == null) {
+            DataStore dataStore = DataStoreFactory.getInstance(project);
+            String resourceString = dataStore.readResource(widget.getResourceUri().toString());         
+            skosKeywords = SkosUtils.getAllSkos(IOUtils.toInputStream(resourceString));  
+        }   
+                
+        List<String> values = new ArrayList<>();
+        for (Map.Entry<String, String> skosKeyword : skosKeywords.entrySet()) {            
+            values.add(skosKeyword.getValue());
+        }        
+        return values;
+    }
+    
+    public List<String> completeSkos(String query){
+        FacesContext context = FacesContext.getCurrentInstance();
+        EditorWidget widget = context.getApplication().evaluateExpressionGet(context, "#{widget}", EditorWidget.class);        
+        List<String> keywords = getSkosResourceValues(widget);        
+        List<String> currentValues = getWidgetViewsAttributeValues(widget, "listElement");
+        List<String> atcList = new ArrayList<>();
+        for (String keyword : keywords) {
+            if (StringUtils.containsIgnoreCase(keyword, query))
+                atcList.add(keyword);
+        }  
+        //remove the already added values
+        for (String value : currentValues) {
+            atcList.remove(value);
+        }
+        return atcList;
+    }
 
     /**
      * Get the values from a resources as key values pairs. The keys and values
@@ -262,14 +298,19 @@ public class EditorBean implements Serializable {
 
         return values;
     }
+    
+    private List<String> getWidgetViewsAttributeValues(EditorWidget widget, String attribute) {
+        List<String> currentValues = new ArrayList();
+        List<EditorWidgetView> widgetViews = widget.getWidgetViews();
+        for( EditorWidgetView view : widgetViews ){
+            currentValues.add(view.getValues().get(attribute));
+        }
+        return  currentValues;
+    }
 
     public List<String> getFilteredResourceValues(EditorWidget widget, String filterAttribute) {
 
-        List<String> currentValues = new ArrayList<String>();
-        List<EditorWidgetView> widgetViews = widget.getWidgetViews();
-        for( EditorWidgetView view : widgetViews ){
-            currentValues.add(view.getValues().get(filterAttribute));
-        }
+        List<String> currentValues = getWidgetViewsAttributeValues(widget, filterAttribute);
 
         List<String> filteredValues = getResourceValues(widget);
         for( String value : currentValues ){

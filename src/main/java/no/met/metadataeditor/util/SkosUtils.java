@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * A utility to parse the GCMD SKOS taxonomy.
@@ -23,13 +24,15 @@ import java.util.Map;
 public final class SkosUtils {
 
     public enum LEVEL {
-        THREE, FOUR, FIVE, SIX, SEVEN;
+        TWO, THREE, FOUR, FIVE, SIX, SEVEN;
 
         @Override
         public String toString() {
             switch (this) {
+                case TWO:
+                    return "2";
                 case THREE:
-                    return "3";
+                    return "3";    
                 case FOUR:
                     return "4";
                 case FIVE:
@@ -78,16 +81,19 @@ public final class SkosUtils {
     /**
      * Get SKOS keywords
      * @param model model
-     * @param level level of SKOS hierarchy (e.g., LEVEL 3 gets Science Keywords > Earth Science > SOLID EARTH)
+     * @param endLevel endLevel of SKOS hierarchy (e.g., LEVEL 3 gets Science Keywords > Earth Science > SOLID EARTH)
      * @return a map of the outer most keyword and its hierarchy
      */
-    public static Map<String, String> getSkos(Model model, LEVEL level) {
+    public static Map<String, String> getSkos(Model model, LEVEL startLevel, LEVEL endLevel) {
         if (model == null) {
             throw new IllegalArgumentException("Model can not be null");
         }
+        if (Integer.parseInt(startLevel.toString()) >= Integer.parseInt(endLevel.toString())) {
+            throw new IllegalArgumentException("Start level should be less than end level");
+        }
 
         Map<String, String> skosClassification = new HashMap<>();
-        Query sparqlQuery = QueryFactory.create(createQuery(Integer.parseInt(level.toString())));
+        Query sparqlQuery = QueryFactory.create(createQuery(Integer.parseInt(endLevel.toString())));
         // Execute the sparqlQuery and obtain results
         QueryExecution qe = QueryExecutionFactory.create(sparqlQuery, model);
         ResultSet results = qe.execSelect();
@@ -103,9 +109,10 @@ public final class SkosUtils {
             }
             String key = null;
             StringBuilder hierachiyBuilder = new StringBuilder();
-            for (int i = 0; i < varMNames.size(); i++) {
+            for (int i = Integer.parseInt(startLevel.toString()); i < varMNames.size(); i++) {
                 RDFNode node = row.get(varMNames.get(i));
-                hierachiyBuilder.append(node.asLiteral().getValue().toString());
+                String  value = StringUtils.capitalize(node.asLiteral().getValue().toString().toLowerCase());
+                hierachiyBuilder.append(value);
                 if (i != varMNames.size() - 1) {
                     hierachiyBuilder.append(" > ");
                 }
@@ -130,8 +137,8 @@ public final class SkosUtils {
             throw new IllegalArgumentException("Stream can not be null");
         }
         Model model = getModel(inputStream);
-        Map<String, String> allSkos = getSkos(model, LEVEL.FIVE);
-        Map<String, String> skosLevel7 = getSkos(model, LEVEL.SEVEN);
+        Map<String, String> allSkos = getSkos(model, LEVEL.TWO, LEVEL.FIVE);
+        Map<String, String> skosLevel7 = getSkos(model, LEVEL.TWO, LEVEL.SEVEN);
         allSkos.putAll(skosLevel7);
         model.close();
         return allSkos;

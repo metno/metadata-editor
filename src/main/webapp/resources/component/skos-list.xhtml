@@ -14,30 +14,37 @@
     <composite:implementation>
 
         <h:panelGroup id="skos-list-container" layout="block" styleClass="editor-widget-container">
-        <h:outputText value="#{cc.attrs.widget.label}" styleClass="main-label" />
-
-        <ui:include src="../../add-value-button.xhtml" >
-            <ui:param name="widget" value="#{cc.attrs.widget}"/>
-            <ui:param name="updateId" value="skos-list-container"/>
-        </ui:include>
-
-        <metaedit:description widget="#{cc.attrs.widget}"/>
-
-        <h:dataTable value="#{cc.attrs.widget.widgetViews}" var="widgetView" id="list">
-
-            <h:column>
-                <h:selectOneMenu value="#{widgetView.values['listElement']}" disabled="#{!userBean.validated}">
-                    <f:selectItems value="#{editorBean.getResourceValues(cc.attrs.widget)}" />
-                </h:selectOneMenu>            
-            </h:column>
-            <h:column>
-                <ui:include src="../../remove-value-button.xhtml" >
-                    <ui:param name="widget" value="#{cc.attrs.widget}"/>
-                    <ui:param name="value" value="#{widgetView}"/>
-                </ui:include>      
-            </h:column>
-        </h:dataTable>
-                                  
+            <h:outputText value="#{cc.attrs.widget.label}" styleClass="main-label" />
+            <br/>
+            <metaedit:description widget="#{cc.attrs.widget}"/>
+            <p:autoComplete id="skos-atc" 
+                            global="false"
+                            value="#{cc.attrs.widget.currentValue}" 
+                            disabled="#{!userBean.validated}"
+                            minQueryLength="3" 
+                            size="${cc.attrs.widget.size}" 
+                            maxlength="${cc.attrs.widget.maxlength}"
+                            maxResults="40"
+                            scrollHeight="300"
+                            completeMethod="#{editorBean.completeSkos}"
+                            onfocus="if (this.value === '#{cc.attrs.widget.currentValue}'){this.value ='';}">
+                <p:ajax event="itemSelect" />
+            </p:autoComplete>        
+            <ui:include src="../../add-value-button.xhtml" >
+                <ui:param name="widget" value="#{cc.attrs.widget}"/>
+                <ui:param name="updateId" value="skos-list-container"/>
+            </ui:include>        
+            <h:dataTable value="#{cc.attrs.widget.widgetViews}" var="widgetView" id="list">
+                <h:column>
+                    <h:outputText value="#{widgetView.values['listElement']}" />               
+                </h:column>
+                <h:column>
+                    <ui:include src="../../remove-value-button.xhtml" >
+                        <ui:param name="widget" value="#{cc.attrs.widget}"/>
+                        <ui:param name="value" value="#{widgetView}"/>
+                    </ui:include>      
+                </h:column>
+            </h:dataTable>                                  
         </h:panelGroup>
         
     </composite:implementation>
