@@ -56,6 +56,11 @@ function init_map (mapDivId) {
     
 }
 
+/**
+ * Draw a square bounding box on the map
+ * @param coordContainer The container that contains the input fields with the bounding box
+ * values.
+ */
 function add_lat_lon_bounding_box(coordContainer) {
     
     var north = jQuery('.lat-lon-north', coordContainer).val();
@@ -70,6 +75,42 @@ function add_lat_lon_bounding_box(coordContainer) {
     var upperRight = new OpenLayers.Geometry.Point(east, north).transform(proj, map.getProjectionObject());    
     
     add_polygon([upperLeft, lowerLeft, lowerRight, upperRight, upperLeft]);
+}
+
+/**
+ * Draw a polygon bounding box to the map
+ * @param showMapButton The button that was clicked to show the map. Used to find the values
+ * to display.
+ */
+function add_polygon_bounding_box(showMapButton) {
+    
+    // this hack for getting the correct table was necessary since p:component in JSF did not
+    // work for some unexplained reason.
+    var table = jQuery(showMapButton).siblings('.polygon-bounding-box-table');
+
+    var proj = new OpenLayers.Projection("EPSG:4326");
+    var points = [];
+    jQuery('.polygon-point', table).each(function (index){
+        
+        var value = jQuery(this).val();
+        var values = value.split(" ");
+        
+        if( values.length != 2 ){
+            return;
+        }
+        
+        var point = new OpenLayers.Geometry.Point(values[0], values[1]).transform(proj, map.getProjectionObject());
+        points.push(point);
+    });
+    
+    // need at least 3 points in a polygon
+    if( points.length < 3 ){
+        return;
+    }
+    
+    points[points.length] = points[0];
+    
+    add_polygon(points);
 }
 
 function add_polygon(points) {
