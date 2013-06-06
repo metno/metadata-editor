@@ -81,6 +81,7 @@ public final class SkosUtils {
     /**
      * Get SKOS keywords
      * @param model model
+     * @param startLevel starting point of SKOS hierarchy (e.g.,startLevelL = 2  "SOLID EARTH" from gets Science Keywords > Earth Science > SOLID EARTH)
      * @param endLevel endLevel of SKOS hierarchy (e.g., LEVEL 3 gets Science Keywords > Earth Science > SOLID EARTH)
      * @return a map of the outer most keyword and its hierarchy
      */
