@@ -12,9 +12,9 @@
     <f:event type="preRenderView" listener="#{editorBean.init}" />
  </f:metadata>
 
-
 <h:head>
     <title>Metadata editor</title>
+    <h:outputStylesheet name="common.css" library="css"/>
     <h:outputStylesheet name="editor.css" library="css"/>                              
     <h:outputScript name="utils.js" library="javascript"/>
     <h:outputScript name="OpenLayers.js" library="javascript"/>    
@@ -107,6 +107,8 @@ jQuery(document).ready(function () {
     <br />
     
     <ui:include src="menu.xhtml"/>
+
+    <ui:include src="footer.xhtml" />
 
     </h:form>
     
