@@ -12,17 +12,26 @@
     <f:event type="preRenderView" listener="#{editorBean.init}" />
  </f:metadata>
 
-
 <h:head>
     <title>Metadata editor</title>
-    <h:outputStylesheet name="editor.css" library="css"/>
+    <h:outputStylesheet name="common.css" library="css"/>
+    <h:outputStylesheet name="editor.css" library="css"/>                              
     <h:outputScript name="utils.js" library="javascript"/>
+    <h:outputScript name="OpenLayers.js" library="javascript"/>    
     
     <h:outputScript >
-//disable the enter key on input elements.
-jQuery(document).ready(function () {    
+
+jQuery(document).ready(function () {
+
+    //disable the enter key on input elements.    
     jQuery('input').keypress(ignore_enter_key)
-});        
+    
+    OpenLayers.ImgPath = "http://js.mapbox.com/theme/dark/";
+    // init the map client
+    init_map('mapClient');
+});      
+
+  
     </h:outputScript>
     
 </h:head>
@@ -33,7 +42,11 @@ jQuery(document).ready(function () {
               
     <p:dialog id="status-dialog" modal="true" widgetVar="statusDialog" header="Status" draggable="false" closable="false">  
         <p:graphicImage value="/resources/images/ajaxloadingbar.gif" />  
-    </p:dialog>  
+    </p:dialog>
+    
+    <p:dialog modal="true" widgetVar="wmsDialog" header="Map" draggable="true" closable="true" >  
+        <div id="mapClient"></div>  
+    </p:dialog>    
 
     <ui:include src="login-dialog.xhtml">
         <ui:param name="project" value="#{editorBean.project}"/>
@@ -64,7 +77,7 @@ jQuery(document).ready(function () {
         <p:ajax event="tabChange" listener="#{editorBean.tabChanged}" global="false" />
     
         <p:tab title="#{page.label}" id="tab">
-		    <ui:repeat var="widget" value="#{page.widgets}">
+		    <ui:repeat var="widget" value="#{page.widgets}" id="widget">
 
 		        <metaedit:string widget="#{widget}" rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.StringWidget'}" />
 		        <metaedit:text-area widget="#{widget}" rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.TextAreaWidget'}" />
@@ -85,6 +98,7 @@ jQuery(document).ready(function () {
 		        <metaedit:now-date widget="#{widget}" rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.NowDateWidget'}" />
 		        <metaedit:metno-dataset-identifier widget="#{widget}" rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.MetnoDatasetIdentifierWidget'}" />
                 <metaedit:skos-list widget="#{widget}" rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.SkosListWidget'}" />
+                <metaedit:polygon-bounding-box widget="#{widget}" rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.PolygonBoundingBoxWidget'}" />
 		        
 		    </ui:repeat>
 	    </p:tab>
@@ -93,6 +107,8 @@ jQuery(document).ready(function () {
     <br />
     
     <ui:include src="menu.xhtml"/>
+
+    <ui:include src="footer.xhtml" />
 
     </h:form>
     

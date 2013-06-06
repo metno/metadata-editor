@@ -49,6 +49,7 @@
                     <metaedit:now-date widget="#{childWidget}" rendered="#{childWidget.widgetType == 'no.met.metadataeditor.widget.NowDateWidget'}" />
                     <metaedit:metno-dataset-identifier widget="#{childWidget}" rendered="#{childWidget.widgetType == 'no.met.metadataeditor.widget.MetnoDatasetIdentifierWidget'}" />
                     <metaedit:skos-list widget="#{childWidget}" rendered="#{childWidget.widgetType == 'no.met.metadataeditor.widget.SkosListWidget'}" />
+                    <metaedit:polygon-bounding-box widget="#{widget}" rendered="#{widget.widgetType == 'no.met.metadataeditor.widget.PolygonBoundingBoxWidget'}" />
                 </ui:repeat>
             </p:fieldset>
         </ui:repeat>

@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:metaedit="http://java.sun.com/jsf/composite/component">
+
+    <composite:interface>
+        <composite:attribute name="widget" type="no.met.metaeditor.widget.PolygonBoundingBoxWidget" />
+    </composite:interface>
+
+    <composite:implementation>
+
+        <h:panelGroup id="polygon-bounding-box-container" layout="block" styleClass="editor-widget-container">
+        <h:outputText value="#{cc.attrs.widget.label}" styleClass="main-label"/>
+
+        <ui:include src="../../add-value-button.xhtml" >
+            <ui:param name="widget" value="#{cc.attrs.widget}"/>
+            <ui:param name="updateId" value="polygon-bounding-box-container"/>
+        </ui:include>
+
+        <p:button id="show-map" onclick="add_polygon_bounding_box(this); wmsDialog.show(); return false;" url="#" value="Show in map" styleClass="map-button" />
+
+        <metaedit:description widget="#{cc.attrs.widget}"/>
+
+
+        <h:dataTable value="#{cc.attrs.widget.widgetViews}" var="widgetView" id="polygon-bounding-box" styleClass="polygon-bounding-box-table">
+        
+            <h:column>
+                <p:inputText value="#{widgetView.values['str']}" size="30" disabled="#{!userBean.validated}" styleClass="polygon-point">
+                   <p:ajax event="change" global="false"/>
+                </p:inputText>
+            </h:column>        
+            <h:column>
+                <ui:include src="../../remove-value-button.xhtml" >
+                    <ui:param name="widget" value="#{cc.attrs.widget}"/>
+                    <ui:param name="value" value="#{widgetView}"/>
+                </ui:include>    
+            </h:column>
+            <h:column id="validation-msg-str">
+               <h:outputText styleClass="input-validation-error" value="#{widgetView.validateAttribute('str')}" rendered="#{userBean.validated and widgetView.validateAttribute('str') != null}"/>
+            </h:column>
+        
+        </h:dataTable>
+        
+        </h:panelGroup>
+
+    </composite:implementation>
+</html>

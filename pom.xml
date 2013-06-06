@@ -8,6 +8,14 @@
   <name>metadataeditor</name>
   <url>http://maven.apache.org</url>
 
+    <!--The following is required since we are not using SCM. Provide some 
+        dummy scm data so that revisionOnScmFailure will work -->
+    <scm>
+        <connection>scm:svn:http://none</connection>
+        <developerConnection>scm:svn:https://none</developerConnection>
+        <url>scm:svn:https://none</url>
+    </scm> 
+
     <properties>
         <majorMinorVersion>1.4</majorMinorVersion>
         <incrementalVersion>0</incrementalVersion>    
@@ -181,6 +189,12 @@
   </dependencies>
   <build>
     <finalName>metadataeditor</finalName>
+    <resources>
+        <resource>
+            <directory>src/main/resources/</directory>
+            <filtering>true</filtering>
+        </resource>
+    </resources>    
     <plugins>
         <plugin>
             <artifactId>maven-compiler-plugin</artifactId>
@@ -206,6 +220,29 @@
 					</dependency>
 				</dependencies>
 			</plugin>       
+            
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>buildnumber-maven-plugin</artifactId>
+                <version>1.1</version>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>create</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <doCheck>false</doCheck>
+                    <doUpdate>false</doUpdate>
+                    <revisionOnScmFailure />
+                    <format>{0,date,yyyy-MM-dd-HH:mm:ss}</format>
+                    <items>
+                        <item>timestamp</item>
+                    </items>
+                </configuration>
+            </plugin>            
             
             <plugin>
                 <artifactId>jdeb</artifactId>
