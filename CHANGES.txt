@@ -1,3 +1,5 @@
+release date=15:30 06.06.2013,version=1.5,urgency=low,by=Øystein Torget <oysteint@met.no>,distribution=all
+ * Fixed bugs, user stories METAEDIT-59, METAEDIT-60, METAEDIT-61, METAEDIT-62, METAEDIT-63, METAEDIT-66, METAEDIT-67.
 release date=15:30 26.03.2013,version=1.4,urgency=low,by=Øystein Torget <oysteint@met.no>,distribution=all
  * Added MetnoDatasetIdentifierWidet, NowDateWidget and AutoUUID widget.
  * No longer forgets values when adding more items to a widget.

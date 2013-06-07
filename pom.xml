@@ -17,7 +17,7 @@
     </scm> 
 
     <properties>
-        <majorMinorVersion>1.4</majorMinorVersion>
+        <majorMinorVersion>1.5</majorMinorVersion>
         <incrementalVersion>0</incrementalVersion>    
     </properties>
 
