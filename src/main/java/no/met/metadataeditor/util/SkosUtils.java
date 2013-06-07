@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -45,14 +46,18 @@ public final class SkosUtils {
                     throw new IllegalArgumentException();
             }
         }
+        
+        public int toInt(){
+            return Integer.parseInt(toString());
+        }
     }
 
     private SkosUtils() {
     }
 
-    private static String createQuery(int level) {
-        if (level < 3 && level > 7) {
-            throw new IllegalArgumentException("Level should be betweem 3 and 7");
+    private static String createQuery(int endLevel) {
+        if (endLevel < 3 && endLevel > 7) {
+            throw new IllegalArgumentException("End level should be betweem 3 and 7");
         }
 
         StringBuilder queryBuilder = new StringBuilder();
@@ -60,19 +65,19 @@ public final class SkosUtils {
         queryBuilder.append("PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> ");
         queryBuilder.append("SELECT DISTINCT ");
         StringBuilder resultVarBuilder = new StringBuilder();
-        for (int i = 0; i < level; i++) {
+        for (int i = 0; i < endLevel; i++) {
             String var = "?lbl" + String.valueOf(i + 1) + " ";
             resultVarBuilder.append(var);
         }
         queryBuilder.append(resultVarBuilder.toString());
         queryBuilder.append("WHERE {");
-        for (int i = 0; i < level; i++) {
+        for (int i = 0; i < endLevel; i++) {
             String broader = "?object" + String.valueOf(i) + " skos:broader ?object" + String.valueOf(i + 1) + ". ";
             String prefLabel = "?object" + String.valueOf(i + 1) + " skos:prefLabel ?lbl" + String.valueOf(i + 1) + ". ";
             queryBuilder.append(broader);
             queryBuilder.append(prefLabel);
         }
-        String filter = "FILTER  regex (?lbl" + String.valueOf(level) + ", \"Science Keywords\", \"i\")";
+        String filter = "FILTER  regex (?lbl" + String.valueOf(endLevel) + ", \"Science Keywords\", \"i\")";
         queryBuilder.append(filter);
         queryBuilder.append("}");
         return queryBuilder.toString();
@@ -86,15 +91,13 @@ public final class SkosUtils {
      * @return a map of the outer most keyword and its hierarchy
      */
     public static Map<String, String> getSkos(Model model, LEVEL startLevel, LEVEL endLevel) {
-        if (model == null) {
-            throw new IllegalArgumentException("Model can not be null");
-        }
-        if (Integer.parseInt(startLevel.toString()) >= Integer.parseInt(endLevel.toString())) {
+        Objects.requireNonNull(model, "Model can not be null");
+        if (startLevel.toInt() >= endLevel.toInt()) {
             throw new IllegalArgumentException("Start level should be less than end level");
         }
 
-        Map<String, String> skosClassification = new HashMap<>();
-        Query sparqlQuery = QueryFactory.create(createQuery(Integer.parseInt(endLevel.toString())));
+        Map<String, String> skosClassification = new HashMap<>();        
+        Query sparqlQuery = QueryFactory.create(createQuery(endLevel.toInt()));
         // Execute the sparqlQuery and obtain results
         QueryExecution qe = QueryExecutionFactory.create(sparqlQuery, model);
         ResultSet results = qe.execSelect();
@@ -110,7 +113,8 @@ public final class SkosUtils {
             }
             String key = null;
             StringBuilder hierachiyBuilder = new StringBuilder();
-            for (int i = Integer.parseInt(startLevel.toString()); i < varMNames.size(); i++) {
+            //start create string from the start level. 
+            for (int i = startLevel.toInt(); i < varMNames.size(); i++) {
                 RDFNode node = row.get(varMNames.get(i));
                 String  value = StringUtils.capitalize(node.asLiteral().getValue().toString().toLowerCase());
                 hierachiyBuilder.append(value);
@@ -133,11 +137,10 @@ public final class SkosUtils {
      * @return a map of the outer most keyword and its hierarchy
      */
     public static Map<String, String> getAllSkos(InputStream inputStream) {
-
-        if (inputStream == null) {
-            throw new IllegalArgumentException("Stream can not be null");
-        }
+        Objects.requireNonNull(inputStream, "Stream can not be null");
         Model model = getModel(inputStream);
+        //since GCMD Taxonomy contains 80% outer most leaf at level 5 and remaining 20% at level 7. Hence calling getSkos
+        //with level 5 and 7 gets all the leafs
         Map<String, String> allSkos = getSkos(model, LEVEL.TWO, LEVEL.FIVE);
         Map<String, String> skosLevel7 = getSkos(model, LEVEL.TWO, LEVEL.SEVEN);
         allSkos.putAll(skosLevel7);
@@ -151,9 +154,7 @@ public final class SkosUtils {
      * @return model
      */
     public static Model getModel(InputStream inputStream) {
-        if (inputStream == null) {
-            throw new IllegalArgumentException("Stream can not be null");
-        }
+        Objects.requireNonNull(inputStream, "Stream can not be null");
         Model model = ModelFactory.createDefaultModel();
         model.read(inputStream, "");
         return model;

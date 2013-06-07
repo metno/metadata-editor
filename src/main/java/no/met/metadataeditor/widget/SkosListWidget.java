@@ -1,9 +1,7 @@
 
 package no.met.metadataeditor.widget;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import javax.xml.bind.annotation.XmlAttribute;
 
@@ -35,17 +33,7 @@ public class SkosListWidget extends EditorWidget {
         Map<String,String> defaultValue = new HashMap<>();
         defaultValue.put("listElement", currentValue);         
         return defaultValue;
-    }
-    
-    public List<String> complete(String query) {  
-        List<String> results = new ArrayList();  
-          
-        for (int i = 0; i < 10; i++) {  
-            results.add(query + i);  
-        }  
-          
-        return results;  
-    }  
+    }   
 
     @XmlAttribute
     public int getSize() {
