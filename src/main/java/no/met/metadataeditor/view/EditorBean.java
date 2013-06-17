@@ -30,9 +30,9 @@ import no.met.metadataeditor.util.SkosUtils;
 import no.met.metadataeditor.validationclient.ValidationClient;
 import no.met.metadataeditor.validationclient.ValidationResponse;
 import no.met.metadataeditor.widget.EditorWidget;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-
 import org.primefaces.component.tabview.TabView;
 import org.primefaces.event.TabChangeEvent;
 
@@ -310,7 +310,7 @@ public class EditorBean implements Serializable {
     }
     
     private List<String> getWidgetViewsAttributeValues(EditorWidget widget, String attribute) {
-        List<String> currentValues = new ArrayList();
+        List<String> currentValues = new ArrayList<>();
         List<EditorWidgetView> widgetViews = widget.getWidgetViews();
         for( EditorWidgetView view : widgetViews ){
             currentValues.add(view.getValues().get(attribute));
