@@ -173,7 +173,6 @@ public class EditorBean implements Serializable {
         final HttpServletResponse resp = (HttpServletResponse)ctx.getExternalContext().getResponse();
 
         resp.setContentType("application/octet-stream");
-        resp.setContentLength(editorContent.length());
         resp.setHeader( "Content-Disposition", "attachment;filename=" + recordIdentifier + ".xml" );
         try {
             resp.getOutputStream().write(editorContent.getBytes());
