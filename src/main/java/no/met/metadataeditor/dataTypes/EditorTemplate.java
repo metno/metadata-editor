@@ -69,7 +69,7 @@ public class EditorTemplate {
             xmlReader.setContentHandler(th);
             xmlReader.parse(new InputSource(new StringReader(templateXML)));
         } catch (ParserConfigurationException e) {
-            throw new EditorException("Parsing template failed.", e);
+            throw new EditorException("Parsing template failed.", e, EditorException.TEMPLATE_PARSE_ERROR);
         }
         varMap = th.getResultConfig();
 
@@ -142,19 +142,19 @@ public class EditorTemplate {
         } catch (ParserConfigurationException e) {
             String msg = "Failed to created parser";
             Logger.getLogger(EditorTemplate.class.getName()).log(Level.SEVERE, msg);
-            throw new EditorException("Failed to create parser", e);
+            throw new EditorException("Failed to create parser", e, EditorException.TEMPLATE_PARSE_ERROR);
         } catch (SAXException e) {
             String msg = "SAX error when finding namespaces";
             Logger.getLogger(EditorTemplate.class.getName()).log(Level.SEVERE, msg);
-            throw new EditorException("Failed to create parser", e);
+            throw new EditorException("Failed to create parser", e, EditorException.TEMPLATE_PARSE_ERROR);
         } catch (IOException e) {
             String msg = "IOException when fidning namespaces";
             Logger.getLogger(EditorTemplate.class.getName()).log(Level.SEVERE, msg);
-            throw new EditorException("Failed to create parser", e);
+            throw new EditorException("Failed to create parser", e, EditorException.TEMPLATE_PARSE_ERROR);
         } catch (XPathExpressionException e) {
             String msg = "XPath problem when finding namespaces";
             Logger.getLogger(EditorTemplate.class.getName()).log(Level.SEVERE, msg);
-            throw new EditorException("Failed to create parser", e);
+            throw new EditorException("Failed to create parser", e, EditorException.TEMPLATE_PARSE_ERROR);
         }
 
         return namespaces;
@@ -222,7 +222,8 @@ public class EditorTemplate {
 
                 }
             } catch (XPathExpressionException e) {
-                throw new EditorException("Failed to evaluate XPath expression: " + selectionPath, e);
+                // should never happen
+                throw new EditorException("Failed to evaluate XPath expression: " + selectionPath, e, EditorException.GENERAL_ERROR_CODE);
             }
         }
         return content;
@@ -247,7 +248,8 @@ public class EditorTemplate {
                 Logger.getLogger(getClass().getName()).fine(String.format("%s + value = %s", relAttPath, attVal));
                 da.addAttribute(att, attVal);
             } catch (XPathExpressionException e) {
-                throw new EditorException("Failed to evaluate XPath expression when getting the actual attributes values:" + relAttPath, e );
+                // should never happen
+                throw new EditorException("Failed to evaluate XPath expression when getting the actual attributes values:" + relAttPath, e, EditorException.GENERAL_ERROR_CODE );
             }
 
         }

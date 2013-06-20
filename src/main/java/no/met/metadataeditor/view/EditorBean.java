@@ -179,7 +179,7 @@ public class EditorBean implements Serializable {
             resp.getOutputStream().flush();
             resp.getOutputStream().close();
         } catch (IOException e) {
-            throw new EditorException("Failed to write XML to response", e);
+            throw new EditorException("Failed to write XML to response", e, EditorException.IO_ERROR);
         }
 
         ctx.responseComplete();

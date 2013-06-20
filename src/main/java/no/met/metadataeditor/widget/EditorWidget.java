@@ -148,7 +148,7 @@ public abstract class EditorWidget implements Serializable {
 
             String varName = child.getVariableName();
             if( !childVarMap.containsKey(varName)){
-                throw new InvalidEditorConfigurationException( varName + " is not found in the template." );
+                throw new InvalidEditorConfigurationException( varName + " is not found in the template.", InvalidEditorConfigurationException.UNKNOWN_VARIABLE );
             }
 
             EditorVariable ev = childVarMap.get(varName);
@@ -352,19 +352,19 @@ public abstract class EditorWidget implements Serializable {
 
         } catch (SecurityException e) {
             String msg = "No access to copy constructor for class: " + cls.getName();
-            throw new EditorException(msg, e);
+            throw new EditorException(msg, e, EditorException.GENERAL_ERROR_CODE);
         } catch (InstantiationException e) {
             String msg = "Failed to execute copy constructor for class: " + cls.getName();
-            throw new EditorException(msg, e);
+            throw new EditorException(msg, e, EditorException.GENERAL_ERROR_CODE);
         } catch (IllegalAccessException e) {
             String msg = "No access to copy constructor for class: " + cls.getName();
-            throw new EditorException(msg, e);
+            throw new EditorException(msg, e, EditorException.GENERAL_ERROR_CODE);
         } catch (IllegalArgumentException e) {
             String msg = "Illegal argument to copy constructor for class: " + cls.getName();
-            throw new EditorException(msg, e);
+            throw new EditorException(msg, e, EditorException.GENERAL_ERROR_CODE);
         } catch (InvocationTargetException e) {
             String msg = "Wrong invocation target for copy constructor for class: " + cls.getName();
-            throw new EditorException(msg, e);
+            throw new EditorException(msg, e, EditorException.GENERAL_ERROR_CODE);
         }
 
     }
@@ -377,11 +377,11 @@ public abstract class EditorWidget implements Serializable {
             return ctr;
         } catch (NoSuchMethodException e) {
             String msg = "No copy constructor for class: " + cls.getName();
-            throw new EditorException(msg, e);
+            throw new EditorException(msg, e, EditorException.GENERAL_ERROR_CODE);
 
         } catch (SecurityException e) {
             String msg = "No access to copy constructor for class: " + cls.getName();
-            throw new EditorException(msg, e);
+            throw new EditorException(msg, e, EditorException.GENERAL_ERROR_CODE);
         }
 
     }

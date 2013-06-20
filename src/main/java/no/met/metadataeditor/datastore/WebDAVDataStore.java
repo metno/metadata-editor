@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.commons.io.IOUtils;
-
 import no.met.metadataeditor.EditorException;
+
+import org.apache.commons.io.IOUtils;
 
 import com.googlecode.sardine.DavResource;
 import com.googlecode.sardine.Sardine;
@@ -48,7 +48,7 @@ public class WebDAVDataStore extends DataStoreImpl {
             webdavConn.put(id, resource.getBytes());
         } catch (IOException e) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Failed to write to WebDAV", e);
-            throw new EditorException("Failed to write to WebDAV", e);
+            throw new EditorException("Failed to write to WebDAV", e, EditorException.IO_ERROR);
         }
     }
 
@@ -62,7 +62,7 @@ public class WebDAVDataStore extends DataStoreImpl {
             return IOUtils.toString(is);
         } catch (IOException e) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Failed to fetch data from WebDAV: " + id, e);
-            throw new EditorException("Failed to fetch metadata from WebDAV", e);
+            throw new EditorException("Failed to fetch metadata from WebDAV", e, EditorException.IO_ERROR);
         }
     }
 
@@ -108,7 +108,7 @@ public class WebDAVDataStore extends DataStoreImpl {
 
         } catch (IOException e) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Failed to fetch resource list", e);
-            throw new EditorException("Failed to fetch resource list from WebDAV", e);
+            throw new EditorException("Failed to fetch resource list from WebDAV", e, EditorException.IO_ERROR);
         }
 
     }
@@ -125,7 +125,7 @@ public class WebDAVDataStore extends DataStoreImpl {
             return new URL(fullPath.toString());
         } catch (MalformedURLException e) {
             Logger.getLogger(WebDAVDataStore.class.getName()).log(Level.SEVERE, null, e);
-            throw new EditorException(e);
+            throw new EditorException(e.getMessage(), e, EditorException.GENERAL_ERROR_CODE);
         }
     }
 
@@ -177,7 +177,7 @@ public class WebDAVDataStore extends DataStoreImpl {
 
         } catch (IOException e) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Failed to delete resource", e);
-            throw new EditorException("Failed to delete resource list from WebDAV", e);
+            throw new EditorException("Failed to delete resource list from WebDAV", e, EditorException.IO_ERROR);
         }
 
     }

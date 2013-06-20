@@ -41,7 +41,7 @@ public class DataStoreFactory {
         Config config = getConfig();
 
         if(!projectConfigured(project, config)){
-            throw new EditorException("Project has not been configured: " + project );
+            throw new EditorException("Project has not been configured: " + project, EditorException.MISSING_PROJECT_CONFIG );
         }
         return getStore(project, config);
 

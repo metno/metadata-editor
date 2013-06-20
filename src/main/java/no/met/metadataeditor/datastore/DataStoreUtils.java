@@ -57,10 +57,8 @@ public class DataStoreUtils {
                     break;
                 }
             }
-        } catch (XMLStreamException e) {
-            throw new EditorException(e.getMessage());
-        } catch (FactoryConfigurationError e) {
-            throw new EditorException(e.getMessage());
+        } catch (XMLStreamException | FactoryConfigurationError e) {
+            throw new EditorException(e.getMessage(), e, EditorException.METADATA_PARSE_ERROR);
         }
 
         return format;
@@ -93,13 +91,13 @@ public class DataStoreUtils {
                 NodeList detectors = (NodeList) xpath.evaluate("detector", formatNode, XPathConstants.NODESET);
                 if (detectors.getLength() != 1) {
                     throw new EditorException(String.format("found %d detectors, need exactly 1 for format %s",
-                            detectors.getLength(), tag));
+                            detectors.getLength(), tag), EditorException.SETUP_XML_ERROR);
                 }
                 String detectorType = xpath.evaluate("@type", detectors.item(0));
                 if (!"rootNode".equals(detectorType)) {
                     throw new EditorException(String.format(
                             "found detector-type '%s' for format '%s', currently only 'rootNode' allowed in %s",
-                            detectorType, tag));
+                            detectorType, tag), EditorException.SETUP_XML_ERROR);
                 }
                 String rootNode = xpath.evaluate("arg[@name='rootNode']/@value", detectors.item(0));
                 String namespace = xpath.evaluate("arg[@name='namespace']/@value", detectors.item(0));
@@ -131,7 +129,7 @@ public class DataStoreUtils {
             return client;
         }
 
-        throw new EditorException("Invalid type for validation: " + validatorType );
+        throw new EditorException("Invalid type for validation: " + validatorType, EditorException.SETUP_XML_ERROR );
 
     }
 

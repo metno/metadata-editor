@@ -9,16 +9,15 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.*;
-
-import org.apache.commons.io.FileUtils;
+import java.util.logging.Logger;
 
 import no.met.metadataeditor.EditorException;
+
+import org.apache.commons.io.FileUtils;
 
 /**
  * DataStore implementation that reads and writes files from the local disk.
@@ -45,7 +44,7 @@ public class DiskDataStore extends DataStoreImpl {
             out = new BufferedWriter(fstream);
             out.write(resource);
         } catch (IOException e) {
-            throw new EditorException("Failed to write to file: " + file.getAbsolutePath(), e);
+            throw new EditorException("Failed to write to file: " + file.getAbsolutePath(), e, EditorException.IO_ERROR);
         } finally {
             if (out != null) {
                 try {
@@ -74,7 +73,7 @@ public class DiskDataStore extends DataStoreImpl {
                 line = br.readLine();
             }
         } catch (IOException e) {
-            throw new EditorException(e.getMessage());
+            throw new EditorException(e.getMessage(), e, EditorException.IO_ERROR);
         } finally {
             if (br != null) {
                 try {
@@ -108,8 +107,7 @@ public class DiskDataStore extends DataStoreImpl {
         try {
             return out.toURI().toURL();
         } catch (MalformedURLException e) {
-            Logger.getLogger(DiskDataStore.class.getName()).log(Level.SEVERE, null, e);
-            throw new EditorException(e);
+            throw new EditorException(e.getMessage(), e, EditorException.GENERAL_ERROR_CODE);
         }
     }
 
@@ -119,9 +117,8 @@ public class DiskDataStore extends DataStoreImpl {
         try {
             return (new File(url.toURI())).toString();
         } catch (URISyntaxException e) {
-            // should not happen
-            Logger.getLogger(DiskDataStore.class.getName()).log(Level.SEVERE, null, e);
-            throw new EditorException(e);
+            // should never happen
+            throw new EditorException(e.getMessage(), e, EditorException.GENERAL_ERROR_CODE);
         }
     }
 

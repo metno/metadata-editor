@@ -102,7 +102,7 @@ public class EditorPage implements Serializable {
             
             String varName = widget.getVariableName();
             if( !contentMap.containsKey(varName)){
-                throw new InvalidEditorConfigurationException( varName + " has not associated content/variable in template." );
+                throw new InvalidEditorConfigurationException( varName + " has not associated content/variable in template.", InvalidEditorConfigurationException.UNKNOWN_VARIABLE );
             }
             
             List<EditorVariableContent> content = contentMap.get(varName);
@@ -140,7 +140,7 @@ public class EditorPage implements Serializable {
 
         for( EditorWidget widget : widgets ){
             if(! varMap.containsKey(widget.getVariableName())){
-                throw new InvalidEditorConfigurationException("The variable '" + widget.getVariableName() + "' was not found in the template");
+                throw new InvalidEditorConfigurationException("The variable '" + widget.getVariableName() + "' was not found in the template", InvalidEditorConfigurationException.UNKNOWN_VARIABLE);
             }
         }
         
@@ -159,7 +159,7 @@ public class EditorPage implements Serializable {
             
             String varName = widget.getVariableName();
             if( !varMap.containsKey(varName)){
-                throw new InvalidEditorConfigurationException( varName + " is not found in the template." );
+                throw new InvalidEditorConfigurationException( varName + " is not found in the template.", InvalidEditorConfigurationException.UNKNOWN_VARIABLE );
             }
             
             EditorVariable ev = varMap.get(varName);

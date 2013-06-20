@@ -98,9 +98,9 @@ public class Editor implements Serializable {
             resultString = EditorUtils.docToString(resultDoc);
 
         } catch (JDOMException e) {
-            throw new EditorException(e.getMessage());
+            throw new EditorException(e.getMessage(), EditorException.GENERAL_ERROR_CODE);
         } catch (IOException e) {
-            throw new EditorException(e.getMessage());
+            throw new EditorException(e.getMessage(), EditorException.GENERAL_ERROR_CODE);
         }
 
         return resultString;
@@ -118,9 +118,9 @@ public class Editor implements Serializable {
         try {
             et = new EditorTemplate(templateSource);
         } catch (SAXException e) {
-            throw new EditorException(e.getMessage(), e);
+            throw new EditorException(e.getMessage(), e, EditorException.TEMPLATE_PARSE_ERROR);
         } catch (IOException e) {
-            throw new EditorException(e.getMessage(), e);
+            throw new EditorException(e.getMessage(), e, EditorException.IO_ERROR);
         }
         return et;
     }
@@ -133,11 +133,11 @@ public class Editor implements Serializable {
         try {
             varContent = template.getContent(new InputSource(new StringReader(metadataString)));
         } catch (ParserConfigurationException e) {
-            throw new EditorException(e.getMessage());
+            throw new EditorException(e.getMessage(), e, EditorException.METADATA_PARSE_ERROR);
         } catch (SAXException e) {
-            throw new EditorException(e.getMessage());
+            throw new EditorException(e.getMessage(), e, EditorException.METADATA_PARSE_ERROR);
         } catch (IOException e) {
-            throw new EditorException(e.getMessage());
+            throw new EditorException(e.getMessage(), e, EditorException.IO_ERROR);
         }
         return varContent;
     }

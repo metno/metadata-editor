@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+    <title>Metadata editor - Error codes</title>
+    <h:outputStylesheet name="common.css" library="css"/>
+</h:head>
+
+<body>
+
+    <h1>Error Codes</h1>
+    
+    <p>This page gives some explanations to the error codes returned by the metadata editor in case of errors. Keep in
+    mind that some of the error codes are quite broad, so it is important to also take a look at the actual error codes.</p>
+
+    <h2>100</h2>
+    
+    <p>This is a general error code for errors that are not classified further. It is mostly used for exceptions that
+    "should not happen". When these types of errors occur it is best to consult the log to fix the problem.    
+    </p>
+    
+    <h2>101</h2>
+    
+    <p>This error code is used for the cases where the editor failed to parse the template for a format correctly.
+    The most likely cause for this is invalid XML in the template file.    
+    </p>
+
+    <h2>102</h2>
+    
+    <p>This error code is used for all types of input/output errors that can occur. Possible causes are that the
+    editor cannot read the requested resource for some reason or that it cannot write the content of the editor to the
+    file. Since this category is so broad it is often necessary to consult the logs when it happens.    
+    </p>    
+
+    <h2>103</h2>
+
+    <p>This error code is used when the editor cannot parse the metadata file it is given. This is most often due to
+    invalid XML in the metadata file.    
+    </p>
+    
+    <h2>104</h2>
+    
+    <p>This error code is used when the editor configuration cannot be read correctly. This can either be due to 
+    invalid XML in the editor configuration XML for a format or that the widget types are invalid. I.e.
+    that the attribute xsi:type is set to an invalid widget name.</p>
+
+    <h2>105</h2>
+    
+    <p>This error code happens when the user asks to view a project that has not been configured in the property file
+    for the editor.</p>
+
+    <h2>106</h2>
+
+    <p>This error code is used when the template file is missing for a format and the user tries to edit a file in the
+    format.</p>
+
+    <h2>107</h2>
+
+    <p>This error code is used when the editor config file is missing for a format and the user tries to edit a file in the
+    format.</p>
+
+    <h2>108</h2>
+    
+    <p>This error code is used when the user tries to edit a metadata file, but the format that is used has not been
+    configured in the setup.xml file for the project.</p>
+
+    <h2>109</h2>
+    
+    <p>This error code is used when the metadata resource that is requested cannot be found. This is most likely due to
+    requesting a file that is not present in the configured datastore for the project.</p>
+
+    <h2>110</h2>
+    
+    <p>This error code is used when the setup.xml file for a project can be parsed correctly. This is most likely due to
+    not following the specified format for the setup.xml file.
+    </p>
+    
+    <h2>201</h2>
+    
+    <p>This error code is used if an attribute value for an editor variable tag in the template does not have a valid
+    value. The problem with the attribute is given in error message.    
+    </p>
+    
+    <h2>202</h2>
+    
+    <p>This error code is used if an editor variable tag is not known to the template parser. This is most likely
+    due to a typo in the editor template.</p>
+    
+    <h2>203</h2>
+    
+    <p>This error code is used if an editor variable is missing any of the associated $&lt;var&gt; strings inside the 
+    variable. To fix the problem make sure that all $&lt;var&gt; for the variable type is used and do not containt typos.</p>
+
+    <h2>301</h2>
+    
+    <p>This error code is used when a variable is used in the editor configuration for a format, but the variable is not found
+    in the template for the format. This is often due to a typo or that the variable has not been added to the template
+    as intended</p>
+    
+    <h2>302</h2>
+    
+    <p>This error code is used when a widget configuration is not valid according to the rule for the widget. See the 
+    error message for more details on what is wrong.
+    </p>
+
+    <ui:include src="footer.xhtml" />
+
+
+</body>
+
+</html>

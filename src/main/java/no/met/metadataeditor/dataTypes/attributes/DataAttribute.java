@@ -64,27 +64,27 @@ public abstract class DataAttribute {
         } catch (NoSuchMethodException e) {
             String msg = "Did not find constructor with no arguments for class: " + this.getClass().getName();
             logger.log(Level.SEVERE, msg, e);
-            throw new EditorException(msg, e);
+            throw new EditorException(msg, e, EditorException.GENERAL_ERROR_CODE);
         } catch (SecurityException e) {
             String msg = "Security exception finnd constructor with no arguments for class: " + this.getClass().getName();
             logger.log(Level.SEVERE, msg, e);
-            throw new EditorException(msg, e);
+            throw new EditorException(msg, e, EditorException.GENERAL_ERROR_CODE);
         } catch (InstantiationException e) {
             String msg = "Failed to instansiate class: " + this.getClass().getName();
             logger.log(Level.SEVERE, msg, e);
-            throw new EditorException(msg, e);
+            throw new EditorException(msg, e, EditorException.GENERAL_ERROR_CODE);
         } catch (IllegalAccessException e) {
             String msg = "Access exception when accessing empty constructor for class: " + this.getClass().getName();
             logger.log(Level.SEVERE, msg, e);
-            throw new EditorException(msg, e);
+            throw new EditorException(msg, e, EditorException.GENERAL_ERROR_CODE);
         } catch (IllegalArgumentException e) {
             String msg = "Wrong arguments to constructor: " + this.getClass().getName();
             logger.log(Level.SEVERE, msg, e);
-            throw new EditorException(msg, e);
+            throw new EditorException(msg, e, EditorException.GENERAL_ERROR_CODE);
         } catch (InvocationTargetException e) {
             String msg = "Invocation target when making new instance for: " + this.getClass().getName();
             logger.log(Level.SEVERE, msg, e);
-            throw new EditorException(msg, e);
+            throw new EditorException(msg, e, EditorException.GENERAL_ERROR_CODE);
         }
     }
 
@@ -128,10 +128,10 @@ public abstract class DataAttribute {
 
         } catch (IllegalAccessException e) {
             logger.log(Level.SEVERE, "Illegal to access the get method of the property: " + attr, e);
-            throw new EditorException("Illegal to access the get method of the property: " + attr, e);
+            throw new EditorException("Illegal to access the get method of the property: " + attr, e, EditorException.GENERAL_ERROR_CODE);
         } catch (SecurityException e) {
             logger.log(Level.SEVERE, "Security problem to access the get method of the property: " + attr, e);
-            throw new EditorException("Security problem to access the get method of the property: " + attr, e);
+            throw new EditorException("Security problem to access the get method of the property: " + attr, e, EditorException.GENERAL_ERROR_CODE);
         }
 
     }
@@ -190,10 +190,10 @@ public abstract class DataAttribute {
 
         } catch (IllegalAccessException e) {
             logger.log(Level.SEVERE, "Illegal to access the get method of the property: " + attribute, e);
-            throw new EditorException("Illegal to access the get method of the property: " + attribute, e);
+            throw new EditorException("Illegal to access the get method of the property: " + attribute, e, EditorException.GENERAL_ERROR_CODE);
         } catch (SecurityException e) {
             logger.log(Level.SEVERE, "Security problem to access the get method of the property: " + attribute, e);
-            throw new EditorException("Security problem to access the get method of the property: " + attribute, e);
+            throw new EditorException("Security problem to access the get method of the property: " + attribute, e, EditorException.GENERAL_ERROR_CODE);
         }
 
         return value;

@@ -46,7 +46,7 @@ public class EditorConfigurationFactory {
             Unmarshaller um = context.createUnmarshaller();
             config = (EditorConfiguration) um.unmarshal(new StringReader(configString));
         } catch (JAXBException e) {
-            throw new EditorException("Failed to create editor configuration", e);
+            throw new EditorException("Failed to create editor configuration", e, EditorException.EDITOR_CONFIG_UNMARSHAL_ERROR);
         }
 
         return config;        

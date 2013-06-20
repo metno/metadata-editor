@@ -16,11 +16,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import javax.servlet.http.HttpServletRequest;
 
-import org.jdom2.Document;
-import org.jdom2.JDOMException;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-
 import no.met.metadataeditor.EditorException;
 import no.met.metadataeditor.EditorUtils;
 import no.met.metadataeditor.dataTypes.EditorTemplate;
@@ -28,6 +23,11 @@ import no.met.metadataeditor.dataTypes.EditorVariableContent;
 import no.met.metadataeditor.datastore.DataStore;
 import no.met.metadataeditor.datastore.DataStoreFactory;
 import no.met.metadataeditor.datastore.SupportedFormat;
+
+import org.jdom2.Document;
+import org.jdom2.JDOMException;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 @ManagedBean
 @ViewScoped
@@ -94,13 +94,13 @@ public class NewRecordBean implements Serializable {
                 datastore.writeMetadata(newRecordIdentifier, EditorUtils.docToString(emptyRecord), user.getUsername(), user.getPassword());
             } catch (SAXException e) {           
                 logger.log(Level.SEVERE, "Failed to parse template", e);
-                throw new EditorException("Failed to parse template", e);
+                throw new EditorException("Failed to parse template", e, EditorException.TEMPLATE_PARSE_ERROR);
             } catch (IOException e) {
                 logger.log(Level.SEVERE, "Failed to read template", e);
-                throw new EditorException("Failed to read template", e);
+                throw new EditorException("Failed to read template", e, EditorException.IO_ERROR);
             } catch (JDOMException e) {
                 logger.log(Level.SEVERE, "Failed to write empty template", e);
-                throw new EditorException("Failed to write template", e);            
+                throw new EditorException("Failed to write template", e, EditorException.IO_ERROR);            
             }        
             
             return "editor.xhtml?project=" + project + "&record=" + newRecordIdentifier + "&faces-redirect=true";

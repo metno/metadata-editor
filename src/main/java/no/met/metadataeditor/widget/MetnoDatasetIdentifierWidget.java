@@ -59,15 +59,15 @@ public class MetnoDatasetIdentifierWidget extends EditorWidget {
     protected void validateConfiguration(){
         
         if( getMaxOccurs() != 1 ){
-            throw new InvalidEditorConfigurationException("maxOccurs for a variable associated with a MetnoDatasetIdentifierWidget must be 1");
+            throw new InvalidEditorConfigurationException("maxOccurs for a variable associated with a MetnoDatasetIdentifierWidget must be 1", InvalidEditorConfigurationException.INVALID_WIDGET_CONFIG);
         }
 
         if( getMinOccurs() != 1 ){
-            throw new InvalidEditorConfigurationException("minOccurs for a variable associated with a MetnoDatasetIdentifierWidget must be 1");
+            throw new InvalidEditorConfigurationException("minOccurs for a variable associated with a MetnoDatasetIdentifierWidget must be 1", InvalidEditorConfigurationException.INVALID_WIDGET_CONFIG);
         }
         
         if( !getAttributeClass().equals(StringAttribute.class)){
-            throw new InvalidEditorConfigurationException("A MetnoDatasetIdentifierWidget must be associated with a string attribute");
+            throw new InvalidEditorConfigurationException("A MetnoDatasetIdentifierWidget must be associated with a string attribute", InvalidEditorConfigurationException.INVALID_WIDGET_CONFIG);
         }        
         
     }

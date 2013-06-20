@@ -2,6 +2,7 @@ package no.met.metadataeditor.view;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.el.ELException;
@@ -10,12 +11,14 @@ import javax.faces.application.ViewExpiredException;
 import javax.faces.application.ViewHandler;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExceptionHandler;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ExceptionQueuedEvent;
 import javax.faces.event.PreRenderViewEvent;
 import javax.faces.view.ViewDeclarationLanguage;
 
+import no.met.metadataeditor.EditorException;
 import no.met.metadataeditor.LogUtils;
 
 import org.omnifaces.exceptionhandler.FullAjaxExceptionHandler;
@@ -74,10 +77,16 @@ public class EditorExceptionHandler extends FullAjaxExceptionHandler {
             String viewName;
             if (exception instanceof ViewExpiredException) {
                 viewName = "/error-pages/view-expired.xhtml";
+            } else if (exception instanceof EditorException ) {
+                viewName = "/error-pages/editor-error.xhtml";
             } else {
                 viewName = "/error-pages/server-error.xhtml";
             }
 
+            ExternalContext externalContext = context.getExternalContext();
+            Map<String, Object> requestMap = externalContext.getRequestMap();
+            requestMap.put("exception", exception);
+            
             FacesContext facesContext = FacesContext.getCurrentInstance();
             try {
                 ViewHandler viewHandler = context.getApplication().getViewHandler();

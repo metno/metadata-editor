@@ -134,18 +134,18 @@ class TemplateHandler extends DefaultHandler {
         }
 
         if(0 == minOccurs.length()){
-            throw new InvalidTemplateException("minOccurs was an empty string by needs to be a number.");
+            throw new InvalidTemplateException("minOccurs was an empty string by needs to be a number.", InvalidTemplateException.INVALID_ATTRIBUTE_VALUE);
         }
 
         int minValue;
         try {
             minValue = Integer.parseInt(minOccurs);
         } catch(NumberFormatException e){
-            throw new InvalidTemplateException(e.getMessage());
+            throw new InvalidTemplateException(e.getMessage(), InvalidTemplateException.INVALID_ATTRIBUTE_VALUE);
         }
 
         if( minValue < 0 ){
-            throw new InvalidTemplateException("minOccurs needs to 0 or larger");
+            throw new InvalidTemplateException("minOccurs needs to 0 or larger", InvalidTemplateException.INVALID_ATTRIBUTE_VALUE);
         }
 
         return minValue;
@@ -164,11 +164,11 @@ class TemplateHandler extends DefaultHandler {
             try {
                 maxValue = Integer.parseInt(maxOccurs);
             } catch(NumberFormatException e){
-                throw new InvalidTemplateException(e.getMessage());
+                throw new InvalidTemplateException(e.getMessage(), InvalidTemplateException.INVALID_ATTRIBUTE_VALUE);
             }
 
             if( maxValue < 1 ){
-                throw new InvalidTemplateException("maxOccurs needs to be larger than 0");
+                throw new InvalidTemplateException("maxOccurs needs to be larger than 0", InvalidTemplateException.INVALID_ATTRIBUTE_VALUE);
             }
 
             return maxValue;
@@ -194,10 +194,10 @@ class TemplateHandler extends DefaultHandler {
         }
     }
 
-    private DataAttribute createInstance(String lName) throws UndefinedEditorVariableException{
+    private DataAttribute createInstance(String lName) throws InvalidTemplateException {
 
         if(!supportedTags.containsKey(lName)){
-            throw new UndefinedEditorVariableException(lName);
+            throw new InvalidTemplateException("The tag '" + lName + "' is not supported", InvalidTemplateException.INVALID_TAG);
         }
 
         Class<? extends DataAttribute> cls = supportedTags.get(lName);
@@ -206,19 +206,19 @@ class TemplateHandler extends DefaultHandler {
         } catch (NoSuchMethodException e) {
             String msg = "Missing empty constructor class: " + cls;
             Logger.getLogger(TemplateHandler.class.getName()).log(Level.SEVERE, msg);
-            throw new EditorException(msg, e);
+            throw new EditorException(msg, e, EditorException.GENERAL_ERROR_CODE);
         } catch (IllegalAccessException e) {
             String msg = "No access to empty constructor for class: " + cls;
             Logger.getLogger(TemplateHandler.class.getName()).log(Level.SEVERE, msg);
-            throw new EditorException(msg, e);
+            throw new EditorException(msg, e, EditorException.GENERAL_ERROR_CODE);
         } catch (InvocationTargetException e) {
             String msg = "Invocation problems for empty constructor for class: " + cls;
             Logger.getLogger(TemplateHandler.class.getName()).log(Level.SEVERE, msg);
-            throw new EditorException(msg, e);
+            throw new EditorException(msg, e, EditorException.GENERAL_ERROR_CODE);
         } catch (InstantiationException e) {
             String msg = "Instansiation problems for empty constructor for class: " + cls;
             Logger.getLogger(TemplateHandler.class.getName()).log(Level.SEVERE, msg);
-            throw new EditorException(msg, e);
+            throw new EditorException(msg, e, EditorException.GENERAL_ERROR_CODE);
         }
 
     }
@@ -372,7 +372,7 @@ class TemplateHandler extends DefaultHandler {
 
             EditorVariable ev = entry.getValue();
             if( !ev.attrsXPathValid() ){
-                throw new InvalidTemplateException("One or $<varname> attributes are missing for variable: " + namespace + entry.getKey());
+                throw new InvalidTemplateException("One or $<varname> attributes are missing for variable: " + namespace + entry.getKey(), InvalidTemplateException.MISSING_ATTRIBUTES);
             }
 
             validateConfig(ev.getChildren(), entry.getKey() + "::");

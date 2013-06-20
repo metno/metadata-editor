@@ -110,11 +110,11 @@ public class EditorWidgetView implements Serializable {
         } catch (InstantiationException e) {
             String msg = "Failed to instantiate a new DataAttribute instance in EditorWidgetView.";
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, msg, e);
-            throw new EditorException(msg, e);
+            throw new EditorException(msg, e, EditorException.GENERAL_ERROR_CODE);
         } catch (IllegalAccessException e) {
             String msg = "Could not access constructed when creating a new DataAttribute instance in EditorWidgetView.";
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, msg, e);
-            throw new EditorException(msg, e);
+            throw new EditorException(msg, e, EditorException.GENERAL_ERROR_CODE);
         }
 
 

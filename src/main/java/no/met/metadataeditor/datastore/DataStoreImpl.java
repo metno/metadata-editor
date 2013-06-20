@@ -159,7 +159,7 @@ abstract class DataStoreImpl implements DataStore {
         String templateUrl = templateUrl(format);
 
         if (!exists(templateUrl)) {
-            throw new EditorException("Template does not exist: " + templateUrl);
+            throw new EditorException("Template does not exist: " + templateUrl, EditorException.MISSING_TEMPLATE);
         }
 
         return get(templateUrl);
@@ -172,11 +172,11 @@ abstract class DataStoreImpl implements DataStore {
         List<SupportedFormat> formats = getSupportedFormats();
 
         if( !formats.contains(format) ){
-            throw new IllegalArgumentException("Format not supported by project: " + format);
+            throw new EditorException("Format not supported by project: " + format, EditorException.UNSUPPORTED_FORMAT);
         }
 
         if (!exists(templateUrl)) {
-            throw new EditorException("Template does not exist: " + templateUrl);
+            throw new EditorException("Template does not exist: " + templateUrl, EditorException.MISSING_TEMPLATE);
         }
 
         return get(templateUrl);
@@ -191,7 +191,7 @@ abstract class DataStoreImpl implements DataStore {
         String configurationUrl = editorConfigUrl(format);
 
         if (!exists(configurationUrl)) {
-            throw new EditorException("Template does not exist: " + configurationUrl);
+            throw new EditorException("Editor configuration does not exist: " + configurationUrl, EditorException.MISSING_EDITOR_CONFIG);
         }
 
         return get(configurationUrl);
@@ -204,7 +204,7 @@ abstract class DataStoreImpl implements DataStore {
         String resourceUrl = resourceUrl(resourceIdentifier);
 
         if (!exists(resourceUrl)) {
-            throw new EditorException("Resource does not exist: " + resourceUrl);
+            throw new EditorException("Resource does not exist: " + resourceUrl, EditorException.MISSING_METADATA_RESOURCE);
         }
         return get(resourceUrl);
     }

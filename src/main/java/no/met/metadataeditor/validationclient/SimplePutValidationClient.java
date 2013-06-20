@@ -62,7 +62,7 @@ public class SimplePutValidationClient implements ValidationClient {
             } else if ( 400 == statusCode ) {
                 success = false;
             } else {
-                throw new EditorException("HTTP status code from SimplePutValidation service not as expected: " + statusCode );
+                throw new EditorException("HTTP status code from SimplePutValidation service not as expected: " + statusCode, EditorException.GENERAL_ERROR_CODE );
             }
 
             String message = getValidationMessage(IOUtils.toString(response.getEntity().getContent()));
@@ -71,15 +71,15 @@ public class SimplePutValidationClient implements ValidationClient {
 
         } catch (UnsupportedEncodingException e) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Unsuppoerted encoding", e);
-            throw new EditorException("Unsupported encoding in validation client", e);
+            throw new EditorException("Unsupported encoding in validation client", e, EditorException.GENERAL_ERROR_CODE);
         } catch (ClientProtocolException e) {
             String msg = "Error contacting SimplePutValidation service at:" + url;
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, msg, e);
-            throw new EditorException(msg, e);
+            throw new EditorException(msg, e, EditorException.GENERAL_ERROR_CODE);
         } catch (IOException e) {
             String msg = "IOException when contacting SimplePutValiation service at: " + url;
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, msg, e);
-            throw new EditorException(msg, e);
+            throw new EditorException(msg, e, EditorException.IO_ERROR);
         }
     }
 
@@ -96,19 +96,19 @@ public class SimplePutValidationClient implements ValidationClient {
         } catch (ParserConfigurationException e) {
             String msg = "Parser configuration error while parsing SimplePutService response";
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, msg, e);
-            throw new EditorException(msg, e);
+            throw new EditorException(msg, e, EditorException.GENERAL_ERROR_CODE);
         } catch (SAXException e) {
             String msg = "SAX Exception while parsing SimplePutService response";
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, msg, e);
-            throw new EditorException(msg, e);
+            throw new EditorException(msg, e, EditorException.GENERAL_ERROR_CODE);
         } catch (IOException e) {
             String msg = "IOException while parsing SimplePutService response";
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, msg, e);
-            throw new EditorException(msg, e);
+            throw new EditorException(msg, e, EditorException.IO_ERROR);
         } catch (XPathExpressionException e) {
             String msg = "XPathExpression error while parsing SimplePutService response";
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, msg, e);
-            throw new EditorException(msg, e);
+            throw new EditorException(msg, e, EditorException.GENERAL_ERROR_CODE);
         }
         return validationMsg;
 
