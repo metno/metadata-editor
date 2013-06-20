@@ -34,7 +34,7 @@ public class DataStoreUtils {
     /**
      * Find the XML format used by the a metadata file by looking at the first tag in the file.
      * @param metadataXML The raw XML for the metadata file.
-     * @throws IllegalArgumentException Thrown if the format is not known.
+     * @throws EditorException Thrown if the format is not known.
      * @return The format used by the XML file.
      */
     public static SupportedFormat getFormat(List<SupportedFormat> formats, String metadataXML){
@@ -73,7 +73,7 @@ public class DataStoreUtils {
             }
         }
         if (format == null) {
-            throw new IllegalArgumentException("The metadata is not in one of the supported formats");
+            throw new EditorException("The metadata is not in one of the supported formats", EditorException.UNSUPPORTED_FORMAT);
         }
         return format;
     }

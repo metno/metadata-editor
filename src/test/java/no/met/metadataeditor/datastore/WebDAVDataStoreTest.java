@@ -127,7 +127,7 @@ public class WebDAVDataStoreTest {
         datastore.readTemplate("dummy");
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected=EditorException.class)
     public void testReadTemplateUnsupportedFormat() {
 
         WebDAVDataStore datastore = getDataStore();
@@ -149,7 +149,7 @@ public class WebDAVDataStoreTest {
     }
 
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected=EditorException.class)
     public void testReadTemplateForFormatUnsupportedFormat() {
 
         WebDAVDataStore datastore = getDataStore();
@@ -178,7 +178,7 @@ public class WebDAVDataStoreTest {
         datastore.readEditorConfiguration("dummy");
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected=EditorException.class)
     public void testReadConfigurationUnsupportedFormat() {
 
         WebDAVDataStore datastore = getDataStore();

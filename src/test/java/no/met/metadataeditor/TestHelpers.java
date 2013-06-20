@@ -67,7 +67,7 @@ public class TestHelpers {
                 line = br.readLine();
             }
         } catch (IOException e) {
-            throw new EditorException(e.getMessage());
+            throw new EditorException(e.getMessage(), EditorException.IO_ERROR);
         } finally {
             if (br != null) {
                 try {
