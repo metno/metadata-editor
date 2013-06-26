@@ -1,5 +1,16 @@
 package no.met.metadataeditor.util;
 
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+import org.apache.commons.lang3.StringUtils;
+
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
@@ -9,15 +20,6 @@ import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.RDFNode;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * A utility to parse the GCMD SKOS taxonomy.
@@ -54,7 +56,7 @@ public final class SkosUtils {
 
     private SkosUtils() {
     }
-
+        
     private static String createQuery(int endLevel) {
         if (endLevel < 3 && endLevel > 7) {
             throw new IllegalArgumentException("End level should be betweem 3 and 7");
@@ -66,17 +68,18 @@ public final class SkosUtils {
         queryBuilder.append("SELECT DISTINCT ");
         StringBuilder resultVarBuilder = new StringBuilder();
         for (int i = 0; i < endLevel; i++) {
-            String var = "?lbl" + String.valueOf(i + 1) + " ";
+            String var = "?lbl" + String.valueOf(i) + " ";
             resultVarBuilder.append(var);
         }
         queryBuilder.append(resultVarBuilder.toString());
         queryBuilder.append("WHERE {");
         for (int i = 0; i < endLevel; i++) {
-            String broader = "?object" + String.valueOf(i) + " skos:broader ?object" + String.valueOf(i + 1) + ". ";
-            String prefLabel = "?object" + String.valueOf(i + 1) + " skos:prefLabel ?lbl" + String.valueOf(i + 1) + ". ";
+            String prefLabel = "?object" + String.valueOf(i) + " skos:prefLabel ?lbl" + String.valueOf(i) + ". ";
+            String broader = "?object" + String.valueOf(i) + " skos:broader ?object" + String.valueOf(i + 1) + ". ";            
             queryBuilder.append(broader);
             queryBuilder.append(prefLabel);
         }
+        queryBuilder.append("?object" + String.valueOf(endLevel) + " skos:prefLabel ?lbl" + String.valueOf(endLevel) + ".");
         String filter = "FILTER  regex (?lbl" + String.valueOf(endLevel) + ", \"Science Keywords\", \"i\")";
         queryBuilder.append(filter);
         queryBuilder.append("}");
@@ -139,11 +142,18 @@ public final class SkosUtils {
     public static Map<String, String> getAllSkos(InputStream inputStream) {
         Objects.requireNonNull(inputStream, "Stream can not be null");
         Model model = getModel(inputStream);
-        //since GCMD Taxonomy contains 80% outer most leaf at level 5 and remaining 20% at level 7. Hence calling getSkos
-        //with level 5 and 7 gets all the leafs
-        Map<String, String> allSkos = getSkos(model, LEVEL.TWO, LEVEL.FIVE);
-        Map<String, String> skosLevel7 = getSkos(model, LEVEL.TWO, LEVEL.SEVEN);
+
+        Map<String, String> allSkos = getSkos(model, LEVEL.TWO, LEVEL.THREE);
+        Map<String, String> skosLevel4 = getSkos(model, LEVEL.TWO, LEVEL.FOUR);
+        Map<String, String> skosLevel5 = getSkos(model, LEVEL.TWO, LEVEL.FIVE);        
+        Map<String, String> skosLevel6 = getSkos(model, LEVEL.TWO, LEVEL.SIX);
+        Map<String, String> skosLevel7 = getSkos(model, LEVEL.TWO, LEVEL.SEVEN);       
+        
+        allSkos.putAll(skosLevel4);
+        allSkos.putAll(skosLevel5);
+        allSkos.putAll(skosLevel6);
         allSkos.putAll(skosLevel7);
+
         model.close();
         return allSkos;
     }
