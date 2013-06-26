@@ -287,12 +287,12 @@ abstract class DataStoreImpl implements DataStore {
                         validator.put(argId, new SchemaValidator(schema));
                     }
                 } else if ("diskSchemaLocation".equals(argName)) {
-                    String argFilePath = xpath.evaluate("arg/@filePath", nodes.item(0));
+                    //String argFilePath = xpath.evaluate("arg/@filePath", nodes.item(0));
                     if (!validator.containsKey(argId)) {
                         SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
                         Logger.getLogger(DataStoreImpl.class.getName()).info(String.format("fetching schema for %s as %s from %s", tag, argVal,
-                                argFilePath+argVal));
-                        Schema schema = sf.newSchema(new File(argFilePath+argVal));
+                                argVal));
+                        Schema schema = sf.newSchema(new File(argVal));
                         validator.put(argId, new SchemaValidator(schema));
                     }
                 } else if ("externalSchemaLocation".equals(argName)) {
