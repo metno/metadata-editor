@@ -24,12 +24,14 @@
         <metaedit:description widget="#{cc.attrs.widget}"/>
 
         <h:dataTable value="#{cc.attrs.widget.widgetViews}" var="widgetView" id="list">
-
             <h:column>
-                <h:selectOneMenu value="#{widgetView.values['listElement']}" disabled="#{!userBean.validated}">
-                    <f:selectItems value="#{editorBean.getResourceValues(cc.attrs.widget)}" />
+                <h:selectOneMenu value="#{widgetView.values['listElement']}" disabled="#{!userBean.validated}">    
+                    <f:selectItems value="#{editorBean.getResourceValues(cc.attrs.widget, 'listElement')}" />
                 </h:selectOneMenu>            
             </h:column>
+            <h:column id="validation-msg-list">
+               <h:outputText styleClass="input-validation-error" value="Value in metadata is not found in the list of allowed values. Please choose a valid value from the dropdown list" rendered="#{!editorBean.inResourceValues(cc.attrs.widget, 'listElement') and userBean.validated}"/>
+            </h:column>              
             <h:column>
                 <ui:include src="../../remove-value-button.xhtml" >
                     <ui:param name="widget" value="#{cc.attrs.widget}"/>
