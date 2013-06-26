@@ -26,6 +26,9 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import com.sun.jersey.api.Responses;
+import no.met.metadataeditor.validation.ValidatorException;
+import no.met.metadataeditor.validationclient.ValidationClient;
+import no.met.metadataeditor.validationclient.ValidationResponse;
 
 /**
  * REST API used to communicate with the metadata editor from other systems.
@@ -88,9 +91,18 @@ public class RESTApi extends Application {
     @POST
     @Path("{project}/{record}")
     @ServiceDescription("Get the URL to edit a metadata record and as an option suggest a new version of the XML in the metadata parameter")
-    public Response postMetadata(@PathParam("project") String project, @PathParam("record") String record, String metadata){
-
+    public Response postMetadata(@PathParam("project") String project, @PathParam("record") String record, String metadata) throws ValidatorException
+    {
         DataStore datastore = DataStoreFactory.getInstance(project);
+        
+        ValidationClient validationClient = datastore.getValidationClient(record);        
+        if (validationClient != null) {
+            ValidationResponse validationResponse = validationClient.validate(metadata);        
+            if (!validationResponse.success) {
+                throw new ValidatorException(new SAXException(validationResponse.message));
+            }  
+        }
+        
         boolean metadataExists = datastore.metadataExists(record);
 
         Response response;
@@ -178,5 +190,4 @@ public class RESTApi extends Application {
         return false;
 
     }
-
 }

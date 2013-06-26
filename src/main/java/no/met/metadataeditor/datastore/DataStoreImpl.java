@@ -1,5 +1,6 @@
 package no.met.metadataeditor.datastore;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -283,6 +284,15 @@ abstract class DataStoreImpl implements DataStore {
                         SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
                         Logger.getLogger(DataStoreImpl.class.getName()).info(String.format("fetching schema for %s as %s from %s", tag, argVal, getClass().getResource(argVal)));
                         Schema schema = sf.newSchema(getClass().getResource(argVal));
+                        validator.put(argId, new SchemaValidator(schema));
+                    }
+                } else if ("diskSchemaLocation".equals(argName)) {
+                    String argFilePath = xpath.evaluate("arg/@filePath", nodes.item(0));
+                    if (!validator.containsKey(argId)) {
+                        SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+                        Logger.getLogger(DataStoreImpl.class.getName()).info(String.format("fetching schema for %s as %s from %s", tag, argVal,
+                                argFilePath+argVal));
+                        Schema schema = sf.newSchema(new File(argFilePath+argVal));
                         validator.put(argId, new SchemaValidator(schema));
                     }
                 } else if ("externalSchemaLocation".equals(argName)) {
