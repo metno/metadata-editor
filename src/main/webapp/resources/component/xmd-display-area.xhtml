@@ -34,7 +34,7 @@
 
                 <h:outputLabel for="crs" value="Projection" />
                 <h:selectOneMenu value="#{widgetView.values['crs']}" id="crs" disabled="#{!userBean.validated}">
-                    <f:selectItems value="#{editorBean.getResourceValues(cc.attrs.widget)}" />
+                    <f:selectItems value="#{editorBean.getResourceValues(cc.attrs.widget, 'listElement')}" />
                 </h:selectOneMenu>
                 <h:outputText value="" />
                 

@@ -235,18 +235,38 @@ public class EditorBean implements Serializable {
         widget.removeValue(widgetView);
     }
 
-    public List<String> getResourceValues(EditorWidget widget){
+    public List<String> getResourceValues(EditorWidget widget, String valueAttribute){
 
-        DataStore dataStore = DataStoreFactory.getInstance(project);
-        String resourceString = dataStore.readResource(widget.getResourceUri().toString());
-
-        String[] resourceValues = resourceString.split("\n");
-        List<String> values = new ArrayList<String>();
-        for(String s : resourceValues ){
-            values.add(s);
+        List<String> values = getResourceString(widget.getResourceUri().toString());
+        
+        // if the current value is different from the one in the list we add it to the list of possible values
+        List<String> currentValues = getWidgetViewsAttributeValues(widget, valueAttribute);        
+        for( String currValue : currentValues ){
+            if( !values.contains(currValue) ){
+                values.add(0, currValue);
+            }
         }
+        
         return values;
 
+    }
+
+    /**
+     * @param widget The widget to check the value for.
+     * @param valueAttribute The name of the widget attribute where the relevant value is stored.
+     * @return True if the current value of the widget is found in the resource list. False otherwise.
+     */
+    public boolean inResourceValues(EditorWidget widget, String valueAttribute) {
+        
+        List<String> values = getResourceString(widget.getResourceUri().toString());
+        List<String> currentValues = getWidgetViewsAttributeValues(widget, valueAttribute);
+
+        for( String currValue : currentValues ){
+            if( !values.contains(currValue) ){
+                return false;
+            }
+        }
+        return true;        
     }
     
     public List<String> getSkosResourceValues(EditorWidget widget){
@@ -321,12 +341,25 @@ public class EditorBean implements Serializable {
 
         List<String> currentValues = getWidgetViewsAttributeValues(widget, filterAttribute);
 
-        List<String> filteredValues = getResourceValues(widget);
+        List<String> filteredValues = getResourceString(widget.getResourceUri().toString());
         for( String value : currentValues ){
             filteredValues.remove(value);
         }
 
         return filteredValues;
+    }
+    
+    private List<String> getResourceString(String uri){
+        
+        DataStore dataStore = DataStoreFactory.getInstance(project);
+        String resourceString = dataStore.readResource(uri);
+
+        String[] resourceValues = resourceString.split("\n");
+        List<String> values = new ArrayList<String>();
+        for(String s : resourceValues ){
+            values.add(s);
+        }
+        return values;        
     }
 
     /**
