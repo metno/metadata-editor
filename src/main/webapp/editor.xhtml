@@ -21,18 +21,17 @@
     
     <h:outputScript >
 
-jQuery(document).ready(function () {
+        jQuery(document).ready(function () {
 
-    //disable the enter key on input elements.    
-    jQuery('input').keypress(ignore_enter_key)
-    
-    OpenLayers.ImgPath = "http://js.mapbox.com/theme/dark/";
-    // init the map client
-    init_map('mapClient');
-});      
+            //disable the enter key on input elements.    
+            jQuery('input').keypress(ignore_enter_key)
 
-  
-    </h:outputScript>
+            OpenLayers.ImgPath = "http://js.mapbox.com/theme/dark/";
+            // init the map client
+            init_map('mapClient');
+        }); 
+        
+    </h:outputScript> 
     
 </h:head>
 

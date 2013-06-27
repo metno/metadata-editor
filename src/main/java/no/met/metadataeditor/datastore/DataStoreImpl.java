@@ -38,6 +38,7 @@ abstract class DataStoreImpl implements DataStore {
     private static final String SETUPFILE = "setup.xml";
     private static final String CONFIGDIR = "config";
     private static final String XMLDIR = "XML";
+    private static final String RESOURCE_DIR = "resources";
 
     private Document setupDoc = null;
     private Date setupDocDate = null;
@@ -221,7 +222,7 @@ abstract class DataStoreImpl implements DataStore {
 
     private String resourceUrl(String resourceIdentifier){
 
-        return makePath(resourceIdentifier);
+        return makePath(RESOURCE_DIR, resourceIdentifier);
     }
 
     private String metadataUrl(String recordIdentifier) {
