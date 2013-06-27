@@ -30,7 +30,7 @@ import org.w3c.dom.NodeList;
  * Utility functions for DataStore classes.
  */
 public class DataStoreUtils {
-
+   
     /**
      * Find the XML format used by the a metadata file by looking at the first tag in the file.
      * @param metadataXML The raw XML for the metadata file.
@@ -110,7 +110,7 @@ public class DataStoreUtils {
             Logger.getLogger(DataStoreImpl.class.getName()).log(Level.SEVERE, null, e);
         }
 
-        return formats;
+        return formats; 
     }
 
     private static ValidationClient parseValidationPart(Node formatNode, XPath xpath) throws XPathExpressionException{
@@ -125,7 +125,7 @@ public class DataStoreUtils {
 
         if("simplePutService".equals(validatorType)){
             String url = xpath.evaluate("arg[@name='URL']/@value", validatorNode);
-            ValidationClient client = new SimplePutValidationClient(url);
+            ValidationClient client = SimplePutValidationClient.getInstance(url);
             return client;
         }
 

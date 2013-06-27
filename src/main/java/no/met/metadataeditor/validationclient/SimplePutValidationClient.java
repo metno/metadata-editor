@@ -35,10 +35,30 @@ import org.xml.sax.SAXException;
  */
 public class SimplePutValidationClient implements ValidationClient {
 
+    private static SimplePutValidationClient defaultClient;
+    
     private String url;
 
-    public SimplePutValidationClient(String url){
+    private SimplePutValidationClient(String url){
         this.url = url;
+    }
+    
+    public static SimplePutValidationClient getInstance(String url){
+        
+        if( defaultClient != null ){
+            return defaultClient;
+        }
+        return new SimplePutValidationClient(url);
+        
+    }
+    
+    /**
+     * Set the default client that should be returned by getInstance(). This is only meant to be used for testing
+     * so that the client can be mocked
+     * @param client The default client to return with getInstance()
+     */
+    public static void setDefaultInstance(SimplePutValidationClient client){
+        defaultClient = client;
     }
 
     @Override
