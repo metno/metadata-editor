@@ -20,15 +20,15 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import no.met.metadataeditor.datastore.DataStore;
 import no.met.metadataeditor.datastore.DataStoreFactory;
+import no.met.metadataeditor.validation.ValidatorException;
+import no.met.metadataeditor.validationclient.ValidationClient;
+import no.met.metadataeditor.validationclient.ValidationResponse;
 
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import com.sun.jersey.api.Responses;
-import no.met.metadataeditor.validation.ValidatorException;
-import no.met.metadataeditor.validationclient.ValidationClient;
-import no.met.metadataeditor.validationclient.ValidationResponse;
 
 /**
  * REST API used to communicate with the metadata editor from other systems.
@@ -95,12 +95,14 @@ public class RESTApi extends Application {
     {
         DataStore datastore = DataStoreFactory.getInstance(project);
         
-        ValidationClient validationClient = datastore.getValidationClient(record);        
-        if (validationClient != null) {
-            ValidationResponse validationResponse = validationClient.validate(metadata);        
-            if (!validationResponse.success) {
-                throw new ValidatorException(new SAXException(validationResponse.message));
-            }  
+        if( metadata != null && !("".equals(metadata.trim()))){
+            ValidationClient validationClient = datastore.getValidationClient(metadata);        
+            if (validationClient != null) {
+                ValidationResponse validationResponse = validationClient.validate(metadata);        
+                if (!validationResponse.success) {
+                    throw new ValidatorException(new SAXException(validationResponse.message));
+                }  
+            }
         }
         
         boolean metadataExists = datastore.metadataExists(record);

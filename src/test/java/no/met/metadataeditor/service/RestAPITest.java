@@ -4,11 +4,16 @@ import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.equalToIgnoringWhiteSpace;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.io.IOException;
 
 import no.met.metadataeditor.TestHelpers;
+import no.met.metadataeditor.validationclient.SimplePutValidationClient;
+import no.met.metadataeditor.validationclient.ValidationResponse;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.AfterClass;
@@ -23,8 +28,14 @@ public class RestAPITest extends JerseyTest {
 
     private static File testDir;
 
-    public RestAPITest() {
+    public RestAPITest() { 
         super("no.met.metadataeditor");
+        
+        SimplePutValidationClient spvc = mock(SimplePutValidationClient.class);        
+        when(spvc.validate(anyString())).thenReturn(new ValidationResponse(true, "All good"));
+        
+        SimplePutValidationClient.setDefaultInstance(spvc);
+        
     }
 
     @Override
@@ -72,7 +83,7 @@ public class RestAPITest extends JerseyTest {
         given().port(getPort()).expect().body(equalTo(metadataXML)).statusCode(200).when().get("/metaedit_api/test/metadata1");
 
     }
-/*
+
     @Test
     public void testPostDoesNotExist(){
         // Sending a POST without metadata to non-existant metadata gives 404
@@ -88,7 +99,7 @@ public class RestAPITest extends JerseyTest {
     @Test
     public void testPostDoesNotExistWithMetadata() throws IOException{
 
-        String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><MM2/>";
+        String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><MM2 xmlns=\"http://www.met.no/schema/metamod/MM2\"/>";
 
         // Sending a POST with metadata to a non-existant record creates the record
         given().port(getPort()).body(xml).expect().body(containsString("editor.xhtml")).when().post("/metaedit_api/test/new_metadata");
@@ -110,9 +121,9 @@ public class RestAPITest extends JerseyTest {
     @Test
     public void testPostUnequalMetadata(){
 
-        String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><MM2/>";
+        String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><MM2 xmlns=\"http://www.met.no/schema/metamod/MM2\"/>";
         given().port(getPort()).body(xml).expect().body(containsString("compare.xhtml")).when().post("/metaedit_api/test/metadata1");
 
     }
-*/
+
 }
