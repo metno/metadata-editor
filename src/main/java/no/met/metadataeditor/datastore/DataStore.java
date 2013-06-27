@@ -115,9 +115,9 @@ public interface DataStore {
 
     /**
      * Get a ValidationClient for the record if it has been configured for the format.
-     * @param recordIdentifier
+     * @param recordMetadata The metadata for the record to get the validation client for
      * @return The ValiationClient for the record or null if it has not been configured.
      */
-    ValidationClient getValidationClient(String recordIdentifier);
+    ValidationClient getValidationClient(String recordMetadata);
 
 }

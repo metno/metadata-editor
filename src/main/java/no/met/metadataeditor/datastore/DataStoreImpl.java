@@ -336,11 +336,9 @@ abstract class DataStoreImpl implements DataStore {
     }
 
     @Override
-    public ValidationClient getValidationClient(String recordIdentifier){
+    public ValidationClient getValidationClient(String recordMetadata){
 
-        String metadata = readMetadata(recordIdentifier);
-
-        SupportedFormat format = DataStoreUtils.getFormat(getSupportedFormats(), metadata);
+        SupportedFormat format = DataStoreUtils.getFormat(getSupportedFormats(), recordMetadata);
         return format.getValidationClient();
     }
 }

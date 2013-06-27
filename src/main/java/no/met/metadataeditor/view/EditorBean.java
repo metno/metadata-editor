@@ -133,8 +133,8 @@ public class EditorBean implements Serializable {
     public void validate(){
 
         DataStore datastore = DataStoreFactory.getInstance(project);
-
-        ValidationClient validationClient = datastore.getValidationClient(recordIdentifier);
+       
+        ValidationClient validationClient = datastore.getValidationClient(datastore.readMetadata(recordIdentifier));
 
         if( validationClient == null ){
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "No validation configured for this format.", "No validation configured for this format.");
