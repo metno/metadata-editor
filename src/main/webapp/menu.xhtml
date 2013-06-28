@@ -10,7 +10,7 @@
 	<ui:composition>
 	    <p:menubar>
             <p:menuitem value="New" url="new.xhtml?project=#{editorBean.project}" rendered="#{userBean.validated}" />	    
-	        <p:menuitem value="Save" process="@form" update="@form" action="#{editorBean.save}" rendered="#{userBean.validated}" />
+            <p:menuitem value="Save" process="@form" update="@form" action="#{editorBean.save}" oncomplete="setConfirmUnload(false);" rendered="#{userBean.validated}" />
 	        <p:menuitem value="Validate" process="@form" update="@form" action="#{editorBean.validate}" rendered="#{userBean.validated}" />        
 	        <p:menuitem value="Reset" process="@form" update="@form" action="#{editorBean.reset}" rendered="#{userBean.validated}" />        
 	        <p:menuitem value="Export" action="#{editorBean.export}" ajax="false" />

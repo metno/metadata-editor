@@ -23,7 +23,8 @@
             styleClass="add-button"
             ajax="true"
             process="@this #{extraExecuteId}"
-            update="#{updateId}" >
+            update="#{updateId}"
+            oncomplete="setConfirmUnload(false);">
         </p:commandButton>  
     
     </ui:composition>
