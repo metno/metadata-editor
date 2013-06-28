@@ -1,3 +1,5 @@
+release date=13:20 28.06.2013,version=1.6,urgency=low,by=Øystein Torget <oysteint@met.no>,distribution=all
+ * See https://scrum.met.no/jira/secure/ReleaseNote.jspa?projectId=10400&version=11316
 release date=15:30 06.06.2013,version=1.5,urgency=low,by=Øystein Torget <oysteint@met.no>,distribution=all
  * Fixed bugs, user stories METAEDIT-59, METAEDIT-60, METAEDIT-61, METAEDIT-62, METAEDIT-63, METAEDIT-66, METAEDIT-67.
 release date=15:30 26.03.2013,version=1.4,urgency=low,by=Øystein Torget <oysteint@met.no>,distribution=all
