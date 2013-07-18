@@ -20,14 +20,6 @@
         <majorMinorVersion>1.6</majorMinorVersion>
         <incrementalVersion>0</incrementalVersion>    
     </properties>
-
-    <repositories>   
-        <repository>
-            <id>public</id>
-            <name>All public repositories</name>
-            <url>http://maven.met.no/content/groups/public</url>
-        </repository>    
-    </repositories>
   
   <dependencies>
 	<dependency>
