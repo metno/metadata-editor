@@ -157,6 +157,51 @@ public final class SkosUtils {
         model.close();
         return allSkos;
     }
+    
+    /**
+     * Get the prefLabel for all concepts in the document. Meant to be used with
+     * SKOS controlled vocabularies and not hierarchical concepts.
+     * @param inputStream Input stream for the SKOS RDF document
+     * @return A list of all prefLabels of the concepts in the document.
+     */
+    public static List<String> getControlledVocab(InputStream inputStream) {
+        Objects.requireNonNull(inputStream, "Stream can not be null");
+        
+        Model model = getModel(inputStream);
+                
+        String query = SkosUtils.createControlledVocabQuery();
+        
+        Query sparqlQuery = QueryFactory.create(query);
+
+        QueryExecution qe = QueryExecutionFactory.create(sparqlQuery, model);
+        ResultSet results = qe.execSelect();
+        List<String> controlledVocab = new ArrayList<>();
+        while (results.hasNext()) {
+            QuerySolution row = results.next();
+            
+            String label = row.get("label").asLiteral().getValue().toString();
+            controlledVocab.add(label);
+        }
+        qe.close();
+        
+        Collections.sort(controlledVocab);
+        return controlledVocab;        
+        
+    }
+    
+    private static String createControlledVocabQuery(){
+        StringBuilder queryBuilder = new StringBuilder();
+        queryBuilder.append("PREFIX skos: <http://www.w3.org/2004/02/skos/core#> \n");
+        queryBuilder.append("PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n");
+        queryBuilder.append("SELECT ?label\n");
+        
+        queryBuilder.append("WHERE {\n");
+        queryBuilder.append("?concept rdf:type skos:Concept.\n");
+        queryBuilder.append("?concept skos:prefLabel ?label.\n");
+        queryBuilder.append("}\n");
+        
+        return queryBuilder.toString();
+    }
 
     /**
      * Get the model 

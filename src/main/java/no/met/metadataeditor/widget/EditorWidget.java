@@ -31,7 +31,7 @@ import no.met.metadataeditor.dataTypes.attributes.DataAttribute;
         OnlineResourceWidget.class, ContainerWidget.class, KeyValueListWidget.class, DateWidget.class, XMDInfoWidget.class,
         XMDDisplayAreaWidget.class, XMDWmsInfoWidget.class, XMDProjectionDatasetWidget.class, XMDProjectionFimexWidget.class,
         AutoUUIDWidget.class, NowDateWidget.class, MetnoDatasetIdentifierWidget.class, SkosListWidget.class,
-        PolygonBoundingBoxWidget.class })
+        PolygonBoundingBoxWidget.class, SkosControlledVocabWidget.class })
 public abstract class EditorWidget implements Serializable {
 
     private static final long serialVersionUID = -2532825684273483564L;

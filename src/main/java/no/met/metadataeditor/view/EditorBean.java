@@ -283,6 +283,48 @@ public class EditorBean implements Serializable {
         return values;
     }
     
+    public List<String> getSkosControlledVocabValues(EditorWidget widget){
+
+        DataStore dataStore = DataStoreFactory.getInstance(project);
+        String resourceString = dataStore.readResource(widget.getResourceUri().toString());       
+        List<String> vocab = SkosUtils.getControlledVocab(IOUtils.toInputStream(resourceString));
+        
+        // if the current value is different from the one in the list we add it to the list of possible values
+        List<String> currentValues = getWidgetViewsAttributeValues(widget, "listElement");        
+        for( String currValue : currentValues ){
+            if( !vocab.contains(currValue) ){
+                
+                // a null value in a select list caused a NPE at some occasions. Setting it to an empty string
+                // to avoid the problem
+                if( currValue == null ){
+                    currValue = "";
+                }
+                
+                vocab.add(0, currValue);
+            }
+        }        
+        
+        return vocab;
+   
+    }    
+    
+    /**
+     * @param widget The widget to check the value for.
+     * @return True if the current value of the widget is found in the skos vocab. False otherwise.
+     */
+    public boolean inSkosControlledVocab(EditorWidget widget) {
+        
+        List<String> values = getSkosControlledVocabValues(widget);
+        List<String> currentValues = getWidgetViewsAttributeValues(widget, "listElement");
+
+        for( String currValue : currentValues ){
+            if( !values.contains(currValue) ){
+                return false;
+            }
+        }
+        return true;        
+    }    
+    
     public List<String> completeSkos(String query){
         FacesContext context = FacesContext.getCurrentInstance();
         EditorWidget widget = context.getApplication().evaluateExpressionGet(context, "#{widget}", EditorWidget.class);        
