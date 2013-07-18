@@ -49,6 +49,7 @@ public class WebDAVDataStoreTest {
 
         webdavConn.createDirectory(webdavPath("project1", "config"));
         webdavConn.createDirectory(webdavPath("project1", "XML"));
+        webdavConn.createDirectory(webdavPath("project1", "resources"));
 
         webdavConn.put(webdavPath("project1", "XML", "record1.xml"), "<metadata />".getBytes() );
 
@@ -73,7 +74,7 @@ public class WebDAVDataStoreTest {
         webdavConn.put(webdavPath("project1", "config", "MM2Editor.xml"), "Editor config".getBytes() );
         webdavConn.put(webdavPath("project1", "config", "MM2Template.xml"), "Template contents".getBytes() );
 
-        webdavConn.put(webdavPath("project1", "resource1.txt"), "Resource contents".getBytes() );
+        webdavConn.put(webdavPath("project1", "resources", "resource1.txt"), "Resource contents".getBytes() );
     }
 
     @AfterClass

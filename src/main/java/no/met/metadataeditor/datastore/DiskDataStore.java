@@ -125,7 +125,8 @@ public class DiskDataStore extends DataStoreImpl {
     @Override
     List<String> list(String url){
 
-        Collection<File> files = FileUtils.listFiles(new File(url), null, false);
+        //only allow .xml files
+        Collection<File> files = FileUtils.listFiles(new File(url), new String[]{"xml"}, false);
 
         List<String> fileNames = new ArrayList<String>();
         for(File f : files){

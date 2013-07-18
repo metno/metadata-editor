@@ -167,7 +167,7 @@ All tags from the edt namespace except editorDataTypes declares a named variable
    
 The editor variables can also contain other editor variables. This is mostly used when two or more variables can be grouped into a bigger entity and at the same repeated more the once. This is the case for <mmd:data_access> in the example. <mmd:data_access> has two sub element <mmd:name> and <mmd:resource> and it can also be repeated as many times as the user would like.
 
-When reading the metadata files the editor will populate all variables based on the data found the template file and when it writes the metadata it will fill the template will the values for the varibles to generate the new file. ***It is important to note that the editor does not update the existing file, it instead generates a entirely new file based on the template!*** This is important since it means that anything in the metadata file that is not mentioned in the template will be gone once the file is written once.
+When reading the metadata files the editor will populate all variables based on the data found the metadata file and when it writes the metadata it will fill the template with the values for the varibles to generate the new file. ***It is important to note that the editor does not update the existing file, it instead generates a entirely new file based on the template!*** This is important since it means that anything in the metadata file that is not mentioned in the template will be gone once the file is written once.
 
 ## An example <FORMAT>Editor.xml file
 
