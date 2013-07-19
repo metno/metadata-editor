@@ -1,5 +1,7 @@
 # metadata-editor
 
+[![Build Status](https://travis-ci.org/metno/metadata-editor.png?branch=master)](https://travis-ci.org/metno/metadata-editor)
+
 metadata-editor is a generic web-based metadata editor that can be configured
 for editing of most XML based metadata format (e.q. ISO-19139, DIf).
 
