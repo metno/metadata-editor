@@ -24,7 +24,7 @@ import com.sun.jersey.test.framework.JerseyTest;
 
 public class RestAPITest extends JerseyTest {
 
-    private static String baseDir = "RestAPITest";
+    private static final String baseDir = "RestAPITest";
 
     private static File testDir;
 
@@ -107,15 +107,21 @@ public class RestAPITest extends JerseyTest {
         given().port(getPort()).expect().body(equalToIgnoringWhiteSpace(xml)).statusCode(200).when().get("/metaedit_api/test/new_metadata");
 
     }
+    
+    @Test
+    public void testPostWithMetadataNoEdit() throws Exception {
+        File metadata1File = new File(RestAPITest.class.getResource("/service/datastore/XML/metadata1.xml").getFile());
+        String metadataXML = FileUtils.readFileToString(metadata1File);
+        given().port(getPort()).body(metadataXML).expect().statusCode(200).when()
+                .post("/metaedit_api/noedit/test/metadata1");
+    }
 
     @Test
     public void testPostEqualMetadata() throws IOException {
-
         File metadata1File = new File(RestAPITest.class.getResource("/service/datastore/XML/metadata1.xml").getFile());
         String metadataXML = FileUtils.readFileToString(metadata1File);
 
         given().port(getPort()).body(metadataXML).expect().body(containsString("editor.xhtml")).when().post("/metaedit_api/test/metadata1");
-
     }
 
     @Test

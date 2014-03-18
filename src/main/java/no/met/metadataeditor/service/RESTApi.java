@@ -29,6 +29,9 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import com.sun.jersey.api.Responses;
+import java.util.Objects;
+import java.util.logging.Logger;
+import no.met.metadataeditor.LogUtils;
 
 /**
  * REST API used to communicate with the metadata editor from other systems.
@@ -111,9 +114,7 @@ public class RESTApi extends Application {
         if(!metadataExists && (metadata == null || "".equals(metadata.trim()) )){
             response = Responses.notFound().build();
         } else if ( !metadataExists && metadata != null ){
-
             datastore.writeMetadata(record, metadata, datastore.getDefaultUser(), datastore.getDefaultPassword());
-
             response = Response.ok(getEditorUrl(project, record)).build();
         } else if( metadataExists && (metadata == null || "".equals(metadata.trim()) )){
             response = Response.ok(getEditorUrl(project, record)).build();
@@ -126,15 +127,50 @@ public class RESTApi extends Application {
                 datastore.writeMetadata(record + DataStore.THEIRS_IDENTIFIER, metadata, datastore.getDefaultUser(), datastore.getDefaultPassword());
                 response = Response.ok(getCompareUrl(project, record)).build();
             }
-
         }
-
-
         return response;
+    }
+    
+    /**
+     * Posting metadata will cause the record to be created/updated and stored in repository
+     @param project
+     *            The project the metadata record is in.
+     * @param record
+     *            The identifier for the record.
+     * @param metadata
+     *             The new metadata for the record.
+     * @return HTTP 200 code if either the record created or updated else HTTP 404
+     * @throws ValidatorException 
+     */
+    @POST
+    @Path("noedit/{project}/{record}")
+    @ServiceDescription("Post metadata to repository without editing")
+    public Response postMetadataNoEdit(@PathParam("project") String project, @PathParam("record") String record, 
+            String metadata) throws ValidatorException
+    {
+        Objects.requireNonNull(project, "Project can not be null");
+        Objects.requireNonNull(record, "Missing record id");
+        Objects.requireNonNull(metadata, "Missing metadata");
+        
+        DataStore datastore = DataStoreFactory.getInstance(project);        
+        if( metadata != null && !("".equals(metadata.trim()))){
+            ValidationClient validationClient = datastore.getValidationClient(metadata);        
+            if (validationClient != null) {
+                ValidationResponse validationResponse = validationClient.validate(metadata);        
+                if (!validationResponse.success) {
+                    throw new ValidatorException(new SAXException(validationResponse.message));
+                }  
+            }
+        } 
+        
+        if (metadata != null && !"".equals(metadata.trim())){
+            datastore.writeMetadata(record, metadata, datastore.getDefaultUser(), datastore.getDefaultPassword());            
+            return Response.ok().build();
+        } 
+        return Responses.notFound().build();
     }
 
     private String getEditorUrl(String project, String record){
-
         return getBaseUrl(project, record) + "editor.xhtml?project=" + project + "&record=" + record;
     }
 
@@ -143,25 +179,13 @@ public class RESTApi extends Application {
     }
 
     private String getBaseUrl(String project, String record){
-
         String url = request.getScheme() + "://" + request.getServerName();
 
         if(request.getServerPort() != 80){
             url += ":" + request.getServerPort();
-        }
-
-        String startPath = request.getRequestURI();
-
-        int removeLength = 0;
-        removeLength += record.length() + 1; // the length of '/<record>
-        removeLength += project.length() + 1; // the length of '/<project>
-        removeLength += request.getServletPath().length(); // the length of the application path
-        removeLength += "metaedit_api/".length(); // length of the service path
-
-        startPath = startPath.substring(0, startPath.length() - removeLength);
-
-        return url + startPath + "/";
-
+        } 
+        
+        return url + request.getContextPath() + "/";
     }
 
     private boolean metadataEqual(String metadata1, String metadata2){
@@ -181,15 +205,9 @@ public class RESTApi extends Application {
             doc2.normalizeDocument();
 
             return doc1.isEqualNode(doc2);
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (ParserConfigurationException | SAXException | IOException e) {            
+            LogUtils.logException(Logger.getLogger(RESTApi.class.getName()), "Eroor while parsing metadata", e);
         }
-
         return false;
-
     }
 }
