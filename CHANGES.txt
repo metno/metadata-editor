@@ -1,3 +1,5 @@
+release date=13:20 22.04.2014,version=1.8,urgency=low,by=Sarfraz Alam <sarfraza@met.no>,distribution=all
+ * See https://scrum.met.no/jira/secure/ReleaseNote.jspa?projectId=10400&version=11712
 release date=13:20 28.06.2013,version=1.7,urgency=low,by=Sarfraz Alam <sarfraza@met.no>,distribution=all
  * See https://scrum.met.no/jira/secure/ReleaseNote.jspa?projectId=10400&version=11403
 release date=13:20 28.06.2013,version=1.6,urgency=low,by=Øystein Torget <oysteint@met.no>,distribution=all
