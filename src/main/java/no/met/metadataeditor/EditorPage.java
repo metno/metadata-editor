@@ -22,7 +22,7 @@ public class EditorPage implements Serializable {
     
     private String id;
 
-    private List<EditorWidget> widgets = new ArrayList<EditorWidget>();
+    private List<EditorWidget> widgets = new ArrayList<>();
     
     public EditorPage() {
 
@@ -64,7 +64,7 @@ public class EditorPage implements Serializable {
      */
     public List<EditorWidget> getWidgetTreeAsList(){
         
-        List<EditorWidget> widgetTree = new ArrayList<EditorWidget>();        
+        List<EditorWidget> widgetTree = new ArrayList<>();        
         for( EditorWidget widget : widgets ) {
             
             widgetTree.add(widget);
@@ -77,7 +77,7 @@ public class EditorPage implements Serializable {
     
     private Map<String, EditorWidget> getWidgetMap(){
         
-        Map<String,EditorWidget> widgetMap = new HashMap<String,EditorWidget>();
+        Map<String,EditorWidget> widgetMap = new HashMap<>();
         for( EditorWidget widget : widgets ){
             widgetMap.put(widget.getVariableName(), widget);
         }
@@ -115,7 +115,7 @@ public class EditorPage implements Serializable {
     private boolean allPopulated(){
         
         Map<String,EditorWidget> widgetMap = getWidgetMap();
-        List<String> notPopulated = new ArrayList<String>();
+        List<String> notPopulated = new ArrayList<>();
         for(Map.Entry<String,EditorWidget> entry : widgetMap.entrySet() ){
             
             if(!entry.getValue().isPopulated()){
@@ -129,7 +129,7 @@ public class EditorPage implements Serializable {
     
     public Map<String, List<EditorVariableContent>> getContent(){
         
-        Map<String, List<EditorVariableContent>> content = new HashMap<String, List<EditorVariableContent>>();
+        Map<String, List<EditorVariableContent>> content = new HashMap<>();
         for(EditorWidget widget : widgets){  
             content.put(widget.getVariableName(), widget.getContent());
         }

@@ -25,11 +25,11 @@ public class EditorWidgetView implements Serializable {
 
     private static final long serialVersionUID = 4577883892935459131L;
 
-    private Map<String, String> values = new HashMap<String, String>();
+    private Map<String, String> values = new HashMap<>();
 
-    private List<EditorWidget> children = new ArrayList<EditorWidget>();
+    private List<EditorWidget> children = new ArrayList<>();
 
-    private Map<String, EditorWidget> childMap = new HashMap<String,EditorWidget>();
+    private Map<String, EditorWidget> childMap = new HashMap<>();
 
     private Class<? extends DataAttribute> dataAttributeClass;
 

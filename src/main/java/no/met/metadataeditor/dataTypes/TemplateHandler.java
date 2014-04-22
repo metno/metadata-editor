@@ -50,13 +50,13 @@ class TemplateHandler extends DefaultHandler {
     Map<String, Deque<EditorVariable>> attributeXPath;
     private Map<String, EditorVariable> resultConfig;
     StringBuffer elementContent;
-    private Map<String, String> namespacePrefixes = new HashMap<String,String>();
+    private Map<String, String> namespacePrefixes = new HashMap<>();
 
     // mapping between namespace names like 'gmd' => 'ns1'. Used to fix XPath expressions hardcoded
     // in the templates
-    private Map<String, String> prefixMapping = new HashMap<String,String>();
+    private Map<String, String> prefixMapping = new HashMap<>();
 
-    private static Map<String, Class<? extends DataAttribute>> supportedTags = new HashMap<String, Class<? extends DataAttribute>>();
+    private static Map<String, Class<? extends DataAttribute>> supportedTags = new HashMap<>();
 
     static {
         supportedTags.put("container", ContainerAttribute.class);
@@ -78,12 +78,12 @@ class TemplateHandler extends DefaultHandler {
 
     @Override
     public void startDocument() throws SAXException {
-        edtElements  = new ArrayDeque<EditorVariable>();
+        edtElements  = new ArrayDeque<>();
 
-        fullPathElements = new ArrayDeque<String>();
-        finalPathElements = new ArrayDeque<String>();
+        fullPathElements = new ArrayDeque<>();
+        finalPathElements = new ArrayDeque<>();
         resultConfig = null;
-        attributeXPath = new HashMap<String, Deque<EditorVariable>>();
+        attributeXPath = new HashMap<>();
         elementContent = new StringBuffer();
 
     }
@@ -228,7 +228,7 @@ class TemplateHandler extends DefaultHandler {
      * @param atts
      */
     private void searchEditorAttributes(Attributes atts) {
-        Set<String> keys = new HashSet<String>(attributeXPath.keySet());
+        Set<String> keys = new HashSet<>(attributeXPath.keySet());
         for (String key : keys) {
             Pattern keyPattern = Pattern.compile("\\s*\\Q$"+key+"\\E\\s*");
             for (int i = 0; i < atts.getLength(); ++i) {
@@ -247,7 +247,7 @@ class TemplateHandler extends DefaultHandler {
     }
 
     private void searchEditorAttributesInContent() {
-        Set<String> keys = new HashSet<String>(attributeXPath.keySet());
+        Set<String> keys = new HashSet<>(attributeXPath.keySet());
         for (String key : keys) {
             Pattern keyPattern = Pattern.compile("\\s*\\Q$"+key+"\\E\\s*");
             if (keyPattern.matcher(elementContent).matches()) {
@@ -280,7 +280,7 @@ class TemplateHandler extends DefaultHandler {
     // generate a xpath identifier with name and attributes
     private String generateXPathIdentifier(String nsUri, String lName, String qName, Attributes atts) {
         String xpathPart = getTemplateQName(nsUri, lName);
-        List<String> attrs = new ArrayList<String>();
+        List<String> attrs = new ArrayList<>();
         for (int i = 0; i < atts.getLength(); ++i) {
             // only use local attributes
             if ("".equals(atts.getURI(i)) ||

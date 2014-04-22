@@ -57,13 +57,13 @@ public class DataAttributesTest {
     public void testGetAttributeSetup () {
 
         TestAttributes ta = new TestAttributes();
-        Map<String, DataType> setup1 = new HashMap<String, DataType>();
+        Map<String, DataType> setup1 = new HashMap<>();
         setup1.put("val", DataType.STRING);
 
         assertEquals("Attribute setup for normal class", setup1, ta.getAttributesSetup());
 
         TestAttributes tas = new TestAttributesSub();
-        Map<String, DataType> setup2 = new HashMap<String, DataType>();
+        Map<String, DataType> setup2 = new HashMap<>();
         setup2.put("val", DataType.STRING);
         setup2.put("otherAttribute", DataType.FLOAT);
 
@@ -128,7 +128,7 @@ public class DataAttributesTest {
         StringAttribute attr = new StringAttribute();
         attr.addAttribute("str", "test");
 
-        Map<String, DataAttributeValidationResult> expected = new HashMap<String,DataAttributeValidationResult>();
+        Map<String, DataAttributeValidationResult> expected = new HashMap<>();
         expected.put("str", new DataAttributeValidationResult(true, null));
 
         assertEquals("All attribute values are valid", expected, attr.validateAttributes());
@@ -144,7 +144,7 @@ public class DataAttributesTest {
         attr.addAttribute("west", "value");
         attr.addAttribute("east", "");
 
-        Map<String, DataAttributeValidationResult> expected = new HashMap<String,DataAttributeValidationResult>();
+        Map<String, DataAttributeValidationResult> expected = new HashMap<>();
         expected.put("north", new DataAttributeValidationResult(true, null));
         expected.put("south", new DataAttributeValidationResult(true, null));
         expected.put("west", new DataAttributeValidationResult(false, "'value' is not a valid number."));

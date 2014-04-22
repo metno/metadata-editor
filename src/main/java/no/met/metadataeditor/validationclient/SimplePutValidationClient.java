@@ -65,7 +65,7 @@ public class SimplePutValidationClient implements ValidationClient {
     public ValidationResponse validate(String xml) {
 
         try {
-            List<NameValuePair> formParams = new ArrayList<NameValuePair>();
+            List<NameValuePair> formParams = new ArrayList<>();
             formParams.add( new BasicNameValuePair("xml", xml));
             UrlEncodedFormEntity entity = new UrlEncodedFormEntity(formParams, "UTF-8");
             HttpPost post = new HttpPost(url);

@@ -18,7 +18,7 @@ public class EditorVariableContent {
     private Map<String, List<EditorVariableContent>> children;
 
     public EditorVariableContent() {
-        children = new HashMap<String, List<EditorVariableContent>>();
+        children = new HashMap<>();
     }
 
     public DataAttribute getAttrs() {

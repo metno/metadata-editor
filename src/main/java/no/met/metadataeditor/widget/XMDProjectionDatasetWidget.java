@@ -17,7 +17,7 @@ public class XMDProjectionDatasetWidget extends EditorWidget {
 
     @Override
     public Map<String, String> getDefaultValue() {
-        Map<String,String> defaultValue = new HashMap<String,String>();
+        Map<String,String> defaultValue = new HashMap<>();
         defaultValue.put("urlRegex", "");
         defaultValue.put("urlReplace", "");
         return defaultValue;

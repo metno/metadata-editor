@@ -13,7 +13,7 @@ import no.met.metadataeditor.EditorException;
 public class DataStoreFactory {
 
     private static Config config_ = null;
-    private static Map<String, DataStore> store_ = new HashMap<String, DataStore>();
+    private static Map<String, DataStore> store_ = new HashMap<>();
 
     /**
      * Reread the metadataeditor.properties file and reset all datastores.

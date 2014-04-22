@@ -30,8 +30,8 @@ public class EditorTemplateTest {
 
         EditorTemplate et = getTemplate("/testWrite/singleVarTemplate.xml");
 
-        Map<String, List<EditorVariableContent>> content = new HashMap<String,List<EditorVariableContent>>();
-        List<EditorVariableContent> keywordContent = new ArrayList<EditorVariableContent>();
+        Map<String, List<EditorVariableContent>> content = new HashMap<>();
+        List<EditorVariableContent> keywordContent = new ArrayList<>();
         keywordContent.add(EditorVariableContentFactory.childlessStringAttribute("arctic"));
         content.put("keyword", keywordContent);
 
@@ -47,8 +47,8 @@ public class EditorTemplateTest {
 
         EditorTemplate et = getTemplate("/testWrite/singleVarTemplate.xml");
 
-        Map<String, List<EditorVariableContent>> content = new HashMap<String,List<EditorVariableContent>>();
-        List<EditorVariableContent> keywordContent = new ArrayList<EditorVariableContent>();
+        Map<String, List<EditorVariableContent>> content = new HashMap<>();
+        List<EditorVariableContent> keywordContent = new ArrayList<>();
         keywordContent.add(EditorVariableContentFactory.childlessStringAttribute("arctic"));
         keywordContent.add(EditorVariableContentFactory.childlessStringAttribute("ice"));
         keywordContent.add(EditorVariableContentFactory.childlessStringAttribute("snow"));
@@ -67,8 +67,8 @@ public class EditorTemplateTest {
         String templateName = "/testWrite/noContentTemplate.xml";
         EditorTemplate et = getTemplate(templateName);
 
-        Map<String, List<EditorVariableContent>> content = new HashMap<String,List<EditorVariableContent>>();
-        List<EditorVariableContent> keywordContent = new ArrayList<EditorVariableContent>();
+        Map<String, List<EditorVariableContent>> content = new HashMap<>();
+        List<EditorVariableContent> keywordContent = new ArrayList<>();
         content.put("keyword", keywordContent);
 
         org.jdom2.Document result = et.writeContent(content);
@@ -84,8 +84,8 @@ public class EditorTemplateTest {
         String templateName = "/testWrite/siblingTemplate.xml";
         EditorTemplate et = getTemplate(templateName);
 
-        Map<String, List<EditorVariableContent>> content = new HashMap<String,List<EditorVariableContent>>();
-        List<EditorVariableContent> keywordContent = new ArrayList<EditorVariableContent>();
+        Map<String, List<EditorVariableContent>> content = new HashMap<>();
+        List<EditorVariableContent> keywordContent = new ArrayList<>();
         keywordContent.add(EditorVariableContentFactory.childlessStringAttribute("arctic"));
         keywordContent.add(EditorVariableContentFactory.childlessStringAttribute("ice"));
         keywordContent.add(EditorVariableContentFactory.childlessStringAttribute("snow"));
@@ -104,8 +104,8 @@ public class EditorTemplateTest {
         String templateName = "/testWrite/subTreeInVarTemplate.xml";
         EditorTemplate et = getTemplate(templateName);
 
-        Map<String, List<EditorVariableContent>> content = new HashMap<String,List<EditorVariableContent>>();
-        List<EditorVariableContent> keywordContent = new ArrayList<EditorVariableContent>();
+        Map<String, List<EditorVariableContent>> content = new HashMap<>();
+        List<EditorVariableContent> keywordContent = new ArrayList<>();
         keywordContent.add(EditorVariableContentFactory.childlessStringAttribute("arctic"));
         keywordContent.add(EditorVariableContentFactory.childlessStringAttribute("snow"));
         content.put("keyword", keywordContent);
@@ -123,8 +123,8 @@ public class EditorTemplateTest {
         String templateName = "/testWrite/subTreeInVarTemplate2.xml";
         EditorTemplate et = getTemplate(templateName);
 
-        Map<String, List<EditorVariableContent>> content = new HashMap<String,List<EditorVariableContent>>();
-        List<EditorVariableContent> keywordContent = new ArrayList<EditorVariableContent>();
+        Map<String, List<EditorVariableContent>> content = new HashMap<>();
+        List<EditorVariableContent> keywordContent = new ArrayList<>();
         keywordContent.add(EditorVariableContentFactory.childlessStringAttribute("arctic"));
         keywordContent.add(EditorVariableContentFactory.childlessStringAttribute("snow"));
         content.put("keyword", keywordContent);
@@ -142,8 +142,8 @@ public class EditorTemplateTest {
         String templateName = "/testWrite/varInAttributeTemplate.xml";
         EditorTemplate et = getTemplate(templateName);
 
-        Map<String, List<EditorVariableContent>> content = new HashMap<String,List<EditorVariableContent>>();
-        List<EditorVariableContent> keywordContent = new ArrayList<EditorVariableContent>();
+        Map<String, List<EditorVariableContent>> content = new HashMap<>();
+        List<EditorVariableContent> keywordContent = new ArrayList<>();
         keywordContent.add(EditorVariableContentFactory.childlessStringAttribute("snow"));
         content.put("keyword", keywordContent);
 
@@ -161,11 +161,11 @@ public class EditorTemplateTest {
         String templateName = "/testWrite/boundingboxTemplate.xml";
         EditorTemplate et = getTemplate(templateName);
 
-        Map<String, List<EditorVariableContent>> content = new HashMap<String,List<EditorVariableContent>>();
-        List<EditorVariableContent> localBBContent = new ArrayList<EditorVariableContent>();
+        Map<String, List<EditorVariableContent>> content = new HashMap<>();
+        List<EditorVariableContent> localBBContent = new ArrayList<>();
         localBBContent.add(EditorVariableContentFactory.childlessSingleBBAttribute("0,85,-10,54"));
         content.put("localBB", localBBContent);
-        List<EditorVariableContent> globalBBContent = new ArrayList<EditorVariableContent>();
+        List<EditorVariableContent> globalBBContent = new ArrayList<>();
         globalBBContent.add(EditorVariableContentFactory.childlessBoundingboxAttribute("0", "85", "-10", "54"));
         content.put("globalBB", globalBBContent);
 
@@ -182,27 +182,27 @@ public class EditorTemplateTest {
         String templateName = "/testWrite/childTemplate.xml";
         EditorTemplate et = getTemplate(templateName);
 
-        List<EditorVariableContent> innerContent = new ArrayList<EditorVariableContent>();
+        List<EditorVariableContent> innerContent = new ArrayList<>();
         innerContent.add(EditorVariableContentFactory.childlessStringAttribute("Inner most1"));
         innerContent.add(EditorVariableContentFactory.childlessStringAttribute("Inner most2"));
-        Map<String,List<EditorVariableContent>> otherLayersChildren = new HashMap<String,List<EditorVariableContent>>();
+        Map<String,List<EditorVariableContent>> otherLayersChildren = new HashMap<>();
         otherLayersChildren.put("inner", innerContent);
 
-        List<EditorVariableContent> otherLayersContent = new ArrayList<EditorVariableContent>();
+        List<EditorVariableContent> otherLayersContent = new ArrayList<>();
         otherLayersContent.add(EditorVariableContentFactory.stringAttributeWithChildren("children", otherLayersChildren));
         otherLayersContent.add(EditorVariableContentFactory.childlessStringAttribute("no children"));
 
-        List<EditorVariableContent> firstDisplayLayerContent = new ArrayList<EditorVariableContent>();
+        List<EditorVariableContent> firstDisplayLayerContent = new ArrayList<>();
         firstDisplayLayerContent.add(EditorVariableContentFactory.childlessStringAttribute("Display"));
 
-        Map<String, List<EditorVariableContent>> wmsSetupChildren = new HashMap<String,List<EditorVariableContent>>();
+        Map<String, List<EditorVariableContent>> wmsSetupChildren = new HashMap<>();
         wmsSetupChildren.put("otherLayers", otherLayersContent);
         wmsSetupChildren.put("firstDisplayLayer", firstDisplayLayerContent);
 
-        List<EditorVariableContent> wmsSetupContent = new ArrayList<EditorVariableContent>();
+        List<EditorVariableContent> wmsSetupContent = new ArrayList<>();
         wmsSetupContent.add(EditorVariableContentFactory.stringAttributeWithChildren("url1", wmsSetupChildren));
 
-        Map<String, List<EditorVariableContent>> varMap = new HashMap<String,List<EditorVariableContent>>();
+        Map<String, List<EditorVariableContent>> varMap = new HashMap<>();
         varMap.put("wmsSetup", wmsSetupContent);
 
         org.jdom2.Document result = et.writeContent(varMap);
@@ -317,7 +317,7 @@ public class EditorTemplateTest {
     @Test
     public void testFindNamespaces() throws IOException{
 
-        Map<String,String> expected = new HashMap<String,String>();
+        Map<String,String> expected = new HashMap<>();
         expected.put("http://www.met.no/schema/metadataeditor/editorDataTypes", "edt");
         expected.put("http://www.w3.org/2001/XMLSchema-instance", "xsi");
         expected.put("http://www.isotc211.org/2005/gmd", "gmd");

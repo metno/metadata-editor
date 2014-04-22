@@ -135,7 +135,7 @@ public class ServiceDescriptionGenerator {
      */
     private static List<Method> getServiceMethods(Class<? extends Object> c) {
 
-        List<Method> serviceMethods = new ArrayList<Method>();
+        List<Method> serviceMethods = new ArrayList<>();
 
         for (Method m : c.getMethods()) {
 
@@ -154,7 +154,7 @@ public class ServiceDescriptionGenerator {
      */
     private static List<ParameterInfo> getParameters(Method method) {
 
-        List<ParameterInfo> parameters = new ArrayList<ParameterInfo>();
+        List<ParameterInfo> parameters = new ArrayList<>();
         Annotation[][] paramAnnotations = method.getParameterAnnotations();
         for (Annotation[] annotationForParam : paramAnnotations) {
 
@@ -185,7 +185,7 @@ public class ServiceDescriptionGenerator {
     
     private static String getSupportedMethods(Method m){
         
-        List<String> methods = new ArrayList<String>();
+        List<String> methods = new ArrayList<>();
 
         GET get = m.getAnnotation(GET.class);
         if( get != null ){

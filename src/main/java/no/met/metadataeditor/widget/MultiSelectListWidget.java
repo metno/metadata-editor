@@ -19,7 +19,7 @@ public class MultiSelectListWidget extends EditorWidget {
     
     @Override
     public Map<String, String> getDefaultValue() {
-        Map<String,String> defaultValue = new HashMap<String,String>();
+        Map<String,String> defaultValue = new HashMap<>();
         defaultValue.put("listElement", currentValue);    
         return defaultValue;
     }    

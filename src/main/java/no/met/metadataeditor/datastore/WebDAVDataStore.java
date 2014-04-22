@@ -98,7 +98,7 @@ public class WebDAVDataStore extends DataStoreImpl {
 
         try {
             Collection<DavResource> resources = webdavConn.list(url);
-            List<String> filenames = new ArrayList<String>();
+            List<String> filenames = new ArrayList<>();
             for( DavResource r : resources ){
                 if(!r.isDirectory()){
                     filenames.add(r.getName());

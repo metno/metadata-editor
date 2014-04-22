@@ -80,7 +80,7 @@ public class ConfigTest {
         Config cfg = new Config("/config/test1.properties", Config.ENV_NAME){
         
                protected Properties getLocalProperties(String resourceNames){
-                   Map<String, String> map = new HashMap<String, String>();
+                   Map<String, String> map = new HashMap<>();
                    map.put("datastore.type", "WebDAVDataStore");
                    Properties prop = new Properties();
                    prop.putAll(map);        

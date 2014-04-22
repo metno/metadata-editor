@@ -52,9 +52,9 @@ public abstract class EditorWidget implements Serializable {
 
     private URI resourceUri;
 
-    private List<EditorWidget> children = new ArrayList<EditorWidget>();
+    private List<EditorWidget> children = new ArrayList<>();
 
-    private List<EditorWidgetView> widgetViews = new ArrayList<EditorWidgetView>();
+    private List<EditorWidgetView> widgetViews = new ArrayList<>();
 
     private Class<? extends DataAttribute> attributeClass;
 
@@ -72,7 +72,7 @@ public abstract class EditorWidget implements Serializable {
         this.minOccurs = cloneFrom.minOccurs;
         this.resourceUri = cloneFrom.resourceUri;
         this.attributeClass = cloneFrom.attributeClass;
-        this.children = new ArrayList<EditorWidget>();
+        this.children = new ArrayList<>();
         Collections.copy(this.children, cloneFrom.children);
 
     }
@@ -208,7 +208,7 @@ public abstract class EditorWidget implements Serializable {
 
         EditorWidgetView view = new EditorWidgetView();
 
-        List<EditorWidget> viewChildWidgets = new ArrayList<EditorWidget>();
+        List<EditorWidget> viewChildWidgets = new ArrayList<>();
         for( EditorWidget child : children ){
             viewChildWidgets.add(cloneInstance(child));
         }
@@ -225,14 +225,14 @@ public abstract class EditorWidget implements Serializable {
      */
     public List<EditorVariableContent> getContent() {
 
-        List<EditorVariableContent> contentList = new ArrayList<EditorVariableContent>();
+        List<EditorVariableContent> contentList = new ArrayList<>();
         for( EditorWidgetView view : widgetViews ){
 
             EditorVariableContent content = getContentForView(view);
             contentList.add(content);
 
             // recursively get content from child widgets.
-            Map<String, List<EditorVariableContent>> childContentMap = new HashMap<String,List<EditorVariableContent>>();
+            Map<String, List<EditorVariableContent>> childContentMap = new HashMap<>();
             for( EditorWidget child : children){
                 String varName = child.getVariableName();
 
@@ -262,7 +262,7 @@ public abstract class EditorWidget implements Serializable {
     private List<String> getRelevantAttributes() {
 
         Map<String, String> defaultValues = getDefaultValue();
-        List<String> relevantAttributes = new ArrayList<String>();
+        List<String> relevantAttributes = new ArrayList<>();
         for (Map.Entry<String, String> entry : defaultValues.entrySet()) {
             relevantAttributes.add(entry.getKey());
         }
@@ -320,7 +320,7 @@ public abstract class EditorWidget implements Serializable {
      */
     public List<EditorWidget> getWidgetTreeAsList() {
 
-        List<EditorWidget> widgetTree = new ArrayList<EditorWidget>();
+        List<EditorWidget> widgetTree = new ArrayList<>();
         for( EditorWidget child : children ){
             widgetTree.add(child);
             widgetTree.addAll(child.getWidgetTreeAsList());

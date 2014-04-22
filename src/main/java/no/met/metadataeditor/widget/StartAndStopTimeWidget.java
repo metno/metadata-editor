@@ -18,7 +18,7 @@ public class StartAndStopTimeWidget extends EditorWidget {
     @Override
     public Map<String, String> getDefaultValue() {
 
-        Map<String,String> defaultValue = new HashMap<String,String>();
+        Map<String,String> defaultValue = new HashMap<>();
         defaultValue.put("start", "");
         defaultValue.put("stop", "");
         return defaultValue;

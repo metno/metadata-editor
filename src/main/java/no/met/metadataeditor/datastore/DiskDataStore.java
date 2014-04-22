@@ -128,7 +128,7 @@ public class DiskDataStore extends DataStoreImpl {
         //only allow .xml files
         Collection<File> files = FileUtils.listFiles(new File(url), new String[]{"xml"}, false);
 
-        List<String> fileNames = new ArrayList<String>();
+        List<String> fileNames = new ArrayList<>();
         for(File f : files){
             fileNames.add(f.getName());
         }

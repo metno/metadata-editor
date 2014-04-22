@@ -17,7 +17,7 @@ public class OnlineResourceWidget extends EditorWidget {
     
     @Override
     public Map<String, String> getDefaultValue() {
-        return new HashMap<String,String>();
+        return new HashMap<>();
     }
 
 }

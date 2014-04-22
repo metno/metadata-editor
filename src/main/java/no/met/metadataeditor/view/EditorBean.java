@@ -354,7 +354,7 @@ public class EditorBean implements Serializable {
         String resourceString = dataStore.readResource(widget.getResourceUri().toString());
 
 
-        List<String> resourceValues = new ArrayList<String>(Arrays.asList(resourceString.split("\n")));
+        List<String> resourceValues = new ArrayList<>(Arrays.asList(resourceString.split("\n")));
 
         // ensure that we have an even number of elements.
         if( resourceValues.size() % 2 != 0 ){
@@ -362,7 +362,7 @@ public class EditorBean implements Serializable {
             resourceValues.add("");
         }
 
-        Map<String, String> values = new LinkedHashMap<String,String>();
+        Map<String, String> values = new LinkedHashMap<>();
         for( int i = 0; i < resourceValues.size(); i += 2 ){
             values.put(resourceValues.get(i), resourceValues.get(i+1));
         }
@@ -397,7 +397,7 @@ public class EditorBean implements Serializable {
         String resourceString = dataStore.readResource(uri);
 
         String[] resourceValues = resourceString.split("\n");
-        List<String> values = new ArrayList<String>();
+        List<String> values = new ArrayList<>();
         for(String s : resourceValues ){
             values.add(s);
         }

@@ -79,7 +79,7 @@ public class DataStoreUtils {
     }
 
     static List<SupportedFormat> parseSupportedFormats(Document doc) {
-        List<SupportedFormat> formats = new ArrayList<SupportedFormat>();
+        List<SupportedFormat> formats = new ArrayList<>();
         try {
             XPathFactory factory = XPathFactory.newInstance();
             XPath xpath = factory.newXPath();

@@ -10,12 +10,12 @@ public class EditorVariable {
 
     public final static String DEFAULT_RESOURCE = "default";
 
-    private Map<String, URI> resources = new HashMap<String, URI>();
-    private Map<String, String> attrsXPath = new HashMap<String, String>();
+    private Map<String, URI> resources = new HashMap<>();
+    private Map<String, String> attrsXPath = new HashMap<>();
     private String documentXPath = null;
     private String templateXPath;
     private DataAttribute dataAttributesType;
-    private Map<String, EditorVariable> children = new HashMap<String, EditorVariable>();
+    private Map<String, EditorVariable> children = new HashMap<>();
     private int minOccurs = 1;
     private int maxOccurs = 1;
 

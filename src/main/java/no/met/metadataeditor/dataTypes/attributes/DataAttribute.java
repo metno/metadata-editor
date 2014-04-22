@@ -31,7 +31,7 @@ public abstract class DataAttribute {
 
     private Map<String, DataType> getAttributesSetup(Class<? extends Object> inClass){
 
-        Map<String, DataType> fields = new HashMap<String,DataType>();
+        Map<String, DataType> fields = new HashMap<>();
         for (Field f : inClass.getDeclaredFields()) {
 
             if (f.isAnnotationPresent(IsAttributeValue.class)) {
@@ -154,7 +154,7 @@ public abstract class DataAttribute {
 
     public Map<String,String> getAttributes(String... attributeNames){
 
-        Map<String,String> attributes = new HashMap<String,String>();
+        Map<String,String> attributes = new HashMap<>();
         for( String attrName : attributeNames ){
             attributes.put(attrName, getAttribute(attrName));
         }
@@ -204,7 +204,7 @@ public abstract class DataAttribute {
 
         Map<String, DataType> attributes = getAttributesSetup();
 
-        Map<String,DataAttributeValidationResult> result = new HashMap<String,DataAttributeValidationResult>();
+        Map<String,DataAttributeValidationResult> result = new HashMap<>();
         for( Map.Entry<String, DataType> attr : attributes.entrySet() ){
 
             String attrName = attr.getKey();

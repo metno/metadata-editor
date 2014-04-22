@@ -42,8 +42,8 @@ abstract class DataStoreImpl implements DataStore {
 
     private Document setupDoc = null;
     private Date setupDocDate = null;
-    private final Map<String, Validator> validator = new HashMap<String, Validator>();
-    private final Map<String, Date> lastDataStoreDate = new HashMap<String, Date>();
+    private final Map<String, Validator> validator = new HashMap<>();
+    private final Map<String, Date> lastDataStoreDate = new HashMap<>();
 
     private Document getSetupDoc() {
         String path = makePath(CONFIGDIR, SETUPFILE);
@@ -245,7 +245,7 @@ abstract class DataStoreImpl implements DataStore {
     public List<String> availableMetadata(){
 
         List<String> filenames = list(metadataDirUrl());
-        List<String> identifiers = new ArrayList<String>();
+        List<String> identifiers = new ArrayList<>();
         for( String filename : filenames ){
             identifiers.add(FilenameUtils.removeExtension(filename));
         }

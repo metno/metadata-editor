@@ -74,7 +74,7 @@ public class EditorTemplate {
         varMap = th.getResultConfig();
 
         namespacePrefixes = th.getNamespacePrefixes();
-        prefixeNamspace = new HashMap<String, String>();
+        prefixeNamspace = new HashMap<>();
         for (String key : namespacePrefixes.keySet()) {
             prefixeNamspace.put(namespacePrefixes.get(key), key);
         }
@@ -100,7 +100,7 @@ public class EditorTemplate {
             @SuppressWarnings("rawtypes")
             public Iterator getPrefixes(String namespaceURI) {
                 // only one prefix by construction
-                List<String> prefixes = new ArrayList<String>();
+                List<String> prefixes = new ArrayList<>();
                 String prefix = getPrefix(namespaceURI);
                 if (prefix != null) {
                     prefixes.add(prefix);
@@ -120,7 +120,7 @@ public class EditorTemplate {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setNamespaceAware(true);
         DocumentBuilder db;
-        Map<String,String> namespaces = new HashMap<String,String>();
+        Map<String,String> namespaces = new HashMap<>();
         try {
             db = dbf.newDocumentBuilder();
             Document doc = db.parse(IOUtils.toInputStream(templateXML));
@@ -184,9 +184,9 @@ public class EditorTemplate {
      */
     private Map<String, List<EditorVariableContent>> readEditorContent(XPath xpath, String nodePath, Node node, Map<String, EditorVariable> vars) {
 
-        Map<String,List<EditorVariableContent>> content = new HashMap<String,List<EditorVariableContent>>();
+        Map<String,List<EditorVariableContent>> content = new HashMap<>();
         for (String varName : vars.keySet()) {
-            List<EditorVariableContent> contentList = new ArrayList<EditorVariableContent>();
+            List<EditorVariableContent> contentList = new ArrayList<>();
             content.put(varName, contentList);
 
             EditorVariable ev = vars.get(varName);
@@ -297,7 +297,7 @@ public class EditorTemplate {
      */
     private void pruneTreeRecursive(Element element, Element parent, org.jdom2.Document doc){
 
-        List<Content> children = new ArrayList<Content>();
+        List<Content> children = new ArrayList<>();
         for( Content child : element.getContent()){
             children.add(child);
         }
@@ -361,7 +361,7 @@ public class EditorTemplate {
 
     private List<TemplateNode> genTemplateTreeRecursive(Element element, Map<String, List<EditorVariableContent>> contentMap){
 
-        List<TemplateNode> children = new ArrayList<TemplateNode>();
+        List<TemplateNode> children = new ArrayList<>();
 
         for( Content c : element.getContent() ){
 
@@ -396,7 +396,7 @@ public class EditorTemplate {
                 }
             } else {
                 TemplateNode tn = new TemplateXMLNode();
-                tn.children = new ArrayList<TemplateNode>();
+                tn.children = new ArrayList<>();
                 tn.xmlNode = c;
                 children.add(tn);
             }

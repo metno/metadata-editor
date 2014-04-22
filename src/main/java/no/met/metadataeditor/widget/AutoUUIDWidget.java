@@ -27,7 +27,7 @@ public class AutoUUIDWidget extends EditorWidget {
     @Override
     public Map<String, String> getDefaultValue() {
 
-        Map<String,String> defaultValue = new HashMap<String,String>();
+        Map<String,String> defaultValue = new HashMap<>();
         String uuid = UUID.randomUUID().toString();
         defaultValue.put("str", uuid);
         return defaultValue;

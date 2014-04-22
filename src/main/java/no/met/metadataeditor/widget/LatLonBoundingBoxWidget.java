@@ -22,7 +22,7 @@ public class LatLonBoundingBoxWidget extends EditorWidget {
     @Override
     public Map<String,String> getDefaultValue() {
         
-        Map<String,String> value = new HashMap<String,String>();
+        Map<String,String> value = new HashMap<>();
         value.put("south", "0.0");
         value.put("north", "0.0");
         value.put("west", "0.0");

@@ -21,7 +21,7 @@ import static no.met.metadataeditor.TestHelpers.*;
 
 public class DataStoreUtilsTest {
 
-    List<SupportedFormat> formats = new ArrayList<SupportedFormat>();
+    List<SupportedFormat> formats = new ArrayList<>();
 
     @Before
     public void setUp() {

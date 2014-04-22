@@ -24,7 +24,7 @@ public class EditorConfiguration implements Serializable {
     private List<EditorPage> pages;
 
     public EditorConfiguration(){
-        pages = new ArrayList<EditorPage>();
+        pages = new ArrayList<>();
     }
 
     /**
@@ -57,7 +57,7 @@ public class EditorConfiguration implements Serializable {
 
     public Map<String, List<EditorVariableContent>> getContent() {
 
-        Map<String, List<EditorVariableContent>> content = new HashMap<String, List<EditorVariableContent>>();
+        Map<String, List<EditorVariableContent>> content = new HashMap<>();
         for( EditorPage page : pages ){
             content.putAll(page.getContent());
         }
@@ -77,7 +77,7 @@ public class EditorConfiguration implements Serializable {
 
     private Map<String, EditorPage> getPageMap(){
 
-        Map<String, EditorPage> pageMap = new HashMap<String,EditorPage>();
+        Map<String, EditorPage> pageMap = new HashMap<>();
         for( EditorPage page : pages ){
             pageMap.put(page.getId(), page);
         }
