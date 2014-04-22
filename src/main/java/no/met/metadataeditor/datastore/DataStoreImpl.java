@@ -231,7 +231,7 @@ abstract class DataStoreImpl implements DataStore {
 
     }
 
-    private String metadataDirUrl() {
+    protected String metadataDirUrl() {
         return makePath(XMLDIR);
     }
 

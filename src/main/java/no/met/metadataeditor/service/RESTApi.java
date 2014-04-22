@@ -1,8 +1,11 @@
 package no.met.metadataeditor.service;
 
+import com.sun.jersey.api.Responses;
 import java.io.IOException;
 import java.io.StringReader;
-
+import java.util.List;
+import java.util.Objects;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.GET;
@@ -17,21 +20,17 @@ import javax.ws.rs.core.Response;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
+import no.met.metadataeditor.LogUtils;
 import no.met.metadataeditor.datastore.DataStore;
 import no.met.metadataeditor.datastore.DataStoreFactory;
+import no.met.metadataeditor.datastore.MetadataRecords;
+import no.met.metadataeditor.datastore.MetadataRecords.MetadataRecord;
 import no.met.metadataeditor.validation.ValidatorException;
 import no.met.metadataeditor.validationclient.ValidationClient;
 import no.met.metadataeditor.validationclient.ValidationResponse;
-
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
-import com.sun.jersey.api.Responses;
-import java.util.Objects;
-import java.util.logging.Logger;
-import no.met.metadataeditor.LogUtils;
 
 /**
  * REST API used to communicate with the metadata editor from other systems.
@@ -94,7 +93,9 @@ public class RESTApi extends Application {
     @POST
     @Path("{project}/{record}")
     @ServiceDescription("Get the URL to edit a metadata record and as an option suggest a new version of the XML in the metadata parameter")
-    public Response postMetadata(@PathParam("project") String project, @PathParam("record") String record, String metadata) throws ValidatorException
+    public Response postMetadata(@PathParam("project") String project, 
+            @PathParam("record") String record, String metadata) 
+            throws ValidatorException
     {
         DataStore datastore = DataStoreFactory.getInstance(project);
         
@@ -124,7 +125,8 @@ public class RESTApi extends Application {
                 response = Response.ok(getEditorUrl(project, record)).build();
             } else {
 
-                datastore.writeMetadata(record + DataStore.THEIRS_IDENTIFIER, metadata, datastore.getDefaultUser(), datastore.getDefaultPassword());
+                datastore.writeMetadata(record + DataStore.THEIRS_IDENTIFIER, metadata, datastore.getDefaultUser(), 
+                    datastore.getDefaultPassword());
                 response = Response.ok(getCompareUrl(project, record)).build();
             }
         }
@@ -145,7 +147,8 @@ public class RESTApi extends Application {
     @POST
     @Path("noedit/{project}/{record}")
     @ServiceDescription("Post metadata to repository without editing")
-    public Response postMetadataNoEdit(@PathParam("project") String project, @PathParam("record") String record, 
+    public Response postMetadataNoEdit(@PathParam("project") String project, 
+            @PathParam("record") String record, 
             String metadata) throws ValidatorException
     {
         Objects.requireNonNull(project, "Project can not be null");
@@ -169,6 +172,19 @@ public class RESTApi extends Application {
         } 
         return Responses.notFound().build();
     }
+    
+    @GET
+    @Path("list/{project}")
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public MetadataRecords getRecords(@PathParam("project") String project) throws ValidatorException {
+        //System.out.println("project--------------------"+project);
+        Objects.requireNonNull(project, "Missing project name");       
+        MetadataRecords metadataRecords = new MetadataRecords();
+        DataStore datastore = DataStoreFactory.getInstance(project);
+        List<MetadataRecord> properties = datastore.listMetadataRecord();        
+        metadataRecords.setRecords(properties);
+        return metadataRecords;
+    } 
 
     private String getEditorUrl(String project, String record){
         return getBaseUrl(project, record) + "editor.xhtml?project=" + project + "&record=" + record;

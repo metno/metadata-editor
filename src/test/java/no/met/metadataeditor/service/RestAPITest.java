@@ -1,26 +1,25 @@
 package no.met.metadataeditor.service;
 
-import static com.jayway.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.equalToIgnoringWhiteSpace;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
+import static com.jayway.restassured.RestAssured.*;
+import com.sun.jersey.api.json.JSONConfiguration;
+import com.sun.jersey.test.framework.JerseyTest;
+import com.sun.jersey.test.framework.WebAppDescriptor;
 import java.io.File;
 import java.io.IOException;
-
 import no.met.metadataeditor.TestHelpers;
 import no.met.metadataeditor.validationclient.SimplePutValidationClient;
 import no.met.metadataeditor.validationclient.ValidationResponse;
-
 import org.apache.commons.io.FileUtils;
+import org.hamcrest.Matchers;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.equalToIgnoringWhiteSpace;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import com.sun.jersey.test.framework.JerseyTest;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class RestAPITest extends JerseyTest {
 
@@ -29,7 +28,8 @@ public class RestAPITest extends JerseyTest {
     private static File testDir;
 
     public RestAPITest() { 
-        super("no.met.metadataeditor");
+         super(new WebAppDescriptor.Builder("no.met.metadataeditor")
+                .initParam(JSONConfiguration.FEATURE_POJO_MAPPING, "true").build());
         
         SimplePutValidationClient spvc = mock(SimplePutValidationClient.class);        
         when(spvc.validate(anyString())).thenReturn(new ValidationResponse(true, "All good"));
@@ -49,7 +49,7 @@ public class RestAPITest extends JerseyTest {
 
     @BeforeClass
     public static void setup() throws IOException {
-
+        
         String tmpDir = System.getProperty("java.io.tmpdir");
         testDir = new File(tmpDir, baseDir);
         testDir.mkdirs();
@@ -69,7 +69,7 @@ public class RestAPITest extends JerseyTest {
 
     @AfterClass
     public static void teardown() throws IOException {
-        FileUtils.deleteDirectory(testDir);
+       FileUtils.deleteDirectory(testDir);
     }
 
     @Test
@@ -114,6 +114,20 @@ public class RestAPITest extends JerseyTest {
         String metadataXML = FileUtils.readFileToString(metadata1File);
         given().port(getPort()).body(metadataXML).expect().statusCode(200).when()
                 .post("/metaedit_api/noedit/test/metadata1");
+    }
+    
+    @Test
+    public void testListMetadataRecords() throws Exception {
+        given().
+                port(getPort()).
+                header("accept", "application/json").
+        expect().
+                body("resource.name", 
+                        Matchers.hasItems(new String[]{"mm2combined.xml", 
+                             "metadata1wrong.xml", "metadata1.xml"})).
+                statusCode(200).
+        when().
+                get("/metaedit_api/list/test/");
     }
 
     @Test

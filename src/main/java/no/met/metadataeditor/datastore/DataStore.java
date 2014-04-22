@@ -119,5 +119,11 @@ public interface DataStore {
      * @return The ValiationClient for the record or null if it has not been configured.
      */
     ValidationClient getValidationClient(String recordMetadata);
+    
+    /**
+     * Get meta data of all WebDav records
+     * @return List of meta data record
+     */
+    List<MetadataRecords.MetadataRecord> listMetadataRecord();
 
 }

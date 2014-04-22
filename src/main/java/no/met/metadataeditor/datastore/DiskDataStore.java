@@ -157,4 +157,16 @@ public class DiskDataStore extends DataStoreImpl {
         return FileUtils.deleteQuietly(new File(url));
     }
 
+    @Override
+    public List<MetadataRecords.MetadataRecord> listMetadataRecord() {
+        //only allow .xml files
+        Collection<File> files = FileUtils.listFiles(new File(metadataDirUrl()), new String[]{"xml"}, false);
+
+        List<MetadataRecords.MetadataRecord> records = new ArrayList<>();
+        for(File f : files){
+            records.add(new MetadataRecords.MetadataRecord(f.getName(), f.getPath(), new Date(f.lastModified())));
+        }
+        return records;
+    }
+
 }

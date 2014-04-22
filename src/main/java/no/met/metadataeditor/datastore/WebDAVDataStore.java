@@ -179,7 +179,27 @@ public class WebDAVDataStore extends DataStoreImpl {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Failed to delete resource", e);
             throw new EditorException("Failed to delete resource list from WebDAV", e, EditorException.IO_ERROR);
         }
+    }
 
+    @Override
+    public List<MetadataRecords.MetadataRecord> listMetadataRecord() {
+        Sardine webdavConn = getConnection();
+
+        try {
+            Collection<DavResource> resources = webdavConn.list(metadataDirUrl());
+            List<MetadataRecords.MetadataRecord> records = new ArrayList<>();
+            for( DavResource r : resources ){
+                if(!r.isDirectory()){
+                    records.add(new MetadataRecords.MetadataRecord(r.getName(), r.getPath(),
+                            r.getCreation(), r.getModified()));
+                }
+            }
+            
+            return records;
+        } catch (IOException e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Failed to fetch metadata record", e);
+            throw new EditorException("Failed to fetch metadata from WebDAV", e, EditorException.IO_ERROR);
+        }
     }
 
 }
