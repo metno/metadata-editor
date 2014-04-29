@@ -182,16 +182,16 @@ public class WebDAVDataStore extends DataStoreImpl {
     }
 
     @Override
-    public List<MetadataRecords.MetadataRecord> listMetadataRecord() {
+    public List<MetadataRecords.ResourceMetadata> listMetadataRecord() {
         Sardine webdavConn = getConnection();
 
         try {
             Collection<DavResource> resources = webdavConn.list(metadataDirUrl());
-            List<MetadataRecords.MetadataRecord> records = new ArrayList<>();
+            List<MetadataRecords.ResourceMetadata> records = new ArrayList<>();
             for( DavResource r : resources ){
                 if(!r.isDirectory()){
-                    records.add(new MetadataRecords.MetadataRecord(r.getName(), r.getPath(),
-                            r.getCreation(), r.getModified()));
+                    records.add(new MetadataRecords.WebDavResourceMetadata(r.getCreation(), r.getName(), r.getPath(),
+                             r.getModified()));
                 }
             }
             

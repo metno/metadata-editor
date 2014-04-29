@@ -12,49 +12,30 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * Class to represent meta data record
  */
 @XmlRootElement(name = "resources")
-public class MetadataRecords {    
-    
-    private List<MetadataRecord> recordsList;
+public class MetadataRecords {
+    private List<ResourceMetadata> recordsList;
 
     @XmlElement(name = "resource")
-    public List<MetadataRecord> getRecords() {
+    public List<ResourceMetadata> getRecords() {
         return recordsList;
     }
 
-    public void setRecords(List<MetadataRecord> records) {
+    public void setRecords(List<ResourceMetadata> records) {
         this.recordsList = records;
     }
     
-    public static class MetadataRecord {
+    public static class ResourceMetadata {
         private String name;  
         private String relativeUrl;
         private Date lastModified;
-        private Date creationTime;       
-
-        public MetadataRecord() {
+        
+        public ResourceMetadata() {
         }
 
-        public MetadataRecord(String name, String relativeUrl, Date lastMdified) {
+        public ResourceMetadata(String name, String relativeUrl, Date lastMdified) {
             this.name = name;
             this.relativeUrl = relativeUrl;
             this.lastModified = lastMdified;
-        }
-
-        public MetadataRecord(String name, String relaiveUrl, Date creation, Date lastMdified) {
-            this.name = name;
-            this.relativeUrl = relaiveUrl;
-            this.creationTime = creation;
-            this.lastModified = lastMdified;
-        }
-        
-        @XmlAttribute
-        @XmlJavaTypeAdapter(DateAdapter.class)
-        public Date getCreationTime() {
-            return creationTime;
-        }
-
-        public void setCreationTime(Date creationTime) {
-            this.creationTime = creationTime;
         }
 
         @XmlAttribute
@@ -83,7 +64,26 @@ public class MetadataRecords {
 
         public void setLastModified(Date lastModified) {
             this.lastModified = lastModified;
-        }  
+        }   
     }
+    
+    public static class WebDavResourceMetadata extends ResourceMetadata {
+            private Date creationTime;
+
+            public WebDavResourceMetadata(Date creationTime, String name, String relativeUrl, Date lastMdified) {
+                super(name, relativeUrl, lastMdified);
+                this.creationTime = creationTime;
+            }
+            
+            @XmlAttribute
+            @XmlJavaTypeAdapter(DateAdapter.class)
+            public Date getCreationTime() {
+                return creationTime;
+            }
+
+            public void setCreationTime(Date creationTime) {
+                this.creationTime = creationTime;
+            }
+        }
     
 }

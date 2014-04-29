@@ -14,9 +14,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
-
 import no.met.metadataeditor.EditorException;
-
+import no.met.metadataeditor.datastore.MetadataRecords.ResourceMetadata;
 import org.apache.commons.io.FileUtils;
 
 /**
@@ -24,7 +23,7 @@ import org.apache.commons.io.FileUtils;
  */
 public class DiskDataStore extends DataStoreImpl {
 
-    private String basePath;
+    private final String basePath;
 
     public DiskDataStore(String basePath) {
         this.basePath = basePath;
@@ -158,13 +157,13 @@ public class DiskDataStore extends DataStoreImpl {
     }
 
     @Override
-    public List<MetadataRecords.MetadataRecord> listMetadataRecord() {
+    public List<MetadataRecords.ResourceMetadata> listMetadataRecord() {
         //only allow .xml files
         Collection<File> files = FileUtils.listFiles(new File(metadataDirUrl()), new String[]{"xml"}, false);
 
-        List<MetadataRecords.MetadataRecord> records = new ArrayList<>();
+        List<ResourceMetadata> records = new ArrayList<>();
         for(File f : files){
-            records.add(new MetadataRecords.MetadataRecord(f.getName(), f.getPath(), new Date(f.lastModified())));
+            records.add(new ResourceMetadata(f.getName(), f.getPath(), new Date(f.lastModified())));
         }
         return records;
     }

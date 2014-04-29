@@ -24,7 +24,7 @@ import no.met.metadataeditor.LogUtils;
 import no.met.metadataeditor.datastore.DataStore;
 import no.met.metadataeditor.datastore.DataStoreFactory;
 import no.met.metadataeditor.datastore.MetadataRecords;
-import no.met.metadataeditor.datastore.MetadataRecords.MetadataRecord;
+import no.met.metadataeditor.datastore.MetadataRecords.ResourceMetadata;
 import no.met.metadataeditor.validation.ValidatorException;
 import no.met.metadataeditor.validationclient.ValidationClient;
 import no.met.metadataeditor.validationclient.ValidationResponse;
@@ -181,7 +181,7 @@ public class RESTApi extends Application {
         Objects.requireNonNull(project, "Missing project name");       
         MetadataRecords metadataRecords = new MetadataRecords();
         DataStore datastore = DataStoreFactory.getInstance(project);
-        List<MetadataRecord> properties = datastore.listMetadataRecord();        
+        List<ResourceMetadata> properties = datastore.listMetadataRecord();        
         metadataRecords.setRecords(properties);
         return metadataRecords;
     } 

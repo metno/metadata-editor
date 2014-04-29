@@ -124,6 +124,6 @@ public interface DataStore {
      * Get meta data of all WebDav records
      * @return List of meta data record
      */
-    List<MetadataRecords.MetadataRecord> listMetadataRecord();
+    List<MetadataRecords.ResourceMetadata> listMetadataRecord();
 
 }
