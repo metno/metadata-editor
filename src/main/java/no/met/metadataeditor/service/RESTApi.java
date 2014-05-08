@@ -176,8 +176,7 @@ public class RESTApi extends Application {
     @GET
     @Path("list/{project}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public MetadataRecords getRecords(@PathParam("project") String project) throws ValidatorException {
-        //System.out.println("project--------------------"+project);
+    public MetadataRecords getRecords(@PathParam("project") String project) throws ValidatorException {        
         Objects.requireNonNull(project, "Missing project name");       
         MetadataRecords<MetadataRecords.ResourceMetadata> metadataRecords = new MetadataRecords();
         DataStore datastore = DataStoreFactory.getInstance(project);

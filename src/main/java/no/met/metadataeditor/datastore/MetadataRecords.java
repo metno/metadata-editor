@@ -15,13 +15,12 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * Class to represent meta data record
  */
 @XmlRootElement(name = "resources")
-//@XmlTransient
 @XmlSeeAlso(MetadataRecords.WebDavResourceMetadata.class)
 public class MetadataRecords<T> {
 
     private List<T> recordsList;
 
-    @XmlElement(name = "resource")
+    @XmlElement(name = "resource", type = WebDavResourceMetadata.class)
     public List<T> getRecords() {
         return recordsList;
     }
