@@ -179,9 +179,9 @@ public class RESTApi extends Application {
     public MetadataRecords getRecords(@PathParam("project") String project) throws ValidatorException {
         //System.out.println("project--------------------"+project);
         Objects.requireNonNull(project, "Missing project name");       
-        MetadataRecords metadataRecords = new MetadataRecords();
+        MetadataRecords<MetadataRecords.ResourceMetadata> metadataRecords = new MetadataRecords();
         DataStore datastore = DataStoreFactory.getInstance(project);
-        List<ResourceMetadata> properties = datastore.listMetadataRecord();        
+        List<ResourceMetadata> properties = datastore.listMetadataRecord();            
         metadataRecords.setRecords(properties);
         return metadataRecords;
     } 
