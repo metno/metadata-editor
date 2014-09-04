@@ -27,12 +27,16 @@ The first line in the properties file i "projects". This is a comma separated li
 
 For each repostory you need to specify the following
 
-  * datastore.type: This is the type of data store. Set it to WebDAVDataStore
+  * datastore.type: This is the type of data store. Currently, metadata editor supports two types of data store: (i) WebDAVDataStore, (ii) DiskDataStore. Set it to WebDAVDataStore in case of WebDav.
   * datastore.host: The WebDAV host URL without the protocol prefix like http://
   * datastore.protocol: The type of protocol that is used. Either http or https
   * datastore.defaultUser: The username for the default user. The default user is used for reading data from the repository.
   * datastore.defaultPassword: The password used for logging in as the default user.
+  
+For disk data store one needs to specfiy the following 
 
+    * datastore.type: set it to DiskDataStore. 
+    * datastore.path: path to location (e.g., /etc/metadata-store)
 
 ## Structure of a metadata repository
 
