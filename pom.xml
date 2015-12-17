@@ -9,25 +9,29 @@
     <url>http://maven.apache.org</url>
 
     <!--The following is required since we are not using SCM. Provide some dummy scm data so that revisionOnScmFailure will 
-        work -->
+        work 
     <scm>
         <connection>scm:svn:http://none</connection>
         <developerConnection>scm:svn:https://none</developerConnection>
         <url>scm:svn:https://none</url>
-    </scm>
+    </scm>-->
 
     <properties>
         <majorMinorVersion>1.8</majorMinorVersion>
         <incrementalVersion>0</incrementalVersion>
+        <timestamp>${maven.build.timestamp}</timestamp>
+        <maven.build.timestamp.format>yyyy-MM-dd-HH:mm:ss</maven.build.timestamp.format>
     </properties>
 
     <repositories>
+        <!--
         <repository>
             <id>prime-repo</id>
             <name>PrimeFaces Maven Repository</name>
             <url>http://repository.primefaces.org</url>
             <layout>default</layout>
         </repository>
+        -->
         <repository>
             <id>sardine-google-svn-repo</id>
             <snapshots>
@@ -93,13 +97,13 @@
         <dependency>
             <groupId>org.apache.myfaces.core</groupId>
             <artifactId>myfaces-impl</artifactId>
-            <version>2.1.5</version>
+            <version>2.2.7</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.myfaces.core</groupId>
             <artifactId>myfaces-api</artifactId>
-            <version>2.1.5</version>
+            <version>2.2.7</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -116,7 +120,7 @@
         <dependency>
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces</artifactId>
-            <version>3.5</version>
+            <version>5.3</version>
         </dependency>
         <dependency>
             <groupId>org.primefaces.themes</groupId>
@@ -127,7 +131,7 @@
         <dependency>
             <groupId>org.omnifaces</groupId>
             <artifactId>omnifaces</artifactId>
-            <version>1.1</version>
+            <version>1.8.1</version>
         </dependency>
 
         <dependency>
@@ -252,11 +256,11 @@
                     </dependency>
                 </dependencies>
             </plugin>
-
+<!--
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>buildnumber-maven-plugin</artifactId>
-                <version>1.1</version>
+                <version>1.4</version>
                 <executions>
                     <execution>
                         <phase>generate-resources</phase>
@@ -275,7 +279,7 @@
                     </items>
                 </configuration>
             </plugin>
-
+-->
             <plugin>
                 <artifactId>jdeb</artifactId>
                 <groupId>org.vafer</groupId>

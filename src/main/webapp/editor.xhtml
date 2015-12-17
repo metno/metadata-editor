@@ -15,9 +15,9 @@
 <h:head>
     <title>Metadata editor</title>
     <h:outputStylesheet name="common.css" library="css"/>
-    <h:outputStylesheet name="editor.css" library="css"/>                              
+    <h:outputStylesheet name="editor.css" library="css"/> 
+    <h:outputScript name="OpenLayers.js" library="javascript"/>  
     <h:outputScript name="utils.js" library="javascript"/>
-    <h:outputScript name="OpenLayers.js" library="javascript"/>    
     
     <h:outputScript >
 
@@ -37,14 +37,14 @@
 
 <h:body>
     
-    <p:ajaxStatus onstart="statusDialog.show();" oncomplete="statusDialog.hide()" />  
+    <p:ajaxStatus onstart="PF('statusDialog').show();" oncomplete="PF('statusDialog').hide()" />  
               
     <p:dialog id="status-dialog" modal="true" widgetVar="statusDialog" header="Status" draggable="false" closable="false">  
         <p:graphicImage value="/resources/images/ajaxloadingbar.gif" />  
     </p:dialog>
     
     <p:dialog modal="true" widgetVar="wmsDialog" header="Map" draggable="true" closable="true" >  
-        <div id="mapClient"></div>  
+        <div id="mapClient" style="width: 90%; height: 80%;"></div>  
     </p:dialog>    
 
     <ui:include src="login-dialog.xhtml">

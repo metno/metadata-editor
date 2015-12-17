@@ -36,7 +36,7 @@
         <br />
 
         <p:menubar>
-            <p:menuitem value="Log In" onclick="loginDialog.show()" url="#" rendered="#{!userBean.validated}" />
+            <p:menuitem value="Log In" onclick="PF('loginDialog').show()" url="#" rendered="#{!userBean.validated}" />
             <p:menuitem value="Log Out" action="#{userBean.logout}" rendered="#{userBean.validated}" ajax="false" />
         </p:menubar>
         

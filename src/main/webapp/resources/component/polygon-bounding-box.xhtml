@@ -21,7 +21,7 @@
             <ui:param name="updateId" value="polygon-bounding-box-container"/>
         </ui:include>
 
-        <p:button id="show-map" onclick="add_polygon_bounding_box(this); wmsDialog.show(); return false;" url="#" value="Show in map" styleClass="map-button" />
+        <p:button id="show-map" onclick="add_polygon_bounding_box(this); PF('wmsDialog').show(); return false;" url="#" value="Show in map" styleClass="map-button" />
 
         <metaedit:description widget="#{cc.attrs.widget}"/>
 
