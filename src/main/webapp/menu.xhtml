@@ -14,8 +14,10 @@
 	        <p:menuitem value="Validate" process="@form" update="@form" action="#{editorBean.validate}" rendered="#{userBean.validated}" />        
 	        <p:menuitem value="Reset" process="@form" update="@form" action="#{editorBean.reset}" rendered="#{userBean.validated}" />        
 	        <p:menuitem value="Export" action="#{editorBean.export}" ajax="false" />
-            <p:menuitem value="Log In" onclick="PF('loginDialog').show()"  rendered="#{!userBean.validated}" />
-	        <p:menuitem value="Log Out" action="#{userBean.logout}" rendered="#{userBean.validated}" ajax="false" />
+            <p:menuitem value="Log In" onclick="PF('loginDialog').show()"  
+                        rendered="#{!userBean.validated and not editorBean.editorOption.embedded}" />
+	        <p:menuitem value="Log Out" action="#{userBean.logout}" 
+                        rendered="#{userBean.validated and not editorBean.editorOption.embedded}" ajax="false" />
 	    </p:menubar>
 	</ui:composition>    
 </body>

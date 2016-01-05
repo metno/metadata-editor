@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
@@ -64,6 +65,9 @@ public class EditorBean implements Serializable {
     boolean initPerformed = false;
     
     private Map<String, String> skosKeywords;
+    
+    @ManagedProperty(value = "#{editorOption}")
+    private EditorOption editorOption;
 
     public EditorBean() {
 
@@ -216,6 +220,14 @@ public class EditorBean implements Serializable {
 
     public void setActiveTabId(int activeTabId) {
         this.activeTabId = activeTabId;
+    }
+
+    public EditorOption getEditorOption() {
+        return editorOption;
+    }
+
+    public void setEditorOption(EditorOption editorOption) {
+        this.editorOption = editorOption;
     }
 
     /**
