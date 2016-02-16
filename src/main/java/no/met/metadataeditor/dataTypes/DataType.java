@@ -1,6 +1,7 @@
 package no.met.metadataeditor.dataTypes;
 
 import java.net.URISyntaxException;
+import java.util.Locale;
 
 import org.apache.commons.validator.routines.BigDecimalValidator;
 import org.apache.commons.validator.routines.BigIntegerValidator;
@@ -29,7 +30,7 @@ public enum DataType {
 
             BigDecimalValidator v = BigDecimalValidator.getInstance();
 
-            if( v.validate(value) == null ){
+            if( v.validate(value, Locale.US) == null ){
                 return new DataAttributeValidationResult(false, "'" + value + "' is not a valid number.");
             } else {
                 return new DataAttributeValidationResult(true, null);
