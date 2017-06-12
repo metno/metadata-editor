@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import no.met.metadataeditor.datastore.DataStore;
@@ -18,6 +19,9 @@ public class MetadataListBean implements Serializable {
     private String project;
     
     private List<String> availableMetadata;
+    
+    @ManagedProperty(value = "#{editorOption}")
+    private EditorOption editorOption;
     
     public List<String> getAvailableMetadata(){
         
@@ -34,6 +38,14 @@ public class MetadataListBean implements Serializable {
 
     public void setProject(String project) {
         this.project = project;
+    }
+
+    public EditorOption getEditorOption() {
+        return editorOption;
+    }
+
+    public void setEditorOption(EditorOption editorOption) {
+        this.editorOption = editorOption;
     }
     
 }

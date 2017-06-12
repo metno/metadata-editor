@@ -9,15 +9,17 @@
 <f:metadata>
     <f:viewParam name="record" value="#{editorBean.recordIdentifier}" />
     <f:viewParam name="project" value="#{editorBean.project}" />
+    <f:viewParam name="includeBreadCrumb" value="#{editorBean.editorOption.includeBreadCrumb}" />
+    <f:viewParam name="embedded" value="#{editorBean.editorOption.embedded}" />
     <f:event type="preRenderView" listener="#{editorBean.init}" />
  </f:metadata>
 
 <h:head>
     <title>Metadata editor</title>
     <h:outputStylesheet name="common.css" library="css"/>
-    <h:outputStylesheet name="editor.css" library="css"/>                              
+    <h:outputStylesheet name="editor.css" library="css"/> 
+    <h:outputScript name="OpenLayers.js" library="javascript"/>  
     <h:outputScript name="utils.js" library="javascript"/>
-    <h:outputScript name="OpenLayers.js" library="javascript"/>    
     
     <h:outputScript >
 
@@ -35,16 +37,15 @@
     <h:outputScript name="UnsavedLeave.js" library="javascript" />
 </h:head>
 
-<h:body>
-    
-    <p:ajaxStatus onstart="statusDialog.show();" oncomplete="statusDialog.hide()" />  
+<h:body>    
+    <p:ajaxStatus onstart="PF('statusDialog').show();" oncomplete="PF('statusDialog').hide()" />  
               
     <p:dialog id="status-dialog" modal="true" widgetVar="statusDialog" header="Status" draggable="false" closable="false">  
         <p:graphicImage value="/resources/images/ajaxloadingbar.gif" />  
     </p:dialog>
     
     <p:dialog modal="true" widgetVar="wmsDialog" header="Map" draggable="true" closable="true" >  
-        <div id="mapClient"></div>  
+        <div id="mapClient" style="width: 90%; height: 80%;"></div>  
     </p:dialog>    
 
     <ui:include src="login-dialog.xhtml">
@@ -55,24 +56,23 @@
    
     <h:form id="metadataeditor" name="metadataeditor">
     
-    <p:breadCrumb>
-        <p:menuitem value="Projects" url="index.xhtml" />
-        <p:menuitem value="#{editorBean.project}" url="project.xhtml?project=#{editorBean.project}" />
+    <p:breadCrumb rendered="#{editorBean.editorOption.includeBreadCrumb}">
+        <p:menuitem value="Projects" url="index.xhtml" 
+                    disabled="#{editorBean.editorOption.embedded}"/>
+        <p:menuitem value="#{editorBean.project}" url="project.xhtml?project=#{editorBean.project}" 
+                    disabled="#{editorBean.editorOption.embedded}"/>
         <p:menuitem value="#{editorBean.recordIdentifier}" url="#" />
     </p:breadCrumb>
 
-    <br />    
+    <br /> 
     
-    <ui:include src="menu.xhtml"/>
-       
+    <ui:include src="menu.xhtml"/>    
+    
     <br />
     
     <p:messages showDetail="true" for="validation-messages" closable="true" />
     
-    <p:tabView activeIndex="#{editorBean.activeTabId}" var="page" value="#{editorBean.editorConfiguration.pages}">
-
-
-    
+    <p:tabView activeIndex="#{editorBean.activeTabId}" var="page" value="#{editorBean.editorConfiguration.pages}">    
         <p:ajax event="tabChange" listener="#{editorBean.tabChanged}" global="false" />
     
         <p:tab title="#{page.label}" id="tab">
@@ -107,9 +107,7 @@
     <br />
     
     <ui:include src="menu.xhtml"/>
-
     <ui:include src="footer.xhtml" />
-
     </h:form>
     
 </h:body>

@@ -72,7 +72,7 @@
             </h:column>            
 
             <h:column id="view-in-map-button">
-                <p:button onclick="add_lat_lon_bounding_box(jsf_element('#{p:component('boundingbox')}')); wmsDialog.show(); return false;" url="#" value="Show in map" styleClass="" />
+                <p:button onclick="add_lat_lon_bounding_box(jsf_element('#{p:component('boundingbox')}')); PF('wmsDialog').show(); return false;" url="#" value="Show in map" styleClass="" />
             </h:column>
 
             <h:column>
