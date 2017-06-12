@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -26,21 +26,19 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 /**
- * Automatically generate web service documentation by reading the annotations
- * for a class.
+ * Automatically generate web service documentation by reading the annotations for a class.
  */
 public class ServiceDescriptionGenerator {
 
     private static final Logger logger = Logger.getLogger(ServiceDescriptionGenerator.class.getName());
 
     /**
-     * Create a description of the web service offered by a class in XML. The
-     * documentation is created by looking at the web service annotations.
+     * Create a description of the web service offered by a class in XML. The documentation is created by looking at the
+     * web service annotations.
      *
-     * @param c
-     *            The class to generate documentation for.
+     * @param c The class to generate documentation for.
      * @return A XML document object.
-     * @throws ParserConfigurationException 
+     * @throws ParserConfigurationException
      */
     public static Document getXMLServiceDescription(Class<? extends Object> c) throws ParserConfigurationException {
 
@@ -63,10 +61,10 @@ public class ServiceDescriptionGenerator {
 
             Attr methodsAttr = doc.createAttribute("methods");
             methodsAttr.setValue(mi.methods);
-            service.setAttributeNode(methodsAttr);            
-            
+            service.setAttributeNode(methodsAttr);
+
             if (mi.produces != null) {
-                
+
                 Attr producesAttr = doc.createAttribute("returmMimeType");
                 producesAttr.setValue(StringUtils.join(mi.produces, ','));
                 service.setAttributeNode(producesAttr);
@@ -75,7 +73,7 @@ public class ServiceDescriptionGenerator {
             if (mi.description != null) {
                 Attr descriptionAttr = doc.createAttribute("description");
                 descriptionAttr.setValue(mi.description);
-                service.setAttributeNode(descriptionAttr);                
+                service.setAttributeNode(descriptionAttr);
             }
 
             List<ParameterInfo> params = getParameters(m);
@@ -84,22 +82,21 @@ public class ServiceDescriptionGenerator {
 
                 Attr nameAttr = doc.createAttribute("name");
                 nameAttr.setValue(pi.name);
-                param.setAttributeNode(nameAttr);                
+                param.setAttributeNode(nameAttr);
 
                 Attr typeAttr = doc.createAttribute("type");
                 typeAttr.setValue(pi.type);
-                param.setAttributeNode(typeAttr);                
-                
-                
+                param.setAttributeNode(typeAttr);
+
                 if (pi.defaultValue != null) {
 
                     Attr defaultValueAttr = doc.createAttribute("defaultValue");
                     defaultValueAttr.setValue(pi.defaultValue);
-                    param.setAttributeNode(defaultValueAttr);                
+                    param.setAttributeNode(defaultValueAttr);
                 }
                 service.appendChild(param);
             }
-            
+
             rootElement.appendChild(service);
         }
 
@@ -122,9 +119,9 @@ public class ServiceDescriptionGenerator {
         if (description != null) {
             mi.description = description.value();
         }
-        
+
         mi.methods = getSupportedMethods(m);
-        
+
         return mi;
 
     }
@@ -163,10 +160,10 @@ public class ServiceDescriptionGenerator {
                 if (a instanceof QueryParam) {
                     pi.name = ((QueryParam) a).value();
                     pi.name = "query";
-                } else if( a instanceof FormParam ) {
+                } else if (a instanceof FormParam) {
                     pi.name = ((FormParam) a).value();
                     pi.type = "form";
-                } else if( a instanceof PathParam ) {
+                } else if (a instanceof PathParam) {
                     pi.name = ((PathParam) a).value();
                     pi.type = "path";
                 } else if (a instanceof DefaultValue) {
@@ -182,33 +179,33 @@ public class ServiceDescriptionGenerator {
 
         return parameters;
     }
-    
-    private static String getSupportedMethods(Method m){
-        
+
+    private static String getSupportedMethods(Method m) {
+
         List<String> methods = new ArrayList<>();
 
         GET get = m.getAnnotation(GET.class);
-        if( get != null ){
+        if (get != null) {
             methods.add("GET");
-        }        
+        }
 
         POST post = m.getAnnotation(POST.class);
-        if( post != null ){
+        if (post != null) {
             methods.add("POST");
-        }        
+        }
 
         PUT put = m.getAnnotation(PUT.class);
-        if( put != null ){
+        if (put != null) {
             methods.add("PUT");
-        }        
+        }
 
         DELETE delete = m.getAnnotation(DELETE.class);
-        if( delete != null ){
+        if (delete != null) {
             methods.add("DELETE");
-        }        
-        
+        }
+
         return StringUtils.join(methods, ",");
-        
+
     }
 
     private static class ParameterInfo {
