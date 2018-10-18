@@ -1,3 +1,13 @@
+release date=09:30 18.10.2018,version=1.8.5,urgency=low,by=Sarfraz Alam <sarfraza@met.no>,distribution=all
+ * Upgrade http client. 
+release date=15:15 12.02.2018,version=1.8.4,urgency=low,by=Sarfraz Alam <sarfraza@met.no>,distribution=all
+ * Upgrade primefaces to 6.0 to mitigate security vulnerabilities.
+release date=19:45 25.09.2017,version=1.8.3,urgency=low,by=Sarfraz Alam <sarfraza@met.no>,distribution=all
+ * Enforce https
+release date=15:30 25.09.2017,version=1.8.2,urgency=low,by=Sarfraz Alam <sarfraza@met.no>,distribution=all
+ * Bug fix
+release date=14:45 25.09.2017,version=1.8.1,urgency=low,by=Sarfraz Alam <sarfraza@met.no>,distribution=all
+ * Upgrade PF to v5
 release date=13:20 22.04.2014,version=1.8,urgency=low,by=Sarfraz Alam <sarfraza@met.no>,distribution=all
  * See https://scrum.met.no/jira/secure/ReleaseNote.jspa?projectId=10400&version=11712
 release date=13:20 28.06.2013,version=1.7,urgency=low,by=Sarfraz Alam <sarfraza@met.no>,distribution=all

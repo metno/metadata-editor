@@ -1,9 +1,9 @@
 #!/bin/sh
 
 echo "Removing old metadataeditor app from webapps directory..."
-rm -rf /var/lib/tomcat7/webapps/metadataeditor
+rm -rf /var/lib/tomcat8/webapps/ROOT
 
 echo "Restart tomcat7 ..."
-/etc/init.d/tomcat7 restart
+/etc/init.d/tomcat8 restart
 
 echo "Done"

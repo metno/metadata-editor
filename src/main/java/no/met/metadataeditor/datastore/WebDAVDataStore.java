@@ -18,15 +18,12 @@ import com.googlecode.sardine.DavResource;
 import com.googlecode.sardine.Sardine;
 import com.googlecode.sardine.SardineFactory;
 
-
-
 public class WebDAVDataStore extends DataStoreImpl {
 
     private String host;
     private String protocol;
     private String username;
     private String password;
-
 
     public WebDAVDataStore(String protocol, String host, String username, String password) {
         this.protocol = protocol;
@@ -35,11 +32,9 @@ public class WebDAVDataStore extends DataStoreImpl {
         this.password = password;
     }
 
-
     private Sardine getConnection() {
         return SardineFactory.begin(username, password);
     }
-
 
     @Override
     void put(String id, String resource, String username, String password) {
@@ -51,7 +46,6 @@ public class WebDAVDataStore extends DataStoreImpl {
             throw new EditorException("Failed to write to WebDAV", e, EditorException.IO_ERROR);
         }
     }
-
 
     @Override
     String get(String id) {
@@ -79,7 +73,6 @@ public class WebDAVDataStore extends DataStoreImpl {
         return new java.util.Date();
     }
 
-
     @Override
     boolean exists(String id) {
         Sardine webdavConn = getConnection();
@@ -92,15 +85,15 @@ public class WebDAVDataStore extends DataStoreImpl {
     }
 
     @Override
-    List<String> list(String url){
+    List<String> list(String url) {
 
         Sardine webdavConn = getConnection();
 
         try {
             Collection<DavResource> resources = webdavConn.list(url);
             List<String> filenames = new ArrayList<>();
-            for( DavResource r : resources ){
-                if(!r.isDirectory()){
+            for (DavResource r : resources) {
+                if (!r.isDirectory()) {
                     filenames.add(r.getName());
                 }
             }
@@ -129,7 +122,6 @@ public class WebDAVDataStore extends DataStoreImpl {
         }
     }
 
-
     @Override
     public boolean userHasWriteAccess(String username, String password) {
 
@@ -147,21 +139,21 @@ public class WebDAVDataStore extends DataStoreImpl {
     }
 
     @Override
-    public String getDefaultUser(){
+    public String getDefaultUser() {
         return username;
     }
 
     @Override
-    public String getDefaultPassword(){
+    public String getDefaultPassword() {
         return password;
     }
 
     @Override
-    public boolean delete(String url, String username, String password){
+    public boolean delete(String url, String username, String password) {
 
         Sardine webdavConn = SardineFactory.begin(username, password);
 
-        if(!exists(url)){
+        if (!exists(url)) {
             return false;
         }
 
@@ -169,7 +161,7 @@ public class WebDAVDataStore extends DataStoreImpl {
             webdavConn.delete(url);
 
             // check if the url actually was deleted
-            if(!exists(url)){
+            if (!exists(url)) {
                 return true;
             } else {
                 return false;
@@ -188,13 +180,13 @@ public class WebDAVDataStore extends DataStoreImpl {
         try {
             Collection<DavResource> resources = webdavConn.list(metadataDirUrl());
             List<MetadataRecords.ResourceMetadata> records = new ArrayList<>();
-            for( DavResource r : resources ){
-                if(!r.isDirectory()){
+            for (DavResource r : resources) {
+                if (!r.isDirectory()) {
                     records.add(new MetadataRecords.WebDavResourceMetadata(r.getCreation(), r.getName(), r.getPath(),
-                             r.getModified()));
+                            r.getModified()));
                 }
             }
-            
+
             return records;
         } catch (IOException e) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Failed to fetch metadata record", e);

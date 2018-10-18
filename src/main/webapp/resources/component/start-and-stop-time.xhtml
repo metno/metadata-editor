@@ -14,51 +14,51 @@
     <composite:implementation>
 
         <h:panelGroup id="startandstoptime-container" layout="block" styleClass="editor-widget-container">
-        <h:outputText value="#{cc.attrs.widget.label}" styleClass="main-label" />
+            <h:outputText value="#{cc.attrs.widget.label}" styleClass="main-label" />
 
-        <ui:include src="../../add-value-button.xhtml" >
-            <ui:param name="widget" value="#{cc.attrs.widget}"/>
-            <ui:param name="updateId" value="startandstoptime-container"/>
-        </ui:include>
+            <ui:include src="../../add-value-button.xhtml" >
+                <ui:param name="widget" value="#{cc.attrs.widget}"/>
+                <ui:param name="updateId" value="startandstoptime-container"/>
+            </ui:include>
 
-        <metaedit:description widget="#{cc.attrs.widget}"/>
+            <metaedit:description widget="#{cc.attrs.widget}"/>
 
-        <h:dataTable value="#{cc.attrs.widget.widgetViews}" var="widgetView" id="startandstoptime">
-        
-        <h:column headerClass="lat-lon-header">
-            <f:facet name="header">
-                <h:outputText value="Start time" />
-            </f:facet>
-            <p:calendar value="#{widgetView.values['start']}" pattern="yyyy-MM-dd HH:mm" converter="no.met.metadataeditor.DateTimeConverter" maxlength="16" size="20" disabled="#{!userBean.validated}">
-                <p:ajax event="change" global="false" />
-            </p:calendar>
-        </h:column>
-        <h:column id="validation-msg-start">
-            <h:outputText styleClass="input-validation-error" value="#{widgetView.validateAttribute('start')}" rendered="#{userBean.validated and widgetView.validateAttribute('start') != null}"/>
-        </h:column>        
-        
+            <h:dataTable value="#{cc.attrs.widget.widgetViews}" var="widgetView" id="startandstoptime">
 
-        <h:column headerClass="lat-lon-header">
-            <f:facet name="header">
-                <h:outputText value="Stop time" />
-            </f:facet>        
-            <p:calendar value="#{widgetView.values['stop']}" pattern="yyyy-MM-dd HH:mm" converter="no.met.metadataeditor.DateTimeConverter" maxlength="16" size="20" disabled="#{!userBean.validated}" />
-        </h:column>
-        <h:column id="validation-msg-stop">
-            <h:outputText styleClass="input-validation-error" value="#{widgetView.validateAttribute('stop')}" rendered="#{userBean.validated and widgetView.validateAttribute('stop') != null}"/>
-        </h:column>         
-        
-        <h:column>
-	        <ui:include src="../../remove-value-button.xhtml" >
-	            <ui:param name="widget" value="#{cc.attrs.widget}"/>
-	            <ui:param name="value" value="#{widgetView}"/>
-	        </ui:include>     
-        </h:column>
-        
-        </h:dataTable>
-        
+                <h:column headerClass="lat-lon-header">
+                    <f:facet name="header">
+                        <h:outputText value="Start time" />
+                    </f:facet>
+                    <p:calendar value="#{widgetView.values['start']}" pattern="yyyy-MM-dd" converter="no.met.metadataeditor.DateTimeConverter" maxlength="16" size="20" disabled="#{!userBean.validated}">
+                        <p:ajax event="change" global="false" />
+                    </p:calendar>
+                </h:column>
+                <h:column id="validation-msg-start">
+                    <h:outputText styleClass="input-validation-error" value="#{widgetView.validateAttribute('start')}" rendered="#{userBean.validated and widgetView.validateAttribute('start') != null}"/>
+                </h:column>
 
-                
+
+                <h:column headerClass="lat-lon-header">
+                    <f:facet name="header">
+                        <h:outputText value="Stop time" />
+                    </f:facet>
+                    <p:calendar value="#{widgetView.values['stop']}" pattern="yyyy-MM-dd" converter="no.met.metadataeditor.DateTimeConverter" maxlength="16" size="20" disabled="#{!userBean.validated}" />
+                </h:column>
+                <h:column id="validation-msg-stop">
+                    <h:outputText styleClass="input-validation-error" value="#{widgetView.validateAttribute('stop')}" rendered="#{userBean.validated and widgetView.validateAttribute('stop') != null}"/>
+                </h:column>
+
+                <h:column>
+                    <ui:include src="../../remove-value-button.xhtml" >
+                        <ui:param name="widget" value="#{cc.attrs.widget}"/>
+                        <ui:param name="value" value="#{widgetView}"/>
+                    </ui:include>
+                </h:column>
+
+            </h:dataTable>
+
+
+
         </h:panelGroup>
 
     </composite:implementation>

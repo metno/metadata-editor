@@ -10,10 +10,10 @@
         <param-name>javax.faces.SKIP_COMMENTS</param-name>
         <param-value>true</param-value>
     </context-param>
-    <context-param>  
-        <param-name>primefaces.THEME</param-name>  
-        <param-value>bootstrap</param-value>  
-    </context-param>      
+    <context-param>
+        <param-name>primefaces.THEME</param-name>
+        <param-value>bootstrap</param-value>
+    </context-param>
     <session-config>
         <session-timeout>1440</session-timeout>
     </session-config>
@@ -24,7 +24,7 @@
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
-    </servlet>    
+    </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.xhtml</url-pattern>
@@ -37,8 +37,8 @@
             <param-value>no.met.metadataeditor.service</param-value>
         </init-param>
         <init-param>
-               <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
-               <param-value>true</param-value>
+            <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+            <param-value>true</param-value>
         </init-param>
         <load-on-startup>2</load-on-startup>
     </servlet>
@@ -51,22 +51,32 @@
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
-    
+
     <error-page>
         <exception-type>java.lang.Throwable</exception-type>
         <location>/error-pages/server-error.xhtml</location>
-    </error-page>    
+    </error-page>
 
     <error-page>
         <error-code>404</error-code>
         <location>/error-pages/server-error.xhtml</location>
-    </error-page>    
+    </error-page>
 
-    
+
     <error-page>
         <exception-type>javax.faces.application.ViewExpiredException</exception-type>
         <location>/error-pages/view-expired.xhtml</location>
     </error-page>
-    
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>metaedit</web-resource-name>
+            <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+        <user-data-constraint>
+            <transport-guarantee>${transport.guarantee}</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+
 
 </web-app>

@@ -5,6 +5,6 @@ Conflicts: metadataeditor
 Section: contrib/misc
 Priority: optional
 Architecture: all
-Depends: openjdk-7-jdk, tomcat7
+Depends: openjdk-8-jre-headless, tomcat8, libtcnative-1, authbind
 Maintainer: Metsis <oysteint@met.no>
-Description: This is the Debian package for Metadata Editor web-application developed by met.no 
+Description: This is the Debian package for Metadata Editor web-application developed by met.no
