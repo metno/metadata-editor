@@ -18,7 +18,7 @@
 
     <properties>
         <majorMinorVersion>1.8</majorMinorVersion>
-        <incrementalVersion>5</incrementalVersion>
+        <incrementalVersion>6</incrementalVersion>
         <timestamp>${maven.build.timestamp}</timestamp>
         <maven.build.timestamp.format>yyyy-MM-dd-HH:mm:ss</maven.build.timestamp.format>
         <transport.guarantee>NONE</transport.guarantee>
