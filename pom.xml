@@ -33,6 +33,16 @@
             <name>Sardine maven repo at Google Code</name>
             <url>http://sardine.googlecode.com/svn/maven/</url>
         </repository>
+        <repository>
+            <id>repository.primefaces.org</id>
+            <name>Primefaces repo</name>
+            <url>https://repository.primefaces.org/</url>
+        </repository>
+        <repository>
+            <id>artifacts.alfresco.com</id>
+            <name>artifacts.alfresco.com</name>
+            <url>https://artifacts.alfresco.com/nexus/content/repositories/public/</url>
+        </repository>
     </repositories>
 
     <dependencies>
